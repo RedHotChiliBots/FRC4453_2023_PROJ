@@ -113,18 +113,19 @@ public final class Constants {
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
 
-		public static final double kMaxSpeedMetersPerSecond = 1.5;	// was 1.0
-		public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;	// was 0.7
+		public static final double kMaxSpeedMetersPerSecond = 1.5; // was 1.0
+		public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // was 0.7
 
 		public static final double kDistP = 0.15;
 		public static final double kDistI = 0.0;
 		public static final double kDistD = 0.0;
 
-		public static final double kLevelP = 0.15;
+		public static final double kLevelP = 0.015;
 		public static final double kLevelI = 0.0;
-		public static final double kLevelD = 0.0;
+		public static final double kLevelD = 0.0075;
 
-		public static final double kLevelSetpoint = 0.0;
+		public static final double kLevelSetPoint = 0.0;
+		public static final double kLevelSetTolerance = 1.0;
 
 		public static final double kDistanceTolerance = 0.025;// meters
 
@@ -227,11 +228,11 @@ public final class Constants {
 		public static final double kMaxOutput = 0.5;
 
 		public static final double kStopRPMs = 0.0;
-		public static final double kMinRPM = 5000.0;	//-4540.0;
+		public static final double kMinRPM = 5000.0; // -4540.0;
 		public static final double kMaxRPM = 5000.0; // 5676 free spin. 2800 rpm when prototype tested 1-18-22
 
 		public static final double kHopperRPMs = kMaxRPM * 0.6;
-		public static final double kHopperShootRPMS = kMaxRPM;	// was 0.75
+		public static final double kHopperShootRPMS = kMaxRPM; // was 0.75
 
 		public static final double kVelocityTolerance = 50.0; // rpms
 	}
@@ -254,7 +255,7 @@ public final class Constants {
 	}
 
 	public static final class ShooterConstants {
-		public static final double kShootP = 0.00005;	// was 0.00008
+		public static final double kShootP = 0.00005; // was 0.00008
 		public static final double kShootI = 0.0000005;
 		public static final double kShootD = 0.0;
 		public static final double kShootIz = 0.0;
@@ -263,10 +264,10 @@ public final class Constants {
 		public static final double kShootMaxOutput = 1.0;
 
 		public static final double kStopRPMs = 0.0;
-		public static final double kMinShootRPM = -4540.0;	// 5676 free spin max
+		public static final double kMinShootRPM = -4540.0; // 5676 free spin max
 		public static final double kMaxShootRPM = 4540.8; // 2800 rpm when prototype tested 1-18-22
 
-		public static final double kShooterRPMs = 1500;	// was kMaxShootRPM * 0.35; // 0.6;
+		public static final double kShooterRPMs = 1500; // was kMaxShootRPM * 0.35; // 0.6;
 		public static final double kShooterSuckRPMS = kMaxShootRPM * 0.3;
 
 		public static final double kShootVelocityTolerance = 50.0; // rpms

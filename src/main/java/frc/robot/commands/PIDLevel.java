@@ -13,25 +13,26 @@ import frc.robot.subsystems.Chassis;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PIDLevel extends PIDCommand {
-  Chassis chassis;
+  private Chassis chassis;
+//  public final double max = 2.0;
 
   /** Creates a new PIDLevel. */
   public PIDLevel(Chassis chassis) {
     super(
         // The controller that the command will use
         new PIDController(
-            ChassisConstants.kLevelP, 
-            ChassisConstants.kLevelI, 
-            ChassisConstants.kLevelD),
+            0.015, 
+            0.0, 
+            0.0075),
         // This should return the measurement
         () -> chassis.getPitch(),
         // This should return the setpoint (can also be a constant)
-        () -> ChassisConstants.kLevelSetpoint,
+        () -> ChassisConstants.kLevelSetPoint,
         // This uses the output
         output -> {
-          chassis.drive(output, 0.0);
+          chassis.drive(-(output > 0.5 ? 0.5 : output < -0.5 ? -0.5 : output), 0.0);
         });
-    // Use addRequirements() here to declare subsystem dependencies.
+    // // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(chassis);
     // Configure additional PID options by calling `getController` here.
   }

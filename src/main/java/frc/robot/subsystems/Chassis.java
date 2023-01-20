@@ -75,7 +75,6 @@ public class Chassis extends SubsystemBase {
 
 	private final PIDController levelPIDController = new PIDController(ChassisConstants.kLevelP, ChassisConstants.kLevelI, ChassisConstants.kLevelD);
 
-
 	// ==============================================================
 	// Define autonomous support functions
 	private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(ChassisConstants.kTrackWidth);
@@ -124,6 +123,9 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define Shuffleboard data
+	private final ShuffleboardTab pidTab = Shuffleboard.getTab("Chassis");
+	private final GenericEntry sbLevelPID = pidTab.addPersistent("Level PID", 0).getEntry();
+
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
 	private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
@@ -198,6 +200,9 @@ public class Chassis extends SubsystemBase {
 		rightPIDController.setIZone(ChassisConstants.kIz);
 		rightPIDController.setFF(ChassisConstants.kFF);
 		rightPIDController.setOutputRange(ChassisConstants.kMinOutput, ChassisConstants.kMaxOutput);
+
+		levelPIDController.setSetpoint(ChassisConstants.kLevelSetPoint);
+		levelPIDController.setTolerance(ChassisConstants.kLevelSetTolerance);
 
 		// ==============================================================
 		// Configure encoders
@@ -289,6 +294,8 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
+		pidTab.addPersistent("Level PID", levelPIDController);
+		
 		// ==============================================================
 		// Initialize devices before starting
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero

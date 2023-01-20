@@ -25,6 +25,8 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
+import frc.robot.commands.LevelChargingStation;
+import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 
@@ -60,9 +62,13 @@ public class RobotContainer {
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
 			() -> getJoystick(driver.getLeftY()), () -> getJoystick(driver.getRightY()));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
-			() -> getJoystick(driver.getLeftY()), () -> getJoystick(driver.getRightX()));
+			() -> getJoystick(driver.getLeftY()), () -> getJoystick(-driver.getLeftX()));
 
 	private final DoRumble doRumble = new DoRumble(this);
+
+	private final PIDLevel pidLevel = new PIDLevel(chassis);
+
+	private final LevelChargingStation levelChgStn = new LevelChargingStation(chassis);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -106,9 +112,12 @@ public class RobotContainer {
 	 * it to a {@link
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
-	private void configureButtonBindings() {}
-	
+	private void configureButtonBindings() {
+		new JoystickButton(driver, Button.kX.value).onTrue(levelChgStn);
+		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 
+	}
+	
 	private static final double DEADZONE = 0.01;
 	private static final double MAXACCEL = 0.001; // joystick units per 20ms
 	private double lastValue = 0.0;

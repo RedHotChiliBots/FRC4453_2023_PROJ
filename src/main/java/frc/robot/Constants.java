@@ -81,11 +81,16 @@ public final class Constants {
 
 	public static final class ChassisConstants {
 		// Constants for Drive PIDs
-		public static final double kP = 0.2; // 5e-5; //0.5;
-		public static final double kI = 1e-3; // 1e-6; //0.0;
+		public static final double kP = 5.5108E-07;	// from sysID
+		public static final double kI = 0.0;
 		public static final double kD = 0.0;
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.000156;
+
+		public static final double kA = 0.29701;	// from sysID
+		public static final double kS = 0.16439;	// from SysID
+		public static final double kV = 1.3349;		// from sysID
+
 		public static final double kMinOutput = -1.0; // -0.5;
 		public static final double kMaxOutput = 1.0; // 0.5;
 		public static final double maxRPM = 5700;
@@ -106,10 +111,6 @@ public final class Constants {
 		public static final double kPosFactorMPC = kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
 		public static final double kPosFactorCPM = kCountsPerRevGearbox / kWheelCirc; // Meters per Revolution
 
-		public static final double ksVolts = 0.22;
-		public static final double kvVoltSecondsPerMeter = 0.3;
-		public static final double kaVoltSecondsSquaredPerMeter = 0.01;
-
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
 
@@ -127,9 +128,16 @@ public final class Constants {
 		public static final double kLevelSetPoint = 0.0;
 		public static final double kLevelSetTolerance = 1.0;
 
-		public static final double kDistanceTolerance = 0.025;// meters
+		public static final double kRateP = 0.015;
+		public static final double kRateI = 0.0;
+		public static final double kRateD = 0.0075;
 
-		public static final double kAngleRungAttached = 15.0;// degrees
+		public static final double kRateSetPoint = 3.0;		// rate, deg/sec
+		public static final double kRateSetTolerance = 1.0;
+
+		public static final double kDistanceTolerance = 0.025;	// meters
+
+		public static final double kAngleRungAttached = 15.0;	// degrees
 
 		// Reasonable baseline values for a RAMSETE follower in units of meters and
 		// seconds

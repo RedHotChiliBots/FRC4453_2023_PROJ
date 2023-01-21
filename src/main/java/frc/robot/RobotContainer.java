@@ -25,7 +25,7 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
-import frc.robot.commands.LevelChargingStation;
+import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
@@ -68,7 +68,7 @@ public class RobotContainer {
 
 	private final PIDLevel pidLevel = new PIDLevel(chassis);
 
-	private final LevelChargingStation levelChgStn = new LevelChargingStation(chassis);
+	private final AutonChgStnLevel levelChgStn = new AutonChgStnLevel(chassis);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.

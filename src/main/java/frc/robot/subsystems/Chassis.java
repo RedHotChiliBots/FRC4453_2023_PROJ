@@ -50,51 +50,53 @@ public class Chassis extends SubsystemBase {
 	// ==============================================================
 	// Define the left side motors, master and follower
 	private final CANSparkMax leftMaster = new CANSparkMax(
-		CANidConstants.kLeftMasterMotor,
-		MotorType.kBrushless);
+			CANidConstants.kLeftMasterMotor,
+			MotorType.kBrushless);
 	private final CANSparkMax leftFollower = new CANSparkMax(
-		CANidConstants.kLeftFollowerMotor,
-		MotorType.kBrushless);
+			CANidConstants.kLeftFollowerMotor,
+			MotorType.kBrushless);
 
 	// Define the right side motors, master and follower
 	private final CANSparkMax rightMaster = new CANSparkMax(
-		CANidConstants.kRightMasterMotor,
-		MotorType.kBrushless);
+			CANidConstants.kRightMasterMotor,
+			MotorType.kBrushless);
 	private final CANSparkMax rightFollower = new CANSparkMax(
-		CANidConstants.kRightFollowerMotor,
-		MotorType.kBrushless);
+			CANidConstants.kRightFollowerMotor,
+			MotorType.kBrushless);
 
-    private final DifferentialDrive diffDrive = new DifferentialDrive(leftMaster, rightMaster);
+	private final DifferentialDrive diffDrive = new DifferentialDrive(leftMaster, rightMaster);
 
 	// ==============================================================
 	// Define encoders and PID controllers
 	private final RelativeEncoder leftEncoder = leftMaster.getEncoder();;
 	private final RelativeEncoder rightEncoder = rightMaster.getEncoder();
-	
-	private final SparkMaxPIDController leftPIDController = leftMaster.getPIDController();
-  	private final SparkMaxPIDController rightPIDController = rightMaster.getPIDController();
 
-	private final PIDController levelPIDController = new PIDController(ChassisConstants.kLevelP, ChassisConstants.kLevelI, ChassisConstants.kLevelD);
+	private final SparkMaxPIDController leftPIDController = leftMaster.getPIDController();
+	private final SparkMaxPIDController rightPIDController = rightMaster.getPIDController();
+
+	private final PIDController levelPIDController = new PIDController(ChassisConstants.kLevelP,
+			ChassisConstants.kLevelI, ChassisConstants.kLevelD);
+
+	private final PIDController ratePIDController = new PIDController(ChassisConstants.kRateP,
+			ChassisConstants.kRateI, ChassisConstants.kRateD);
 
 	// ==============================================================
 	// Define autonomous support functions
-	private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(ChassisConstants.kTrackWidth);
+	public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
+			ChassisConstants.kTrackWidth);
 
 	private DifferentialDriveOdometry odometry;
 
 	// Create a voltage constraint to ensure we don't accelerate too fast
-	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
+	// private DifferentialDriveVoltageConstraint autoVoltageConstraint;
 
 	// Create config for trajectory
 	private TrajectoryConfig config;
 	private TrajectoryConfig configReversed;
 
 	// An example trajectory to follow. All units in meters.
-	public Trajectory straight;
-	public Trajectory twoCargoOut;
-	public Trajectory cargo1or7OutAndBack;
-	public Trajectory cargo2or8OutAndBack;
-	public Trajectory cargo4or10OutAndBack;
+	public Trajectory fwdStraight;
+	public Trajectory revStraight;
 
 	// ==============================================================
 	// Initialize NavX AHRS board
@@ -113,11 +115,11 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define local variables
-	private double currPitch = 0.0;
-	private double lastPitch = 0.0;
-	private double maxPitch = Integer.MIN_VALUE;
-	private double minPitch = Integer.MAX_VALUE;
-	private boolean isPitchIncreasing = false;
+	// private double currPitch = 0.0;
+	// private double lastPitch = 0.0;
+	// private double maxPitch = Integer.MIN_VALUE;
+	// private double minPitch = Integer.MAX_VALUE;
+	// private boolean isPitchIncreasing = false;
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
@@ -192,19 +194,24 @@ public class Chassis extends SubsystemBase {
 		leftPIDController.setP(ChassisConstants.kP);
 		leftPIDController.setI(ChassisConstants.kI);
 		leftPIDController.setD(ChassisConstants.kD);
-		leftPIDController.setIZone(ChassisConstants.kIz);
-		leftPIDController.setFF(ChassisConstants.kFF);
-		leftPIDController.setOutputRange(ChassisConstants.kMinOutput, ChassisConstants.kMaxOutput);
+		// leftPIDController.setIZone(ChassisConstants.kIz);
+		// leftPIDController.setFF(ChassisConstants.kFF);
+		// leftPIDController.setOutputRange(ChassisConstants.kMinOutput,
+		// ChassisConstants.kMaxOutput);
 
 		rightPIDController.setP(ChassisConstants.kP);
 		rightPIDController.setI(ChassisConstants.kI);
 		rightPIDController.setD(ChassisConstants.kD);
-		rightPIDController.setIZone(ChassisConstants.kIz);
-		rightPIDController.setFF(ChassisConstants.kFF);
-		rightPIDController.setOutputRange(ChassisConstants.kMinOutput, ChassisConstants.kMaxOutput);
+		// rightPIDController.setIZone(ChassisConstants.kIz);
+		// rightPIDController.setFF(ChassisConstants.kFF);
+		// rightPIDController.setOutputRange(ChassisConstants.kMinOutput,
+		// ChassisConstants.kMaxOutput);
 
 		levelPIDController.setSetpoint(ChassisConstants.kLevelSetPoint);
 		levelPIDController.setTolerance(ChassisConstants.kLevelSetTolerance);
+
+		ratePIDController.setSetpoint(ChassisConstants.kRateSetPoint);
+		ratePIDController.setTolerance(ChassisConstants.kRateSetTolerance);
 
 		// ==============================================================
 		// Configure encoders
@@ -215,15 +222,23 @@ public class Chassis extends SubsystemBase {
 		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
 
 		// ==============================================================
+<<<<<<< HEAD
 		// Define autonomous Kinematics & Odometry functions
 
+=======
+		// Define autonomous support functions
+>>>>>>> e8630bb9017d95ca96a1122338b33d795024206d
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
 		// Create a voltage constraint to ensure we don't accelerate too fast
-		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-				new SimpleMotorFeedforward(ChassisConstants.ksVolts, ChassisConstants.kvVoltSecondsPerMeter,
-						ChassisConstants.kaVoltSecondsSquaredPerMeter),
-				kinematics, 10);
+		// Create a voltage constraint to ensure we don't accelerate too fast
+		var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+				new SimpleMotorFeedforward(
+						ChassisConstants.kS,
+						ChassisConstants.kV,
+						ChassisConstants.kA),
+				kinematics,
+				10);
 
 		// Create config for trajectory
 		config = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
@@ -242,6 +257,7 @@ public class Chassis extends SubsystemBase {
 				.addConstraint(autoVoltageConstraint)
 				.setReversed(true);
 
+<<<<<<< HEAD
 		// ==============================================================
 		// Define autonomous Trajectories
 
@@ -253,40 +269,19 @@ public class Chassis extends SubsystemBase {
 		// 		config);
 
 		twoCargoOut = TrajectoryGenerator.generateTrajectory(
+=======
+		fwdStraight = TrajectoryGenerator.generateTrajectory(
+>>>>>>> e8630bb9017d95ca96a1122338b33d795024206d
 				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
+				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
 				List.of(),
-				new Pose2d(Units.inchesToMeters(110.0), Units.inchesToMeters(0), new Rotation2d(0)),
+				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
 				// Pass config
 				config);
 
-		cargo1or7OutAndBack = TrajectoryGenerator.generateTrajectory(
+		revStraight = TrajectoryGenerator.generateTrajectory(
 				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(110.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				List.of(),
-				new Pose2d(Units.inchesToMeters(-130.0), Units.inchesToMeters(-5.0), new Rotation2d(179)),
-				// Pass config
-				config);
-
-		cargo2or8OutAndBack = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				List.of(new Translation2d(Units.inchesToMeters(75.0), Units.inchesToMeters(0.0))),
-				new Pose2d(Units.inchesToMeters(-73.0), Units.inchesToMeters(-85.0), new Rotation2d(180)),
-				// Pass config
-				config);
-
-		cargo4or10OutAndBack = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				List.of(new Translation2d(Units.inchesToMeters(75.0), Units.inchesToMeters(0.0))),
-				new Pose2d(Units.inchesToMeters(102.0), Units.inchesToMeters(30.0), new Rotation2d(180)),
-				// Pass config
-				config);
-
-		straight = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(-130.0), Units.inchesToMeters(-5.0), new Rotation2d(179)),
+				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
 				List.of(),
 				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
 				// Pass config
@@ -300,7 +295,7 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
 		pidTab.addPersistent("Level PID", levelPIDController);
-		
+
 		// ==============================================================
 		// Initialize devices before starting
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
@@ -359,13 +354,40 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-		setIsPitchIncreasing();
+//		setIsPitchIncreasing();
 	}
 
 	public void levelChargingStation() {
 		double pitch = ahrs.getPitch();
 		double pidOut = levelPIDController.calculate(pitch);
 		drive(pidOut, 0.0);
+	}
+
+	private double lastPitch;
+	private double currPitch;
+	private double ratePitch;
+
+	public void rateChargingStation() {
+		lastPitch = currPitch;
+		ratePitch = (lastPitch - currPitch) / 0.020; // deg / sec
+		currPitch = ahrs.getPitch();
+		double pidOut = levelPIDController.calculate(ratePitch);
+		drive(pidOut, 0.0);
+	}
+	
+	/**
+	 * Returns the current robot pitch reported by navX sensor.
+	 * 
+	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
+	 * @return The current pitch value in degrees (-180 to 180).
+	 */
+	public double getPitch() {
+		// adjust for orientation of roborio - use roll
+		// adjust for pitch on floor
+		return ahrs.getRoll() + 2.3;
+	}
+	public double getPitchRate() {
+		return ratePitch;
 	}
 
 	public DifferentialDriveOdometry getOdometry() {
@@ -391,47 +413,35 @@ public class Chassis extends SubsystemBase {
 	public void resetFieldPosition(double x, double y) {
 		ahrs.zeroYaw();
 		resetEncoders();
-//		odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
+		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
 	}
 
-	/**
-	 * Returns the current robot pitch reported by navX sensor.
-	 * 
-	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
-	 * @return The current pitch value in degrees (-180 to 180).
-	 */
-	public double getPitch() {
-		// adjust for orientation of roborio - use roll
-		// adjust for pitch on floor
-		return ahrs.getRoll() + 2.3;
-	}
+	// public void initMonitorPitch() {
+	// 	maxPitch = 0.0;
+	// 	minPitch = 0.0;
+	// }
 
-	public void initMonitorPitch() {
-		maxPitch = 0.0;
-		minPitch = 0.0;
-	}
+	// public void setIsPitchIncreasing() {
+	// 	lastPitch = currPitch;
+	// 	currPitch = getPitch();
+	// 	if (currPitch > maxPitch)
+	// 		maxPitch = currPitch;
+	// 	if (currPitch < minPitch)
+	// 		minPitch = currPitch;
+	// 	isPitchIncreasing = (currPitch > lastPitch) ? true : false;
+	// }
 
-	public void setIsPitchIncreasing() {
-		lastPitch = currPitch;
-		currPitch = getPitch();
-		if (currPitch > maxPitch)
-			maxPitch = currPitch;
-		if (currPitch < minPitch)
-			minPitch = currPitch;
-		isPitchIncreasing = (currPitch > lastPitch) ? true : false;
-	}
+	// public double getMinPitch() {
+	// 	return minPitch;
+	// }
 
-	public double getMinPitch() {
-		return minPitch;
-	}
+	// public double getMaxPitch() {
+	// 	return maxPitch;
+	// }
 
-	public double getMaxPitch() {
-		return maxPitch;
-	}
-
-	public boolean getIsPitchIncreasing() {
-		return isPitchIncreasing;
-	}
+	// public boolean getIsPitchIncreasing() {
+	// 	return isPitchIncreasing;
+	// }
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {
 		leftMaster.setVoltage(leftVolts);
@@ -486,7 +496,7 @@ public class Chassis extends SubsystemBase {
 
 	public void resetOdometry(Pose2d pose) {
 		resetEncoders();
-//		odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
+		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
 	}
 
 	public void resetEncoders() {

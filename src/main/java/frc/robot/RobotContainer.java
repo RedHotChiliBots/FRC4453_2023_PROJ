@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -45,13 +46,14 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
 
-	// private final Feeder feeder = new Feeder();
-
 	// =============================================================
 	// Define Joysticks
 	public final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
 	public final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
+	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
+  	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+	
 	// Define a chooser for autonomous commands
 	private final SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -60,9 +62,11 @@ public class RobotContainer {
 	// If commands use Shuffleboard and are instantiated multiple time, an error
 	// is thrown on the second instantiation becuase the "title" already exists.
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
-			() -> getJoystick(driver.getLeftY()), () -> getJoystick(driver.getRightY()));
+			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter), 
+			() -> getLimitedJoystick(driver.getRightY(), speedLimiter));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
-			() -> getJoystick(driver.getLeftY()), () -> getJoystick(-driver.getLeftX()));
+			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter), 
+			() -> getLimitedJoystick(-driver.getLeftX(), rotLimiter));
 
 	private final DoRumble doRumble = new DoRumble(this);
 
@@ -118,6 +122,11 @@ public class RobotContainer {
 
 	}
 	
+	private final double MAXSPEED = 6.0;	// meters per second or approx half rotation (PI) per sec
+	public double getLimitedJoystick(double js, SlewRateLimiter limiter) {
+		return limiter.calculate(js * MAXSPEED);
+	}
+
 	private static final double DEADZONE = 0.01;
 	private static final double MAXACCEL = 0.001; // joystick units per 20ms
 	private double lastValue = 0.0;

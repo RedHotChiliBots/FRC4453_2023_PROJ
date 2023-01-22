@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.AnalogIOConstants;
@@ -123,9 +124,10 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define Shuffleboard data
+
 	private final ShuffleboardTab pidTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLevelPID = pidTab.addPersistent("Level PID", 0).getEntry();
-
+	
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
 	private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
@@ -213,7 +215,7 @@ public class Chassis extends SubsystemBase {
 		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
 
 		// ==============================================================
-		// Define autonomous support functions
+		// Define autonomous Kinematics & Odometry functions
 
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
@@ -239,6 +241,9 @@ public class Chassis extends SubsystemBase {
 				// Apply the voltage constraint
 				.addConstraint(autoVoltageConstraint)
 				.setReversed(true);
+
+		// ==============================================================
+		// Define autonomous Trajectories
 
 		// straight = TrajectoryGenerator.generateTrajectory(
 		// 		new Pose2d(0, 0, new Rotation2d(0)),

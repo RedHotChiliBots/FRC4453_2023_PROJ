@@ -6,11 +6,19 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -26,12 +34,18 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
+import frc.robot.commands.AutonChargingStation;
+import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
+import frc.robot.commands.AutonChgStnRate;
+import frc.robot.commands.AutonGetGameElement;
+import frc.robot.commands.AutonReturn;
+import frc.robot.commands.AutonReturnToGrid;
+import frc.robot.commands.AutonStraight;
 import frc.robot.commands.PIDLevel;
+import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
-
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -52,8 +66,8 @@ public class RobotContainer {
 	public final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
-  	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
-	
+	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+
 	// Define a chooser for autonomous commands
 	private final SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -62,17 +76,42 @@ public class RobotContainer {
 	// If commands use Shuffleboard and are instantiated multiple time, an error
 	// is thrown on the second instantiation becuase the "title" already exists.
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
-			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter), 
+			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter),
 			() -> getLimitedJoystick(driver.getRightY(), speedLimiter));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
-			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter), 
+			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter),
 			() -> getLimitedJoystick(-driver.getLeftX(), rotLimiter));
 
 	private final DoRumble doRumble = new DoRumble(this);
 
 	private final PIDLevel pidLevel = new PIDLevel(chassis);
 
-	private final AutonChgStnLevel levelChgStn = new AutonChgStnLevel(chassis);
+	private final AutonChargingStation autonChargingStation = new AutonChargingStation(chassis);
+	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
+	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
+	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
+
+	private AutonStraight autonStraight = null;
+	private AutonReturn autonReturn = null;
+
+	private final String GetGameElementJSON = "paths/output/Straight.wpilib.json";
+	private Trajectory getGameElement = null;
+	private AutonGetGameElement autonGetGameElement = null;
+
+	private final String ReturnToGridJSON = "paths/output/Return.wpilib.json";
+	private Trajectory returnToGrid = null;
+	private AutonReturnToGrid autonReturnToGrid = null;
+
+	// Create a voltage constraint to ensure we don't accelerate too fast
+	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
+
+	// Create config for trajectory
+	private TrajectoryConfig config;
+	private TrajectoryConfig configReversed;
+
+	// An example trajectory to follow. All units in meters.
+	public Trajectory fwdStraight;
+	public Trajectory revStraight;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -82,18 +121,82 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add Subsystems to Dashboard
 		SmartDashboard.putData("Chassis", chassis);
-	
+
 		// SmartDashboard.putData("Feeder", feeder);
 
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
 
+		// Create a voltage constraint to ensure we don't accelerate too fast
+		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+				new SimpleMotorFeedforward(
+						ChassisConstants.kS,
+						ChassisConstants.kV,
+						ChassisConstants.kA),
+				chassis.getKinematics(),
+				10);
+
+		// Create config for trajectory
+		config = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
+				// Add kinematics to ensure max speed is actually obeyed
+				.setKinematics(chassis.getKinematics())
+				// Apply the voltage constraint
+				.addConstraint(autoVoltageConstraint)
+				.setReversed(false);
+
+		configReversed = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
+				// Add kinematics to ensure max speed is actually obeyed
+				.setKinematics(chassis.getKinematics())
+				// Apply the voltage constraint
+				.addConstraint(autoVoltageConstraint)
+				.setReversed(true);
+
+		fwdStraight = TrajectoryGenerator.generateTrajectory(
+				// Start at the origin facing the +X direction
+				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
+				List.of(),
+				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
+				// Pass config
+				config);
+
+		revStraight = TrajectoryGenerator.generateTrajectory(
+				// Start at the origin facing the +X direction
+				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
+				List.of(),
+				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
+				// Pass config
+				configReversed);
+
+		try {
+			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve(GetGameElementJSON);
+			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
+			autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
+
+			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve(ReturnToGridJSON);
+			returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
+			autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
+
+		} catch (IOException e) {
+			DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
+		}
+
+		autonStraight = new AutonStraight(chassis, fwdStraight);
+		autonReturn = new AutonReturn(chassis, revStraight);
+
 		// ==============================================================================
 		// Add commands to the autonomous command chooser
 		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
-		// chooser.addOption("Arcade Drive", chassisArcadeDrive);
-		// chooser.addOption("Modified Tank Drive", modifiedTankDrive);
+		chooser.addOption("Charging Station", autonChargingStation);
+		chooser.addOption("Charging Station Drive", autonChgStnDrive);
+		chooser.addOption("Charging Station Rate", autonChgStnRate);
+		chooser.addOption("Charging Station Level", autonChgStnLevel);
+		chooser.addOption("Get Game Element", autonGetGameElement);
+		chooser.addOption("Return To Grid", autonReturnToGrid);
+		chooser.addOption("Straight", autonStraight);
+		chooser.addOption("Return", autonReturn);
 
 		// =============================================================
 		// Build chooser for autonomous commands
@@ -117,12 +220,13 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driver, Button.kX.value).onTrue(levelChgStn);
+		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 
 	}
-	
-	private final double MAXSPEED = 6.0;	// meters per second or approx half rotation (PI) per sec
+
+	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec
+
 	public double getLimitedJoystick(double js, SlewRateLimiter limiter) {
 		return limiter.calculate(js * MAXSPEED);
 	}

@@ -87,17 +87,6 @@ public class Chassis extends SubsystemBase {
 
 	private DifferentialDriveOdometry odometry;
 
-	// Create a voltage constraint to ensure we don't accelerate too fast
-	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
-
-	// Create config for trajectory
-	private TrajectoryConfig config;
-	private TrajectoryConfig configReversed;
-
-	// An example trajectory to follow. All units in meters.
-	public Trajectory fwdStraight;
-	public Trajectory revStraight;
-
 	// ==============================================================
 	// Initialize NavX AHRS board
 	// Alternatively: I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB
@@ -224,49 +213,6 @@ public class Chassis extends SubsystemBase {
 		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
-
-		// Create a voltage constraint to ensure we don't accelerate too fast
-		// Create a voltage constraint to ensure we don't accelerate too fast
-		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-				new SimpleMotorFeedforward(
-						ChassisConstants.kS,
-						ChassisConstants.kV,
-						ChassisConstants.kA),
-				kinematics,
-				10);
-
-		// Create config for trajectory
-		config = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(kinematics)
-				// Apply the voltage constraint
-				.addConstraint(autoVoltageConstraint)
-				.setReversed(false);
-
-		configReversed = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(kinematics)
-				// Apply the voltage constraint
-				.addConstraint(autoVoltageConstraint)
-				.setReversed(true);
-
-		fwdStraight = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-				List.of(),
-				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				// Pass config
-				config);
-
-		revStraight = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-				List.of(),
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				// Pass config
-				configReversed);
 
 		// ==============================================================
 		// Add static variables to Shuffleboard

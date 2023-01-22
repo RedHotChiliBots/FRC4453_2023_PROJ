@@ -13,7 +13,6 @@ import frc.robot.subsystems.Chassis;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PIDLevel extends PIDCommand {
-  private Chassis chassis;
 //  public final double max = 2.0;
 
   /** Creates a new PIDLevel. */

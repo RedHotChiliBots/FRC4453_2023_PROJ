@@ -88,7 +88,7 @@ public class Chassis extends SubsystemBase {
 	private DifferentialDriveOdometry odometry;
 
 	// Create a voltage constraint to ensure we don't accelerate too fast
-	// private DifferentialDriveVoltageConstraint autoVoltageConstraint;
+	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
 
 	// Create config for trajectory
 	private TrajectoryConfig config;
@@ -222,17 +222,12 @@ public class Chassis extends SubsystemBase {
 		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
 
 		// ==============================================================
-<<<<<<< HEAD
 		// Define autonomous Kinematics & Odometry functions
-
-=======
-		// Define autonomous support functions
->>>>>>> e8630bb9017d95ca96a1122338b33d795024206d
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
 		// Create a voltage constraint to ensure we don't accelerate too fast
 		// Create a voltage constraint to ensure we don't accelerate too fast
-		var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
 				new SimpleMotorFeedforward(
 						ChassisConstants.kS,
 						ChassisConstants.kV,
@@ -257,21 +252,7 @@ public class Chassis extends SubsystemBase {
 				.addConstraint(autoVoltageConstraint)
 				.setReversed(true);
 
-<<<<<<< HEAD
-		// ==============================================================
-		// Define autonomous Trajectories
-
-		// straight = TrajectoryGenerator.generateTrajectory(
-		// 		new Pose2d(0, 0, new Rotation2d(0)),
-		// 		List.of(),
-		// 		new Pose2d(0, 0, new Rotation2d(180)),
-		// 		// Pass config
-		// 		config);
-
-		twoCargoOut = TrajectoryGenerator.generateTrajectory(
-=======
 		fwdStraight = TrajectoryGenerator.generateTrajectory(
->>>>>>> e8630bb9017d95ca96a1122338b33d795024206d
 				// Start at the origin facing the +X direction
 				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
 				List.of(),

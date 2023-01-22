@@ -44,7 +44,6 @@ import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
-import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 
 /**

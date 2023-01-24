@@ -98,14 +98,15 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define local variables
-	// private double currPitch = 0.0;
-	// private double[] lastPitch = new double[5];
-	// private int indexPitch = 0;
-	// private double ratePitch = 0.0;
-	// private double maxPitch = 0.0;
-	// private double minPitch = 0.0;
-	// public boolean isPitchIncreasing = false;
-	// public boolean isPitchDecreasing = false;
+	private double currPitch = 0.0;
+	private double lastPitch = 0.0;
+//	private double[] lastPitch = new double[5];
+//	private int indexPitch = 0;
+	private double ratePitch = 0.0;
+	private double maxPitch = 0.0;
+	private double minPitch = 0.0;
+	public boolean isPitchIncreasing = false;
+	public boolean isPitchDecreasing = false;
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
@@ -283,21 +284,17 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-		lib.updatePitch(getPitch());
+		updatePitch(getPitch());
 	}
 
 	public void levelChargingStation() {
-		double pitch = ahrs.getPitch();
-		double pidOut = levelPIDController.calculate(pitch);
+		double pidOut = levelPIDController.calculate(ahrs.getPitch());
 		drive(pidOut, 0.0);
 	}
 
 	public void rateChargingStation() {
-		// lastPitch = currPitch;
-		// ratePitch = (lastPitch - currPitch) / 0.020; // deg / sec
-		// currPitch = ahrs.getPitch();
-		// double pidOut = levelPIDController.calculate(ratePitch);
-		// drive(pidOut, 0.0);
+		double pidOut = levelPIDController.calculate(getRatePitch());
+		drive(pidOut, 0.0);
 	}
 	
 	/**
@@ -342,50 +339,57 @@ public class Chassis extends SubsystemBase {
 		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
 	}
 
-	// public void initMonitorPitch() {
-	// 	maxPitch = 0.0;
-	// 	minPitch = 0.0;
-	// }
+	public void initMonitorPitch() {
+		maxPitch = 0.0;
+		minPitch = 0.0;
+	}
 
-	// public void updatePitch() {
-	// 	// collect pitch list
-	// 	lastPitch[indexPitch++] = currPitch;
-	// 	if (indexPitch >= 5)
-	// 		indexPitch = 0;
-	// 	currPitch = getPitch();
+	public void updatePitch(double pitch) {
+		// collect pitch list
+		lastPitch = currPitch;
+		// lastPitch[indexPitch++] = currPitch;
+		// 	if (indexPitch >= 5)
+		// 		indexPitch = 0;
+		currPitch = pitch;
 
-	// 	// calc pitch max min
-	// 	if (currPitch > maxPitch)
-	// 		maxPitch = currPitch;
-	// 	if (currPitch < minPitch)
-	// 		minPitch = currPitch;
-		
-	// 	// calc pitch rate
-	// 	double sumPitch = 0.0;
-	// 	int j = indexPitch;
-	// 	int k = indexPitch - 1;
-	// 	if (k < 0)
-	// 		k = 4;
-	// 	for (int i = 0; i < 5; i++) {
-	// 		if (j >= 5)
-	// 			j = 0;
-	// 		if (k >= 5)
-	// 			k = 0;
-	// 		sumPitch += lastPitch[k++] - lastPitch[j++];
-	// 	}
-	// 	ratePitch = sumPitch / lastPitch.length / 0.020;
+		// calc pitch max min
+		if (currPitch > maxPitch)
+			maxPitch = currPitch;
+		if (currPitch < minPitch)
+			minPitch = currPitch;
 
-	// 	isPitchIncreasing = ratePitch < 0.0 ? true : false;
-	// 	isPitchDecreasing = ratePitch > 0.0 ? true : false;
-	// }
+		// calc pitch rate
+		ratePitch = (lastPitch - currPitch) / 0.020;
+		// 	// calc pitch rate
+		// 	double sumPitch = 0.0;
+		// 	int j = indexPitch;
+		// 	int k = indexPitch - 1;
+		// 	if (k < 0)
+		// 		k = 4;
+		// 	for (int i = 0; i < 5; i++) {
+		// 		if (j >= 5)
+		// 			j = 0;
+		// 		if (k >= 5)
+		// 			k = 0;
+		// 		sumPitch += lastPitch[k++] - lastPitch[j++];
+		// 	}
+		// 	ratePitch = sumPitch / lastPitch.length / 0.020;
 
-	// public double getMinPitch() {
-	// 	return minPitch;
-	// }
+		isPitchIncreasing = ratePitch < 0.0 ? true : false;
+		isPitchDecreasing = ratePitch > 0.0 ? true : false;
+	}
 
-	// public double getMaxPitch() {
-	// 	return maxPitch;
-	// }
+	public double getRatePitch() {
+		return ratePitch;
+	}
+
+	public double getMinPitch() {
+		return minPitch;
+	}
+
+	public double getMaxPitch() {
+		return maxPitch;
+	}
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {
 		leftMaster.setVoltage(leftVolts);

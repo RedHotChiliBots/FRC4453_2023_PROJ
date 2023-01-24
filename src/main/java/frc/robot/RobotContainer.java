@@ -85,11 +85,15 @@ public class RobotContainer {
 
 	private final PIDLevel pidLevel = new PIDLevel(chassis);
 
+	// =============================================================
+	// Define Autonomous Commands here
 	private final AutonChargingStation autonChargingStation = new AutonChargingStation(chassis);
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 
+	// =============================================================
+	// Define Trajectory Commands here and add Trajectors below
 	private AutonStraight autonStraight = null;
 	private AutonReturn autonReturn = null;
 
@@ -101,10 +105,11 @@ public class RobotContainer {
 	private Trajectory returnToGrid = null;
 	private AutonReturnToGrid autonReturnToGrid = null;
 
+	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
 	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
 
-	// Create config for trajectory
+	// Create configs for trajectory
 	private TrajectoryConfig config;
 	private TrajectoryConfig configReversed;
 
@@ -127,6 +132,7 @@ public class RobotContainer {
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
 
+		// =============================================================
 		// Create a voltage constraint to ensure we don't accelerate too fast
 		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
 				new SimpleMotorFeedforward(
@@ -172,11 +178,9 @@ public class RobotContainer {
 		try {
 			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve(GetGameElementJSON);
 			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
-			autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
 
 			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve(ReturnToGridJSON);
 			returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
-			autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
 
 		} catch (IOException e) {
 			DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
@@ -184,6 +188,8 @@ public class RobotContainer {
 
 		autonStraight = new AutonStraight(chassis, fwdStraight);
 		autonReturn = new AutonReturn(chassis, revStraight);
+		autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
+		autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
 
 		// ==============================================================================
 		// Add commands to the autonomous command chooser

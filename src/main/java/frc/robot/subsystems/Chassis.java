@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Library;
 import frc.robot.Constants.AnalogIOConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
@@ -94,16 +94,22 @@ public class Chassis extends SubsystemBase {
 	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogIOConstants.kHiPressureChannel);
 	private final AnalogInput loPressureSensor = new AnalogInput(AnalogIOConstants.kLoPressureChannel);
 
+	private final Library lib = new Library();
+
 	// ==============================================================
 	// Define local variables
 	// private double currPitch = 0.0;
-	// private double lastPitch = 0.0;
-	// private double maxPitch = Integer.MIN_VALUE;
-	// private double minPitch = Integer.MAX_VALUE;
-	// private boolean isPitchIncreasing = false;
+	// private double[] lastPitch = new double[5];
+	// private int indexPitch = 0;
+	// private double ratePitch = 0.0;
+	// private double maxPitch = 0.0;
+	// private double minPitch = 0.0;
+	// public boolean isPitchIncreasing = false;
+	// public boolean isPitchDecreasing = false;
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
+
 
 	// ==============================================================
 	// Define Shuffleboard data
@@ -222,6 +228,10 @@ public class Chassis extends SubsystemBase {
 		// Update field position - for autonomous
 		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
+		// for (int i = 0; i < 5; i++) {
+		// 	lastPitch[i] = 0.0;
+		// }
+
 		System.out.println("----- Chassis Constructor finished -----");
 	}
 
@@ -273,7 +283,7 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-//		setIsPitchIncreasing();
+		lib.updatePitch(getPitch());
 	}
 
 	public void levelChargingStation() {
@@ -282,16 +292,12 @@ public class Chassis extends SubsystemBase {
 		drive(pidOut, 0.0);
 	}
 
-	private double lastPitch;
-	private double currPitch;
-	private double ratePitch;
-
 	public void rateChargingStation() {
-		lastPitch = currPitch;
-		ratePitch = (lastPitch - currPitch) / 0.020; // deg / sec
-		currPitch = ahrs.getPitch();
-		double pidOut = levelPIDController.calculate(ratePitch);
-		drive(pidOut, 0.0);
+		// lastPitch = currPitch;
+		// ratePitch = (lastPitch - currPitch) / 0.020; // deg / sec
+		// currPitch = ahrs.getPitch();
+		// double pidOut = levelPIDController.calculate(ratePitch);
+		// drive(pidOut, 0.0);
 	}
 	
 	/**
@@ -305,9 +311,10 @@ public class Chassis extends SubsystemBase {
 		// adjust for pitch on floor
 		return ahrs.getRoll() + 2.3;
 	}
-	public double getPitchRate() {
-		return ratePitch;
-	}
+
+	// public double getPitchRate() {
+	// 	return ratePitch;
+	// }
 
 	public DifferentialDriveOdometry getOdometry() {
 		return odometry;
@@ -340,14 +347,36 @@ public class Chassis extends SubsystemBase {
 	// 	minPitch = 0.0;
 	// }
 
-	// public void setIsPitchIncreasing() {
-	// 	lastPitch = currPitch;
+	// public void updatePitch() {
+	// 	// collect pitch list
+	// 	lastPitch[indexPitch++] = currPitch;
+	// 	if (indexPitch >= 5)
+	// 		indexPitch = 0;
 	// 	currPitch = getPitch();
+
+	// 	// calc pitch max min
 	// 	if (currPitch > maxPitch)
 	// 		maxPitch = currPitch;
 	// 	if (currPitch < minPitch)
 	// 		minPitch = currPitch;
-	// 	isPitchIncreasing = (currPitch > lastPitch) ? true : false;
+		
+	// 	// calc pitch rate
+	// 	double sumPitch = 0.0;
+	// 	int j = indexPitch;
+	// 	int k = indexPitch - 1;
+	// 	if (k < 0)
+	// 		k = 4;
+	// 	for (int i = 0; i < 5; i++) {
+	// 		if (j >= 5)
+	// 			j = 0;
+	// 		if (k >= 5)
+	// 			k = 0;
+	// 		sumPitch += lastPitch[k++] - lastPitch[j++];
+	// 	}
+	// 	ratePitch = sumPitch / lastPitch.length / 0.020;
+
+	// 	isPitchIncreasing = ratePitch < 0.0 ? true : false;
+	// 	isPitchDecreasing = ratePitch > 0.0 ? true : false;
 	// }
 
 	// public double getMinPitch() {
@@ -356,10 +385,6 @@ public class Chassis extends SubsystemBase {
 
 	// public double getMaxPitch() {
 	// 	return maxPitch;
-	// }
-
-	// public boolean getIsPitchIncreasing() {
-	// 	return isPitchIncreasing;
 	// }
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {

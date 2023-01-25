@@ -9,6 +9,9 @@ import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnRate extends CommandBase {
   Chassis chassis = null;
+  double rate = 0.0;
+  double currPitch;
+
   /** Creates a new LevelChargingStation. */
   public AutonChgStnRate(Chassis chassis) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -18,21 +21,29 @@ public class AutonChgStnRate extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    currPitch = chassis.getPitch();
+    rate = chassis.rateChargingStation();
+    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+    System.out.println(timeStamp + "   Start Rate: Pitch: " + currPitch + "   Rate: " + rate);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.rateChargingStation();
+    rate = chassis.rateChargingStation();
   }
 
   // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+    System.out.println(timeStamp + "   End Rate: Pitch: " + currPitch + "   Rate: " + rate);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.getPitch() < 1.0;
+    currPitch = chassis.getPitch();
+    return Math.abs(currPitch) < 1.0;
   }
 }

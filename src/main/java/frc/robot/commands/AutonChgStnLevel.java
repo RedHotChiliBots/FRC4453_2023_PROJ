@@ -4,11 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnLevel extends CommandBase {
   Chassis chassis = null;
+  double pitch = 0.0;
+  double counter = 0;
+
   /** Creates a new LevelChargingStation. */
   public AutonChgStnLevel(Chassis chassis) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -18,12 +22,16 @@ public class AutonChgStnLevel extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    pitch = chassis.levelChargingStation();
+    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+    System.out.println(timeStamp + "   Start Level: Pitch: " + pitch);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.levelChargingStation();
+    pitch = chassis.levelChargingStation();
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +41,10 @@ public class AutonChgStnLevel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if ((counter++ % 50) == 0.0) {
+      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+      System.out.println(timeStamp + "   Level: [" + counter + "]  Pitch: " + pitch);
+    }
     return false;
   }
 }

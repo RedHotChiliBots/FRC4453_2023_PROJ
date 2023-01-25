@@ -10,6 +10,9 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import java.text.SimpleDateFormat;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -111,6 +114,7 @@ public class Chassis extends SubsystemBase {
 	private double leftError = 0.0;
 	private double rightError = 0.0;
 
+	public SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 
 	// ==============================================================
 	// Define Shuffleboard data
@@ -125,6 +129,7 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0).getEntry();
 	private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
 	private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
+	private final GenericEntry sbRate = chassisTab.addPersistent("Pitch Rate", 0).getEntry();
 	private final GenericEntry sbPitch = chassisTab.addPersistent("Pitch", 0).getEntry();
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
@@ -220,7 +225,7 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
-		pidTab.addPersistent("Level PID", levelPIDController);
+//		pidTab.addPersistent("Level PID", levelPIDController);
 
 		// ==============================================================
 		// Initialize devices before starting
@@ -245,6 +250,7 @@ public class Chassis extends SubsystemBase {
 		sbLeftPow.setDouble(leftMaster.getAppliedOutput());
 		sbRightPow.setDouble(rightMaster.getAppliedOutput());
 
+		sbRate.setDouble(getRatePitch());
 		sbPitch.setDouble(getPitch());
 		sbAngle.setDouble(getAngle().getDegrees());
 		sbHeading.setDouble(getHeading());
@@ -260,6 +266,7 @@ public class Chassis extends SubsystemBase {
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
 
+		resetEncoders();
 		updateOdometry();
 
 		// // Get the desired pose from the trajectory.
@@ -287,14 +294,18 @@ public class Chassis extends SubsystemBase {
 		updatePitch(getPitch());
 	}
 
-	public void levelChargingStation() {
-		double pidOut = levelPIDController.calculate(ahrs.getPitch());
-		drive(pidOut, 0.0);
+	public double levelChargingStation() {
+		double currPitch = ahrs.getPitch();
+		double pidOut = levelPIDController.calculate(currPitch);
+		driveArcade(pidOut, 0.0);
+		return currPitch;
 	}
 
-	public void rateChargingStation() {
-		double pidOut = levelPIDController.calculate(getRatePitch());
-		drive(pidOut, 0.0);
+	public double rateChargingStation() {
+		double currRate = getRatePitch();
+		double pidOut = levelPIDController.calculate(currRate);
+		driveArcade(pidOut, 0.0);
+		return currRate;
 	}
 	
 	/**

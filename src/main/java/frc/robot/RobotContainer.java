@@ -75,11 +75,11 @@ public class RobotContainer {
 	// If commands use Shuffleboard and are instantiated multiple time, an error
 	// is thrown on the second instantiation becuase the "title" already exists.
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
-			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter),
-			() -> getLimitedJoystick(driver.getRightY(), speedLimiter));
+			() -> getJoystick(driver.getLeftY()),
+			() -> getJoystick(driver.getRightY()));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
-			() -> getLimitedJoystick(driver.getLeftY(), speedLimiter),
-			() -> getLimitedJoystick(-driver.getLeftX(), rotLimiter));
+			() -> getJoystick(driver.getLeftY()),
+			() -> getJoystick(-driver.getLeftX()));
 
 	private final DoRumble doRumble = new DoRumble(this);
 
@@ -97,11 +97,11 @@ public class RobotContainer {
 	private AutonStraight autonStraight = null;
 	private AutonReturn autonReturn = null;
 
-	private final String GetGameElementJSON = "paths/output/Straight.wpilib.json";
+	private final String GetGameElementJSON = "output/Straight.wpilib.json";
 	private Trajectory getGameElement = null;
 	private AutonGetGameElement autonGetGameElement = null;
 
-	private final String ReturnToGridJSON = "paths/output/Return.wpilib.json";
+	private final String ReturnToGridJSON = "output/Return.wpilib.json";
 	private Trajectory returnToGrid = null;
 	private AutonReturnToGrid autonReturnToGrid = null;
 

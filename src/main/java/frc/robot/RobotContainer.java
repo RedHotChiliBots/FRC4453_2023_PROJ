@@ -93,29 +93,25 @@ public class RobotContainer {
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 
 	// =============================================================
-	// Define Trajectory Commands here and add Trajectors below
-	private AutonStraight autonStraight = null;
-	private AutonReturn autonReturn = null;
-
-	private final String GetGameElementJSON = "output/Straight.wpilib.json";
-	private Trajectory getGameElement = null;
-	private AutonGetGameElement autonGetGameElement = null;
-
-	private final String ReturnToGridJSON = "output/Return.wpilib.json";
-	private Trajectory returnToGrid = null;
-	private AutonReturnToGrid autonReturnToGrid = null;
-
-	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
 	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
 
 	// Create configs for trajectory
-	private TrajectoryConfig config;
-	private TrajectoryConfig configReversed;
+	private TrajectoryConfig fwdConfig = null;
+	private TrajectoryConfig revConfig = null;
 
-	// An example trajectory to follow. All units in meters.
-	public Trajectory fwdStraight;
-	public Trajectory revStraight;
+	// =============================================================
+	// Define Trajectory Commands here and add Trajectors below
+	private Trajectory fwdStraight = null;
+	private AutonStraight autonStraight = null;
+	private Trajectory revStraight = null;
+	private AutonReturn autonReturn = null;
+
+	private Trajectory getGameElement = null;
+	private AutonGetGameElement autonGetGameElement = null;
+
+	private Trajectory returnToGrid = null;
+	private AutonReturnToGrid autonReturnToGrid = null;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -143,7 +139,7 @@ public class RobotContainer {
 				10);
 
 		// Create config for trajectory
-		config = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+		fwdConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
 				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
 				// Add kinematics to ensure max speed is actually obeyed
 				.setKinematics(chassis.getKinematics())
@@ -151,7 +147,7 @@ public class RobotContainer {
 				.addConstraint(autoVoltageConstraint)
 				.setReversed(false);
 
-		configReversed = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+		revConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
 				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
 				// Add kinematics to ensure max speed is actually obeyed
 				.setKinematics(chassis.getKinematics())
@@ -165,7 +161,7 @@ public class RobotContainer {
 				List.of(),
 				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
 				// Pass config
-				config);
+				fwdConfig);
 
 		revStraight = TrajectoryGenerator.generateTrajectory(
 				// Start at the origin facing the +X direction
@@ -173,13 +169,13 @@ public class RobotContainer {
 				List.of(),
 				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
 				// Pass config
-				configReversed);
+				revConfig);
 
 		try {
-			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve(GetGameElementJSON);
+			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Straight.wpilib.json");
 			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
 
-			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve(ReturnToGridJSON);
+			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
 			returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
 
 		} catch (IOException e) {
@@ -227,7 +223,6 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-
 	}
 
 	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec

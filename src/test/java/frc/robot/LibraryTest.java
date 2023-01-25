@@ -18,7 +18,7 @@ public class LibraryTest {
 			rate = lib.updatePitch((double)i);
 			System.out.println("Loop: " + i + "  Rate: " + rate);
 		}
-		System.out.println("indexPitch: " + lib.indexPitch);
+//		System.out.println("indexPitch: " + lib.indexPitch);
 	}
 
 	@Test

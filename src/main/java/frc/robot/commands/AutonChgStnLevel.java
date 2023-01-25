@@ -4,14 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnLevel extends CommandBase {
   Chassis chassis = null;
   double pitch = 0.0;
-  double counter = 0;
+  double counter = 0.0;
 
   /** Creates a new LevelChargingStation. */
   public AutonChgStnLevel(Chassis chassis) {

@@ -27,8 +27,9 @@ public final class Constants {
 		public static final int kLeftMasterMotor = 12;
 		public static final int kLeftFollowerMotor = 13;
 
-		public static final int kClimbLeftMotor = 20;
-		public static final int kClimbRightMotor = 21;
+		public static final int kCraneTurretMotor = 20;
+		public static final int kCraneTiltMotor = 21;
+		public static final int kCraneArmMotor = 22;
 
 		public static final int kHopperMotor = 40;
 		public static final int kCollectorMotor = 50;
@@ -137,10 +138,29 @@ public final class Constants {
 		public static final double kRamseteZeta = 0.7;
 	}
 
-	public static final class ClimberConstants {
-		public static final double kP = 0.35;
-		public static final double kI = 0.0000;
-		public static final double kD = 0.0;
+	public static final class CraneConstants {
+		public static final double kTurretP = 0.35;
+		public static final double kTurretI = 0.0000;
+		public static final double kTurretD = 0.0;
+		public static final double kTurretSetPoint = 0;
+		public static final double kTurretSetTolerance = 0.5;
+
+		public static final double kTiltP = 0.35;
+		public static final double kTiltI = 0.0000;
+		public static final double kTiltD = 0.0;
+		public static final double kTiltSetPoint = 0;
+		public static final double kTiltSetTolerance = 0.5;
+
+		public static final double kArmP = 0.35;
+		public static final double kArmI = 0.0000;
+		public static final double kArmD = 0.0;
+		public static final double kArmSetPoint = 0;
+		public static final double kArmTolerance = 0.5;
+
+		public static final double kTurretPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
+		public static final double kTiltPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
+		public static final double kArmPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
+
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.0;
 		public static final double kMinOutput = -1.0;
@@ -153,49 +173,6 @@ public final class Constants {
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 		public static final double kPosFactorIPC = kPulleyCirc / kCountsPerRevGearbox; // inches per count
 		public static final double kPosFactorCPI = kCountsPerRevGearbox / kPulleyCirc; // counts per inch
-
-		// all climber measurements are from floor to underside of hook and floor to top
-		// of rung
-		public static final double kFloor2Hook = 10.4 + 32.0; // inches from floor to top of outer climber tube
-		public static final double kClearUnder = 3.0; // inches below top of rung to clear
-		public static final double kEngageOver = 3.0; // inches avobe top of rung to engage
-
-		public static final double kLowRung = 48.75; // inches above floor per rules
-		public static final double kMidRung = 60.25 - 2.75; // inches aboave floor per rules
-		public static final double kMaxExtend = -(60.25 - 2.75 - ClimberConstants.kFloor2Hook
-				+ ClimberConstants.kEngageOver); // inches aboave floor per rules
-
-		public static final double kClearLowRung = -(ClimberConstants.kLowRung - ClimberConstants.kFloor2Hook
-				- ClimberConstants.kClearUnder);
-		public static final double kEngageLowRung = -(ClimberConstants.kLowRung - ClimberConstants.kFloor2Hook
-				+ ClimberConstants.kEngageOver); // inches
-		public static final double kClearMidRung = -(ClimberConstants.kMidRung - ClimberConstants.kFloor2Hook
-				- ClimberConstants.kClearUnder); // inches
-		public static final double kEngageMidRung = kMaxExtend; // inches
-
-		public static final double kEngageHighTrav = kMaxExtend - 0.5; // inches to position for
-		public static final double kHookHighTrav = kMaxExtend + 3.0; // inches to position for latch
-																		// high/traverse
-		// rungs
-		// public static final double kFullExtendPerpendicular = 66.0; // inches
-		// public static final double kFullExtendSwivel = 72.92;// inches
-		public static final double kPullUpLatch = -(0.0); // inches to latch climber
-		public static final double kPullUpClear = -(3.0); // inches to unhook while latched
-		public static final double kStow = 0.0;
-		public static final double kOneRev = -ClimberConstants.kPulleyCirc;
-
-		public static final double kDistanceTolerance = 0.125; // inches
-
-		public static final long kLatchDelay = 250; // milliseconds
-		public static final long kSwivelDelay = 750; // milliseconds
-		// public static final double kInitDelay = 0.25; // seconds
-		public static final double kInitSafety = 10.0; // seconds
-
-		public static final double kMaxAmps = 10.0;
-		public static final double kInitSpeed = 0.6;
-
-		public static final double kMaxPitch = 2.0; // degrees
-
 	}
 
 	public static final class CollectorConstants {

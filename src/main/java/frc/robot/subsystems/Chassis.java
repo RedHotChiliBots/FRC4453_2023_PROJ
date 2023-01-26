@@ -107,6 +107,7 @@ public class Chassis extends SubsystemBase {
 			PneumaticsModuleType.CTREPCM,
 			PneumaticChannelConstants.kGearShifterHi,
 			PneumaticChannelConstants.kGearShifterLo);
+			
 	// ==============================================================
 	// Define local variables
 	private double currPitch = 0.0;

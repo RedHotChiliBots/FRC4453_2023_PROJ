@@ -31,8 +31,8 @@ public final class Constants {
 		public static final int kCraneTiltMotor = 21;
 		public static final int kCraneArmMotor = 22;
 
-		public static final int kHopperMotor = 40;
-		public static final int kCollectorMotor = 50;
+		public static final int kIntakeLeftMotor = 30;
+		public static final int kIntakeRightMotor = 31;
 
 		public static final int kShooterLMotor = 30;
 		public static final int kShooterRMotor = 31;
@@ -41,6 +41,12 @@ public final class Constants {
 	public static final class PneumaticChannelConstants {
 		public static final int kGearShifterHi = 1;
 		public static final int kGearShifterLo = 0;
+		public static final int kIntakeArmOpen = 2;
+		public static final int kIntakeArmClose = 3;
+		public static final int kLeftPistonClose = 4;
+		public static final int kLeftPistonOpen = 5;
+		public static final int kRightPistonClose = 6;
+		public static final int kRightPistonOpen = 7;
 	}
 
 	public static final class DIOChannelConstants {

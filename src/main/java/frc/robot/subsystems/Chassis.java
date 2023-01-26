@@ -27,8 +27,10 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -39,6 +41,7 @@ import frc.robot.Library;
 import frc.robot.Constants.AnalogIOConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.Constants.PneumaticChannelConstants;
 
 public class Chassis extends SubsystemBase {
 
@@ -97,8 +100,13 @@ public class Chassis extends SubsystemBase {
 	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogIOConstants.kHiPressureChannel);
 	private final AnalogInput loPressureSensor = new AnalogInput(AnalogIOConstants.kLoPressureChannel);
 
-	private final Library lib = new Library();
-
+	// ==============================================================
+	// Identify pneumatics for gear shifters
+	
+	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
+			PneumaticsModuleType.CTREPCM,
+			PneumaticChannelConstants.kGearShifterHi,
+			PneumaticChannelConstants.kGearShifterLo);
 	// ==============================================================
 	// Define local variables
 	private double currPitch = 0.0;
@@ -146,6 +154,12 @@ public class Chassis extends SubsystemBase {
 	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
 	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
+
+	public enum GearShifterState {
+		NA,
+		HI,
+		LO
+	}
 
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");
@@ -478,7 +492,18 @@ public class Chassis extends SubsystemBase {
 		leftError = Math.abs(setPoint - leftEncoder.getPosition());
 		rightError = Math.abs(setPoint - rightEncoder.getPosition());
 		return leftError <= ChassisConstants.kDistanceTolerance && rightError <= ChassisConstants.kDistanceTolerance;
+	}
 
+	public void setGearShifter(GearShifterState state) {
+		switch (state) {
+			case HI:
+				gearShifter.set(Value.kForward);
+				break;
+			case LO:
+				gearShifter.set(Value.kReverse);
+				break;
+			default:
+		}
 	}
 
 	// public void turn(double angle) {

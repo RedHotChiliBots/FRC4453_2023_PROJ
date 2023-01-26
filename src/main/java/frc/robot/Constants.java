@@ -38,16 +38,8 @@ public final class Constants {
 	}
 
 	public static final class PneumaticChannelConstants {
-		public static final int kClimbLeftExtend = 1;
-		public static final int kClimbLeftRetract = 0;
-		public static final int kClimbRightExtend = 7;
-		public static final int kClimbRightRetract = 6;
-
-		public static final int kLatchOpen = 4;
-		public static final int kLatchClose = 5;
-
-		public static final int kCollectorExtend = 3;
-		public static final int kCollectorRetract = 2;
+		public static final int kGearShifterHi = 1;
+		public static final int kGearShifterLo = 0;
 	}
 
 	public static final class DIOChannelConstants {

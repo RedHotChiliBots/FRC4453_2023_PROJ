@@ -11,6 +11,7 @@ public class AutonChgStnRate extends CommandBase {
   Chassis chassis = null;
   double rate = 0.0;
   double currPitch;
+  double counter = 0;
 
   /** Creates a new LevelChargingStation. */
   public AutonChgStnRate(Chassis chassis) {
@@ -44,6 +45,10 @@ public class AutonChgStnRate extends CommandBase {
   @Override
   public boolean isFinished() {
     currPitch = chassis.getPitch();
+    if ((counter++ % 10) == 0.0) {
+      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+      System.out.println(timeStamp + "   Level: [" + counter + "] Pitch: " + currPitch);
+    }
     return Math.abs(currPitch) < 1.0;
   }
 }

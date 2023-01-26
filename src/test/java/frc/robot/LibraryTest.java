@@ -12,14 +12,20 @@ public class LibraryTest {
 
 	@Test
 	@Order(1)
-	public void testIsPitchIncreasing() throws Exception {
+	public void updatePitch() throws Exception {
 		double rate = 0.0;
-		for (int i = 0; i < 5; i++) {
-			rate = lib.updatePitch((double)i);
-			System.out.println("Loop: " + i + "  Rate: " + rate);
-		}
-//		System.out.println("indexPitch: " + lib.indexPitch);
+		rate = lib.updatePitch(2.0);
+		rate = lib.updatePitch(3.0);
+		System.out.println("Loop:  Rate: " + rate);
 	}
+// 	public void updatePitch() throws Exception {
+// 		double rate = 0.0;
+// 		for (int i = 0; i < 5; i++) {
+// 			rate = lib.updatePitch((double)i);
+// 			System.out.println("Loop: " + i + "  Rate: " + rate);
+// 		}
+// //		System.out.println("indexPitch: " + lib.indexPitch);
+// 	}
 
 	@Test
 	@Order(2)
@@ -41,7 +47,7 @@ public class LibraryTest {
 
 	@Test
 	@Order(5)
-	public void testUpdatePitch() throws Exception {
+	public void testIsPitchIncreasing() throws Exception {
 		System.out.println("Increasing: " + lib.isPitchIncreasing());
 	}
 

@@ -14,6 +14,7 @@ public class AutonChgStnDrive extends CommandBase {
   double currPitch;
   Timer timer;
   double diffPitch;
+  int counter = 0;
 
   /** Creates a new AutonDrivePitch. */
   public AutonChgStnDrive(Chassis chassis) {
@@ -51,7 +52,11 @@ public class AutonChgStnDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    diffPitch =  Math.abs(currPitch - lastPitch);
+    diffPitch = Math.abs(currPitch - lastPitch);
+    if ((counter++ % 10) == 0.0) {
+      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+      System.out.println(timeStamp + "   Level: [" + counter + "] Pitch: " + currPitch + "   Diff: " + diffPitch);
+    }
     return  (timer.hasElapsed( 1) && Math.abs(diffPitch) > 1.0);
   }
 }

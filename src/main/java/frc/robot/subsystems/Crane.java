@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -106,21 +107,48 @@ public class Crane extends SubsystemBase {
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
 
     System.out.println("+++++ Crane Constructor finished +++++");
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    sbTurretSP.setDouble(turretSetPoint);
-    sbTiltSP.setDouble(tiltSetPoint);
-    sbArmSP.setDouble(armSetPoint);
-    sbTurretPos.setDouble(turretEncoder.getPosition());
-    sbTiltPos.setDouble(tiltEncoder.getPosition());
-    sbArmPos.setDouble(armEncoder.getPosition());
+    sbTurretSP.setDouble(getTurretSetPoint());
+    sbTiltSP.setDouble(getTiltSetPoint());
+    sbArmSP.setDouble(getArmSetPoint());
+    sbTurretPos.setDouble(getTurretPosition());
+    sbTiltPos.setDouble(getTiltPosition());
+    sbArmPos.setDouble(getArmPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
     sbArmVel.setDouble(armEncoder.getVelocity());
+  }
+
+
+  public void setTurretPosition(double setPoint) {
+    this.turretSetPoint = setPoint;
+    turretPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setTiltPosition(double setPoint) {
+    this.tiltSetPoint = setPoint;
+    tiltPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setArmPosition(double setPoint) {
+    this.armSetPoint = setPoint;
+    armPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+  }
+
+  public double getTurretPosition() {
+    return turretEncoder.getPosition();
+  }
+
+  public double getTiltPosition() {
+    return tiltEncoder.getPosition();
+  }
+
+  public double getArmPosition() {
+    return armEncoder.getPosition();
   }
 
   public double getTurretSetPoint() {
@@ -147,31 +175,15 @@ public class Crane extends SubsystemBase {
     armMotor.set(0.0);
   }  
 
-  public void cmdTurret(double spd) {
+  public void setTurretSpeed(double spd) {
     turretMotor.set(spd);
   }
 
-  public void cmdTilt(double spd) {
+  public void setTiltSpeed(double spd) {
     tiltMotor.set(spd);
   }
 
-  public void cmdArm(double spd) {
+  public void setArmSpeed(double spd) {
     armMotor.set(spd);
   }
-
-  public void posTurret(double setPoint) {
-    this.turretSetPoint = setPoint;
-    turretPID.setReference(setPoint, ControlType.kPosition);
-  }
-
-  public void posTilt(double setPoint) {
-    this.tiltSetPoint = setPoint;
-    tiltPID.setReference(setPoint, ControlType.kPosition);
-  }
-
-  public void posArm(double setPoint) {
-    this.armSetPoint = setPoint;
-    armPID.setReference(setPoint, ControlType.kPosition);
-  }
-
 }

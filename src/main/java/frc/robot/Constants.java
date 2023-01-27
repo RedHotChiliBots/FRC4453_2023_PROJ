@@ -149,11 +149,21 @@ public final class Constants {
 		public static final double kTurretSetPoint = 0;
 		public static final double kTurretSetTolerance = 0.5;
 
+		public static final double kTurretIz = 0.0;
+		public static final double kTurretFF = 0.0;
+		public static final double kTurretMinOutput = -1.0;
+		public static final double kTurretMaxOutput = 1.0;
+
 		public static final double kTiltP = 0.35;
 		public static final double kTiltI = 0.0000;
 		public static final double kTiltD = 0.0;
 		public static final double kTiltSetPoint = 0;
 		public static final double kTiltSetTolerance = 0.5;
+
+		public static final double kTiltIz = 0.0;
+		public static final double kTiltFF = 0.0;
+		public static final double kTiltMinOutput = -1.0;
+		public static final double kTiltMaxOutput = 1.0;
 
 		public static final double kArmP = 0.35;
 		public static final double kArmI = 0.0000;
@@ -161,21 +171,35 @@ public final class Constants {
 		public static final double kArmSetPoint = 0;
 		public static final double kArmTolerance = 0.5;
 
-		public static final double kTurretPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
-		public static final double kTiltPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
-		public static final double kArmPosFactor = 0; //kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
+		public static final double kArmIz = 0.0;
+		public static final double kArmFF = 0.0;
+		public static final double kArmtMinOutput = -1.0;
+		public static final double kArmtMaxOutput = 1.0;
 
-		public static final double kIz = 0.0;
-		public static final double kFF = 0.0;
-		public static final double kMinOutput = -1.0;
-		public static final double kMaxOutput = 1.0;
+		public static final double kTurretSprocketTeeth = 170;
+		public static final double kTurretMotorSprocketTeeth = 18;
+		public static final double kTurretSprocketRatio = kTurretSprocketTeeth / kTurretMotorSprocketTeeth;
+		public static final double kTurretGearBoxRatio = 1;
+		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
+		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
 
-		public static final double kRopeDia = 0.125; // inches add to Circ calc
-		public static final double kPulleyCirc = Math.PI * ((20.2 / 25.4) + kRopeDia); // inches
-		public static final int kEncoderResolution = 1; // not used, NEO's native units are rotations
-		public static final int kGearBoxRatio = 12;
-		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
-		public static final double kPosFactorIPC = kPulleyCirc / kCountsPerRevGearbox; // inches per count
-		public static final double kPosFactorCPI = kCountsPerRevGearbox / kPulleyCirc; // counts per inch
+		public static final double kTurretPosFactor = kTurretDegreesPerRotation;
+
+		public static final double kTiltSprocketTeeth = 54;
+		public static final double kTiltMotorSprocketTeeth = 18;
+		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
+		public static final double kTiltGearBoxRatio = 20;
+		public static final double kTiltRotationsPerDegree = (kTiltSprocketRatio * kTiltGearBoxRatio) / 360.0;
+		public static final double kTiltDegreesPerRotation = 360.0 / (kTiltSprocketRatio * kTiltGearBoxRatio);
+
+		public static final double kTiltPosFactor = kTiltDegreesPerRotation;
+
+		public static final double kArmShaftDia = 0.75;
+		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
+		public static final double kArmGearBoxRatio = 4.0;
+		public static final double kArmRotationsPerInch = kArmGearBoxRatio / kArmShaftCirc;
+		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
+
+		public static final double kArmPosFactor = kArmInchesPerRotation;
 	}
 }

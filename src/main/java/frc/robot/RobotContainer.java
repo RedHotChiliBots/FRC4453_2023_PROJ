@@ -125,6 +125,7 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		System.out.println("+++++ RobotContainer Constructor starting +++++");
 
 		// ==============================================================================
 		// Add Subsystems to Dashboard
@@ -222,6 +223,8 @@ public class RobotContainer {
 		SmartDashboard.putData(chooser);
 
 		configureButtonBindings();
+
+		System.out.println("+++++ RobotContainer Constructor finished +++++");
 	}
 
 	// private final DriveTrajectory blueRungSideCargoToHubCommand = new

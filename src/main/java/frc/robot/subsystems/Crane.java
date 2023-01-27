@@ -62,6 +62,8 @@ public class Crane extends SubsystemBase {
 
   /** Creates a new Crane. */
   public Crane() {
+    System.out.println("+++++ Crane Constructor starting +++++");
+
     turretMotor.restoreFactoryDefaults();
     tiltMotor.restoreFactoryDefaults();
     armMotor.restoreFactoryDefaults();
@@ -102,6 +104,9 @@ public class Crane extends SubsystemBase {
     turretEncoder.setPositionConversionFactor(CraneConstants.kTurretPosFactor);
     tiltEncoder.setPositionConversionFactor(CraneConstants.kTiltPosFactor);
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
+
+    System.out.println("+++++ Crane Constructor finished +++++");
+
   }
 
   @Override

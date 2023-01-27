@@ -51,11 +51,15 @@ public class Vision extends SubsystemBase {
 
   
   public Vision() {
+    System.out.println("+++++ Vision Constructor starting +++++");
+
     // Set driver mode to on.
     camera.setDriverMode(true);
 
     // Change pipeline to 2
     camera.setPipelineIndex(2);
+
+    System.out.println("+++++ Vision Constructor finished +++++");
   }
 
   @Override

@@ -4,11 +4,15 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -38,6 +42,23 @@ public class Crane extends SubsystemBase {
   private final SparkMaxPIDController turretPID = turretMotor.getPIDController();
   private final SparkMaxPIDController tiltPID = tiltMotor.getPIDController();
   private final SparkMaxPIDController armPID = armMotor.getPIDController();
+
+  private double turretSetPoint = 0.0;
+  private double tiltSetPoint = 0.0;
+  private double armSetPoint = 0.0;
+  
+  // ==============================================================
+  // Define Shuffleboard data
+  private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
+  private final GenericEntry sbTurretSP = craneTab.addPersistent("Turret SetPoint", 0).getEntry();
+  private final GenericEntry sbTiltSP = craneTab.addPersistent("Tilt SetPoint", 0).getEntry();
+  private final GenericEntry sbArmSP = craneTab.addPersistent("Arm SetPoint", 0).getEntry();
+  private final GenericEntry sbTurretPos = craneTab.addPersistent("Turret Pos", 0).getEntry();
+  private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0).getEntry();
+  private final GenericEntry sbArmPos = craneTab.addPersistent("Arm Pos", 0).getEntry();
+  private final GenericEntry sbTurreyVel = craneTab.addPersistent("Turret Vel", 0).getEntry();
+  private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
+  private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
 
   /** Creates a new Crane. */
   public Crane() {
@@ -86,5 +107,63 @@ public class Crane extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    sbTurretSP.setDouble(turretSetPoint);
+    sbTiltSP.setDouble(tiltSetPoint);
+    sbArmSP.setDouble(armSetPoint);
+    sbTurretPos.setDouble(turretEncoder.getPosition());
+    sbTiltPos.setDouble(tiltEncoder.getPosition());
+    sbArmPos.setDouble(armEncoder.getPosition());
   }
+
+  public double getTurretSetPoint() {
+    return turretSetPoint;
+  }
+
+  public double getTiltSetPoint() {
+    return tiltSetPoint;
+  }
+
+  public double getArmSetPoint() {
+    return armSetPoint;
+  }
+
+  public void stopTurret() {
+    turretMotor.set(0.0);
+  }
+
+  public void stopTilt() {
+    tiltMotor.set(0.0);
+  }
+
+  public void stopArm() {
+    armMotor.set(0.0);
+  }  
+
+  public void cmdTurret(double spd) {
+    turretMotor.set(spd);
+  }
+
+  public void cmdTilt(double spd) {
+    tiltMotor.set(spd);
+  }
+
+  public void cmdArm(double spd) {
+    armMotor.set(spd);
+  }
+
+  public void posTurret(double setPoint) {
+    this.turretSetPoint = setPoint;
+    turretPID.setReference(setPoint, ControlType.kPosition);
+  }
+
+  public void posTilt(double setPoint) {
+    this.tiltSetPoint = setPoint;
+    tiltPID.setReference(setPoint, ControlType.kPosition);
+  }
+
+  public void posArm(double setPoint) {
+    this.armSetPoint = setPoint;
+    armPID.setReference(setPoint, ControlType.kPosition);
+  }
+
 }

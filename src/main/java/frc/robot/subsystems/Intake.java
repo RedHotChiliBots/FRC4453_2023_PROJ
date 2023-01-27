@@ -2,7 +2,6 @@
 //moving arms for the intake system
 //left and right moter
 
-
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -21,18 +20,17 @@ import frc.robot.Constants.PneumaticChannelConstants;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax leftMotor = new CANSparkMax(
-    CANidConstants.kIntakeLeftMotor,
-    MotorType.kBrushless);
-
-    private final CANSparkMax rightMotor = new CANSparkMax(
       CANidConstants.kIntakeLeftMotor,
       MotorType.kBrushless);
 
-      private final DoubleSolenoid intakeArm = new DoubleSolenoid(
-			PneumaticsModuleType.CTREPCM,
-			PneumaticChannelConstants.kIntakeArmOpen,
-			PneumaticChannelConstants.kIntakeArmClose);
+  private final CANSparkMax rightMotor = new CANSparkMax(
+      CANidConstants.kIntakeLeftMotor,
+      MotorType.kBrushless);
 
+  private final DoubleSolenoid intakeArm = new DoubleSolenoid(
+      PneumaticsModuleType.CTREPCM,
+      PneumaticChannelConstants.kIntakeArmOpen,
+      PneumaticChannelConstants.kIntakeArmClose);
 
   /** Creates a new Intake. */
   public Intake() {
@@ -43,7 +41,7 @@ public class Intake extends SubsystemBase {
     rightMotor.clearFaults();
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
-  stopLeftMoter();
+    stopLeftMoter();
   }
 
   @Override
@@ -51,12 +49,14 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
 
   }
-  public void stopLeftMoter(){
-leftMotor.set(0.0);
+
+  public void stopLeftMoter() {
+    leftMotor.set(0.0);
 
   }
-  public void stopRightMotor(){
-rightMotor.set(0.0);
+
+  public void stopRightMotor() {
+    rightMotor.set(0.0);
 
   }
 }

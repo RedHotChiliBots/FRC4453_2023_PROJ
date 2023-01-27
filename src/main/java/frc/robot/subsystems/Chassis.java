@@ -103,18 +103,18 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Identify pneumatics for gear shifters
-	
+
 	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
 			PneumaticsModuleType.CTREPCM,
 			PneumaticChannelConstants.kGearShifterHi,
 			PneumaticChannelConstants.kGearShifterLo);
-			
+
 	// ==============================================================
 	// Define local variables
 	private double currPitch = 0.0;
 	private double lastPitch = 0.0;
-//	private double[] lastPitch = new double[5];
-//	private int indexPitch = 0;
+	// private double[] lastPitch = new double[5];
+	// private int indexPitch = 0;
 	private double ratePitch = 0.0;
 	private double maxPitch = 0.0;
 	private double minPitch = 0.0;
@@ -131,7 +131,7 @@ public class Chassis extends SubsystemBase {
 
 	private final ShuffleboardTab pidTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLevelPID = pidTab.addPersistent("Level PID", 0).getEntry();
-	
+
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
 	private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
@@ -243,7 +243,7 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
-//		pidTab.addPersistent("Level PID", levelPIDController);
+		// pidTab.addPersistent("Level PID", levelPIDController);
 
 		// ==============================================================
 		// Initialize devices before starting
@@ -253,7 +253,7 @@ public class Chassis extends SubsystemBase {
 		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
 		// for (int i = 0; i < 5; i++) {
-		// 	lastPitch[i] = 0.0;
+		// lastPitch[i] = 0.0;
 		// }
 
 		System.out.println("----- Chassis Constructor finished -----");
@@ -325,7 +325,7 @@ public class Chassis extends SubsystemBase {
 		driveArcade(pidOut, 0.0);
 		return currRate;
 	}
-	
+
 	/**
 	 * Returns the current robot pitch reported by navX sensor.
 	 * 
@@ -339,7 +339,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	// public double getPitchRate() {
-	// 	return ratePitch;
+	// return ratePitch;
 	// }
 
 	public DifferentialDriveOdometry getOdometry() {
@@ -377,8 +377,8 @@ public class Chassis extends SubsystemBase {
 		// collect pitch list
 		lastPitch = currPitch;
 		// lastPitch[indexPitch++] = currPitch;
-		// 	if (indexPitch >= 5)
-		// 		indexPitch = 0;
+		// if (indexPitch >= 5)
+		// indexPitch = 0;
 		currPitch = pitch;
 
 		// calc pitch max min
@@ -389,20 +389,20 @@ public class Chassis extends SubsystemBase {
 
 		// calc pitch rate
 		ratePitch = (lastPitch - currPitch) / 0.020;
-		// 	// calc pitch rate
-		// 	double sumPitch = 0.0;
-		// 	int j = indexPitch;
-		// 	int k = indexPitch - 1;
-		// 	if (k < 0)
-		// 		k = 4;
-		// 	for (int i = 0; i < 5; i++) {
-		// 		if (j >= 5)
-		// 			j = 0;
-		// 		if (k >= 5)
-		// 			k = 0;
-		// 		sumPitch += lastPitch[k++] - lastPitch[j++];
-		// 	}
-		// 	ratePitch = sumPitch / lastPitch.length / 0.020;
+		// // calc pitch rate
+		// double sumPitch = 0.0;
+		// int j = indexPitch;
+		// int k = indexPitch - 1;
+		// if (k < 0)
+		// k = 4;
+		// for (int i = 0; i < 5; i++) {
+		// if (j >= 5)
+		// j = 0;
+		// if (k >= 5)
+		// k = 0;
+		// sumPitch += lastPitch[k++] - lastPitch[j++];
+		// }
+		// ratePitch = sumPitch / lastPitch.length / 0.020;
 
 		isPitchIncreasing = ratePitch < 0.0 ? true : false;
 		isPitchDecreasing = ratePitch > 0.0 ? true : false;

@@ -12,28 +12,32 @@ import frc.robot.Constants.PneumaticChannelConstants;
 
 public class Claw extends SubsystemBase {
   private final DoubleSolenoid leftPiston = new DoubleSolenoid(
-			PneumaticsModuleType.CTREPCM,
-			PneumaticChannelConstants.kLeftPistonOpen,
-			PneumaticChannelConstants.kLeftPistonClose);
-      private final DoubleSolenoid rightPiston = new DoubleSolenoid(
-			PneumaticsModuleType.CTREPCM,
-			PneumaticChannelConstants.kRightPistonOpen,
-			PneumaticChannelConstants.kRightPistonClose);
+      PneumaticsModuleType.CTREPCM,
+      PneumaticChannelConstants.kLeftPistonOpen,
+      PneumaticChannelConstants.kLeftPistonClose);
+  private final DoubleSolenoid rightPiston = new DoubleSolenoid(
+      PneumaticsModuleType.CTREPCM,
+      PneumaticChannelConstants.kRightPistonOpen,
+      PneumaticChannelConstants.kRightPistonClose);
+
   /** Creates a new Claw. */
   public Claw() {
-closePiston();
+    closePiston();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
   public void openLeftPiston() {
     leftPiston.set(Value.kReverse);
   }
+
   public void openRightPiston() {
     rightPiston.set(Value.kReverse);
   }
+
   public void closePiston() {
     leftPiston.set(Value.kReverse);
     rightPiston.set(Value.kReverse);

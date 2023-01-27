@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -33,14 +35,11 @@ public final class Constants {
 
 		public static final int kIntakeLeftMotor = 30;
 		public static final int kIntakeRightMotor = 31;
-
-		public static final int kShooterLMotor = 30;
-		public static final int kShooterRMotor = 31;
 	}
 
 	public static final class PneumaticChannelConstants {
-		public static final int kGearShifterHi = 1;
-		public static final int kGearShifterLo = 0;
+		public static final int kGearShifterHi = 0;
+		public static final int kGearShifterLo = 1;
 		public static final int kIntakeArmOpen = 2;
 		public static final int kIntakeArmClose = 3;
 		public static final int kLeftPistonClose = 4;
@@ -81,8 +80,8 @@ public final class Constants {
 	public static final class ChassisConstants {
 		// Constants for Drive PIDs
 		public static final double kP = 5.5108E-07;	// from sysID
-		public static final double kI = 0.0;
-		public static final double kD = 0.0;
+		public static final double kI = 0.0;	// from sysID
+		public static final double kD = 0.0;	// from sysID
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.000156;
 
@@ -98,9 +97,8 @@ public final class Constants {
 		public static final double allowedErr = 100.0;
 		public static final double maxAcc = 1500;
 
-		public static final double kMetersPerInch = 0.0254;
-		public static final double kTrackWidth = 26.341 * kMetersPerInch; // meters
-		public static final double kWheelCirc = (Math.PI * 8.0) * kMetersPerInch; // meters
+		public static final double kTrackWidth = Units.inchesToMeters(26.341); // meters
+		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 8.0); // meters
 		public static final int kEncoderResolution = 1; // not used, NEO's native units are rotations
 		public static final double kGearBoxRatio = 10.71;
 		public static final double kPosFactor = kWheelCirc / kGearBoxRatio; // Meters per Revolution
@@ -179,82 +177,5 @@ public final class Constants {
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 		public static final double kPosFactorIPC = kPulleyCirc / kCountsPerRevGearbox; // inches per count
 		public static final double kPosFactorCPI = kCountsPerRevGearbox / kPulleyCirc; // counts per inch
-	}
-
-	public static final class CollectorConstants {
-		public static final double kP = 0.00008;
-		public static final double kI = 0.0000004;
-		public static final double kD = 0.0;
-		public static final double kIz = 0.0;
-		public static final double kFF = 0.0;
-		public static final double kMinOutput = -0.5;
-		public static final double kMaxOutput = 0.5;
-
-		public static final double kStopRPMs = 0.0;
-		public static final double kMinRPM = -5700.0;
-		public static final double kMaxRPM = 5700.0; // 2800 rpm when prototype tested 1-18-22
-
-		public static final double kCollectorRPMs = kMaxRPM * 1.0;
-
-		public static final double kVelocityTolerance = 50.0; // rpms
-
-		public static final long kArmDelay = 2000; // milliseconds
-	}
-
-	public static final class HopperConstants {
-		public static final double kP = 0.00008;
-		public static final double kI = 0.0000004;
-		public static final double kD = 0.0;
-		public static final double kIz = 0.0;
-		public static final double kFF = 0.0;
-		public static final double kMinOutput = -0.5;
-		public static final double kMaxOutput = 0.5;
-
-		public static final double kStopRPMs = 0.0;
-		public static final double kMinRPM = 5000.0; // -4540.0;
-		public static final double kMaxRPM = 5000.0; // 5676 free spin. 2800 rpm when prototype tested 1-18-22
-
-		public static final double kHopperRPMs = kMaxRPM * 0.6;
-		public static final double kHopperShootRPMS = kMaxRPM; // was 0.75
-
-		public static final double kVelocityTolerance = 50.0; // rpms
-	}
-
-	public static class FeederConstants {
-		public static final double kFeederP = 0.00008;
-		public static final double kFeederI = 0.0000004;
-		public static final double kFeederD = 0.0;
-		public static final double kFeederIz = 0.0;
-		public static final double kFeederFF = 0.0;
-		public static final double kFeederMinOutput = -1.0;
-		public static final double kFeederMaxOutput = 1.0;
-
-		public static final double kMinFeederRPM = -4540.0;
-		public static final double kMaxFeederRPM = 4540.8; // 2800 rpm when prototype tested 1-18-22
-
-		public static final double kFeederRPMs = kMaxFeederRPM * 0.25;
-
-		public static final double kFeederVelocityTolerance = 5.0; // rpms
-	}
-
-	public static final class ShooterConstants {
-		public static final double kShootP = 0.00005; // was 0.00008
-		public static final double kShootI = 0.0000005;
-		public static final double kShootD = 0.0;
-		public static final double kShootIz = 0.0;
-		public static final double kShootFF = 0.0;
-		public static final double kShootMinOutput = -1.0;
-		public static final double kShootMaxOutput = 1.0;
-
-		public static final double kStopRPMs = 0.0;
-		public static final double kMinShootRPM = -4540.0; // 5676 free spin max
-		public static final double kMaxShootRPM = 4540.8; // 2800 rpm when prototype tested 1-18-22
-
-		public static final double kShooterRPMs = 1500; // was kMaxShootRPM * 0.35; // 0.6;
-		public static final double kShooterSuckRPMS = kMaxShootRPM * 0.3;
-
-		public static final double kShootVelocityTolerance = 50.0; // rpms
-
-		public static final double kTimeShootAfterEmpty = 3.0;
 	}
 }

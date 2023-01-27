@@ -56,7 +56,7 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbTurretPos = craneTab.addPersistent("Turret Pos", 0).getEntry();
   private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0).getEntry();
   private final GenericEntry sbArmPos = craneTab.addPersistent("Arm Pos", 0).getEntry();
-  private final GenericEntry sbTurreyVel = craneTab.addPersistent("Turret Vel", 0).getEntry();
+  private final GenericEntry sbTurretVel = craneTab.addPersistent("Turret Vel", 0).getEntry();
   private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
   private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
 
@@ -113,6 +113,9 @@ public class Crane extends SubsystemBase {
     sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbArmPos.setDouble(armEncoder.getPosition());
+    sbTurretVel.setDouble(turretEncoder.getVelocity());
+    sbTiltVel.setDouble(tiltEncoder.getVelocity());
+    sbArmVel.setDouble(armEncoder.getVelocity());
   }
 
   public double getTurretSetPoint() {

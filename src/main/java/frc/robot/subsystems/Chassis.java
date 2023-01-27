@@ -37,11 +37,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Library;
 import frc.robot.Constants.AnalogIOConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.PneumaticChannelConstants;
+
+import frc.robot.Library;
 
 public class Chassis extends SubsystemBase {
 
@@ -155,6 +156,8 @@ public class Chassis extends SubsystemBase {
 	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
 	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
+
+	private Library lib = new Library();
 
 	public enum GearShifterState {
 		NA,
@@ -306,7 +309,7 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-		updatePitch(getPitch());
+		lib.updatePitch(getPitch());
 	}
 
 	public double levelChargingStation() {

@@ -31,6 +31,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
@@ -58,7 +62,11 @@ import frc.robot.Constants.OIConstants;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
-
+	private static final Claw claw = new Claw();
+	private static final Crane crane = new Crane();
+	private static final Intake intake = new Intake();
+	private static final Vision vision = new Vision();
+	
 	// =============================================================
 	// Define Joysticks
 	public final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
@@ -121,12 +129,20 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add Subsystems to Dashboard
 		SmartDashboard.putData("Chassis", chassis);
+		SmartDashboard.putData("Claw", claw);
+		SmartDashboard.putData("Crane", crane);
+		SmartDashboard.putData("Intake", intake);
+		SmartDashboard.putData("Vision", vision);
 
 		// SmartDashboard.putData("Feeder", feeder);
 
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
+		claw.setDefaultCommand(chassisArcadeDrive);
+		crane.setDefaultCommand(chassisArcadeDrive);
+		intake.setDefaultCommand(chassisArcadeDrive);
+		vision.setDefaultCommand(chassisArcadeDrive);
 
 		// =============================================================
 		// Create a voltage constraint to ensure we don't accelerate too fast

@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
       CANidConstants.kIntakeLeftMotor,
       MotorType.kBrushless);
 
-      private final DoubleSolenoid intakeArms = new DoubleSolenoid(
+      private final DoubleSolenoid intakeArm = new DoubleSolenoid(
 			PneumaticsModuleType.CTREPCM,
 			PneumaticChannelConstants.kIntakeArmOpen,
 			PneumaticChannelConstants.kIntakeArmClose);

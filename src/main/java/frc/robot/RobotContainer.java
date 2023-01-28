@@ -74,9 +74,9 @@ public class RobotContainer {
 	private static final Chassis chassis = new Chassis();
 	private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
-	 private static final Intake intake = new Intake();
+	private static final Intake intake = new Intake();
 	private static final Vision vision = new Vision();
-	
+
 	// =============================================================
 	// Define Joysticks
 	public final static XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
@@ -266,7 +266,15 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-//		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+
+		
+		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
+		new JoystickButton(operator, Button.kX.value).onTrue(intakeMoterIn);
+		new JoystickButton(operator, Button.kA.value).onTrue(IntakeMoterOut);
+		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
+		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
+
 	}
 
 	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec

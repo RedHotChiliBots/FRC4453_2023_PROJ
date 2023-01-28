@@ -7,57 +7,84 @@ package frc.robot.subsystems;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
 
   // Change this to match the name of your camera
-  PhotonCamera camera = new PhotonCamera("photonvision");
+  private PhotonCamera camera = new PhotonCamera("photonvision");
+  private PhotonPipelineResult result = camera.getLatestResult();
+  private PhotonTrackedTarget target = result.getBestTarget();
 
-  // Query the latest result from PhotonVision
-  PhotonPipelineResult result = null;
+  private PIDController distController = new PIDController(VisionConstants.kDistP, VisionConstants.kDistI,
+      VisionConstants.kDistD);
+  private PIDController turnController = new PIDController(VisionConstants.kTurnP, VisionConstants.kTurnI,
+      VisionConstants.kTurnD);
 
-  // Check if the latest result has any targets.
-  boolean hasTargets = false;
+  private Chassis chassis = null;
+  private int targetID = 0;
+  private double forwardSpeed;
+  private double rotationSpeed;
 
-  // Get a list of currently tracked targets.
-  List<PhotonTrackedTarget> targets = null;
+  private final ShuffleboardTab visionTab = Shuffleboard.getTab("Vision");
+  private final GenericEntry sbYaw = visionTab.addPersistent("Yaw", 0).getEntry();
+  private final GenericEntry sbPitch = visionTab.addPersistent("Pitch", 0).getEntry();
+  private final GenericEntry sbArea = visionTab.addPersistent("Area", 0).getEntry();
+  private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0).getEntry();
+  private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false).getEntry();
+  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", false).getEntry();
 
-  // Get the current best target.
-  PhotonTrackedTarget target = null;
+  // // Query the latest result from PhotonVision
+  // PhotonPipelineResult result = null;
 
-  // Get information from target.
-  double yaw = 0.0;
-  double pitch = 0.0;
-  double area = 0.0;
-  double skew = 0.0;
-  Transform3d pose = null;
-  List<TargetCorner> corners = null;
+  // // Check if the latest result has any targets.
+  // boolean hasTargets = false;
 
-  // Get information from target.
-  int targetID = 0;
-  double poseAmbiguity = 0.0;
-  Transform3d bestCameraToTarget = null;
-  Transform3d alternateCameraToTarget = null;
+  // // Get a list of currently tracked targets.
+  // List<PhotonTrackedTarget> targets = null;
 
-  double latencySeconds = 0.0;
+  // // Get the current best target.
+  // PhotonTrackedTarget target = null;
 
-  
-  public Vision() {
+  // // Get information from target.
+  // double yaw = 0.0;
+  // double pitch = 0.0;
+  // double area = 0.0;
+  // double skew = 0.0;
+  // Transform3d pose = null;
+  // List<TargetCorner> corners = null;
+
+  // // Get information from target.
+  // int targetID = 0;
+  // double poseAmbiguity = 0.0;
+  // Transform3d bestCameraToTarget = null;
+  // Transform3d alternateCameraToTarget = null;
+
+  // double latencySeconds = 0.0;
+
+  public Vision(Chassis chassis) {
     System.out.println("+++++ Vision Constructor starting +++++");
 
-    // Set driver mode to on.
-    camera.setDriverMode(true);
+    this.chassis = chassis;
+    // // Set driver mode to on.
+    // camera.setDriverMode(true);
 
-    // Change pipeline to 2
-    camera.setPipelineIndex(2);
+    // // Change pipeline to 2
+    // camera.setPipelineIndex(2);
 
     System.out.println("+++++ Vision Constructor finished +++++");
   }
@@ -94,6 +121,62 @@ public class Vision extends SubsystemBase {
     // poseAmbiguity = target.getPoseAmbiguity();
     // bestCameraToTarget = target.getBestCameraToTarget();
     // alternateCameraToTarget = target.getAlternateCameraToTarget();
+
+    // if (xboxController.getAButton()) {
+    // Vision-alignment mode
+    // Query the latest result from PhotonVision
+
+    // Get information from target.
+    result = camera.getLatestResult();
+    target = result.getBestTarget();
+
+    sbYaw.setDouble(target.getYaw());
+    sbPitch.setDouble(target.getPitch());
+    sbArea.setDouble(target.getArea());
+    sbSkew.setDouble(target.getSkew());
+    sbTargetID.setDouble(target.getFiducialId());
+
+    trackAprilTag();
+
+    // } else {
+    // // Manual Driver Mode
+    // forwardSpeed = -xboxController.getRightY();
+    // rotationSpeed = xboxController.getLeftX();
+    // }
   }
 
+  public double[] trackAprilTag() {
+ 
+    if (result.hasTargets()) {
+      sbHasTarget.setBoolean(true);
+
+      // First calculate range
+      double range = PhotonUtils.calculateDistanceToTargetMeters(
+          VisionConstants.kCameraHeight,
+          VisionConstants.kTargetHeight,
+          VisionConstants.kCameraHeight,
+          Units.degreesToRadians(target.getPitch()));
+
+      // Use this range as the measurement we give to the PID controller.
+      // -1.0 required to ensure positive PID controller effort _increases_ range
+      forwardSpeed = -distController.calculate(range, VisionConstants.kTargetDist);
+
+      // Also calculate angular power
+      // -1.0 required to ensure positive PID controller effort _increases_ yaw
+      rotationSpeed = -turnController.calculate(target.getYaw(), 0);
+      
+    } else {
+      // If we have no targets, stay still.
+      sbHasTarget.setBoolean(false);
+
+      forwardSpeed = 0;
+      rotationSpeed = 0;
+    }
+
+    return new double[] {forwardSpeed, rotationSpeed};
+  }
+
+  public boolean atTarget() {
+    return distController.atSetpoint();
+  }
 }

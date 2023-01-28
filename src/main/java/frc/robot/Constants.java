@@ -202,4 +202,25 @@ public final class Constants {
 
 		public static final double kArmPosFactor = kArmInchesPerRotation;
 	}
+
+	public static final class VisionConstants {
+		// Constants such as camera and target height stored. Change per robot and goal!
+		public static final double kCameraHeight = Units.inchesToMeters(24);
+		public static final double kTargetHeight = Units.feetToMeters(5);
+
+		// Angle between horizontal and the camera.
+		public static final double kCameraPitch = Units.degreesToRadians(0);
+
+		// How far from the target we want to be
+		public static final double kTargetDist = Units.feetToMeters(3);
+
+		// PID constants should be tuned per robot
+		public static final double kDistP = 0.1;
+		public static final double kDistI = 0.0;
+		public static final double kDistD = 0.0;
+
+		public static final double kTurnP = 0.1;
+		public static final double kTurnI = 0.0;
+		public static final double kTurnD = 0.0;
+	}
 }

@@ -65,7 +65,7 @@ public class RobotContainer {
 	// private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
 	// private static final Intake intake = new Intake();
-	// private static final Vision vision = new Vision();
+	private static final Vision vision = new Vision(chassis);	// Must follow Chassis
 	
 	// =============================================================
 	// Define Joysticks
@@ -133,7 +133,7 @@ public class RobotContainer {
 		// SmartDashboard.putData("Claw", claw);
 		// SmartDashboard.putData("Crane", crane);
 		// SmartDashboard.putData("Intake", intake);
-		// SmartDashboard.putData("Vision", vision);
+		SmartDashboard.putData("Vision", vision);
 
 		// SmartDashboard.putData("Feeder", feeder);
 

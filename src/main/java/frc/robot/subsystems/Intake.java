@@ -35,6 +35,7 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   public Intake() {
+    System.out.println("+++++ Intake Constructor starting +++++");
 
     leftMotor.restoreFactoryDefaults();
     rightMotor.restoreFactoryDefaults();
@@ -43,9 +44,8 @@ public class Intake extends SubsystemBase {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
     stopMoters();
-    
-    
- 
+
+    System.out.println("+++++ Intake Constructor finishing +++++");
   }
 
   @Override
@@ -58,23 +58,24 @@ public class Intake extends SubsystemBase {
     leftMotor.set(0.0);
     rightMotor.set(0.0);
   }
+
   public void revMoters() {
     leftMotor.set(0.75);
     rightMotor.set(-0.75);
   }
+
   public void fwdMoters() {
     leftMotor.set(-.75);
     rightMotor.set(0.75);
   }
-  
+
   public void closeArm() {
     intakeArm.set(Value.kForward);
   }
 
   public void openArm() {
     intakeArm.set(Value.kReverse);
-    
+
   }
- 
 
 }

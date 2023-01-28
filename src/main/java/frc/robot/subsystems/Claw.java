@@ -22,12 +22,16 @@ public class Claw extends SubsystemBase {
 
   /** Creates a new Claw. */
   public Claw() {
+    System.out.println("+++++ Claw Constructor starting +++++");
+    
     openPiston();
+
+    System.out.println("+++++ Claw Constructor finishing +++++");
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+
   }
 
   public void closeLeftPiston() {

@@ -22,7 +22,7 @@ public class Claw extends SubsystemBase {
 
   /** Creates a new Claw. */
   public Claw() {
-    closePiston();
+    openPiston();
   }
 
   @Override
@@ -30,15 +30,15 @@ public class Claw extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void openLeftPiston() {
-    leftPiston.set(Value.kReverse);
+  public void closeLeftPiston() {
+    leftPiston.set(Value.kForward);
   }
 
-  public void openRightPiston() {
-    rightPiston.set(Value.kReverse);
+  public void closeRightPiston() {
+    rightPiston.set(Value.kForward);
   }
 
-  public void closePiston() {
+  public void openPiston() {
     leftPiston.set(Value.kReverse);
     rightPiston.set(Value.kReverse);
   }

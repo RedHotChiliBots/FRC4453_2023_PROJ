@@ -36,6 +36,9 @@ import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.ChassisTankDrive;
+import frc.robot.commands.ClawGrabCone;
+import frc.robot.commands.ClawGrabCube;
+import frc.robot.commands.ClawRelease;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
 import frc.robot.commands.AutonChargingStation;
@@ -64,7 +67,7 @@ import frc.robot.Constants.OIConstants;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
-	// private static final Claw claw = new Claw();
+	private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
 	// private static final Intake intake = new Intake();
 	private static final Vision vision = new Vision();
@@ -105,6 +108,10 @@ public class RobotContainer {
 
 	private final TeleopTrackAprilTag teleopTrackAprilTag = new TeleopTrackAprilTag(chassis, vision);
 
+	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
+	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
+	private final ClawRelease clawRelease = new ClawRelease(claw);
+
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
 	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
@@ -135,7 +142,7 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add Subsystems to Dashboard
 		SmartDashboard.putData("Chassis", chassis);
-		// SmartDashboard.putData("Claw", claw);
+		SmartDashboard.putData("Claw", claw);
 		// SmartDashboard.putData("Crane", crane);
 		// SmartDashboard.putData("Intake", intake);
 		SmartDashboard.putData("Vision", vision);
@@ -145,7 +152,7 @@ public class RobotContainer {
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
-		// claw.setDefaultCommand(chassisArcadeDrive);
+		claw.setDefaultCommand(clawGrabCone);
 		// crane.setDefaultCommand(chassisArcadeDrive);
 		// intake.setDefaultCommand(chassisArcadeDrive);
 		vision.setDefaultCommand(teleopTrackAprilTag);

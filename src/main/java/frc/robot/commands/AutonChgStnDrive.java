@@ -12,6 +12,11 @@ public class AutonChgStnDrive extends CommandBase {
   Chassis chassis;
   double lastPitch;
   double currPitch;
+  double startPos;
+  double currPos;
+  double endPos;
+  double maxPitch;
+  double motorSpd;
   Timer timer;
   double diffPitch;
   int counter = 0;
@@ -26,37 +31,50 @@ public class AutonChgStnDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    motorSpd = 0.35;
     timer = new Timer();
     timer.reset();
     timer.start();
     currPitch = chassis.getPitch();
+    startPos = chassis.leftEncoder.getPosition();
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Drive: Pitch: " + currPitch);
+    System.out.println(timeStamp + "   Start Drive: Pitch: " + currPitch + "   Start Pos:  " + startPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.driveArcade(-0.35, 0.0);
     lastPitch = currPitch;
     currPitch = chassis.getPitch();
+    if (Math.abs(currPitch) > maxPitch)
+      maxPitch = currPitch;
+    currPos = chassis.leftEncoder.getPosition();
+    if (timer.hasElapsed(3) && (maxPitch - Math.abs(currPitch)) > 3.0) {
+      motorSpd = 0.15;
+    }
+    chassis.driveArcade(-motorSpd, 0.0);
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+   endPos = chassis.leftEncoder.getPosition();
+
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   End Drive: Pitch: " + currPitch + "   Diff: " + diffPitch);
+    System.out.println(timeStamp + "   End Drive: Pitch: " + currPitch + "   Diff: " + diffPitch + "   End Pos: "
+        + endPos);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     diffPitch = Math.abs(currPitch - lastPitch);
+    currPos = chassis.leftEncoder.getPosition();
+
     if ((counter++ % 10) == 0.0) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Drive: [" + counter + "] Pitch: " + currPitch + "   Diff: " + diffPitch);
+      System.out.println(timeStamp + "   Drive: [" + counter + "] Pitch: " + currPitch + "   Diff: " + diffPitch
+          + "   Curr Pos: " + currPos);
     }
-    return  (timer.hasElapsed( 1) && Math.abs(diffPitch) > 1.0);
+    return  (timer.hasElapsed( 1) && Math.abs(currPitch) < 1.0);
   }
 }

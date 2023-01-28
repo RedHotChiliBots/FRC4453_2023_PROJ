@@ -67,8 +67,8 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define encoders and PID controllers
-	private final RelativeEncoder leftEncoder = leftMaster.getEncoder();;
-	private final RelativeEncoder rightEncoder = rightMaster.getEncoder();
+	public final RelativeEncoder leftEncoder = leftMaster.getEncoder();;
+	public final RelativeEncoder rightEncoder = rightMaster.getEncoder();
 
 	private final SparkMaxPIDController leftPIDController = leftMaster.getPIDController();
 	private final SparkMaxPIDController rightPIDController = rightMaster.getPIDController();

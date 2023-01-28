@@ -41,7 +41,7 @@ public class Vision extends SubsystemBase {
   private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false).getEntry();
   private final GenericEntry sbDistAtTarget = visionTab.addPersistent("Dist At Target", false).getEntry();
   private final GenericEntry sbTurnAtTarget = visionTab.addPersistent("Turn At Target", false).getEntry();
-  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", false).getEntry();
+  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0).getEntry();
 
   // // Query the latest result from PhotonVision
   // PhotonPipelineResult result = null;
@@ -122,10 +122,10 @@ public class Vision extends SubsystemBase {
 
     // Get information from target.
     result = camera.getLatestResult();
-    target = result.getBestTarget();
 
     if (result.hasTargets()) {
-
+      target = result.getBestTarget();
+      
       sbHasTarget.setBoolean(true);
 
       sbYaw.setDouble(target.getYaw());

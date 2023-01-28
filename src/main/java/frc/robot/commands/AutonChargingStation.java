@@ -21,8 +21,8 @@ public class AutonChargingStation extends SequentialCommandGroup {
     addCommands(
       new AutonChgStnDrive(chassis), // first - drive up ramp
       //new AutonChgStnRate(chassis), // second - control rate of pitch change
-      new AutonChgStnStop(chassis), // second - control rate of pitch change
-      new AutonChgStnLevel(chassis)  // third - level 
+      new AutonChgStnStop(chassis) // second - control rate of pitch change
+//      new AutonChgStnLevel(chassis)  // third - level 
     );
   }
 }

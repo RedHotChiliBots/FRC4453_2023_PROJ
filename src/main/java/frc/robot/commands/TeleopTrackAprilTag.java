@@ -4,16 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Vision;
 
-public class AutonTrackAprilTag extends CommandBase {
+public class TeleopTrackAprilTag extends CommandBase {
   Chassis chassis;
   Vision vision;
-  
+
   /** Creates a new AutonTrackAprilTag. */
-  public AutonTrackAprilTag(Chassis chassis, Vision vision) {
+  public TeleopTrackAprilTag(Chassis chassis, Vision vision) {
     this.chassis = chassis;
     this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,26 +23,38 @@ public class AutonTrackAprilTag extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (vision.hasTargets()) {
+      RobotContainer.setDriverRumble(RumbleType.kLeftRumble);
 
-      double[] spd = vision.trackAprilTag();
+      if (RobotContainer.driver.getAButton()) {
+        RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);
 
-      // Use our forward/turn speeds to control the drivetrain
-      chassis.driveArcade(spd[0], spd[1]);
+        double[] spd = vision.trackAprilTag();
+
+        // Use our forward/turn speeds to control the drivetrain
+        chassis.driveArcade(spd[0], spd[1]);
+      }
+
+    } else {
+      RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);
     }
+
   }
-    // Called once the command ends or is interrupted.
+
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.atDistTarget();
+    return (RobotContainer.driver.getAButton() && vision.atDistTarget());
   }
 }

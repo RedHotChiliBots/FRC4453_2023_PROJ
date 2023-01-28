@@ -4,17 +4,12 @@
 
 package frc.robot.subsystems;
 
-import java.util.List;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,8 +30,6 @@ public class Vision extends SubsystemBase {
   private PIDController turnController = new PIDController(VisionConstants.kTurnP, VisionConstants.kTurnI,
       VisionConstants.kTurnD);
 
-  private Chassis chassis = null;
-  private int targetID = 0;
   private double forwardSpeed;
   private double rotationSpeed;
 
@@ -78,10 +71,9 @@ public class Vision extends SubsystemBase {
 
   // double latencySeconds = 0.0;
 
-  public Vision(Chassis chassis) {
+  public Vision() {
     System.out.println("+++++ Vision Constructor starting +++++");
 
-    this.chassis = chassis;
     // // Set driver mode to on.
     // camera.setDriverMode(true);
 
@@ -132,13 +124,22 @@ public class Vision extends SubsystemBase {
     result = camera.getLatestResult();
     target = result.getBestTarget();
 
-    sbYaw.setDouble(target.getYaw());
-    sbPitch.setDouble(target.getPitch());
-    sbArea.setDouble(target.getArea());
-    sbSkew.setDouble(target.getSkew());
-    sbTargetID.setDouble(target.getFiducialId());
-    sbDistAtTarget.setBoolean(atDistTarget());
-    sbDistAtTarget.setBoolean(atTurnTarget());
+    if (result.hasTargets()) {
+
+      sbHasTarget.setBoolean(true);
+
+      sbYaw.setDouble(target.getYaw());
+      sbPitch.setDouble(target.getPitch());
+      sbArea.setDouble(target.getArea());
+      sbSkew.setDouble(target.getSkew());
+      sbTargetID.setDouble(target.getFiducialId());
+      sbDistAtTarget.setBoolean(atDistTarget());
+      sbTurnAtTarget.setBoolean(atTurnTarget());
+
+    } else {
+      // If we have no targets, stay still.
+      sbHasTarget.setBoolean(false);
+    }
 
     // } else {
     // // Manual Driver Mode
@@ -148,9 +149,8 @@ public class Vision extends SubsystemBase {
   }
 
   public double[] trackAprilTag() {
- 
-    if (result.hasTargets()) {
-      sbHasTarget.setBoolean(true);
+
+    if (hasTargets()) {
 
       // First calculate range
       double range = PhotonUtils.calculateDistanceToTargetMeters(
@@ -166,16 +166,17 @@ public class Vision extends SubsystemBase {
       // Also calculate angular power
       // -1.0 required to ensure positive PID controller effort _increases_ yaw
       rotationSpeed = -turnController.calculate(target.getYaw(), 0);
-      
-    } else {
-      // If we have no targets, stay still.
-      sbHasTarget.setBoolean(false);
 
+    } else {
       forwardSpeed = 0;
       rotationSpeed = 0;
     }
 
-    return new double[] {forwardSpeed, rotationSpeed};
+    return new double[] { forwardSpeed, rotationSpeed };
+  }
+
+  public boolean hasTargets() {
+    return result.hasTargets();
   }
 
   public boolean atDistTarget() {

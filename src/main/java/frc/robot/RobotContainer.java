@@ -47,6 +47,7 @@ import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
+import frc.robot.commands.TeleopTrackAprilTag;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
@@ -66,12 +67,12 @@ public class RobotContainer {
 	// private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
 	// private static final Intake intake = new Intake();
-	private static final Vision vision = new Vision(chassis);	// Must follow Chassis
+	private static final Vision vision = new Vision();
 	
 	// =============================================================
 	// Define Joysticks
-	public final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
-	public final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
+	public final static XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
+	public final static XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
@@ -101,6 +102,8 @@ public class RobotContainer {
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
+
+	private final TeleopTrackAprilTag teleopTrackAprilTag = new TeleopTrackAprilTag(chassis, vision);
 
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
@@ -145,7 +148,7 @@ public class RobotContainer {
 		// claw.setDefaultCommand(chassisArcadeDrive);
 		// crane.setDefaultCommand(chassisArcadeDrive);
 		// intake.setDefaultCommand(chassisArcadeDrive);
-		// vision.setDefaultCommand(chassisArcadeDrive);
+		vision.setDefaultCommand(teleopTrackAprilTag);
 
 		// =============================================================
 		// Create a voltage constraint to ensure we don't accelerate too fast
@@ -245,6 +248,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
+//		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 	}
 
 	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec
@@ -273,19 +277,19 @@ public class RobotContainer {
 		return val;
 	}
 
-	public void setDriverRumble(GenericHID.RumbleType t) {
+	public static void setDriverRumble(GenericHID.RumbleType t) {
 		driver.setRumble(t, 1);
 	}
 
-	public void resetDriverRumble(GenericHID.RumbleType t) {
+	public static void resetDriverRumble(GenericHID.RumbleType t) {
 		driver.setRumble(t, 0);
 	}
 
-	public void setOperatorRumble(GenericHID.RumbleType t) {
+	public static void setOperatorRumble(GenericHID.RumbleType t) {
 		operator.setRumble(t, 1);
 	}
 
-	public void resetOperatorRumble(GenericHID.RumbleType t) {
+	public static void resetOperatorRumble(GenericHID.RumbleType t) {
 		operator.setRumble(t, 0);
 	}
 

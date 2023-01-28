@@ -21,9 +21,9 @@ public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
 
   // Change this to match the name of your camera
-  private PhotonCamera camera = new PhotonCamera("photonvision");
-  private PhotonPipelineResult result = camera.getLatestResult();
-  private PhotonTrackedTarget target = result.getBestTarget();
+  private PhotonCamera camera = new PhotonCamera(VisionConstants.kCameraName);
+  private PhotonPipelineResult result;
+  private PhotonTrackedTarget target;
 
   private PIDController distController = new PIDController(VisionConstants.kDistP, VisionConstants.kDistI,
       VisionConstants.kDistD);

@@ -12,7 +12,9 @@ public class ClawGrabCone extends CommandBase {
   
   /** Creates a new GrabCube. */
   public ClawGrabCone(Claw claw) {
+    this.claw = claw;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(claw);
   }
 
   // Called when the command is initially scheduled.

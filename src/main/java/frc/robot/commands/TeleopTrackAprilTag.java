@@ -19,6 +19,7 @@ public class TeleopTrackAprilTag extends CommandBase {
     this.chassis = chassis;
     this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(vision);
   }
 
   // Called when the command is initially scheduled.

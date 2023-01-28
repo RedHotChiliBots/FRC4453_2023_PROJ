@@ -12,6 +12,8 @@ public class ClawRelease extends CommandBase {
   
   /** Creates a new GrabCube. */
   public ClawRelease(Claw claw) {
+    this.claw = claw;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

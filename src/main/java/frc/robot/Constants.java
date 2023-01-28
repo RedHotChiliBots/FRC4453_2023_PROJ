@@ -204,6 +204,8 @@ public final class Constants {
 	}
 
 	public static final class VisionConstants {
+		public static final String kCameraName = "OV5647";
+
 		// Constants such as camera and target height stored. Change per robot and goal!
 		public static final double kCameraHeight = Units.inchesToMeters(24);
 		public static final double kTargetHeight = Units.feetToMeters(5);

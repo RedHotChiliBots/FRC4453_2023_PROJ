@@ -46,6 +46,8 @@ public class Vision extends SubsystemBase {
   private final GenericEntry sbArea = visionTab.addPersistent("Area", 0).getEntry();
   private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0).getEntry();
   private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false).getEntry();
+  private final GenericEntry sbDistAtTarget = visionTab.addPersistent("Dist At Target", false).getEntry();
+  private final GenericEntry sbTurnAtTarget = visionTab.addPersistent("Turn At Target", false).getEntry();
   private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", false).getEntry();
 
   // // Query the latest result from PhotonVision
@@ -135,6 +137,8 @@ public class Vision extends SubsystemBase {
     sbArea.setDouble(target.getArea());
     sbSkew.setDouble(target.getSkew());
     sbTargetID.setDouble(target.getFiducialId());
+    sbDistAtTarget.setBoolean(atDistTarget());
+    sbDistAtTarget.setBoolean(atTurnTarget());
 
     trackAprilTag();
 
@@ -176,7 +180,11 @@ public class Vision extends SubsystemBase {
     return new double[] {forwardSpeed, rotationSpeed};
   }
 
-  public boolean atTarget() {
+  public boolean atDistTarget() {
     return distController.atSetpoint();
+  }
+
+  public boolean atTurnTarget() {
+    return turnController.atSetpoint();
   }
 }

@@ -39,6 +39,6 @@ public class AutonTrackAprilTag extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.atTarget();
+    return vision.atDistTarget();
   }
 }

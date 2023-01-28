@@ -41,6 +41,11 @@ import frc.robot.commands.ClawGrabCube;
 import frc.robot.commands.ClawRelease;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
+import frc.robot.commands.IntakeClose;
+import frc.robot.commands.IntakeMoterIn;
+import frc.robot.commands.IntakeMoterOut;
+import frc.robot.commands.IntakeOpen;
+import frc.robot.commands.IntakeStow;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
@@ -69,9 +74,9 @@ public class RobotContainer {
 	private static final Chassis chassis = new Chassis();
 	private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
-	// private static final Intake intake = new Intake();
+	private static final Intake intake = new Intake();
 	private static final Vision vision = new Vision();
-	
+
 	// =============================================================
 	// Define Joysticks
 	public final static XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
@@ -112,6 +117,12 @@ public class RobotContainer {
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
 	private final ClawRelease clawRelease = new ClawRelease(claw);
 
+	private final IntakeStow intakeStow = new IntakeStow(intake);
+	private final IntakeMoterIn intakeMoterIn = new IntakeMoterIn(intake);
+	private final IntakeMoterOut IntakeMoterOut = new IntakeMoterOut(intake);
+	private final IntakeOpen intakeOpen = new IntakeOpen(intake);
+	private final IntakeClose intakeClose = new IntakeClose(intake);
+
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
 	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
@@ -144,7 +155,7 @@ public class RobotContainer {
 		SmartDashboard.putData("Chassis", chassis);
 		SmartDashboard.putData("Claw", claw);
 		// SmartDashboard.putData("Crane", crane);
-		// SmartDashboard.putData("Intake", intake);
+		SmartDashboard.putData("Intake", intake);
 		SmartDashboard.putData("Vision", vision);
 
 		// SmartDashboard.putData("Feeder", feeder);
@@ -154,7 +165,7 @@ public class RobotContainer {
 		chassis.setDefaultCommand(chassisArcadeDrive);
 		claw.setDefaultCommand(clawGrabCone);
 		// crane.setDefaultCommand(chassisArcadeDrive);
-		// intake.setDefaultCommand(chassisArcadeDrive);
+		intake.setDefaultCommand(intakeStow);
 		vision.setDefaultCommand(teleopTrackAprilTag);
 
 		// =============================================================
@@ -255,7 +266,15 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-//		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+
+		
+		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
+		new JoystickButton(operator, Button.kX.value).onTrue(intakeMoterIn);
+		new JoystickButton(operator, Button.kA.value).onTrue(IntakeMoterOut);
+		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
+		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
+
 	}
 
 	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec

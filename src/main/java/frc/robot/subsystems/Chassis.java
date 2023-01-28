@@ -25,7 +25,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -129,8 +129,8 @@ public class Chassis extends SubsystemBase {
 	// ==============================================================
 	// Define Shuffleboard data
 
-	private final ShuffleboardTab pidTab = Shuffleboard.getTab("Chassis");
-	private final GenericEntry sbLevelPID = pidTab.addPersistent("Level PID", 0).getEntry();
+	private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID");
+	private final GenericEntry sbLevelPID = pidTab.add("Level PID", false).getEntry();
 
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
@@ -243,7 +243,7 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
-		// pidTab.addPersistent("Level PID", levelPIDController);
+		// pidTab.add("Level PID", levelPIDController);
 
 		// ==============================================================
 		// Initialize devices before starting
@@ -257,7 +257,7 @@ public class Chassis extends SubsystemBase {
 		// }
 
 		stopChassis();
-		
+
 		System.out.println("----- Chassis Constructor finished -----");
 	}
 

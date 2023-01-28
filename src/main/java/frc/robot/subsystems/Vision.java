@@ -140,8 +140,6 @@ public class Vision extends SubsystemBase {
     sbDistAtTarget.setBoolean(atDistTarget());
     sbDistAtTarget.setBoolean(atTurnTarget());
 
-    trackAprilTag();
-
     // } else {
     // // Manual Driver Mode
     // forwardSpeed = -xboxController.getRightY();

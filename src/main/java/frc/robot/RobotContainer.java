@@ -46,6 +46,7 @@ import frc.robot.commands.AutonGetGameElement;
 import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
+import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
@@ -99,6 +100,7 @@ public class RobotContainer {
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
+	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
 
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
@@ -215,6 +217,7 @@ public class RobotContainer {
 		chooser.addOption("Return To Grid", autonReturnToGrid);
 		chooser.addOption("Straight", autonStraight);
 		chooser.addOption("Return", autonReturn);
+		chooser.addOption("Track April Tag", autonTrackAprilTag);
 
 		// =============================================================
 		// Build chooser for autonomous commands

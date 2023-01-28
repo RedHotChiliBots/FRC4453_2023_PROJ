@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
-public class AutonChgStnRate extends CommandBase {
+public class AutonChgStnStop extends CommandBase {
   Chassis chassis = null;
   double rate = 0.0;
   double currPitch;
   double counter = 0;
 
   /** Creates a new LevelChargingStation. */
-  public AutonChgStnRate(Chassis chassis) {
+  public AutonChgStnStop(Chassis chassis) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(chassis);
     this.chassis = chassis;
@@ -24,31 +24,26 @@ public class AutonChgStnRate extends CommandBase {
   @Override
   public void initialize() {
     currPitch = chassis.getPitch();
-    rate = chassis.rateChargingStation();
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Rate: Pitch: " + currPitch + "   Rate: " + rate);
+    System.out.println(timeStamp + "   Start Stop: Pitch: " + currPitch);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rate = chassis.rateChargingStation();
+    chassis.stopChassis();
   }
 
   // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
+    currPitch = chassis.getPitch();
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   End Rate: Pitch: " + currPitch + "   Rate: " + rate);
+    System.out.println(timeStamp + "   End Rate: Pitch: " + currPitch);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    currPitch = chassis.getPitch();
-    if ((counter++ % 10) == 0.0) {
-      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Rate: [" + counter + "] Pitch: " + currPitch + "   Rate: " + rate);
-    }
-    return Math.abs(currPitch) < 1.0;
+    return true;
   }
 }

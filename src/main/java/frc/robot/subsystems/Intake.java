@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
       MotorType.kBrushless);
 
   private final CANSparkMax rightMotor = new CANSparkMax(
-      CANidConstants.kIntakeLeftMotor,
+      CANidConstants.kIntakeRightMotor,
       MotorType.kBrushless);
 
   private final DoubleSolenoid intakeArm = new DoubleSolenoid(

@@ -67,33 +67,33 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Query the latest result from PhotonVision
-    result = camera.getLatestResult();
+    // result = camera.getLatestResult();
 
     // Get the pipeline latency.
-    latencySeconds = result.getLatencyMillis() / 1000.0;
+    // latencySeconds = result.getLatencyMillis() / 1000.0;
 
     // Check if the latest result has any targets.
-    hasTargets = result.hasTargets();
+    // hasTargets = result.hasTargets();
 
     // Get a list of currently tracked targets.
-    targets = result.getTargets();
+    // targets = result.getTargets();
 
     // Get the current best target.
-    target = result.getBestTarget();
+    // target = result.getBestTarget();
 
     // Get information from target.
-    yaw = target.getYaw();
-    pitch = target.getPitch();
-    area = target.getArea();
-    skew = target.getSkew();
-    pose = target.getBestCameraToTarget();
-    corners = target.getDetectedCorners();
+    // yaw = target.getYaw();
+    // pitch = target.getPitch();
+    // area = target.getArea();
+    // skew = target.getSkew();
+    // pose = target.getBestCameraToTarget();
+    // corners = target.getDetectedCorners();
 
     // Get information from target.
-    targetID = target.getFiducialId();
-    poseAmbiguity = target.getPoseAmbiguity();
-    bestCameraToTarget = target.getBestCameraToTarget();
-    alternateCameraToTarget = target.getAlternateCameraToTarget();
+    // targetID = target.getFiducialId();
+    // poseAmbiguity = target.getPoseAmbiguity();
+    // bestCameraToTarget = target.getBestCameraToTarget();
+    // alternateCameraToTarget = target.getAlternateCameraToTarget();
   }
 
 }

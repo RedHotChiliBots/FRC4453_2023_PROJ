@@ -55,7 +55,7 @@ public class AutonChgStnDrive extends CommandBase {
     diffPitch = Math.abs(currPitch - lastPitch);
     if ((counter++ % 10) == 0.0) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Level: [" + counter + "] Pitch: " + currPitch + "   Diff: " + diffPitch);
+      System.out.println(timeStamp + "   Drive: [" + counter + "] Pitch: " + currPitch + "   Diff: " + diffPitch);
     }
     return  (timer.hasElapsed( 1) && Math.abs(diffPitch) > 1.0);
   }

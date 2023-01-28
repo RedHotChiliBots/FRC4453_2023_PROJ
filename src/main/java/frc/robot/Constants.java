@@ -79,15 +79,15 @@ public final class Constants {
 
 	public static final class ChassisConstants {
 		// Constants for Drive PIDs
-		public static final double kP = 5.5108E-07;	// from sysID
-		public static final double kI = 0.0;	// from sysID
-		public static final double kD = 0.0;	// from sysID
+		public static final double kP = 5.5108E-07; // from sysID
+		public static final double kI = 0.0; // from sysID
+		public static final double kD = 0.0; // from sysID
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.000156;
 
-		public static final double kA = 0.29701;	// from sysID
-		public static final double kS = 0.16439;	// from SysID
-		public static final double kV = 1.3349;		// from sysID
+		public static final double kA = 0.29701; // from sysID
+		public static final double kS = 0.16439; // from SysID
+		public static final double kV = 1.3349; // from sysID
 
 		public static final double kMinOutput = -1.0; // -0.5;
 		public static final double kMaxOutput = 1.0; // 0.5;
@@ -114,27 +114,27 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1.5; // was 1.0
 		public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // was 0.7
 
-		public static final double kDistP = 0.15;
+		public static final double kDistP = 0.015;
 		public static final double kDistI = 0.0;
 		public static final double kDistD = 0.0;
 
-		public static final double kLevelP = 0.015;
+		public static final double kLevelP = 1.0;
 		public static final double kLevelI = 0.0;
-		public static final double kLevelD = 0.0075;
+		public static final double kLevelD = 0.0;
 
 		public static final double kLevelSetPoint = 0.0;
 		public static final double kLevelSetTolerance = 1.0;
 
-		public static final double kRateP = 0.015;
+		public static final double kRateP = 0.00015;
 		public static final double kRateI = 0.0;
-		public static final double kRateD = 0.0075;
+		public static final double kRateD = 0.0;
 
-		public static final double kRateSetPoint = 3.0;		// rate, deg/sec
+		public static final double kRateSetPoint = 3.0; // rate, deg/sec
 		public static final double kRateSetTolerance = 1.0;
 
-		public static final double kDistanceTolerance = 0.025;	// meters
+		public static final double kDistanceTolerance = 0.025; // meters
 
-		public static final double kAngleRungAttached = 15.0;	// degrees
+		public static final double kAngleRungAttached = 15.0; // degrees
 
 		// Reasonable baseline values for a RAMSETE follower in units of meters and
 		// seconds
@@ -185,7 +185,7 @@ public final class Constants {
 
 		public static final double kTurretPosFactor = kTurretDegreesPerRotation;
 
-		public static final double kTiltSprocketTeeth = 54;
+		public static final double kTiltSprocketTeeth = 60;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
 		public static final double kTiltGearBoxRatio = 20;

@@ -256,6 +256,8 @@ public class Chassis extends SubsystemBase {
 		// lastPitch[i] = 0.0;
 		// }
 
+		stopChassis();
+		
 		System.out.println("----- Chassis Constructor finished -----");
 	}
 
@@ -309,12 +311,17 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-		lib.updatePitch(getPitch());
+		ratePitch = lib.updatePitch(getPitch());
+	}
+
+	public void stopChassis() {
+		leftMaster.set(0.0);
+		rightMaster.set(0.0);
 	}
 
 	public double levelChargingStation() {
 		double currPitch = ahrs.getPitch();
-		double pidOut = levelPIDController.calculate(currPitch);
+		double pidOut = -levelPIDController.calculate(currPitch);
 		driveArcade(pidOut, 0.0);
 		return currPitch;
 	}
@@ -335,7 +342,7 @@ public class Chassis extends SubsystemBase {
 	public double getPitch() {
 		// adjust for orientation of roborio - use roll
 		// adjust for pitch on floor
-		return ahrs.getRoll() + 2.3;
+		return ahrs.getRoll()+3.05;
 	}
 
 	// public double getPitchRate() {

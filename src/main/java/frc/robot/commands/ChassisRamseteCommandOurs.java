@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.Chassis;
 import frc.robot.Constants.ChassisConstants;
 
-public class RamseteCommandOurs extends RamseteCommand {
+public class ChassisRamseteCommandOurs extends RamseteCommand {
   /** Creates a new DriveTrajectory. */
 //  Chassis chassis;
 
-  public RamseteCommandOurs(Chassis chassis, Trajectory trajectory) {
+  public ChassisRamseteCommandOurs(Chassis chassis, Trajectory trajectory) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     super(

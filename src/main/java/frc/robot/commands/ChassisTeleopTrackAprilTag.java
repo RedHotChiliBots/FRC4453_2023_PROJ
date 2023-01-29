@@ -10,12 +10,12 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Vision;
 
-public class TeleopTrackAprilTag extends CommandBase {
+public class ChassisTeleopTrackAprilTag extends CommandBase {
   Chassis chassis;
   Vision vision;
 
   /** Creates a new AutonTrackAprilTag. */
-  public TeleopTrackAprilTag(Chassis chassis, Vision vision) {
+  public ChassisTeleopTrackAprilTag(Chassis chassis, Vision vision) {
     this.chassis = chassis;
     this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.

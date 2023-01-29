@@ -55,7 +55,7 @@ import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
-import frc.robot.commands.TeleopTrackAprilTag;
+import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
@@ -111,7 +111,7 @@ public class RobotContainer {
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
 
-	private final TeleopTrackAprilTag teleopTrackAprilTag = new TeleopTrackAprilTag(chassis, vision);
+	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
 	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);

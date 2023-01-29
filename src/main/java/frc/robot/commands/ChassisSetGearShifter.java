@@ -4,32 +4,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Chassis.GearShifterState;
 
-public class ResetOdometry extends CommandBase {
-  /** Creates a new ResetOdometry. */
+public class ChassisSetGearShifter extends CommandBase {
+  Chassis chassis;
+  GearShifterState state;
 
-  Chassis chassis = null;
-  Trajectory trajectory = null;
-
-  public ResetOdometry(Chassis chassis, Trajectory trajectory) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new SetGearShifter. */
+  public ChassisSetGearShifter(Chassis chassis, GearShifterState state) {
     this.chassis = chassis;
-    this.trajectory = trajectory;
-    addRequirements(chassis);
+    this.state = state;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    chassis.resetOdometry(trajectory.getInitialPose());
-  }
+  public void initialize() { }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    chassis.setGearShifter(state);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

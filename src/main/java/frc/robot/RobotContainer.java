@@ -79,8 +79,8 @@ public class RobotContainer {
 
 	// =============================================================
 	// Define Joysticks
-	public final static XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
-	public final static XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
+	public static final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
+	public static final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);

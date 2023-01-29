@@ -226,8 +226,8 @@ public class Chassis extends SubsystemBase {
 
 		// ==============================================================
 		// Configure encoders
-		leftEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPC);
-		rightEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPC);
+		leftEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
+		rightEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
 
 		leftEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
 		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
@@ -333,22 +333,6 @@ public class Chassis extends SubsystemBase {
 		return currRate;
 	}
 
-	/**
-	 * Returns the current robot pitch reported by navX sensor.
-	 * 
-	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
-	 * @return The current pitch value in degrees (-180 to 180).
-	 */
-	public double getPitch() {
-		// adjust for orientation of roborio - use roll
-		// adjust for pitch on floor
-		return ahrs.getRoll()+3.05;
-	}
-
-	// public double getPitchRate() {
-	// return ratePitch;
-	// }
-
 	public DifferentialDriveOdometry getOdometry() {
 		return odometry;
 	}
@@ -413,6 +397,18 @@ public class Chassis extends SubsystemBase {
 
 		isPitchIncreasing = ratePitch < 0.0 ? true : false;
 		isPitchDecreasing = ratePitch > 0.0 ? true : false;
+	}
+
+	/**
+	 * Returns the current robot pitch reported by navX sensor.
+	 * 
+	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
+	 * @return The current pitch value in degrees (-180 to 180).
+	 */
+	public double getPitch() {
+		// adjust for orientation of roborio - use roll
+		// adjust for pitch on floor
+		return ahrs.getRoll() + 3.05;
 	}
 
 	public double getRatePitch() {

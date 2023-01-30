@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Chassis.GearShifterState;
 
-public class SetGearShifter extends CommandBase {
+public class ChassisSetGearShifter extends CommandBase {
   Chassis chassis;
   GearShifterState state;
 
   /** Creates a new SetGearShifter. */
-  public SetGearShifter(Chassis chassis, GearShifterState state) {
+  public ChassisSetGearShifter(Chassis chassis, GearShifterState state) {
     this.chassis = chassis;
     this.state = state;
     // Use addRequirements() here to declare subsystem dependencies.

@@ -268,7 +268,6 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 
-		
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 		new JoystickButton(operator, Button.kX.value).onTrue(intakeMoterIn);
 		new JoystickButton(operator, Button.kA.value).onTrue(IntakeMoterOut);

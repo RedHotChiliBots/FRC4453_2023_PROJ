@@ -115,7 +115,7 @@ public class Chassis extends SubsystemBase {
 	private double lastPitch = 0.0;
 	// private double[] lastPitch = new double[5];
 	// private int indexPitch = 0;
-	private double ratePitch = 0.0;
+	private double avgRate = 0.0;
 	private double maxPitch = 0.0;
 	private double minPitch = 0.0;
 	public boolean isPitchIncreasing = false;
@@ -139,7 +139,7 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0).getEntry();
 	private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
 	private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
-	private final GenericEntry sbRate = chassisTab.addPersistent("Pitch Rate", 0).getEntry();
+	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0).getEntry();
 	private final GenericEntry sbPitch = chassisTab.addPersistent("Pitch", 0).getEntry();
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
@@ -157,7 +157,7 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
 
-	public  final Library lib = new Library();
+	public final Library lib = new Library();
 
 	public enum GearShifterState {
 		NA,
@@ -270,7 +270,7 @@ public class Chassis extends SubsystemBase {
 		sbLeftPow.setDouble(leftMaster.getAppliedOutput());
 		sbRightPow.setDouble(rightMaster.getAppliedOutput());
 
-		sbRate.setDouble(getRatePitch());
+		sbAvgRate.setDouble(getAvgRate());
 		sbPitch.setDouble(getPitch());
 		sbAngle.setDouble(getAngle().getDegrees());
 		sbHeading.setDouble(getHeading());
@@ -311,7 +311,7 @@ public class Chassis extends SubsystemBase {
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
-		ratePitch = lib.updatePitch(getPitch());
+		avgRate = lib.updatePitch(getPitch());
 	}
 
 	public void stopChassis() {
@@ -327,7 +327,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public double rateChargingStation() {
-		double currRate = getRatePitch();
+		double currRate = getAvgRate();
 		double pidOut = levelPIDController.calculate(currRate);
 		driveArcade(pidOut, 0.0);
 		return currRate;
@@ -376,8 +376,8 @@ public class Chassis extends SubsystemBase {
 		return ahrs.getRoll() + 3.05;
 	}
 
-	public double getRatePitch() {
-		return ratePitch;
+	public double getAvgRate() {
+		return avgRate;
 	}
 
 	public double getMinPitch() {

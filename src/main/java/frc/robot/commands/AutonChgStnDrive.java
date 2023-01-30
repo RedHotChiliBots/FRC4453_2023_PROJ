@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnDrive extends CommandBase {
-  Chassis chassis;
-  double avgPitch;
-  double currPos;
-  double motorSpd;
-  Timer timer;
-  int counter = 0;
+  private Chassis chassis;
+  private double avgPitch;
+  private double currPos;
+  private double motorSpd;
+  private Timer timer;
+  private int counter = 0;
 
   /** Creates a new AutonDrivePitch. */
   public AutonChgStnDrive(Chassis chassis) {
@@ -30,7 +30,7 @@ public class AutonChgStnDrive extends CommandBase {
     timer = new Timer();
     timer.reset();
     timer.start();
-    avgPitch = chassis.lib.getAvgPitch();
+    avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
 
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
@@ -43,9 +43,9 @@ public class AutonChgStnDrive extends CommandBase {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
     if (timer.hasElapsed(3) && chassis.lib.getTipSwitch()) {
-      if (avgPitch < 10.0) {
+      if (avgPitch < 12.0) {
         motorSpd = 0.15;
-      } else if (avgPitch < 5.0) {
+      } else if (avgPitch < 6.0) {
         motorSpd = 0.075;
       }
     }
@@ -53,7 +53,7 @@ public class AutonChgStnDrive extends CommandBase {
 
     if ((counter++ % 10) == 0.0) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Drive: [" + counter + "] Avg Pitch: " + chassis.lib.getAvgPitch() + "   Curr Pos: " + currPos);
+      System.out.println(timeStamp + "   Drive: [" + counter + "] Avg Pitch: " + chassis.lib.getAvgPitch() + "   Curr Pos: " + currPos + "   tipSwitch: " + chassis.lib.getTipSwitch());
     }
   }
 
@@ -70,6 +70,7 @@ public class AutonChgStnDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    avgPitch = Math.abs(chassis.lib.getAvgPitch());
     return (timer.hasElapsed(3) && avgPitch < 1.0);
   }
 }

@@ -57,7 +57,7 @@ public class Library {
    }
 
    public double getAvgPitch() {
-      return avgRate;
+      return avgPitch;
    }
 
    public double getAvgRate() {
@@ -88,7 +88,7 @@ public class Library {
       }
       avgRate = avgRate / 4;
 
-      tipSwitch = false;
+
       if (Math.abs(lastAvgRate - avgRate) > 1.0) {
          tipSwitch = true;
       }

@@ -8,13 +8,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
-public class ResetOdometry extends CommandBase {
+public class ChassisResetOdometry extends CommandBase {
   /** Creates a new ResetOdometry. */
 
   Chassis chassis = null;
   Trajectory trajectory = null;
 
-  public ResetOdometry(Chassis chassis, Trajectory trajectory) {
+  public ChassisResetOdometry(Chassis chassis, Trajectory trajectory) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.chassis = chassis;
     this.trajectory = trajectory;

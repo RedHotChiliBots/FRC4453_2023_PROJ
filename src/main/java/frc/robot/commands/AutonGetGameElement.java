@@ -24,8 +24,8 @@ public class AutonGetGameElement extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ResetOdometry(chassis, trajectory),
-      new RamseteCommandOurs(chassis, trajectory)
+      new ChassisResetOdometry(chassis, trajectory),
+      new ChassisRamseteCommandOurs(chassis, trajectory)
     );
   }
 }

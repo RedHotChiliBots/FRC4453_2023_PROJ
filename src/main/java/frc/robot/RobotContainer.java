@@ -55,7 +55,7 @@ import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
-import frc.robot.commands.TeleopTrackAprilTag;
+import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
@@ -79,8 +79,8 @@ public class RobotContainer {
 
 	// =============================================================
 	// Define Joysticks
-	public final static XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
-	public final static XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
+	public static final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
+	public static final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
@@ -111,7 +111,7 @@ public class RobotContainer {
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
 
-	private final TeleopTrackAprilTag teleopTrackAprilTag = new TeleopTrackAprilTag(chassis, vision);
+	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
 	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);

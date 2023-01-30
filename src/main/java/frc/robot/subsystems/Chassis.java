@@ -157,7 +157,7 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
 
-	private Library lib = new Library();
+	public  final Library lib = new Library();
 
 	public enum GearShifterState {
 		NA,
@@ -226,8 +226,8 @@ public class Chassis extends SubsystemBase {
 
 		// ==============================================================
 		// Configure encoders
-		leftEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPC);
-		rightEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPC);
+		leftEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
+		rightEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
 
 		leftEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
 		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
@@ -333,22 +333,6 @@ public class Chassis extends SubsystemBase {
 		return currRate;
 	}
 
-	/**
-	 * Returns the current robot pitch reported by navX sensor.
-	 * 
-	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
-	 * @return The current pitch value in degrees (-180 to 180).
-	 */
-	public double getPitch() {
-		// adjust for orientation of roborio - use roll
-		// adjust for pitch on floor
-		return ahrs.getRoll()+3.05;
-	}
-
-	// public double getPitchRate() {
-	// return ratePitch;
-	// }
-
 	public DifferentialDriveOdometry getOdometry() {
 		return odometry;
 	}
@@ -380,39 +364,16 @@ public class Chassis extends SubsystemBase {
 		minPitch = 0.0;
 	}
 
-	public void updatePitch(double pitch) {
-		// collect pitch list
-		lastPitch = currPitch;
-		// lastPitch[indexPitch++] = currPitch;
-		// if (indexPitch >= 5)
-		// indexPitch = 0;
-		currPitch = pitch;
-
-		// calc pitch max min
-		if (currPitch > maxPitch)
-			maxPitch = currPitch;
-		if (currPitch < minPitch)
-			minPitch = currPitch;
-
-		// calc pitch rate
-		ratePitch = (lastPitch - currPitch) / 0.020;
-		// // calc pitch rate
-		// double sumPitch = 0.0;
-		// int j = indexPitch;
-		// int k = indexPitch - 1;
-		// if (k < 0)
-		// k = 4;
-		// for (int i = 0; i < 5; i++) {
-		// if (j >= 5)
-		// j = 0;
-		// if (k >= 5)
-		// k = 0;
-		// sumPitch += lastPitch[k++] - lastPitch[j++];
-		// }
-		// ratePitch = sumPitch / lastPitch.length / 0.020;
-
-		isPitchIncreasing = ratePitch < 0.0 ? true : false;
-		isPitchDecreasing = ratePitch > 0.0 ? true : false;
+	/**
+	 * Returns the current robot pitch reported by navX sensor.
+	 * 
+	 * @see com.kauailabs.navx.frc.AHRS.getPitch()
+	 * @return The current pitch value in degrees (-180 to 180).
+	 */
+	public double getPitch() {
+		// adjust for orientation of roborio - use roll
+		// adjust for pitch on floor
+		return ahrs.getRoll() + 3.05;
 	}
 
 	public double getRatePitch() {

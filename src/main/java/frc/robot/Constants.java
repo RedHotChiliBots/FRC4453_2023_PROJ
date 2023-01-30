@@ -99,15 +99,14 @@ public final class Constants {
 
 		public static final double kTrackWidth = Units.inchesToMeters(26.341); // meters
 		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 8.0); // meters
-		public static final int kEncoderResolution = 1; // not used, NEO's native units are rotations
+		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kGearBoxRatio = 10.71;
-		public static final double kPosFactor = kWheelCirc / kGearBoxRatio; // Meters per Revolution
-		public static final double kVelFactor = kWheelCirc / kGearBoxRatio / 60.0; // Meters per Second
+		public static final double kPosFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution); // Meters / Rev
+		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters / Sec
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 
-		public static final double kPosFactorMPC = kWheelCirc / kCountsPerRevGearbox; // Meters per Revolution
-		public static final double kPosFactorCPM = kCountsPerRevGearbox / kWheelCirc; // Meters per Revolution
-
+		public static final double kPosFactorMPR = kWheelCirc / kCountsPerRevGearbox; // Meters / Rev
+		public static final double kPosFactorRPM = kCountsPerRevGearbox / kWheelCirc; // Rev / Meter
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
 

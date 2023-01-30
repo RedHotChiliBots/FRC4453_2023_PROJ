@@ -10,8 +10,7 @@ import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnDrive extends CommandBase {
   Chassis chassis;
-  double lastPitch;
-  double currPitch;
+  double avgPitch;
   double currPos;
   double motorSpd;
   Timer timer;
@@ -31,43 +30,46 @@ public class AutonChgStnDrive extends CommandBase {
     timer = new Timer();
     timer.reset();
     timer.start();
-    currPitch = chassis.getPitch();
+    avgPitch = chassis.lib.getAvgPitch();
     currPos = chassis.leftEncoder.getPosition();
 
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Drive: Pitch: " + currPitch + "   Start Pos:  " + currPos);
+    System.out.println(timeStamp + "   Start Drive: Pitch: " + avgPitch + "   Start Pos:  " + currPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    lastPitch = currPitch;
-    currPitch = chassis.getPitch();
+    avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
-    if (timer.hasElapsed(3) && (chassis.getMaxPitch() - Math.abs(currPitch)) > 3.0) {
-      motorSpd = 0.15;
+    if (timer.hasElapsed(3) && chassis.lib.getTipSwitch()) {
+      if (avgPitch < 10.0) {
+        motorSpd = 0.15;
+      } else if (avgPitch < 5.0) {
+        motorSpd = 0.075;
+      }
     }
     chassis.driveArcade(-motorSpd, 0.0);
 
     if ((counter++ % 10) == 0.0) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Drive: [" + counter + "] Pitch: " + currPitch + "   Curr Pos: " + currPos);
+      System.out.println(timeStamp + "   Drive: [" + counter + "] Avg Pitch: " + chassis.lib.getAvgPitch() + "   Curr Pos: " + currPos);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    avgPitch = chassis.lib.getAvgPitch();
     currPos = chassis.leftEncoder.getPosition();
-    currPitch = chassis.getPitch();
 
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   End Drive: Pitch: " + currPitch + "   End Pos: " + currPos);
+    System.out.println(timeStamp + "   End Drive: Pitch: " + avgPitch + "   End Pos: " + currPos);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (timer.hasElapsed(1) && Math.abs(currPitch) < 1.0);
+    return (timer.hasElapsed(3) && avgPitch < 1.0);
   }
 }

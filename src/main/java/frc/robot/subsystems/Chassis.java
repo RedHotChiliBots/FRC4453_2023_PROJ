@@ -157,7 +157,7 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
 
-	private Library lib = new Library();
+	public  final Library lib = new Library();
 
 	public enum GearShifterState {
 		NA,

@@ -16,11 +16,7 @@ public class Library {
    private static boolean dirSwitch = false;
    private static boolean tipSwitch = false;
 
-   public void Library() {
-      initLibrary();
-   }
-
-   public void initLibrary() {
+    public void initLibrary() {
       for (int i = 0; i < rollingPitchSize; i++) {
          lastPitch[i] = 0.0;
       }

@@ -15,6 +15,7 @@ public class AutonChgStnDrive extends CommandBase {
   private double motorSpd;
   private Timer timer;
   private int counter = 0;
+  private int printCount = 0;
 
   /** Creates a new AutonDrivePitch. */
   public AutonChgStnDrive(Chassis chassis) {
@@ -23,6 +24,17 @@ public class AutonChgStnDrive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  private void printStat(String method, boolean force) {
+    if (printCount == 0) {
+      System.out.println("TimeStamp\tCounter\tAvg Pitch\tAvg Rate\tPosition\tTip Switch");
+    }
+    if (printCount++ % 10 == 0 || force) {
+      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+      System.out.println(method + ": " + timeStamp + "\t" + printCount +"\t"
+          + chassis.lib.getAvgPitch() + "\t" + chassis.lib.getAvgRate() + "\t" + currPos + "\t" + chassis.lib.getTipSwitch());
+    }
+  }
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -33,8 +45,7 @@ public class AutonChgStnDrive extends CommandBase {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
 
-    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Drive: Pitch: " + avgPitch + "   Start Pos:  " + currPos);
+    printStat("Init", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,10 +62,7 @@ public class AutonChgStnDrive extends CommandBase {
     }
     chassis.driveArcade(-motorSpd, 0.0);
 
-    if ((counter++ % 10) == 0.0) {
-      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Drive: [" + counter + "] Avg Pitch: " + chassis.lib.getAvgPitch() + "   Curr Pos: " + currPos + "   tipSwitch: " + chassis.lib.getTipSwitch());
-    }
+    printStat("Exec", false);
   }
 
   // Called once the command ends or is interrupted.
@@ -63,8 +71,7 @@ public class AutonChgStnDrive extends CommandBase {
     avgPitch = chassis.lib.getAvgPitch();
     currPos = chassis.leftEncoder.getPosition();
 
-    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   End Drive: Pitch: " + avgPitch + "   End Pos: " + currPos);
+    printStat("End", true);
   }
 
   // Returns true when the command should end.

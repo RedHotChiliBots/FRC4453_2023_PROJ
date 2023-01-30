@@ -16,6 +16,7 @@ public class AutonChgStnDrive extends CommandBase {
   private Timer timer;
   private int counter = 0;
   private int printCount = 0;
+  private boolean oneTime = false;
 
   /** Creates a new AutonDrivePitch. */
   public AutonChgStnDrive(Chassis chassis) {
@@ -30,11 +31,12 @@ public class AutonChgStnDrive extends CommandBase {
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(method + ": " + timeStamp + "\t" + printCount +"\t"
-          + chassis.lib.getAvgPitch() + "\t" + chassis.lib.getAvgRate() + "\t" + currPos + "\t" + chassis.lib.getTipSwitch());
+      System.out.println(method + ": " + timeStamp + "\t" + printCount + "\t"
+          + chassis.lib.getAvgPitch() + "\t" + chassis.lib.getAvgRate() + "\t" + currPos + "\t"
+          + chassis.lib.getTipSwitch());
     }
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -54,6 +56,10 @@ public class AutonChgStnDrive extends CommandBase {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
     if (timer.hasElapsed(3) && chassis.lib.getTipSwitch()) {
+      if (!oneTime) {
+        printStat("TIP", true);
+        oneTime = true;
+      }
       if (avgPitch < 12.0) {
         motorSpd = 0.15;
       } else if (avgPitch < 6.0) {

@@ -22,8 +22,8 @@ public class AutonChgStnLevel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    chassis.getMotorData();
-    chassis.setMotorData(0.2, 02);
+    // chassis.getMotorData();
+    // chassis.setMotorData(0.2, 02);
 
     pitch = chassis.levelChargingStation();
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
@@ -39,7 +39,7 @@ public class AutonChgStnLevel extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    chassis.setMotorData();
+    // chassis.setMotorData();
   }
 
   // Returns true when the command should end.

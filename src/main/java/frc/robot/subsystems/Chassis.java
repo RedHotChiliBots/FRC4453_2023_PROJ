@@ -130,27 +130,27 @@ public class Chassis extends SubsystemBase {
 	// Define Shuffleboard data
 
 	private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID");
-	private final GenericEntry sbLevelPID = pidTab.add("Level PID", false).getEntry();
+//	private final GenericEntry sbLevelPID = pidTab.add("Level PID", false).getEntry();
 
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
-	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
-	private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
-	private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0).getEntry();
-	private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0).getEntry();
-	private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
-	private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
+	 private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
+	// private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
+	 private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0).getEntry();
+	// private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0).getEntry();
+	// private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
+	// private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
 	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0).getEntry();
 	private final GenericEntry sbPitch = chassisTab.addPersistent("Pitch", 0).getEntry();
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
 
-	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0).getEntry();
-	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0).getEntry();
-	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0).getEntry();
+	// private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0).getEntry();
+	// private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0).getEntry();
+	// private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0).getEntry();
 
-	private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint", 0.0).getEntry();
-	private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error", 0.0).getEntry();
-	private final GenericEntry sbRightErr = chassisTab.addPersistent("Right Error", 0.0).getEntry();
+	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint", 0.0).getEntry();
+	// private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error", 0.0).getEntry();
+	// private final GenericEntry sbRightErr = chassisTab.addPersistent("Right Error", 0.0).getEntry();
 	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false).getEntry();
 
 	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
@@ -264,11 +264,11 @@ public class Chassis extends SubsystemBase {
 	@Override
 	public void periodic() {
 		sbLeftPos.setDouble(leftEncoder.getPosition());
-		sbLeftVel.setDouble(leftEncoder.getVelocity());
+		// sbLeftVel.setDouble(leftEncoder.getVelocity());
 		sbRightPos.setDouble(rightEncoder.getPosition());
-		sbRightVel.setDouble(rightEncoder.getVelocity());
-		sbLeftPow.setDouble(leftMaster.getAppliedOutput());
-		sbRightPow.setDouble(rightMaster.getAppliedOutput());
+		// sbRightVel.setDouble(rightEncoder.getVelocity());
+		// sbLeftPow.setDouble(leftMaster.getAppliedOutput());
+		// sbRightPow.setDouble(rightMaster.getAppliedOutput());
 
 		sbAvgRate.setDouble(getAvgRate());
 		sbPitch.setDouble(getPitch());
@@ -278,10 +278,10 @@ public class Chassis extends SubsystemBase {
 		sbHiPressure.setDouble(getHiPressure());
 		sbLoPressure.setDouble(getLoPressure());
 
-		sbSetPt.setDouble(setPoint);
-		sbLeftErr.setDouble(leftError);
-		sbRightErr.setDouble(rightError);
-		sbAtTgt.setBoolean(atTarget());
+		// sbSetPt.setDouble(setPoint);
+		// sbLeftErr.setDouble(leftError);
+		// sbRightErr.setDouble(rightError);
+		 sbAtTgt.setBoolean(atTarget());
 
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
@@ -307,11 +307,33 @@ public class Chassis extends SubsystemBase {
 		Rotation2d rot = pose.getRotation();
 		double deg = rot.getDegrees();
 
-		sbX.setDouble(x);
-		sbY.setDouble(y);
-		sbDeg.setDouble(deg);
+		// sbX.setDouble(x);
+		// sbY.setDouble(y);
+		// sbDeg.setDouble(deg);
 
 		avgRate = lib.updatePitch(getPitch());
+	}
+
+	private double leftMax;
+	private double leftMin;
+	private double rightMax;
+	private double rightMin;
+	
+	public void getMotorData() {
+		leftMax = leftPIDController.getOutputMax();
+		leftMin = leftPIDController.getOutputMin();
+		rightMax = rightPIDController.getOutputMax();
+		rightMin = rightPIDController.getOutputMin();
+	}
+
+	public void setMotorData() {
+		leftPIDController.setOutputRange(leftMin, leftMax);
+		rightPIDController.setOutputRange(rightMin, rightMax);
+	}
+
+	public void setMotorData(double min, double max) {
+		leftPIDController.setOutputRange(min, max);
+		rightPIDController.setOutputRange(min, max);
 	}
 
 	public void stopChassis() {

@@ -104,6 +104,13 @@ public class Crane extends SubsystemBase {
     tiltEncoder.setPositionConversionFactor(CraneConstants.kTiltPosFactor);
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
 
+    initTurretPos();
+    setTurretPosition(CraneConstants.kTurretInitPos);
+    initTiltPos();
+    setTiltPosition(CraneConstants.kTurretInitPos);
+    initArmPos();
+    setArmPosition(CraneConstants.kTurretInitPos);
+
     System.out.println("+++++ Crane Constructor finished +++++");
   }
 
@@ -121,6 +128,17 @@ public class Crane extends SubsystemBase {
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
 
+  public void initTurretPos() {
+    turretEncoder.setPosition(CraneConstants.kTurretInitPos);
+  }
+
+  public void initTiltPos() {
+    tiltEncoder.setPosition(CraneConstants.kTiltInitPos);
+  }
+
+  public void initArmPos() {
+    armEncoder.setPosition(CraneConstants.kArmInitPos);
+  }
 
   public void setTurretPosition(double setPoint) {
     this.turretSetPoint = setPoint;

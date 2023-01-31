@@ -142,6 +142,10 @@ public final class Constants {
 	}
 
 	public static final class CraneConstants {
+		public static final double kTurretInitPos = 0.0; // degrees
+		public static final double kTiltInitPos = -45.0; // degrees
+		public static final double kArmInitPos = 24.0; // inches
+
 		public static final double kTurretP = 0.35;
 		public static final double kTurretI = 0.0000;
 		public static final double kTurretD = 0.0;

@@ -314,6 +314,28 @@ public class Chassis extends SubsystemBase {
 		avgRate = lib.updatePitch(getPitch());
 	}
 
+	private double leftMax;
+	private double leftMin;
+	private double rightMax;
+	private double rightMin;
+	
+	public void getMotorData() {
+		leftMax = leftPIDController.getOutputMax();
+		leftMin = leftPIDController.getOutputMin();
+		rightMax = rightPIDController.getOutputMax();
+		rightMin = rightPIDController.getOutputMin();
+	}
+
+	public void setMotorData() {
+		leftPIDController.setOutputRange(leftMin, leftMax);
+		rightPIDController.setOutputRange(rightMin, rightMax);
+	}
+
+	public void setMotorData(double min, double max) {
+		leftPIDController.setOutputRange(min, max);
+		rightPIDController.setOutputRange(min, max);
+	}
+
 	public void stopChassis() {
 		leftMaster.set(0.0);
 		rightMaster.set(0.0);

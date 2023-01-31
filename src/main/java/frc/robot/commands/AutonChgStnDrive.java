@@ -27,13 +27,12 @@ public class AutonChgStnDrive extends CommandBase {
 
   private void printStat(String method, boolean force) {
     if (printCount == 0) {
-      System.out.println("TimeStamp\tCounter\tAvg Pitch\tAvg Rate\tPosition\tTip Switch");
+      System.out.println("    Counter   TimeStamp   Avg Pitch   Avg Rate   Speed   Position   Tip Switch");
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(method + ": " + timeStamp + "\t" + printCount + "\t"
-          + chassis.lib.getAvgPitch() + "\t" + chassis.lib.getAvgRate() + "\t" + currPos + "\t"
-          + chassis.lib.getTipSwitch());
+      System.out.printf("%s  %03d   %s   %9.3f   %9.3f   %9.3f   %9.3f   %s\n", method, printCount, timeStamp,
+      chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd, currPos, chassis.lib.getTipSwitch()?"True":"False");
     }
   }
 
@@ -41,6 +40,9 @@ public class AutonChgStnDrive extends CommandBase {
   @Override
   public void initialize() {
     motorSpd = 0.35;
+    oneTime = false;
+    counter = 0;
+    printCount = 0;
     timer = new Timer();
     timer.reset();
     timer.start();
@@ -60,11 +62,11 @@ public class AutonChgStnDrive extends CommandBase {
         printStat("TIP", true);
         oneTime = true;
       }
-      if (avgPitch < 12.0) {
-        motorSpd = 0.15;
-      } else if (avgPitch < 6.0) {
+      if (avgPitch < 7.0) {
         motorSpd = 0.075;
-      }
+      } else if (avgPitch < 12.0) {
+        motorSpd = 0.15;
+      } 
     }
     chassis.driveArcade(-motorSpd, 0.0);
 

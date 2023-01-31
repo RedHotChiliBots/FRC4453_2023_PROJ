@@ -38,7 +38,7 @@ public class AutonChgStnStop extends CommandBase {
   public void end(boolean interrupted) {
     currPitch = chassis.getPitch();
     String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   End Rate: Pitch: " + currPitch);
+    System.out.println(timeStamp + "   End Stop: Pitch: " + currPitch);
   }
 
   // Returns true when the command should end.

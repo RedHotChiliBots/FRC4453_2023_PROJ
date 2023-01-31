@@ -117,7 +117,7 @@ public final class Constants {
 		public static final double kDistI = 0.0;
 		public static final double kDistD = 0.0;
 
-		public static final double kLevelP = 1.0;
+		public static final double kLevelP = 0.05;
 		public static final double kLevelI = 0.0;
 		public static final double kLevelD = 0.0;
 

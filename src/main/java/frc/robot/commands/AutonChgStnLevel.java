@@ -9,8 +9,9 @@ import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnLevel extends CommandBase {
   Chassis chassis = null;
-  double pitch = 0.0;
+  double motorSpd = 0.0;
   double counter = 0.0;
+  int printCount = 0;
 
   /** Creates a new LevelChargingStation. */
   public AutonChgStnLevel(Chassis chassis) {
@@ -19,18 +20,30 @@ public class AutonChgStnLevel extends CommandBase {
     this.chassis = chassis;
   }
 
+  private void printStat(String method, boolean force) {
+    if (printCount == 0) {
+      System.out.println("    Counter   TimeStamp   Avg Pitch   Avg Rate   Speed");
+    }
+    if (printCount++ % 10 == 0 || force) {
+      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
+      System.out.printf("%s  %03d   %s   %9.3f   %9.3f   %9.3f\n", method, printCount, timeStamp,
+          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd);
+    }
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pitch = chassis.levelChargingStation();
-    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Level: Pitch: " + pitch);
+    printCount = 0;
+    motorSpd = chassis.levelChargingStation();
+    printStat("INIT", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pitch = chassis.levelChargingStation();
+    motorSpd = chassis.levelChargingStation();
+    printStat("EXEC", false);
   }
 
   // Called once the command ends or is interrupted.
@@ -40,10 +53,6 @@ public class AutonChgStnLevel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((counter++ % 50) == 0.0) {
-      String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.println(timeStamp + "   Level: [" + counter + "]  Pitch: " + pitch);
-    }
     return false;
   }
 }

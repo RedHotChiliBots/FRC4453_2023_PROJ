@@ -320,10 +320,10 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public double levelChargingStation() {
-		double currPitch = ahrs.getPitch();
-		double pidOut = -levelPIDController.calculate(currPitch);
+		double currPitch = lib.getAvgPitch();
+		double pidOut = levelPIDController.calculate(currPitch);
 		driveArcade(pidOut, 0.0);
-		return currPitch;
+		return pidOut;
 	}
 
 	public double rateChargingStation() {

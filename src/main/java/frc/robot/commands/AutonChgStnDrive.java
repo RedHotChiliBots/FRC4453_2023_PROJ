@@ -14,7 +14,6 @@ public class AutonChgStnDrive extends CommandBase {
   private double currPos;
   private double motorSpd;
   private Timer timer;
-  private int counter = 0;
   private int printCount = 0;
   private boolean oneTime = false;
 
@@ -31,7 +30,7 @@ public class AutonChgStnDrive extends CommandBase {
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.printf("%s  %03d   %s   %9.3f   %9.3f   %9.3f   %9.3f   %s\n", method, printCount, timeStamp,
+      System.out.printf("%s  %03d   %s   %10.4f   %10.4f   %10.4f   %10.4f   %s\n", method, printCount, timeStamp,
       chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd, currPos, chassis.lib.getTipSwitch()?"True":"False");
     }
   }
@@ -41,7 +40,6 @@ public class AutonChgStnDrive extends CommandBase {
   public void initialize() {
     motorSpd = 0.35;
     oneTime = false;
-    counter = 0;
     printCount = 0;
     timer = new Timer();
     timer.reset();
@@ -65,7 +63,7 @@ public class AutonChgStnDrive extends CommandBase {
       if (avgPitch < 7.0) {
         motorSpd = 0.075;
       } else if (avgPitch < 12.0) {
-        motorSpd = 0.15;
+        motorSpd = 0.12;
       } 
     }
     chassis.driveArcade(-motorSpd, 0.0);

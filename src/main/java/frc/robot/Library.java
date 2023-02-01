@@ -48,12 +48,12 @@ public class Library {
       return isPitchDecreasing;
    }
 
-   public double getMaxPitch() {
-      return maxPitch;
-   }
-
    public double getMinPitch() {
       return minPitch;
+   }
+
+   public double getMaxPitch() {
+      return maxPitch;
    }
 
    public double getAvgPitch() {
@@ -84,11 +84,10 @@ public class Library {
       lastAvgRate = avgRate;
       double avgRate = 0;
       for (int i = 1; i < rollingPitchSize; i++) {
-         avgRate += ((lastPitch[i] - lastPitch[i - 1]) / 0.020);
+         avgRate += lastPitch[i] - lastPitch[i - 1];
       }
-      avgRate = avgRate / 4;
-
-
+      avgRate = avgRate / 0.020 / 4;
+     
       if (Math.abs(lastAvgRate - avgRate) > 1.0) {
          tipSwitch = true;
       }

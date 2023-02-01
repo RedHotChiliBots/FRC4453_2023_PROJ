@@ -34,7 +34,7 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Vision;
+//import frc.robot.subsystems.Vision;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ClawGrabCone;
 import frc.robot.commands.ClawGrabCube;
@@ -75,7 +75,7 @@ public class RobotContainer {
 	private static final Claw claw = new Claw();
 	// private static final Crane crane = new Crane();
 	private static final Intake intake = new Intake();
-	private static final Vision vision = new Vision();
+//	private static final Vision vision = new Vision();
 
 	// =============================================================
 	// Define Joysticks
@@ -109,9 +109,9 @@ public class RobotContainer {
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
-	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
+//	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
 
-	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
+//al ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
 	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
@@ -156,7 +156,7 @@ public class RobotContainer {
 		SmartDashboard.putData("Claw", claw);
 		// SmartDashboard.putData("Crane", crane);
 		SmartDashboard.putData("Intake", intake);
-		SmartDashboard.putData("Vision", vision);
+//		SmartDashboard.putData("Vision", vision);
 
 		// SmartDashboard.putData("Feeder", feeder);
 
@@ -166,7 +166,7 @@ public class RobotContainer {
 		claw.setDefaultCommand(clawGrabCone);
 		// crane.setDefaultCommand(chassisArcadeDrive);
 		intake.setDefaultCommand(intakeStow);
-		vision.setDefaultCommand(teleopTrackAprilTag);
+//		vision.setDefaultCommand(teleopTrackAprilTag);
 
 		// =============================================================
 		// Create a voltage constraint to ensure we don't accelerate too fast
@@ -238,7 +238,7 @@ public class RobotContainer {
 		chooser.addOption("Return To Grid", autonReturnToGrid);
 		chooser.addOption("Straight", autonStraight);
 		chooser.addOption("Return", autonReturn);
-		chooser.addOption("Track April Tag", autonTrackAprilTag);
+//		chooser.addOption("Track April Tag", autonTrackAprilTag);
 
 		// =============================================================
 		// Build chooser for autonomous commands
@@ -267,6 +267,10 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+
+		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
+		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
+		new JoystickButton(driver, Button.kA.value).onTrue(clawRelease);
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 		new JoystickButton(operator, Button.kX.value).onTrue(intakeMoterIn);

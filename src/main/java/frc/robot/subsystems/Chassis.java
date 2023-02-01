@@ -25,7 +25,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -140,7 +139,7 @@ public class Chassis extends SubsystemBase {
 	// private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
 	// private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
 	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0).getEntry();
-	private final GenericEntry sbPitch = chassisTab.addPersistent("Pitch", 0).getEntry();
+	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0).getEntry();
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
 
@@ -270,8 +269,8 @@ public class Chassis extends SubsystemBase {
 		// sbLeftPow.setDouble(leftMaster.getAppliedOutput());
 		// sbRightPow.setDouble(rightMaster.getAppliedOutput());
 
-		sbAvgRate.setDouble(getAvgRate());
-		sbPitch.setDouble(getPitch());
+		sbAvgRate.setDouble(lib.getAvgRate());
+		sbAvgPitch.setDouble(lib.getAvgPitch());
 		sbAngle.setDouble(getAngle().getDegrees());
 		sbHeading.setDouble(getHeading());
 
@@ -349,7 +348,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public double rateChargingStation() {
-		double currRate = getAvgRate();
+		double currRate = lib.getAvgRate();
 		double pidOut = levelPIDController.calculate(currRate);
 		driveArcade(pidOut, 0.0);
 		return currRate;
@@ -398,17 +397,17 @@ public class Chassis extends SubsystemBase {
 		return ahrs.getRoll() + 3.05;
 	}
 
-	public double getAvgRate() {
-		return avgRate;
-	}
+	// public double getAvgRate() {
+	// 	return avgRate;
+	// }
 
-	public double getMinPitch() {
-		return minPitch;
-	}
+	// public double getMinPitch() {
+	// 	return minPitch;
+	// }
 
-	public double getMaxPitch() {
-		return maxPitch;
-	}
+	// public double getMaxPitch() {
+	// 	return maxPitch;
+	// }
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {
 		leftMaster.setVoltage(leftVolts);

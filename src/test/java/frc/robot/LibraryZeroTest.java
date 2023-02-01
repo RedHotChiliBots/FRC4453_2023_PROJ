@@ -14,7 +14,6 @@ public class LibraryZeroTest {
 	Library lib = new Library();
 	double DELTA = 0.0001;
 
-	@Before
 	public void init() {
 		lib.initLibrary();
 	}
@@ -59,4 +58,17 @@ public class LibraryZeroTest {
 		assertFalse(lib.isPitchDecreasing());
 	}
 
+	@Test
+	@Order(6)
+	public void tesAvgPitch() throws Exception {
+		// System.out.println("Increasing: " + lib.isPitchIncreasing());
+		assertEquals(0.0, lib.getAvgPitch(), DELTA);
+	}
+
+	@Test
+	@Order(7)
+	public void testAvgRate() throws Exception {
+		// System.out.println("Increasing: " + lib.isPitchIncreasing());
+		assertEquals(0.0, lib.getAvgRate(), DELTA);
+	}
 }

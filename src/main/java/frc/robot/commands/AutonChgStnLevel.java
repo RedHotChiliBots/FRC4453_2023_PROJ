@@ -37,12 +37,11 @@ public class AutonChgStnLevel extends CommandBase {
     printCount = 0;
     motorSpd = chassis.levelChargingStation();
     printStat("INIT", true);
-    // chassis.getMotorData();
-    // chassis.setMotorData(0.2, 02);
+    chassis.getMotorData();
+    chassis.setMotorData(0.2, 0.2);
 
     motorSpd = chassis.levelChargingStation();
-    String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-    System.out.println(timeStamp + "   Start Level: Motor Spd: " + motorSpd);
+    printStat("EXEC", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +54,7 @@ public class AutonChgStnLevel extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // chassis.setMotorData();
+    chassis.setMotorData();
   }
 
   // Returns true when the command should end.

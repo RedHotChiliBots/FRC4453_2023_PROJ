@@ -15,7 +15,6 @@ public class LibraryPosTest {
 	Library lib = new Library();
 	double DELTA = 0.0001;
 
-	@Before
 	public void init() {
 		lib.initLibrary();
 	}
@@ -56,8 +55,20 @@ public class LibraryPosTest {
 	@Test
 	@Order(5)
 	public void testIsPitchIncreasing() throws Exception {
-//		System.out.println("Increasing: " + lib.isPitchIncreasing());
+		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertTrue(lib.isPitchIncreasing());
+	}
+
+	@Test
+	@Order(6)
+	public void tesAvgPitch() throws Exception {
+		assertEquals(2.0, lib.getAvgPitch(), DELTA);
+	}
+
+	@Test
+	@Order(7)
+	public void testAvgRate() throws Exception {
+		assertEquals(50.0, lib.getAvgRate(), DELTA);
 	}
 
 }

@@ -21,41 +21,36 @@ public class LibraryPosTest {
 
 	@Test
 	@Order(1)
-	public void updatePitch() throws Exception {
+	public void testUpdatePitch() throws Exception {
 		lib.initLibrary();
 		double rate = 0.0;
 		for (int i = 0; i < 5; i++) {
 			rate = lib.updatePitch(i);
 		}
-//		System.out.println("Rate: " + rate);
 		assertEquals(50.0, rate, DELTA);
 	}
 
 	@Test
 	@Order(2)
 	public void testGetMinPitch() throws Exception {
-//		System.out.println("Min: " + lib.getMinPitch());
 		assertEquals(0.0, lib.getMinPitch(), DELTA);
 	}
 
 	@Test
 	@Order(3)
 	public void testGetMaxPitch() throws Exception {
-		//		System.out.println("Max: " + lib.getMaxPitch());
 		assertEquals(4.0, lib.getMaxPitch(), DELTA);
 	}
 
 	@Test
 	@Order(4)
 	public void testIsPitchDecreasing() throws Exception {
-//		System.out.println("Decresing: " + lib.isPitchDecreasing());
 		assertFalse(lib.isPitchDecreasing());
 	}
 
 	@Test
 	@Order(5)
 	public void testIsPitchIncreasing() throws Exception {
-		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertTrue(lib.isPitchIncreasing());
 	}
 

@@ -21,7 +21,7 @@ public class LibraryNegTest {
 
 	@Test
 	@Order(1)
-	public void updatePitch() throws Exception {
+	public void testUpdatePitch() throws Exception {
 		lib.initLibrary();
 		double rate = 0.0;
 		for (int i = 0; i < 5; i++) {
@@ -57,14 +57,12 @@ public class LibraryNegTest {
 	@Test
 	@Order(6)
 	public void tesAvgPitch() throws Exception {
-		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertEquals(-2.0, lib.getAvgPitch(), DELTA);
 	}
 
 	@Test
 	@Order(7)
 	public void testAvgRate() throws Exception {
-		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertEquals(-50.0, lib.getAvgRate(), DELTA);
 	}
 }

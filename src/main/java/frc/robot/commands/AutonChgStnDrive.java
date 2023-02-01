@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Library;
 import frc.robot.subsystems.Chassis;
 
 public class AutonChgStnDrive extends CommandBase {
@@ -16,6 +17,8 @@ public class AutonChgStnDrive extends CommandBase {
   private Timer timer;
   private int printCount = 0;
   private boolean oneTime = false;
+
+  private Library lib = new Library();
 
   /** Creates a new AutonDrivePitch. */
   public AutonChgStnDrive(Chassis chassis) {
@@ -30,8 +33,8 @@ public class AutonChgStnDrive extends CommandBase {
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.printf("%s  %03d   %s   %10.4f   %10.4f   %10.4f   %10.4f   %s\n", method, printCount, timeStamp,
-      chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd, currPos, chassis.lib.getTipSwitch()?"True":"False");
+      System.out.printf("%s  %03d   %s   %10.4f   %10.4f   %10.4f   %10.4f   %b\n", method, printCount, timeStamp,
+          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd, currPos, lib.isTipSwitch());
     }
   }
 
@@ -55,7 +58,7 @@ public class AutonChgStnDrive extends CommandBase {
   public void execute() {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
-    if (timer.hasElapsed(3) && chassis.lib.getTipSwitch()) {
+    if (timer.hasElapsed(3) && lib.isTipSwitch()) {
       if (!oneTime) {
         printStat("TIP", true);
         oneTime = true;

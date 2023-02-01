@@ -20,55 +20,48 @@ public class LibraryZeroTest {
 
 	@Test
 	@Order(1)
-	public void updatePitch() throws Exception {
+	public void testUpdatePitch() throws Exception {
 		lib.initLibrary();
 		double rate = 0.0;
 		for (int i = 0; i < 5; i++) {
 			rate = lib.updatePitch(0);
 		}
-		//ystem.out.println("Rate: " + rate);
 		assertEquals(0.0, rate, DELTA);
 	}
 
 	@Test
 	@Order(2)
 	public void testGetMinPitch() throws Exception {
-		//System.out.println("Min: " + lib.getMinPitch());
 		assertEquals(0.0, lib.getMinPitch(), DELTA);
 	}
 
 	@Test
 	@Order(3)
 	public void testGetMaxPitch() throws Exception {
-		//System.out.println("Max: " + lib.getMaxPitch());
 		assertEquals(0.0, lib.getMaxPitch(), DELTA);
 	}
 
 	@Test
 	@Order(4)
 	public void testIsPitchDecreasing() throws Exception {
-		//System.out.println("Decresing: " + lib.isPitchDecreasing());
 		assertFalse(lib.isPitchDecreasing());
 	}
 
 	@Test
 	@Order(5)
 	public void testIsPitchIncreasing() throws Exception {
-		//System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertFalse(lib.isPitchDecreasing());
 	}
 
 	@Test
 	@Order(6)
 	public void tesAvgPitch() throws Exception {
-		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertEquals(0.0, lib.getAvgPitch(), DELTA);
 	}
 
 	@Test
 	@Order(7)
 	public void testAvgRate() throws Exception {
-		// System.out.println("Increasing: " + lib.isPitchIncreasing());
 		assertEquals(0.0, lib.getAvgRate(), DELTA);
 	}
 }

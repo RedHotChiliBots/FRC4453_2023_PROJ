@@ -32,11 +32,11 @@ public class Library {
       tipSwitch = false;
    }
 
-   public boolean getTipSwitch() {
+   public boolean isTipSwitch() {
       return tipSwitch;
    }
 
-   public boolean getDirSwitch() {
+   public boolean isDirSwitch() {
       return dirSwitch;
    }
 
@@ -82,7 +82,7 @@ public class Library {
 
       // calc pitch rate
       lastAvgRate = avgRate;
-      double avgRate = 0;
+      avgRate = 0.0;
       for (int i = 1; i < rollingPitchSize; i++) {
          avgRate += lastPitch[i] - lastPitch[i - 1];
       }

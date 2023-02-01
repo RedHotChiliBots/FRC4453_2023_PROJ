@@ -60,11 +60,12 @@ public class AutonChgStnDrive extends CommandBase {
         printStat("TIP", true);
         oneTime = true;
       }
-      if (avgPitch < 7.0) {
-        motorSpd = 0.075;
+      motorSpd = 0.25;
+      if (avgPitch < 8.0) {
+        motorSpd = 0.05;
       } else if (avgPitch < 12.0) {
-        motorSpd = 0.12;
-      } 
+        motorSpd = 0.1;
+      }
     }
     chassis.driveArcade(-motorSpd, 0.0);
 

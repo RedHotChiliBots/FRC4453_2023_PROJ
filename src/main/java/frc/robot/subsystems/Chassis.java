@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.AnalogIOConstants;
+import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.PneumaticChannelConstants;
@@ -97,16 +97,16 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Identify compressor hi and lo sensors
-	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogIOConstants.kHiPressureChannel);
-	private final AnalogInput loPressureSensor = new AnalogInput(AnalogIOConstants.kLoPressureChannel);
+	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogInConstants.kHiPressureChannel);
+	private final AnalogInput loPressureSensor = new AnalogInput(AnalogInConstants.kLoPressureChannel);
 
 	// ==============================================================
 	// Identify pneumatics for gear shifters
 
 	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
 			PneumaticsModuleType.CTREPCM,
-			PneumaticChannelConstants.kGearShifterHi,
-			PneumaticChannelConstants.kGearShifterLo);
+			PneumaticChannelConstants.kChassisShifterHi,
+			PneumaticChannelConstants.kChassisShifterLo);
 
 	// ==============================================================
 	// Define local variables
@@ -129,27 +129,38 @@ public class Chassis extends SubsystemBase {
 	// Define Shuffleboard data
 
 	private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID");
-//	private final GenericEntry sbLevelPID = pidTab.add("Level PID", false).getEntry();
+	// private final GenericEntry sbLevelPID = pidTab.add("Level PID",
+	// false).getEntry();
 
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
-	 private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
-	// private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0).getEntry();
-	 private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0).getEntry();
-	// private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0).getEntry();
-	// private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0).getEntry();
-	// private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0).getEntry();
+	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
+	// private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML
+	// Velocity", 0).getEntry();
+	private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0).getEntry();
+	// private final GenericEntry sbRightVel = chassisTab.addPersistent("MR
+	// Velocity", 0).getEntry();
+	// private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power",
+	// 0).getEntry();
+	// private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power",
+	// 0).getEntry();
 	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0).getEntry();
 	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0).getEntry();
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
 
-	// private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0).getEntry();
-	// private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0).getEntry();
-	// private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0).getEntry();
+	// private final GenericEntry sbX = chassisTab.addPersistent("Pose X",
+	// 0).getEntry();
+	// private final GenericEntry sbY = chassisTab.addPersistent("Pose Y",
+	// 0).getEntry();
+	// private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg",
+	// 0).getEntry();
 
-	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint", 0.0).getEntry();
-	// private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error", 0.0).getEntry();
-	// private final GenericEntry sbRightErr = chassisTab.addPersistent("Right Error", 0.0).getEntry();
+	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint",
+	// 0.0).getEntry();
+	// private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error",
+	// 0.0).getEntry();
+	// private final GenericEntry sbRightErr = chassisTab.addPersistent("Right
+	// Error", 0.0).getEntry();
 	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false).getEntry();
 
 	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
@@ -280,7 +291,7 @@ public class Chassis extends SubsystemBase {
 		// sbSetPt.setDouble(setPoint);
 		// sbLeftErr.setDouble(leftError);
 		// sbRightErr.setDouble(rightError);
-		 sbAtTgt.setBoolean(atTarget());
+		sbAtTgt.setBoolean(atTarget());
 
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
@@ -317,7 +328,7 @@ public class Chassis extends SubsystemBase {
 	private double leftMin;
 	private double rightMax;
 	private double rightMin;
-	
+
 	public void getMotorData() {
 		leftMax = leftPIDController.getOutputMax();
 		leftMin = leftPIDController.getOutputMin();
@@ -398,15 +409,15 @@ public class Chassis extends SubsystemBase {
 	}
 
 	// public double getAvgRate() {
-	// 	return avgRate;
+	// return avgRate;
 	// }
 
 	// public double getMinPitch() {
-	// 	return minPitch;
+	// return minPitch;
 	// }
 
 	// public double getMaxPitch() {
-	// 	return maxPitch;
+	// return maxPitch;
 	// }
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {
@@ -518,10 +529,10 @@ public class Chassis extends SubsystemBase {
 	// }
 
 	public double getLoPressure() {
-		return 250.0 * (loPressureSensor.getVoltage() / AnalogIOConstants.kInputVoltage) - 25.0;
+		return 250.0 * (loPressureSensor.getVoltage() / AnalogInConstants.kInputVoltage) - 25.0;
 	}
 
 	public double getHiPressure() {
-		return 250.0 * (hiPressureSensor.getVoltage() / AnalogIOConstants.kInputVoltage) - 25.0;
+		return 250.0 * (hiPressureSensor.getVoltage() / AnalogInConstants.kInputVoltage) - 25.0;
 	}
 }

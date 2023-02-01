@@ -42,9 +42,9 @@ public class Crane extends SubsystemBase {
   private final SparkMaxPIDController tiltPID = tiltMotor.getPIDController();
   private final SparkMaxPIDController armPID = armMotor.getPIDController();
 
-  private double turretSetPoint = 0.0;
-  private double tiltSetPoint = 0.0;
-  private double armSetPoint = 0.0;
+  private double turretSetPoint = CraneConstants.kTurretInitPos;
+  private double tiltSetPoint = CraneConstants.kTiltInitPos;
+  private double armSetPoint = CraneConstants.kArmInitPos;
   
   // ==============================================================
   // Define Shuffleboard data
@@ -80,23 +80,17 @@ public class Crane extends SubsystemBase {
     turretPID.setP(CraneConstants.kTurretP);
     turretPID.setI(CraneConstants.kTurretI);
     turretPID.setD(CraneConstants.kTurretD);
+    turretPID.setOutputRange(CraneConstants.kTurretMinOutput, CraneConstants.kTurretMaxOutput);
 
     tiltPID.setP(CraneConstants.kTiltP);
     tiltPID.setI(CraneConstants.kTiltI);
     tiltPID.setD(CraneConstants.kTiltD);
+    tiltPID.setOutputRange(CraneConstants.kTiltMinOutput, CraneConstants.kTiltMaxOutput);
 
     armPID.setP(CraneConstants.kArmP);
     armPID.setI(CraneConstants.kArmI);
     armPID.setD(CraneConstants.kArmD);
-
-    // turretPID.setSetSetpoint(CraneConstants.kTurretSetPoint);
-    // turretPID.setTolerance(CraneConstants.kTurretSetTolerance);
-
-    // tiltPID.setSetpoint(CraneConstants.kTiltSetPoint);
-    // tiltPID.setTolerance(CraneConstants.kTiltSetTolerance);
-
-    // armPID.setSetpoint(CraneConstants.kArmSetPoint);
-    // armPID.setTolerance(CraneConstants.kArmSetTolerance);
+    armPID.setOutputRange(CraneConstants.kArmMinOutput, CraneConstants.kArmMaxOutput);
 
     // ==============================================================
     // Configure encoders
@@ -105,11 +99,11 @@ public class Crane extends SubsystemBase {
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
 
     initTurretPos();
-    setTurretPosition(CraneConstants.kTurretInitPos);
+    setTurretPosition(turretSetPoint);
     initTiltPos();
-    setTiltPosition(CraneConstants.kTurretInitPos);
+    setTiltPosition(tiltSetPoint);
     initArmPos();
-    setArmPosition(CraneConstants.kTurretInitPos);
+    setArmPosition(armSetPoint);
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }

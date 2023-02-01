@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import java.util.EnumMap;
+// import java.util.HashMap;
+// import java.util.Map;
+
+//import javax.security.auth.x500.X500PrivateCredential;
+
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -38,14 +44,14 @@ public final class Constants {
 	}
 
 	public static final class PneumaticChannelConstants {
-		public static final int kGearShifterHi = 0;
-		public static final int kGearShifterLo = 1;
+		public static final int kChassisShifterHi = 0;
+		public static final int kChassisShifterLo = 1;
 		public static final int kIntakeArmOpen = 2;
 		public static final int kIntakeArmClose = 3;
-		public static final int kLeftPistonClose = 4;
-		public static final int kLeftPistonOpen = 5;
-		public static final int kRightPistonClose = 6;
-		public static final int kRightPistonOpen = 7;
+		public static final int kClawLeftClose = 4;
+		public static final int kClawLeftOpen = 5;
+		public static final int kClawRightClose = 6;
+		public static final int kClawRightOpen = 7;
 	}
 
 	public static final class DIOChannelConstants {
@@ -70,11 +76,15 @@ public final class Constants {
 		public static final long kRumbleDelay = 1000; // milliseconds
 	}
 
-	public static final class AnalogIOConstants {
+	public static final class AnalogInConstants {
 		public static final int kHiPressureChannel = 0;
 		public static final int kLoPressureChannel = 1;
 
 		public static final double kInputVoltage = 5.0;
+	}
+
+	public static final class RelayConstants {
+		// None defined
 	}
 
 	public static final class ChassisConstants {
@@ -142,15 +152,10 @@ public final class Constants {
 	}
 
 	public static final class CraneConstants {
-		public static final double kTurretInitPos = 0.0; // degrees
-		public static final double kTiltInitPos = -45.0; // degrees
-		public static final double kArmInitPos = 24.0; // inches
-
 		public static final double kTurretP = 0.35;
 		public static final double kTurretI = 0.0000;
 		public static final double kTurretD = 0.0;
-		public static final double kTurretSetPoint = 0;
-		public static final double kTurretSetTolerance = 0.5;
+		public static final double kTurretInitPos = 0.0; // degrees
 
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.0;
@@ -160,8 +165,7 @@ public final class Constants {
 		public static final double kTiltP = 0.35;
 		public static final double kTiltI = 0.0000;
 		public static final double kTiltD = 0.0;
-		public static final double kTiltSetPoint = 0;
-		public static final double kTiltSetTolerance = 0.5;
+		public static final double kTiltInitPos = -45.0; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.0;
@@ -171,13 +175,12 @@ public final class Constants {
 		public static final double kArmP = 0.35;
 		public static final double kArmI = 0.0000;
 		public static final double kArmD = 0.0;
-		public static final double kArmSetPoint = 0;
-		public static final double kArmTolerance = 0.5;
+		public static final double kArmInitPos = 24.0; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.0;
-		public static final double kArmtMinOutput = -1.0;
-		public static final double kArmtMaxOutput = 1.0;
+		public static final double kArmMinOutput = -1.0;
+		public static final double kArmMaxOutput = 1.0;
 
 		public static final double kTurretSprocketTeeth = 170;
 		public static final double kTurretMotorSprocketTeeth = 18;

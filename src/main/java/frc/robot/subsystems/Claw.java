@@ -13,17 +13,17 @@ import frc.robot.Constants.PneumaticChannelConstants;
 public class Claw extends SubsystemBase {
   private final DoubleSolenoid leftPiston = new DoubleSolenoid(
       PneumaticsModuleType.CTREPCM,
-      PneumaticChannelConstants.kLeftPistonOpen,
-      PneumaticChannelConstants.kLeftPistonClose);
+      PneumaticChannelConstants.kClawLeftOpen,
+      PneumaticChannelConstants.kClawLeftClose);
   private final DoubleSolenoid rightPiston = new DoubleSolenoid(
       PneumaticsModuleType.CTREPCM,
-      PneumaticChannelConstants.kRightPistonOpen,
-      PneumaticChannelConstants.kRightPistonClose);
+      PneumaticChannelConstants.kClawRightOpen,
+      PneumaticChannelConstants.kClawRightClose);
 
   /** Creates a new Claw. */
   public Claw() {
     System.out.println("+++++ Claw Constructor starting +++++");
-    
+
     openPiston();
 
     System.out.println("+++++ Claw Constructor finishing +++++");

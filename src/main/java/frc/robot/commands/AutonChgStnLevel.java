@@ -26,8 +26,8 @@ public class AutonChgStnLevel extends CommandBase {
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.printf("%s  %03d   %s   %9.3f   %9.3f   %9.3f\n", method, printCount, timeStamp,
-          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd);
+      System.out.printf("%s  %03d   %s   %9.3f   %9.3f   %9.3f   %9.3f\n", method, printCount, timeStamp,
+          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), chassis.lib.getDeltaRate(), motorSpd);
     }
   }
 
@@ -38,7 +38,7 @@ public class AutonChgStnLevel extends CommandBase {
     motorSpd = chassis.levelChargingStation();
     printStat("INIT", true);
     chassis.getMotorData();
-    chassis.setMotorData(0.2, 0.2);
+    chassis.setMotorData(0.15, 0.15);
 
     motorSpd = chassis.levelChargingStation();
     printStat("EXEC", true);

@@ -266,6 +266,8 @@ public class Chassis extends SubsystemBase {
 		// lastPitch[i] = 0.0;
 		// }
 
+		lib.initLibrary();
+		
 		stopChassis();
 
 		System.out.println("----- Chassis Constructor finished -----");

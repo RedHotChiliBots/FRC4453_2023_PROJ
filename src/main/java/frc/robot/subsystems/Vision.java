@@ -165,7 +165,7 @@ public class Vision extends SubsystemBase {
 
       // Also calculate angular power
       // -1.0 required to ensure positive PID controller effort _increases_ yaw
-      rotationSpeed = -turnController.calculate(target.getYaw(), 0);
+      rotationSpeed = turnController.calculate(target.getYaw(), 0);
 
     } else {
       forwardSpeed = 0;

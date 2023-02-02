@@ -29,19 +29,20 @@ public class AutonChgStnDrive extends CommandBase {
 
   private void printStat(String method, boolean force) {
     if (printCount == 0) {
-      System.out.println("    Counter   TimeStamp   Avg Pitch   Avg Rate   Speed   Position   Tip Switch");
+      System.out.println("    Counter   TimeStamp   Avg Pitch   Avg Rate   Delta Rate   Speed   Position   Tip Switch");
     }
     if (printCount++ % 10 == 0 || force) {
       String timeStamp = chassis.timeStamp.format(System.currentTimeMillis());
-      System.out.printf("%s  %03d   %s   %10.4f   %10.4f   %10.4f   %10.4f   %b\n", method, printCount, timeStamp,
-          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), motorSpd, currPos, lib.isTipSwitch());
+      System.out.printf("%s  %03d   %s   %10.4f   %10.4f   %10.4f  %10.4f   %10.4f   %b\n", method, printCount, timeStamp,
+          chassis.lib.getAvgPitch(), chassis.lib.getAvgRate(), chassis.lib.getDeltaRate(),
+          motorSpd, currPos, lib.isTipSwitch());
     }
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    motorSpd = 0.35;
+    motorSpd = 0.375;
     oneTime = false;
     printCount = 0;
     timer = new Timer();
@@ -59,15 +60,17 @@ public class AutonChgStnDrive extends CommandBase {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
     if (timer.hasElapsed(3) && lib.isTipSwitch()) {
-      if (!oneTime) {
-        printStat("TIP", true);
-        oneTime = true;
-      }
-      motorSpd = 0.25;
+
+      motorSpd = .30;
       if (avgPitch < 8.0) {
         motorSpd = 0.05;
-      } else if (avgPitch < 12.0) {
-        motorSpd = 0.1;
+      } else if (avgPitch < 14.0) {
+        motorSpd = 0.075;
+      }
+
+      if (!oneTime) {
+        printStat("TIP ", true);
+        oneTime = true;
       }
     }
     chassis.driveArcade(-motorSpd, 0.0);
@@ -80,8 +83,9 @@ public class AutonChgStnDrive extends CommandBase {
   public void end(boolean interrupted) {
     avgPitch = chassis.lib.getAvgPitch();
     currPos = chassis.leftEncoder.getPosition();
-
-    printStat("End", true);
+    motorSpd = 0.0;
+    chassis.driveArcade(-motorSpd, 0.0);
+    printStat("End ", true);
   }
 
   // Returns true when the command should end.

@@ -7,6 +7,7 @@ public class Library {
 
    private static double lastRate = 0.0;
    private static double avgRate = 0.0;
+   private static double deltaRate = 0.0;
    private static double lastAvgRate = 0.0;
    private static double maxPitch = 0.0;
    private static double minPitch = 0.0;
@@ -22,6 +23,7 @@ public class Library {
       }
       lastRate = 0.0;
       avgRate = 0.0;
+      deltaRate = 0.0;
       lastAvgRate = 0.0;
       maxPitch = 0.0;
       minPitch = 0.0;
@@ -64,6 +66,10 @@ public class Library {
       return avgRate;
    }
 
+   public double getDeltaRate() {
+      return deltaRate;
+   }
+
    public double updatePitch(double pitch) {
       // collect rolling pitch list
       avgPitch = 0.0;
@@ -88,7 +94,8 @@ public class Library {
       }
       avgRate = avgRate / 0.020 / 4;
      
-      if (Math.abs(lastAvgRate - avgRate) > 1.0) {
+      deltaRate = Math.abs(lastAvgRate - avgRate);
+      if (avgRate < -0.5 && (avgPitch > 16.0)) {
          tipSwitch = true;
       }
 

@@ -140,12 +140,6 @@ public class Vision extends SubsystemBase {
       // If we have no targets, stay still.
       sbHasTarget.setBoolean(false);
     }
-
-    // } else {
-    // // Manual Driver Mode
-    // forwardSpeed = -xboxController.getRightY();
-    // rotationSpeed = xboxController.getLeftX();
-    // }
   }
 
   public double[] trackAprilTag() {

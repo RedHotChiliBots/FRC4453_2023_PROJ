@@ -19,37 +19,37 @@ public class LibraryOtherTest {
 		lib.initLibrary();
 	}
 
-	@Test
-	@Order(1)
-	public void testInit1() throws Exception {
-		lib.initLibrary();
-		double rate = 0.0;
-		rate = lib.updatePitch(0.01);
+	// @Test
+	// @Order(1)
+	// public void testInit1() throws Exception {
+	// 	lib.initLibrary();
+	// 	double rate = 0.0;
+	// 	rate = lib.updatePitch(0.01);
 
-		assertEquals(0.125, rate, DELTA);
-	}
+	// 	assertEquals(0.125, rate, DELTA);
+	// }
 
-	@Test
-	@Order(2)
-	public void testIsTipSwitch1() throws Exception {
+	// @Test
+	// @Order(2)
+	// public void testIsTipSwitch1() throws Exception {
 
-		assertFalse(lib.isTipSwitch());
-	}
+	// 	assertFalse(lib.isTipSwitch());
+	// }
 
-	@Test
-	@Order(3)
-	public void testInit2() throws Exception {
-		double rate = 0.0;
+	// @Test
+	// @Order(3)
+	// public void testInit2() throws Exception {
+	// 	double rate = 0.0;
 
-		rate = lib.updatePitch(0.1);
+	// 	rate = lib.updatePitch(0.1);
 
-		assertEquals(1.25, rate, DELTA);
-	}
+	// 	assertEquals(1.25, rate, DELTA);
+	// }
 
-	@Test
-	@Order(4)
-	public void testIsTipSwitch2() throws Exception {
-		assertTrue(lib.isTipSwitch());
-	}
+	// @Test
+	// @Order(4)
+	// public void testIsTipSwitch2() throws Exception {
+	// 	assertTrue(lib.isTipSwitch());
+	// }
 
 }

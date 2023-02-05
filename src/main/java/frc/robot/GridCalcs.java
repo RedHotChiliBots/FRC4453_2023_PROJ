@@ -9,172 +9,125 @@ import java.util.Map;
 
 /** Add your docs here. */
 public class GridCalcs {
-	public static final class GridConstants {
 
-		public enum ALLIENCE {
-			RED,
-			BLUE
-		}
+	public enum ALLIENCE {
+		RED,
+		BLUE
+	}
 
-		public enum GAMEPIECE {
-			CONE,
-			CUBE
-		}
+	public enum E {
+		CONE,
+		CUBE
+	}
 
-		public enum VERTGRID {
-			TOP,
-			MID,
-			BOT,
-		}
+	public enum V {
+		TOP,
+		MID,
+		BOT
+	}
 
-		public enum HORZGRID {
-			LEFT,
-			CENTER,
-			RIGHT,
-		}
+	public enum H {
+		LEFT,
+		CENTER,
+		RIGHT
+	}
 
-		public enum COORD {
-			X,
-			Y,
-			Z
-		}
+	public enum C {
+		X,
+		Y,
+		Z
+	}
 
-		private class ROBOTARM {
-			private double X;
-			private double Y;
-			private double Z;
+	private final EnumMap<C, Double> kRobotArm = new EnumMap<>(Map.of(
+			C.X, 0.0,
+			C.Y, -8.75,
+			C.Z, 39.0));
 
-			public ROBOTARM(double X, double Y, double Z) {
-				this.Y = X;
-				this.Y = Y;
-				this.Z = Z;
-			}
+	public double getRobotArm(C c) {
+		return kRobotArm.get(c);
+	}
 
-			public double getX() {
-				return this.X;
-			}
+	private final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
+			E.CONE, 12.0,
+			E.CUBE, 6.0));
 
-			public double getY() {
-				return this.Y;
-			}
+	public double getZG(E e) {
+		return kZG.get(e);
+	}
 
-			public double getZ() {
-				return this.Z;
-			}
+	private final EnumMap<H, Double> kXNode = new EnumMap<>(Map.of(
+			H.LEFT, -21.25,
+			H.CENTER, 0.0,
+			H.RIGHT, 21.25));
 
-			public void setX(double X) {
-				this.X = X;
-			}
+	public double getXNode(H h) {
+		return kXNode.get(h);
+	}
 
-			public void setY(double Y) {
-				this.Y = Y;
-			}
+	private final EnumMap<V, Double> kYNode = new EnumMap<>(Map.of(
+			V.TOP, 39.75,
+			V.MID, 22.75,
+			V.BOT, 8.0));
 
-			public void setZ(double Z) {
-				this.Z = Z;
-			}
-		}
+	public double getYNode(V v) {
+		return kYNode.get(v);
+	}
 
-		private class GamePiece {
-			private double z;
+	private final EnumMap<V, Map<E, Double>> kZNode = new EnumMap<>(Map.of(
+			V.TOP,
+			Map.of(E.CONE, 46.0,
+					E.CUBE, 35.5),
+			V.MID,
+			Map.of(E.CONE, 34.0,
+					E.CUBE, 23.5),
+			V.BOT,
+			Map.of(E.CONE, 5.0,
+					E.CUBE, 5.0)));
 
-			public GamePiece(double z) {
-				this.z = z;
-			}
+	public double getZNode(V v, E e) {
+		return kZNode.get(v).get(e);
+	}
 
-			public double getZ() {
-				return this.z;
-			}
+	public double getY() {
+		return Math.sqrt(
+				Math.pow(kXNode.get(horz) - kRobotArm.get(C.X), 2) +
+				Math.pow(kYNode.get(vert) - kRobotArm.get(C.Y), 2) +
+				Math.pow(kZNode.get(vert).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
+	}
 
-			public void setZ(double z) {
-				this.z = z;
-			}
-		}
+	public double getX() {
+		return Math.toDegrees(Math.asin(kXNode.get(horz) / getY()));
+	}
 
-		public class GRIDYZ {
-			private double Y;
-			private double Z;
+	public double getZ() {
+		return Math.toDegrees(Math.asin((kZNode.get(vert).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+	}
 
-			public GRIDYZ(double Y, double Z) {
-				this.Y = Y;
-				this.Z = Z;
-			}
+	private E elem = null;
+	private H horz = null;
+	private V vert = null;
 
-			public double getY() {
-				return this.Y;
-			}
+	public void setElem(E e) {
+		this.elem = e;
+	}
 
-			public double getZ() {
-				return this.Z;
-			}
+	public E getElem() {
+		return elem;
+	}
 
-			public void setY(double Y) {
-				this.Y = Y;
-			}
+	public void setVert(V v) {
+		this.vert = v;
+	}
 
-			public void setZ(double Z) {
-				this.Z = Z;
-			}
-		}
+	public V getVert() {
+		return vert;
+	}
 
-		public class Node {
-			private double turretAngle;
-			private double tiltAngle;
-			private double armLength;
+	public void setHorz(H h) {
+		this.horz = h;
+	}
 
-			public Node(double turretAngle, double tiltAngle, double armLength) {
-				this.turretAngle = turretAngle;
-				this.tiltAngle = tiltAngle;
-				this.armLength = armLength;
-			}
-
-			public double getTurretAngle() {
-				return this.turretAngle;
-			}
-
-			public double getTiltAngle() {
-				return this.tiltAngle;
-			}
-
-			public double getArmLength() {
-				return this.armLength;
-			}
-
-			public void setTurretAngle(double angle) {
-				this.turretAngle = angle;
-			}
-
-			public void setTiltAngle(double angle) {
-				this.tiltAngle = angle;
-			}
-
-			public void setArmLength(double length) {
-				this.armLength = length;
-			}
-		}
-
-		ROBOTARM robotArm = new ROBOTARM(0.0, -8.0, 39.0);
-
-		private static final EnumMap<COORD, Double> kRobotArm = new EnumMap<>(Map.of(
-				COORD.X, 0.0,
-				COORD.Y, -8.0,
-				COORD.Z, 39.0));
-
-		private static final EnumMap<GAMEPIECE, Double> kGamePiece = new EnumMap<>(Map.of(
-				GAMEPIECE.CONE, 12.0,
-				GAMEPIECE.CUBE, 6.0));
-
-		// private static final EnumMap<GAMEPIECE, EnumMap<VERTGRID, Double>> kGridZ1 = new EnumMap<GAMEPIECE, EnumMap<VERTGRID, Double>>(
-		// 		(EnumMap<GAMEPIECE, ? extends EnumMap<VERTGRID, Double>>) Map.of(
-		// 				GAMEPIECE.CONE,
-		// 				Map.of(VERTGRID.TOP, 46.0,
-		// 						VERTGRID.MID, 46.0,
-		// 						VERTGRID.BOT, 46.0),
-		// 				GAMEPIECE.CUBE,
-		// 				Map.of(VERTGRID.TOP, 46.0,
-		// 						VERTGRID.MID, 46.0,
-		// 						VERTGRID.BOT, 46.0)));
-
-		Node[][] kGrid = new Node[3][3];
+	public H getHorz() {
+		return horz;
 	}
 }

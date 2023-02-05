@@ -236,7 +236,7 @@ public class RobotContainer {
 		chooser.addOption("Return To Grid", autonReturnToGrid);
 		chooser.addOption("Straight", autonStraight);
 		chooser.addOption("Return", autonReturn);
-//		chooser.addOption("Track April Tag", autonTrackAprilTag);
+		chooser.addOption("Track April Tag", autonTrackAprilTag);
 
 		// =============================================================
 		// Build chooser for autonomous commands

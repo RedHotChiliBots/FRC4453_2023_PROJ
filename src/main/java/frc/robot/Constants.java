@@ -201,6 +201,11 @@ public final class Constants {
 		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
 
 		public static final double kArmPosFactor = kArmInchesPerRotation;
+
+		public static final double kCraneArmClear = 0.0; //inches
+		public static final double kCraneTiltClear = 50.0;	// degrees
+		public static final double kCraneTurretGridSide = 180.0; // degrees
+		public static final double kCraneWait = 2.0;	// seconds
 	}
 
 	public static final class VisionConstants {

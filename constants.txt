@@ -1,0 +1,12 @@
+Robot Arm
+       X    0.0000       Y   -8.7500       Z   39.3125
+Element Height above Score
+    CONE   12.0000    CUBE    6.0000
+Offset from Center (x)
+    LEFT  -21.2500  CENTER    0.0000   RIGHT   21.2500
+Depth of Grid (y)
+     TOP   39.7500     MID   22.7500     BOT    8.0000
+CONE    Height from Floor (z)
+     TOP   46.0000     MID   34.0000     BOT    5.0000
+CUBE    Height from Floor (z)
+     TOP   35.5000     MID   23.5000     BOT    5.0000

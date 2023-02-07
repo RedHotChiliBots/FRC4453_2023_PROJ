@@ -22,14 +22,16 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
@@ -70,17 +72,18 @@ import frc.robot.Constants.OIConstants;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-	// The robot's subsystems and commands are defined here...
-	private static final Chassis chassis = new Chassis();
-	private static final Claw claw = new Claw();
-	// private static final Crane crane = new Crane();
-	private static final Intake intake = new Intake();
-	private static final Vision vision = new Vision();
-
 	// =============================================================
 	// Define Joysticks
 	public static final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
 	public static final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
+
+	// The robot's subsystems and commands are defined here...
+	private static final Chassis chassis = new Chassis();
+	private static final Claw claw = new Claw();
+	private static final Crane crane = new Crane(operator);
+	private static final Intake intake = new Intake();
+	private static final Vision vision = new Vision();
+
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
@@ -275,7 +278,10 @@ public class RobotContainer {
 		new JoystickButton(operator, Button.kA.value).onTrue(IntakeMoterOut);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
+	}
 
+	public double getDPad() {
+		return operator.getPOV();
 	}
 
 	private final double MAXSPEED = 6.0; // meters per second or approx half rotation (PI) per sec

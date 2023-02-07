@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +16,9 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import frc.robot.GridCalcs;
+import frc.robot.GridCalcs.H;
+import frc.robot.GridCalcs.V;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
 
@@ -46,6 +50,10 @@ public class Crane extends SubsystemBase {
   private double tiltSetPoint = CraneConstants.kTiltInitPos;
   private double armSetPoint = CraneConstants.kArmInitPos;
   
+  private GridCalcs grid = new GridCalcs();
+  private XboxController operator;
+  private int dpadValue;
+
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
@@ -60,8 +68,12 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
 
   /** Creates a new Crane. */
-  public Crane() {
+  public Crane( XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
+
+    this.operator = operator;
+    grid.horz.set(H.CENTER);
+    grid.vert.set(V.MID);
 
     turretMotor.restoreFactoryDefaults();
     tiltMotor.restoreFactoryDefaults();
@@ -111,6 +123,8 @@ public class Crane extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    readDPad();
+
     sbTurretSP.setDouble(getTurretSetPoint());
     sbTiltSP.setDouble(getTiltSetPoint());
     sbArmSP.setDouble(getArmSetPoint());
@@ -120,6 +134,18 @@ public class Crane extends SubsystemBase {
     sbTurretVel.setDouble(turretEncoder.getVelocity());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
     sbArmVel.setDouble(armEncoder.getVelocity());
+  }
+
+  public double getGridX() {
+    return grid.getX();
+  }
+
+  public double getGridY() {
+    return grid.getY();
+  }
+
+  public double getGridZ() {
+    return grid.getZ();
   }
 
   public void initTurretPos() {
@@ -147,6 +173,21 @@ public class Crane extends SubsystemBase {
   public void setArmPosition(double setPoint) {
     this.armSetPoint = setPoint;
     armPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+  }
+
+  // TODO
+  public boolean atTurrentSetPoint() {
+    return false;
+  }
+
+  // TODO
+  public boolean atTiltSetPoint() {
+    return false;
+  }
+
+  // TODO
+  public boolean atArmSetPoint() {
+    return false;
   }
 
   public double getTurretPosition() {
@@ -195,5 +236,42 @@ public class Crane extends SubsystemBase {
 
   public void setArmSpeed(double spd) {
     armMotor.set(spd);
+  }
+
+  public void readDPad() {
+    dpadValue = operator.getPOV();
+    if (dpadValue != -1) {
+      switch (dpadValue) {
+        case 0:
+          grid.vert.prev();
+          break;
+        case 45:
+          grid.vert.prev();
+          grid.horz.next();
+          break;
+        case 90:
+          grid.horz.next();
+          break;
+        case 135:
+          grid.horz.next();
+          grid.vert.next();
+          break;
+        case 180:
+          grid.vert.next();
+          break;
+        case 225:
+          grid.horz.prev();
+          grid.vert.next();
+          break;
+        case 270:
+          grid.horz.prev();
+          break;
+        case 315:
+          grid.horz.prev();
+          grid.vert.prev();
+          break;
+        default:
+      }
+    }
   }
 }

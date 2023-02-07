@@ -26,10 +26,82 @@ public class GridCalcs {
 		BOT
 	}
 
+	public class Vert {
+
+		V v;
+
+		public Vert() {
+		}
+
+		public Vert(V v) {
+			set(v);
+		}
+
+		public void set(V v) {
+			this.v = v;
+		}
+
+		public V get() {
+			return (v);
+		}
+
+		public V next() {
+			// No bounds checking required here, because the last instance overrides
+			int ord = v.ordinal();
+			if (ord < V.values().length - 1)
+				v = V.values()[ord + 1];
+			return v;
+		}
+
+		public V prev() {
+			// No bounds checking required here, because the last instance overrides
+			int ord = v.ordinal();
+			if (ord > 0)
+				v = V.values()[ord - 1];
+			return v;
+		}
+	}
+
 	public enum H {
 		LEFT,
 		CENTER,
 		RIGHT
+	}
+
+	public class Horz {
+
+		H h;
+
+		public Horz() {
+		}
+
+		public Horz(H h) {
+			set(h);
+		}
+
+		public void set(H h) {
+			this.h = h;
+		}
+
+		public H get() {
+			return (h);
+		}
+
+		public H next() {
+			// No bounds checking required here, because the last instance overrides
+			int ord = h.ordinal();
+			if (ord < H.values().length - 1)
+				h = H.values()[ord + 1];
+			return h;
+		}
+
+		public H prev() {
+			// No bounds checking required here, because the last instance overrides
+			int ord = h.ordinal();
+			if (ord > 0)
+				h = H.values()[ord - 1];
+			return h;
+		}
 	}
 
 	public enum C {
@@ -38,16 +110,16 @@ public class GridCalcs {
 		Z
 	}
 
-	private final EnumMap<C, Double> kRobotArm = new EnumMap<>(Map.of(
+	public final EnumMap<C, Double> kRobotArm = new EnumMap<>(Map.of(
 			C.X, 0.0,
 			C.Y, -8.75,
-			C.Z, 39.0));
+			C.Z, 39.3125));
 
 	public double getRobotArm(C c) {
 		return kRobotArm.get(c);
 	}
 
-	private final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
+	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
 			E.CONE, 12.0,
 			E.CUBE, 6.0));
 
@@ -90,22 +162,23 @@ public class GridCalcs {
 
 	public double getY() {
 		return Math.sqrt(
-				Math.pow(kXNode.get(horz) - kRobotArm.get(C.X), 2) +
-				Math.pow(kYNode.get(vert) - kRobotArm.get(C.Y), 2) +
-				Math.pow(kZNode.get(vert).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
+				Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.X), 2) +
+				Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.Y), 2) +
+				Math.pow(kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
 	}
 
 	public double getX() {
-		return Math.toDegrees(Math.asin(kXNode.get(horz) / getY()));
+		return Math.toDegrees(Math.asin(kXNode.get(horz.get()) / getY()));
 	}
 
 	public double getZ() {
-		return Math.toDegrees(Math.asin((kZNode.get(vert).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+		return Math.toDegrees(Math.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
 	}
 
+	public Horz horz = new Horz();
+	public Vert vert = new Vert();
+
 	private E elem = null;
-	private H horz = null;
-	private V vert = null;
 
 	public void setElem(E e) {
 		this.elem = e;
@@ -113,21 +186,5 @@ public class GridCalcs {
 
 	public E getElem() {
 		return elem;
-	}
-
-	public void setVert(V v) {
-		this.vert = v;
-	}
-
-	public V getVert() {
-		return vert;
-	}
-
-	public void setHorz(H h) {
-		this.horz = h;
-	}
-
-	public H getHorz() {
-		return horz;
 	}
 }

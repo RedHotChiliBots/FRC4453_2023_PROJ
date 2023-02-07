@@ -17,11 +17,19 @@ public class GridSetGetTest {
 
    @Test
    public void testSettersGetters() throws Exception {
+      grid.vert.set(V.MID);
+      assertEquals(V.MID, grid.vert.get());
+      grid.horz.set(H.LEFT);
+      assertEquals(H.LEFT, grid.horz.get());
       grid.setElem(E.CONE);
       assertEquals(E.CONE, grid.getElem());
-      grid.setHorz(H.CENTER);
-      assertEquals(H.CENTER, grid.getHorz());
-      grid.setVert(V.TOP);
-      assertEquals(V.TOP, grid.getVert());
+      grid.horz.set(H.CENTER);
+      assertEquals(H.CENTER, grid.horz.get());
+      grid.vert.set(V.TOP);
+      assertEquals(V.TOP, grid.vert.get());
+      grid.horz.set(H.RIGHT);
+      assertEquals(H.RIGHT, grid.horz.get());
+      grid.vert.set(V.BOT);
+      assertEquals(V.BOT, grid.vert.get());
    }
 }

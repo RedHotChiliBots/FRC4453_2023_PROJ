@@ -18,79 +18,79 @@ public class GridCalcsTest {
 
    @Test
    public void TestTop() {
+      grid.vert.set(V.TOP);
+      grid.horz.set(H.LEFT);
       grid.setElem(E.CONE);
-      grid.setVert(V.TOP);
-      grid.setHorz(H.LEFT);
-      assertEquals(-22.1933, grid.getX(), DELTA);
-      assertEquals(56.2566, grid.getY(), DELTA);
-      assertEquals(19.7391, grid.getZ(), DELTA);
+      assertEquals(-22.2369, grid.getX(), DELTA);
+      assertEquals(56.1518, grid.getY(), DELTA);
+      assertEquals(19.4389, grid.getZ(), DELTA);
 
-      grid.setHorz(H.RIGHT);
-      assertEquals(22.1933, grid.getX(), DELTA);
-      assertEquals(56.2566, grid.getY(), DELTA);
-      assertEquals(19.7391, grid.getZ(), DELTA);
+      grid.horz.set(H.RIGHT);
+      assertEquals(22.2369, grid.getX(), DELTA);
+      assertEquals(56.1518, grid.getY(), DELTA);
+      assertEquals(19.4389, grid.getZ(), DELTA);
 
       grid.setElem(E.CUBE);
-      grid.setHorz(H.CENTER);
+      grid.horz.set(H.CENTER);
       assertEquals(0.0, grid.getX(), DELTA);
-      assertEquals(48.5643, grid.getY(), DELTA);
-      assertEquals(2.9507, grid.getZ(), DELTA);
+      assertEquals(48.5493, grid.getY(), DELTA);
+      assertEquals(2.5824, grid.getZ(), DELTA);
    }
 
    @Test
    public void TestMid() {
       grid.setElem(E.CONE);
-      grid.setVert(V.MID);
-      grid.setHorz(H.LEFT);
-      assertEquals(-33.3664, grid.getX(), DELTA);
-      assertEquals(38.6369, grid.getY(), DELTA);
-      assertEquals(10.4381, grid.getZ(), DELTA);
+      grid.vert.set(V.MID);
+      grid.horz.set(H.LEFT);
+      assertEquals(-33.4206, grid.getX(), DELTA);
+      assertEquals(38.5815, grid.getY(), DELTA);
+      assertEquals(9.9817, grid.getZ(), DELTA);
 
-      grid.setHorz(H.RIGHT);
-      assertEquals(33.3664, grid.getX(), DELTA);
-      assertEquals(38.6369, grid.getY(), DELTA);
-      assertEquals(10.4381, grid.getZ(), DELTA);
+      grid.horz.set(H.RIGHT);
+      assertEquals(33.4206, grid.getX(), DELTA);
+      assertEquals(38.5815, grid.getY(), DELTA);
+      assertEquals(9.9817, grid.getZ(), DELTA);
 
       grid.setElem(E.CUBE);
-      grid.setHorz(H.CENTER);
+      grid.horz.set(H.CENTER);
       assertEquals(0.0, grid.getX(), DELTA);
-      assertEquals(32.9013, grid.getY(), DELTA);
-      assertEquals(-16.7826, grid.getZ(), DELTA);
+      assertEquals(32.9929, grid.getY(), DELTA);
+      assertEquals(-17.3022, grid.getZ(), DELTA);
    }
 
    @Test
    public void TestBot() {
       grid.setElem(E.CONE);
-      grid.setVert(V.BOT);
-      grid.setHorz(H.LEFT);
-      assertEquals(-37.5428, grid.getX(), DELTA);
-      assertEquals(34.8729, grid.getY(), DELTA);
-      assertEquals(-39.1136, grid.getZ(), DELTA);
+      grid.vert.set(V.BOT);
+      grid.horz.set(H.LEFT);
+      assertEquals(-37.2946, grid.getX(), DELTA);
+      assertEquals(35.0709, grid.getY(), DELTA);
+      assertEquals(-39.5097, grid.getZ(), DELTA);
 
-      grid.setHorz(H.CENTER);
+      grid.horz.set(H.CENTER);
       assertEquals(0.0, grid.getX(), DELTA);
-      assertEquals(27.6507, grid.getY(), DELTA);
-      assertEquals(-52.7156, grid.getZ(), DELTA);
+      assertEquals(27.9000, grid.getY(), DELTA);
+      assertEquals(-53.1044, grid.getZ(), DELTA);
 
-      grid.setHorz(H.RIGHT);
-      assertEquals(37.5428, grid.getX(), DELTA);
-      assertEquals(34.8729, grid.getY(), DELTA);
-      assertEquals(-39.1136, grid.getZ(), DELTA);
+      grid.horz.set(H.RIGHT);
+      assertEquals(37.2946, grid.getX(), DELTA);
+      assertEquals(35.0709, grid.getY(), DELTA);
+      assertEquals(-39.5097, grid.getZ(), DELTA);
 
       grid.setElem(E.CUBE);
-      grid.setHorz(H.LEFT);
-      assertEquals(-33.0757, grid.getX(), DELTA);
-      assertEquals(38.9374, grid.getY(), DELTA);
-      assertEquals(-45.9803, grid.getZ(), DELTA);
+      grid.horz.set(H.LEFT);
+      assertEquals(-32.8612, grid.getX(), DELTA);
+      assertEquals(39.1627, grid.getY(), DELTA);
+      assertEquals(-46.2981, grid.getZ(), DELTA);
 
-      grid.setHorz(H.CENTER);
+      grid.horz.set(H.CENTER);
       assertEquals(0.0, grid.getX(), DELTA);
-      assertEquals(32.6276, grid.getY(), DELTA);
-      assertEquals(-59.1115, grid.getZ(), DELTA);
+      assertEquals(32.8962, grid.getY(), DELTA);
+      assertEquals(-59.3909, grid.getZ(), DELTA);
 
-      grid.setHorz(H.RIGHT);
-      assertEquals(33.0757, grid.getX(), DELTA);
-      assertEquals(38.9374, grid.getY(), DELTA);
-      assertEquals(-45.9803, grid.getZ(), DELTA);
+      grid.horz.set(H.RIGHT);
+      assertEquals(32.8612, grid.getX(), DELTA);
+      assertEquals(39.1627, grid.getY(), DELTA);
+      assertEquals(-46.2981, grid.getZ(), DELTA);
    }
 }

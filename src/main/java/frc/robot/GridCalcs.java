@@ -160,19 +160,68 @@ public class GridCalcs {
 		return kZNode.get(v).get(e);
 	}
 
+	private final EnumMap<V, Map<H, Map<E, Boolean>>> kNodeValid = new EnumMap<>(Map.of(
+			V.TOP,
+			Map.of(H.LEFT,
+					Map.of(E.CUBE, false,
+							E.CONE, true),
+					H.CENTER,
+					Map.of(E.CUBE, true,
+							E.CONE, false),
+					H.RIGHT,
+					Map.of(E.CUBE, false,
+							E.CONE, true)),
+			V.MID,
+			Map.of(H.LEFT,
+					Map.of(E.CUBE, false,
+							E.CONE, true),
+					H.CENTER,
+					Map.of(E.CUBE, true,
+							E.CONE, false),
+					H.RIGHT,
+					Map.of(E.CUBE, false,
+							E.CONE, true)),
+			V.BOT,
+			Map.of(H.LEFT,
+					Map.of(E.CUBE, true,
+							E.CONE, true),
+					H.CENTER,
+					Map.of(E.CUBE, true,
+							E.CONE, true),
+					H.RIGHT,
+					Map.of(E.CUBE, true,
+							E.CONE, true))));
+
+	public boolean isNodeValid(V v, H h, E e) {
+		return kNodeValid.get(v).get(h).get(e);
+	}
+
 	public double getY() {
-		return Math.sqrt(
-				Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.X), 2) +
-				Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.Y), 2) +
-				Math.pow(kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
+		if (isNodeValid(vert.get(), horz.get(), getElem())) {
+			return Math.sqrt(
+					Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.X), 2) +
+							Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.Y), 2) +
+							Math.pow(kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
+		} else {
+			return Float.NaN;
+		}
 	}
 
 	public double getX() {
-		return Math.toDegrees(Math.asin(kXNode.get(horz.get()) / getY()));
+		if (isNodeValid(vert.get(), horz.get(), getElem())) {
+			return Math.toDegrees(Math.asin(kXNode.get(horz.get()) / getY()));
+		} else {
+			return Float.NaN;
+		}
 	}
 
 	public double getZ() {
-		return Math.toDegrees(Math.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+		if (isNodeValid(vert.get(), horz.get(), getElem())) {
+			return Math
+					.toDegrees(Math.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+		} else {
+			return Float.NaN;
+		}
 	}
 
 	public Horz horz = new Horz();

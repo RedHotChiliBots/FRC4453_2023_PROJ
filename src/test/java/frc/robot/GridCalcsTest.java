@@ -35,6 +35,23 @@ public class GridCalcsTest {
       assertEquals(0.0, grid.getX(), DELTA);
       assertEquals(48.5493, grid.getY(), DELTA);
       assertEquals(2.5824, grid.getZ(), DELTA);
+
+      grid.horz.set(H.LEFT);
+      grid.setElem(E.CUBE);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
+
+      grid.horz.set(H.RIGHT);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
+
+      grid.setElem(E.CONE);
+      grid.horz.set(H.CENTER);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
    }
 
    @Test
@@ -56,6 +73,23 @@ public class GridCalcsTest {
       assertEquals(0.0, grid.getX(), DELTA);
       assertEquals(32.9929, grid.getY(), DELTA);
       assertEquals(-17.3022, grid.getZ(), DELTA);
+
+      grid.horz.set(H.LEFT);
+      grid.setElem(E.CUBE);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
+
+      grid.horz.set(H.RIGHT);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
+
+      grid.setElem(E.CONE);
+      grid.horz.set(H.CENTER);
+      assertEquals(Float.NaN, grid.getX(), DELTA);
+      assertEquals(Float.NaN, grid.getY(), DELTA);
+      assertEquals(Float.NaN, grid.getZ(), DELTA);
    }
 
    @Test

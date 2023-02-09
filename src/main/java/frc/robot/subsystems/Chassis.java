@@ -326,6 +326,14 @@ public class Chassis extends SubsystemBase {
 		avgRate = lib.updatePitch(getPitch());
 	}
 
+	public void disableCompressor() {
+		compressor.disable();
+	}
+
+	public void enableCompressor() {
+		compressor.enableDigital();
+	}
+
 	private double leftMax;
 	private double leftMin;
 	private double rightMax;

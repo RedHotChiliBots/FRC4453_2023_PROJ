@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -93,6 +94,7 @@ public class Chassis extends SubsystemBase {
 	// ==============================================================
 	// Identify PDP and PCM
 	private final PowerDistribution pdp = new PowerDistribution();
+	private final PneumaticsControlModule pcm = new PneumaticsControlModule();
 	private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 	// ==============================================================
@@ -179,8 +181,9 @@ public class Chassis extends SubsystemBase {
 		System.out.println("+++++ Chassis Constructor starting +++++");
 
 		// ==============================================================
-		// Configure PDP
+		// Configure PDP and PCM
 		pdp.clearStickyFaults();
+		pcm.clearAllStickyFaults();
 
 		// ==============================================================
 		// Configure the left side motors, master and follower

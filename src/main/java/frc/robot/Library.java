@@ -95,7 +95,7 @@ public class Library {
       avgRate = avgRate / 0.020 / 4;
      
       deltaRate = Math.abs(lastAvgRate - avgRate);
-      System.out.println("avgRate " + avgRate + "    avgPitch " + avgPitch);
+//      System.out.println("avgRate " + avgRate + "    avgPitch " + avgPitch);
       if (avgRate < -0.5 && (avgPitch > 16.0)) {
          tipSwitch = true;
       }

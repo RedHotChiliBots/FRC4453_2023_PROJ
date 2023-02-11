@@ -67,6 +67,9 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbTurretVel = craneTab.addPersistent("Turret Vel", 0).getEntry();
   private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
   private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
+  private final GenericEntry sbTurretFactor = craneTab.addPersistent("Turret Factor", 0).getEntry();
+  private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor", 0).getEntry();
+  private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor", 0).getEntry();
 
   /** Creates a new Crane. */
   public Crane( XboxController operator) {
@@ -139,6 +142,10 @@ public class Crane extends SubsystemBase {
     setTiltSetPoint(tiltSetPoint);
     initArmPos();
     setArmSetPoint(armSetPoint);
+
+    sbTurretFactor.setDouble(CraneConstants.kTurretRotationsPerDegree);
+    sbTiltFactor.setDouble(CraneConstants.kTiltRotationsPerDegree);
+    sbArmFactor.setDouble(CraneConstants.kArmInchesPerRotation);
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }

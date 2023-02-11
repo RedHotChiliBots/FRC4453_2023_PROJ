@@ -161,7 +161,7 @@ public final class Constants {
 		public static final double kTiltP = 0.35;
 		public static final double kTiltI = 0.0000;
 		public static final double kTiltD = 0.0;
-		public static final double kTiltInitPos = -45.0; // degrees
+		public static final double kTiltInitPos = -80.0; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.0;
@@ -173,7 +173,7 @@ public final class Constants {
 		public static final double kArmP = 0.35;
 		public static final double kArmI = 0.0000;
 		public static final double kArmD = 0.0;
-		public static final double kArmInitPos = 24.0; // inches
+		public static final double kArmInitPos = 25.065; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.0;

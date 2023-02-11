@@ -136,6 +136,18 @@ public class Crane extends SubsystemBase {
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
 
+  public double getArmSBPos() {
+    return sbArmSP.getDouble(0.0);
+  }
+
+  public double getTiltSBPos() {
+    return sbTiltSP.getDouble(0.0);
+  }
+
+  public double getTurretSBPos() {
+    return sbTurretSP.getDouble(0.0);
+  }
+
   public double getGridX() {
     return grid.getX();
   }

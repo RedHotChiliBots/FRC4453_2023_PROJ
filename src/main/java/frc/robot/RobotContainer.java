@@ -41,6 +41,10 @@ import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ClawGrabCone;
 import frc.robot.commands.ClawGrabCube;
 import frc.robot.commands.ClawRelease;
+import frc.robot.commands.CraneArm2Pos;
+import frc.robot.commands.CraneTilt2Pos;
+import frc.robot.commands.CraneTurret2Pos;
+import frc.robot.commands.CraneArm2PosPID;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.DoRumble;
 import frc.robot.commands.IntakeClose;
@@ -116,6 +120,10 @@ public class RobotContainer {
 
 	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
+	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(crane, crane.getArmSBPos());
+	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(crane, crane.getTiltSBPos());
+	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(crane, crane.getTurretSBPos());
+
 	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
 	private final ClawRelease clawRelease = new ClawRelease(claw);
@@ -157,7 +165,7 @@ public class RobotContainer {
 		// Add Subsystems to Dashboard
 		SmartDashboard.putData("Chassis", chassis);
 		SmartDashboard.putData("Claw", claw);
-		// SmartDashboard.putData("Crane", crane);
+		SmartDashboard.putData("Crane", crane);
 		SmartDashboard.putData("Intake", intake);
 		SmartDashboard.putData("Vision", vision);
 
@@ -165,7 +173,7 @@ public class RobotContainer {
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
 		claw.setDefaultCommand(clawGrabCone);
-		// crane.setDefaultCommand(chassisArcadeDrive);
+		crane.setDefaultCommand(chassisArcadeDrive);
 		intake.setDefaultCommand(intakeStow);
 		vision.setDefaultCommand(teleopTrackAprilTag);
 
@@ -265,9 +273,14 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
-		new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		// new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
+		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
+		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+
+//		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneStartPIDs);
+		new JoystickButton(driver, Button.kA.value).onTrue(craneArm2Pos);
+		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneTilt2Pos);
+		new JoystickButton(driver, Button.kRightBumper.value).onTrue(craneTurret2Pos);
 
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
 		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);

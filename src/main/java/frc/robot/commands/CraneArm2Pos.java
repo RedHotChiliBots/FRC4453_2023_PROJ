@@ -12,7 +12,7 @@ public class CraneArm2Pos extends CommandBase {
   private double pos;
 
   /** Creates a new CraneNodeChooser. */
-  public CraneArm2Pos(Crane crane, Double pos) {
+  public CraneArm2Pos(Crane crane, double pos) {
     this.crane = crane;
     this.pos = pos;
 

@@ -440,11 +440,11 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void driveTank(double left, double right) {
-		diffDrive.tankDrive(-left, -right);
+		diffDrive.tankDrive(left, right);
 	}
 
 	public void driveArcade(double spd, double rot) {
-		diffDrive.arcadeDrive(-spd, rot);
+		diffDrive.arcadeDrive(spd, -rot);
 	}
 
 	/**

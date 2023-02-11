@@ -60,13 +60,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void revMoters() {
-    leftMotor.set(0.75);
-    rightMotor.set(-0.75);
+    leftMotor.set(0.25);
+    rightMotor.set(-0.25);
   }
 
   public void fwdMoters() {
-    leftMotor.set(-.75);
-    rightMotor.set(0.75);
+    leftMotor.set(-.25);
+    rightMotor.set(0.25);
   }
 
   public void closeArm() {

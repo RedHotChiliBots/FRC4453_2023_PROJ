@@ -274,8 +274,8 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
-		new JoystickButton(operator, Button.kX.value).onTrue(intakeMoterIn);
-		new JoystickButton(operator, Button.kA.value).onTrue(IntakeMoterOut);
+		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMoterIn);
+		new JoystickButton(operator, Button.kA.value).whileTrue(IntakeMoterOut);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
 	}

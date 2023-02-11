@@ -19,6 +19,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.GridCalcs;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
+import frc.robot.GridCalcs.E;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
 
@@ -66,6 +67,9 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbTurretVel = craneTab.addPersistent("Turret Vel", 0).getEntry();
   private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
   private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
+  private final GenericEntry sbTurretFactor = craneTab.addPersistent("Turret Factor (dpr)", 0).getEntry();
+  private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0).getEntry();
+  private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor (ipr)", 0).getEntry();
 
   /** Creates a new Crane. */
   public Crane( XboxController operator) {
@@ -74,6 +78,7 @@ public class Crane extends SubsystemBase {
     this.operator = operator;
     grid.horz.set(H.CENTER);
     grid.vert.set(V.MID);
+    grid.setElem(E.CONE);
 
     turretMotor.restoreFactoryDefaults();
     tiltMotor.restoreFactoryDefaults();
@@ -92,17 +97,38 @@ public class Crane extends SubsystemBase {
     turretPID.setP(CraneConstants.kTurretP);
     turretPID.setI(CraneConstants.kTurretI);
     turretPID.setD(CraneConstants.kTurretD);
+    turretPID.setIZone(CraneConstants.kTurretIz);
+    turretPID.setFF(CraneConstants.kTurretFF);
     turretPID.setOutputRange(CraneConstants.kTurretMinOutput, CraneConstants.kTurretMaxOutput);
+
+    turretPID.setSmartMotionMaxVelocity(CraneConstants.kTurretMaxVel, CraneConstants.kTurretSlot);
+    turretPID.setSmartMotionMinOutputVelocity(CraneConstants.kTurretMinVel, CraneConstants.kTurretSlot);
+    turretPID.setSmartMotionMaxAccel(CraneConstants.kTurretMaxAccel, CraneConstants.kTurretSlot);
+    turretPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kTurretAllowErr, CraneConstants.kTurretSlot);
 
     tiltPID.setP(CraneConstants.kTiltP);
     tiltPID.setI(CraneConstants.kTiltI);
     tiltPID.setD(CraneConstants.kTiltD);
+    tiltPID.setIZone(CraneConstants.kTiltIz);
+    tiltPID.setFF(CraneConstants.kTiltFF);
     tiltPID.setOutputRange(CraneConstants.kTiltMinOutput, CraneConstants.kTiltMaxOutput);
+
+    tiltPID.setSmartMotionMaxVelocity(CraneConstants.kTiltMaxVel, CraneConstants.kTiltSlot);
+    tiltPID.setSmartMotionMinOutputVelocity(CraneConstants.kTiltMinVel, CraneConstants.kTiltSlot);
+    tiltPID.setSmartMotionMaxAccel(CraneConstants.kTiltMaxAccel, CraneConstants.kTiltSlot);
+    tiltPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kTiltAllowErr, CraneConstants.kTiltSlot);
 
     armPID.setP(CraneConstants.kArmP);
     armPID.setI(CraneConstants.kArmI);
     armPID.setD(CraneConstants.kArmD);
+    armPID.setIZone(CraneConstants.kArmIz);
+    armPID.setFF(CraneConstants.kArmFF);
     armPID.setOutputRange(CraneConstants.kArmMinOutput, CraneConstants.kArmMaxOutput);
+
+    armPID.setSmartMotionMaxVelocity(CraneConstants.kArmMaxVel, CraneConstants.kArmSlot);
+    armPID.setSmartMotionMinOutputVelocity(CraneConstants.kArmMinVel, CraneConstants.kArmSlot);
+    armPID.setSmartMotionMaxAccel(CraneConstants.kArmMaxAccel, CraneConstants.kTiltSlot);
+    armPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kArmAllowErr, CraneConstants.kArmSlot);
 
     // ==============================================================
     // Configure encoders
@@ -111,11 +137,15 @@ public class Crane extends SubsystemBase {
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
 
     initTurretPos();
-    setTurretPosition(turretSetPoint);
+    setTurretSetPoint(turretSetPoint);
     initTiltPos();
-    setTiltPosition(tiltSetPoint);
+    setTiltSetPoint(tiltSetPoint);
     initArmPos();
-    setArmPosition(armSetPoint);
+    setArmSetPoint(armSetPoint);
+
+    sbTurretFactor.setDouble(CraneConstants.kTurretPosFactor);
+    sbTiltFactor.setDouble(CraneConstants.kTiltPosFactor);
+    sbArmFactor.setDouble(CraneConstants.kArmPosFactor);
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }
@@ -134,6 +164,18 @@ public class Crane extends SubsystemBase {
     sbTurretVel.setDouble(turretEncoder.getVelocity());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
     sbArmVel.setDouble(armEncoder.getVelocity());
+  }
+
+  public double getArmSBPos() {
+    return sbArmSP.getDouble(0.0);
+  }
+
+  public double getTiltSBPos() {
+    return sbTiltSP.getDouble(0.0);
+  }
+
+  public double getTurretSBPos() {
+    return sbTurretSP.getDouble(0.0);
   }
 
   public double getGridX() {
@@ -160,19 +202,19 @@ public class Crane extends SubsystemBase {
     armEncoder.setPosition(CraneConstants.kArmInitPos);
   }
 
-  public void setTurretPosition(double setPoint) {
+  public void setTurretSetPoint(double setPoint) {
     this.turretSetPoint = setPoint;
-    turretPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+    turretPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public void setTiltPosition(double setPoint) {
+  public void setTiltSetPoint(double setPoint) {
     this.tiltSetPoint = setPoint;
-    tiltPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+    tiltPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public void setArmPosition(double setPoint) {
+  public void setArmSetPoint(double setPoint) {
     this.armSetPoint = setPoint;
-    armPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
+    armPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
   // TODO

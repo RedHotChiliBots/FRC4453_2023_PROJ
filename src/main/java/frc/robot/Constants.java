@@ -146,6 +146,7 @@ public final class Constants {
 	}
 
 	public static final class CraneConstants {
+		public static final int kTurretSlot = 0;
 		public static final double kTurretP = 0.35;
 		public static final double kTurretI = 0.0000;
 		public static final double kTurretD = 0.0;
@@ -153,11 +154,14 @@ public final class Constants {
 
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.0;
+		public static final double kTurretAllowErr = 0.5;
 		public static final double kTurretMinOutput = -1.0;
 		public static final double kTurretMaxOutput = 1.0;
+		public static final double kTurretMinVel = 0.0;
 		public static final double kTurretMaxVel = 0.3;
 		public static final double kTurretMaxAccel = 0.3;
 
+		public static final int kTiltSlot = 0;
 		public static final double kTiltP = 0.35;
 		public static final double kTiltI = 0.0000;
 		public static final double kTiltD = 0.0;
@@ -165,11 +169,14 @@ public final class Constants {
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.0;
+		public static final double kTiltAllowErr = 0.5;
 		public static final double kTiltMinOutput = -1.0;
 		public static final double kTiltMaxOutput = 1.0;
+		public static final double kTiltMinVel = 0.0;
 		public static final double kTiltMaxVel = 0.3;
 		public static final double kTiltMaxAccel = 0.3;
 
+		public static final int kArmSlot = 0;
 		public static final double kArmP = 0.35;
 		public static final double kArmI = 0.0000;
 		public static final double kArmD = 0.0;
@@ -177,8 +184,10 @@ public final class Constants {
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.0;
+		public static final double kArmAllowErr = 0.5;
 		public static final double kArmMinOutput = -1.0;
 		public static final double kArmMaxOutput = 1.0;
+		public static final double kArmMinVel = 0.0;
 		public static final double kArmMaxVel = 0.3;
 		public static final double kArmMaxAccel = 0.3;
 

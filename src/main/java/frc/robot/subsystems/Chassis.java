@@ -269,9 +269,11 @@ public class Chassis extends SubsystemBase {
 		// lastPitch[i] = 0.0;
 		// }
 
-		lib.initLibrary();
-		
 		stopChassis();
+		
+		setGearShifter(GearShifterState.HI);
+
+		lib.initLibrary();
 
 		System.out.println("----- Chassis Constructor finished -----");
 	}

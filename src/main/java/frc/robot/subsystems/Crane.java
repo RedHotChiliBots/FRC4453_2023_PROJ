@@ -111,11 +111,11 @@ public class Crane extends SubsystemBase {
     armEncoder.setPositionConversionFactor(CraneConstants.kArmPosFactor);
 
     initTurretPos();
-    setTurretPosition(turretSetPoint);
+    setTurretSetPoint(turretSetPoint);
     initTiltPos();
-    setTiltPosition(tiltSetPoint);
+    setTiltSetPoint(tiltSetPoint);
     initArmPos();
-    setArmPosition(armSetPoint);
+    setArmSetPoint(armSetPoint);
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }
@@ -160,17 +160,17 @@ public class Crane extends SubsystemBase {
     armEncoder.setPosition(CraneConstants.kArmInitPos);
   }
 
-  public void setTurretPosition(double setPoint) {
+  public void setTurretSetPoint(double setPoint) {
     this.turretSetPoint = setPoint;
     turretPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
   }
 
-  public void setTiltPosition(double setPoint) {
+  public void setTiltSetPoint(double setPoint) {
     this.tiltSetPoint = setPoint;
     tiltPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
   }
 
-  public void setArmPosition(double setPoint) {
+  public void setArmSetPoint(double setPoint) {
     this.armSetPoint = setPoint;
     armPID.setReference(setPoint, CANSparkMax.ControlType.kPosition);
   }

@@ -7,34 +7,48 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.subsystems.Crane;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CraneTilt2PosPID extends ProfiledPIDCommand {
+  Crane crane;
+  double setPoint;
+
   /** Creates a new CraneTurret2PosPID. */
-  public CraneTilt2PosPID() {
+  public CraneTilt2PosPID(Crane crane, double setPoint) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains
-            0,
-            0,
-            0,
+            CraneConstants.kTiltP,
+            CraneConstants.kTiltI,
+            CraneConstants.kTiltD,
             // The motion profile constraints
-            new TrapezoidProfile.Constraints(0, 0)),
+            new TrapezoidProfile.Constraints(CraneConstants.kTiltMaxVel, CraneConstants.kTiltMaxAccel)),
         // This should return the measurement
-        () -> 0,
+        () -> crane.getTiltPosition(),
         // This should return the goal (can also be a constant)
         () -> new TrapezoidProfile.State(),
         // This uses the output
         (output, setpoint) -> {
           // Use the output (and setpoint, if desired) here
+          crane.setTiltSpeed(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    this.crane = crane;
+    this.setPoint = setPoint;
   }
 
+  // Initialze command
+  @Override
+  public void initialize() {
+    crane.setTiltSetPoint(setPoint);
+  }
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

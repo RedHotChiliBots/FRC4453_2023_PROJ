@@ -155,6 +155,8 @@ public final class Constants {
 		public static final double kTurretFF = 0.0;
 		public static final double kTurretMinOutput = -1.0;
 		public static final double kTurretMaxOutput = 1.0;
+		public static final double kTurretMaxVel = 0.3;
+		public static final double kTurretMaxAccel = 0.3;
 
 		public static final double kTiltP = 0.35;
 		public static final double kTiltI = 0.0000;
@@ -165,6 +167,8 @@ public final class Constants {
 		public static final double kTiltFF = 0.0;
 		public static final double kTiltMinOutput = -1.0;
 		public static final double kTiltMaxOutput = 1.0;
+		public static final double kTiltMaxVel = 0.3;
+		public static final double kTiltMaxAccel = 0.3;
 
 		public static final double kArmP = 0.35;
 		public static final double kArmI = 0.0000;
@@ -175,6 +179,8 @@ public final class Constants {
 		public static final double kArmFF = 0.0;
 		public static final double kArmMinOutput = -1.0;
 		public static final double kArmMaxOutput = 1.0;
+		public static final double kArmMaxVel = 0.3;
+		public static final double kArmMaxAccel = 0.3;
 
 		public static final double kTurretSprocketTeeth = 170;
 		public static final double kTurretMotorSprocketTeeth = 18;

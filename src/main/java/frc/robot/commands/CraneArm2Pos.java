@@ -28,7 +28,7 @@ public class CraneArm2Pos extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    crane.setArmPosition(pos);
+    crane.setArmSetPoint(pos);
   }
 
   // Called once the command ends or is interrupted.

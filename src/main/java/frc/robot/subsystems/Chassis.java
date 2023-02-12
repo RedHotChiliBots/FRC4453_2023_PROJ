@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.PneumaticChannelConstants;
 
 import frc.robot.Library;
@@ -170,12 +171,6 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
 
 	public final Library lib = new Library();
-
-	public enum GearShifterState {
-		NA,
-		HI,
-		LO
-	}
 
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");

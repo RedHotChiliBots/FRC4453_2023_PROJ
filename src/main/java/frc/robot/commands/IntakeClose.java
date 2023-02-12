@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Intake;
 
 public class IntakeClose extends CommandBase {
@@ -25,8 +28,7 @@ public class IntakeClose extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.closeArm();
-
+    intake.setIntake(CylinderState.CLOSE);
   }
 
   // Called once the command ends or is interrupted.

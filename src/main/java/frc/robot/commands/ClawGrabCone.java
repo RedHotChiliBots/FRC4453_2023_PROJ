@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Claw;
 
 public class ClawGrabCone extends CommandBase {
@@ -24,8 +25,8 @@ public class ClawGrabCone extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    claw.closeRightPiston();
-    claw.closeLeftPiston();
+    claw.setClaw(CylinderState.CONECLOSE);
+    claw.setClaw(CylinderState.CUBECLOSE);
   }
 
   // Called once the command ends or is interrupted.

@@ -46,6 +46,7 @@ import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.CraneArm2PosPID;
 import frc.robot.commands.ChassisArcadeDrive;
+import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
 import frc.robot.commands.IntakeClose;
 import frc.robot.commands.IntakeMoterIn;
@@ -64,6 +65,7 @@ import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.OIConstants;
 
 /**
@@ -119,6 +121,9 @@ public class RobotContainer {
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
 
 	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
+
+	private final ChassisSetGearShifter chassisShiftHI = new ChassisSetGearShifter(chassis, GearShifterState.HI);
+	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis,  GearShifterState.LO);
 
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(crane, crane.getArmSBPos());
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(crane, crane.getTiltSBPos());
@@ -278,13 +283,16 @@ public class RobotContainer {
 		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 
 //		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneStartPIDs);
-		new JoystickButton(driver, Button.kA.value).onTrue(craneArm2Pos);
-		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneTilt2Pos);
-		new JoystickButton(driver, Button.kRightBumper.value).onTrue(craneTurret2Pos);
+		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(chassisShiftHI);
+		new JoystickButton(driver, Button.kRightBumper.value).onTrue(chassisShiftLO);
 
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
 		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
+
+		new JoystickButton(driver, Button.kA.value).onTrue(craneArm2Pos);
+		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(craneTilt2Pos);
+		new JoystickButton(operator, Button.kRightBumper.value).onTrue(craneTurret2Pos);
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMoterIn);

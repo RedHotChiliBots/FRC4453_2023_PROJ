@@ -20,6 +20,20 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+	public enum GearShifterState {
+		NA,
+		HI,
+		LO
+	}
+
+	public enum CylinderState {
+		NA,
+		OPEN,
+		CLOSE,
+		CUBECLOSE,
+		CONECLOSE
+	}
+
 	public static final class CANidConstants {
 		public static final int kPDP = 0;
 		public static final int kCompressor = 0;
@@ -40,8 +54,8 @@ public final class Constants {
 	public static final class PneumaticChannelConstants {
 		public static final int kChassisShifterHi = 0;
 		public static final int kChassisShifterLo = 1;
-		public static final int kIntakeArmOpen = 2;
-		public static final int kIntakeArmClose = 3;
+		public static final int kIntakeArmClose = 2;
+		public static final int kIntakeArmOpen = 3;
 		public static final int kClawLeftClose = 4;
 		public static final int kClawLeftOpen = 5;
 		public static final int kClawRightClose = 6;
@@ -154,7 +168,7 @@ public final class Constants {
 
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
-		public static final double kTurretAllowErr = 0.0;
+		public static final double kTurretAllowErr = 0.5;
 		public static final double kTurretMinOutput = -1.0;
 		public static final double kTurretMaxOutput = 1.0;
 		public static final double kTurretMinVel = 0.0;
@@ -167,7 +181,7 @@ public final class Constants {
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.000156;
-		public static final double kTiltAllowErr = 0.0;
+		public static final double kTiltAllowErr = 0.5;
 		public static final double kTiltMinOutput = -1.0;
 		public static final double kTiltMaxOutput = 1.0;
 		public static final double kTiltMinVel = 0.0;
@@ -180,7 +194,7 @@ public final class Constants {
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;
-		public static final double kArmAllowErr = 0.0;
+		public static final double kArmAllowErr = 0.5;
 		public static final double kArmMinOutput = -1.0;
 		public static final double kArmMaxOutput = 1;
 		public static final double kArmMinVel = 0.0;

@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.PneumaticChannelConstants;
 
 import frc.robot.Library;
@@ -171,12 +172,6 @@ public class Chassis extends SubsystemBase {
 
 	public final Library lib = new Library();
 
-	public enum GearShifterState {
-		NA,
-		HI,
-		LO
-	}
-
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");
 
@@ -269,9 +264,11 @@ public class Chassis extends SubsystemBase {
 		// lastPitch[i] = 0.0;
 		// }
 
-		lib.initLibrary();
-		
 		stopChassis();
+		
+		setGearShifter(GearShifterState.HI);
+
+		lib.initLibrary();
 
 		System.out.println("----- Chassis Constructor finished -----");
 	}
@@ -440,11 +437,11 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void driveTank(double left, double right) {
-		diffDrive.tankDrive(-left, -right);
+		diffDrive.tankDrive(left, right);
 	}
 
 	public void driveArcade(double spd, double rot) {
-		diffDrive.arcadeDrive(-spd, rot);
+		diffDrive.arcadeDrive(spd, -rot);
 	}
 
 	/**

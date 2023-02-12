@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CylinderState;
 import frc.robot.Constants.PneumaticChannelConstants;
 
 public class Claw extends SubsystemBase {
@@ -24,7 +25,7 @@ public class Claw extends SubsystemBase {
   public Claw() {
     System.out.println("+++++ Claw Constructor starting +++++");
 
-    openPiston();
+    setClaw(CylinderState.CUBECLOSE);
 
     System.out.println("+++++ Claw Constructor finishing +++++");
   }
@@ -34,16 +35,23 @@ public class Claw extends SubsystemBase {
 
   }
 
-  public void closeLeftPiston() {
-    leftPiston.set(Value.kForward);
-  }
-
-  public void closeRightPiston() {
-    rightPiston.set(Value.kForward);
-  }
-
-  public void openPiston() {
-    leftPiston.set(Value.kReverse);
-    rightPiston.set(Value.kReverse);
+  public void setClaw(CylinderState state) {
+    leftPiston.set(Value.kOff);
+    rightPiston.set(Value.kOff);
+    switch (state) {
+      case OPEN:
+        leftPiston.set(Value.kReverse);
+        rightPiston.set(Value.kReverse);
+        break;
+      case CUBECLOSE:
+        leftPiston.set(Value.kForward);
+        rightPiston.set(Value.kReverse);
+        break;
+      case CONECLOSE:
+        rightPiston.set(Value.kForward);
+        leftPiston.set(Value.kForward);
+        break;
+      default:
+    }
   }
 }

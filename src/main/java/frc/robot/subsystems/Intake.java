@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
+import frc.robot.Constants.CylinderState;
 import frc.robot.Constants.PneumaticChannelConstants;
 
 public class Intake extends SubsystemBase {
@@ -60,22 +61,25 @@ public class Intake extends SubsystemBase {
   }
 
   public void revMoters() {
-    leftMotor.set(0.75);
-    rightMotor.set(-0.75);
+    leftMotor.set(0.25);
+    rightMotor.set(-0.25);
   }
 
   public void fwdMoters() {
-    leftMotor.set(-.75);
-    rightMotor.set(0.75);
+    leftMotor.set(-.25);
+    rightMotor.set(0.25);
   }
 
-  public void closeArm() {
-    intakeArm.set(Value.kForward);
+  public void setIntake(CylinderState state) {
+    intakeArm.set(Value.kOff);
+    switch (state) {
+      case OPEN:
+        intakeArm.set(Value.kForward);
+        break;
+      case CLOSE:
+        intakeArm.set(Value.kReverse);
+        break;
+      default:
+    }
   }
-
-  public void openArm() {
-    intakeArm.set(Value.kReverse);
-
-  }
-
 }

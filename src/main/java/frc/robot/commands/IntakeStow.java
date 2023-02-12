@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Intake;
 
 public class IntakeStow extends CommandBase {
@@ -25,7 +26,7 @@ public class IntakeStow extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.openArm();
+    intake.setIntake(CylinderState.OPEN);
     intake.stopMoters();
 
   }

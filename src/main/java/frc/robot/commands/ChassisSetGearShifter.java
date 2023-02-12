@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Chassis.GearShifterState;
+import frc.robot.Constants.GearShifterState;
 
 public class ChassisSetGearShifter extends CommandBase {
   Chassis chassis;

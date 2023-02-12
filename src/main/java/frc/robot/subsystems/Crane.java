@@ -23,7 +23,6 @@ import frc.robot.GridCalcs.E;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
 
-
 public class Crane extends SubsystemBase {
   // ==============================================================
   // Define the left side motors, master and follower
@@ -50,7 +49,7 @@ public class Crane extends SubsystemBase {
   private double turretSetPoint = CraneConstants.kTurretInitPos;
   private double tiltSetPoint = CraneConstants.kTiltInitPos;
   private double armSetPoint = CraneConstants.kArmInitPos;
-  
+
   private GridCalcs grid = new GridCalcs();
   private XboxController operator;
   private int dpadValue;
@@ -72,7 +71,7 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor (ipr)", 0).getEntry();
 
   /** Creates a new Crane. */
-  public Crane( XboxController operator) {
+  public Crane(XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
 
     this.operator = operator;
@@ -83,7 +82,7 @@ public class Crane extends SubsystemBase {
     turretMotor.restoreFactoryDefaults();
     tiltMotor.restoreFactoryDefaults();
     armMotor.restoreFactoryDefaults();
- 
+
     turretMotor.clearFaults();
     tiltMotor.clearFaults();
     armMotor.clearFaults();
@@ -147,6 +146,10 @@ public class Crane extends SubsystemBase {
     sbTiltFactor.setDouble(CraneConstants.kTiltPosFactor);
     sbArmFactor.setDouble(CraneConstants.kArmPosFactor);
 
+    sbTurretSP.setDouble(getTurretSetPoint());
+    sbTiltSP.setDouble(getTiltSetPoint());
+    sbArmSP.setDouble(getArmSetPoint());
+
     System.out.println("+++++ Crane Constructor finished +++++");
   }
 
@@ -155,9 +158,18 @@ public class Crane extends SubsystemBase {
     // This method will be called once per scheduler run
     readDPad();
 
-    sbTurretSP.setDouble(getTurretSetPoint());
-    sbTiltSP.setDouble(getTiltSetPoint());
-    sbArmSP.setDouble(getArmSetPoint());
+    if (armSetPoint != sbTurretSP.getDouble(0.0)) {
+      armSetPoint = sbTurretSP.getDouble(0.0);
+      setArmSetPoint(armSetPoint);
+    }
+    if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
+      tiltSetPoint = sbTiltSP.getDouble(0.0);
+      setTiltSetPoint(tiltSetPoint);
+    }
+    if (turretSetPoint != sbArmSP.getDouble(0.0)) {
+      turretSetPoint = sbArmSP.getDouble(0.0);
+      setTurretSetPoint(turretSetPoint);
+    }
     sbTurretPos.setDouble(getTurretPosition());
     sbTiltPos.setDouble(getTiltPosition());
     sbArmPos.setDouble(getArmPosition());
@@ -266,7 +278,7 @@ public class Crane extends SubsystemBase {
 
   public void stopArm() {
     armMotor.set(0.0);
-  }  
+  }
 
   public void setTurretSpeed(double spd) {
     turretMotor.set(spd);

@@ -91,8 +91,7 @@ public class CraneArm extends SubsystemBase {
       setArmSetPoint(armSetPoint);
     }
 
-    sbArmPos.setDouble(getArmPosition());
- 
+    sbArmPos.setDouble(armEncoder.getPosition());
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
 

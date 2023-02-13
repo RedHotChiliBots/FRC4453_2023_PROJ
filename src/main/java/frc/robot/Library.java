@@ -17,7 +17,7 @@ public class Library {
    private static boolean dirSwitch = false;
    private static boolean tipSwitch = false;
 
-    public void initLibrary() {
+   public void initLibrary() {
       for (int i = 0; i < rollingPitchSize; i++) {
          lastPitch[i] = 0.0;
       }
@@ -75,11 +75,11 @@ public class Library {
       avgPitch = 0.0;
       for (int i = 0; i < rollingPitchSize - 1; i++) {
          lastPitch[i] = lastPitch[i + 1];
-         avgPitch += lastPitch[i]; 
+         avgPitch += lastPitch[i];
       }
       lastPitch[rollingPitchSize - 1] = pitch;
       avgPitch = (avgPitch + pitch) / 5;
-      
+
       // calc pitch max min
       if (pitch > maxPitch)
          maxPitch = pitch;
@@ -93,9 +93,9 @@ public class Library {
          avgRate += lastPitch[i] - lastPitch[i - 1];
       }
       avgRate = avgRate / 0.020 / 4;
-     
+
       deltaRate = Math.abs(lastAvgRate - avgRate);
-//      System.out.println("avgRate " + avgRate + "    avgPitch " + avgPitch);
+      // System.out.println("avgRate " + avgRate + " avgPitch " + avgPitch);
       if (avgRate < -0.5 && (avgPitch > 16.0)) {
          tipSwitch = true;
       }
@@ -106,9 +106,19 @@ public class Library {
       isPitchDecreasing = avgRate < 0.0 ? true : false;
 
       if ((lastRate < 0 && avgRate > 0) || (avgRate < 0 && lastRate > 0)) {
-          dirSwitch = true;
+         dirSwitch = true;
       }
 
       return avgRate;
+   }
+
+   private int counter = 0;
+
+   public boolean deBounce(int count) {
+      if (counter++ % count == 0) {
+         return true;
+      } else {
+         return false;
+      }
    }
 }

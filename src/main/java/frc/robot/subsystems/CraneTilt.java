@@ -90,7 +90,7 @@ public class CraneTilt extends SubsystemBase {
       tiltSetPoint = sbTiltSP.getDouble(0.0);
       setTiltSetPoint(tiltSetPoint);
     }
-    sbTiltPos.setDouble(getTiltPosition());
+    sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
   }
 

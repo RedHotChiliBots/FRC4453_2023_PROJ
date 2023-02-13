@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.GridCalcs;
+import frc.robot.Library;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
 import frc.robot.GridCalcs.E;
@@ -34,7 +35,7 @@ public class Crane extends SubsystemBase {
   private GridCalcs grid = new GridCalcs();
   private XboxController operator;
   private int dpadValue;
-  private Timer timer = new Timer();
+  private Library lib = new Library();
 
   // ==============================================================
   // Define Shuffleboard data
@@ -70,8 +71,6 @@ public class Crane extends SubsystemBase {
     grid.vert.set(V.MID);
     grid.horz.set(H.CENTER);
     grid.setElem(E.CONE);
-
-    timer.start();
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }
@@ -109,7 +108,7 @@ public class Crane extends SubsystemBase {
   
   public void readDPad() {
     dpadValue = operator.getPOV();
-    if (dpadValue != -1) {
+    if (lib.deBounce(10) && dpadValue != -1) {
       sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(false);
       switch (dpadValue) {
         case 0:

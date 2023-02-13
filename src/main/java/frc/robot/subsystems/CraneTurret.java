@@ -89,7 +89,7 @@ public class CraneTurret extends SubsystemBase {
       turretSetPoint = sbTurretSP.getDouble(0.0);
       setTurretSetPoint(turretSetPoint);
     }
-    sbTurretPos.setDouble(getTurretPosition());
+    sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
   }
 

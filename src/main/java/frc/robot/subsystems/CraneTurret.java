@@ -66,9 +66,9 @@ public class CraneTurret extends SubsystemBase {
     // ==============================================================
     // Configure encoders
     turretEncoder.setPositionConversionFactor(CraneConstants.kTurretDegreesPerRotation);
-  
+
     // ==============================================================
-    // Initialize Axis Positions and Set Points   
+    // Initialize Axis Positions and Set Points
     initTurretPos();
     setTurretSetPoint(turretSetPoint);
 
@@ -98,15 +98,15 @@ public class CraneTurret extends SubsystemBase {
   }
 
   // public double getGridX() {
-  //   return grid.getX();
+  // return grid.getX();
   // }
 
   // public double getGridY() {
-  //   return grid.getY();
+  // return grid.getY();
   // }
 
   // public double getGridZ() {
-  //   return grid.getZ();
+  // return grid.getZ();
   // }
 
   public void initTurretPos() {

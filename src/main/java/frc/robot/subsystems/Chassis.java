@@ -114,15 +114,6 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define local variables
-	private double currPitch = 0.0;
-	private double lastPitch = 0.0;
-	// private double[] lastPitch = new double[5];
-	// private int indexPitch = 0;
-	private double avgRate = 0.0;
-	private double maxPitch = 0.0;
-	private double minPitch = 0.0;
-	public boolean isPitchIncreasing = false;
-	public boolean isPitchDecreasing = false;
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
@@ -131,10 +122,6 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define Shuffleboard data
-
-	private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID");
-	// private final GenericEntry sbLevelPID = pidTab.add("Level PID",
-	// false).getEntry();
 
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
@@ -152,12 +139,9 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
 
-	// private final GenericEntry sbX = chassisTab.addPersistent("Pose X",
-	// 0).getEntry();
-	// private final GenericEntry sbY = chassisTab.addPersistent("Pose Y",
-	// 0).getEntry();
-	// private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg",
-	// 0).getEntry();
+	private final GenericEntry sbX = chassisTab.addPersistent("Pose X",	0).getEntry();
+	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y",	0).getEntry();
+	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg",	0).getEntry();
 
 	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint",
 	// 0.0).getEntry();
@@ -252,18 +236,12 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
 
-		// pidTab.add("Level PID", levelPIDController);
-
 		// ==============================================================
 		// Initialize devices before starting
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
 
 		// Update field position - for autonomous
 		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
-
-		// for (int i = 0; i < 5; i++) {
-		// lastPitch[i] = 0.0;
-		// }
 
 		stopChassis();
 		
@@ -320,11 +298,11 @@ public class Chassis extends SubsystemBase {
 		Rotation2d rot = pose.getRotation();
 		double deg = rot.getDegrees();
 
-		// sbX.setDouble(x);
-		// sbY.setDouble(y);
-		// sbDeg.setDouble(deg);
+		sbX.setDouble(x);
+		sbY.setDouble(y);
+		sbDeg.setDouble(deg);
 
-		avgRate = lib.updatePitch(getPitch());
+		lib.updatePitch(getPitch());
 	}
 
 	public void disableCompressor() {
@@ -402,11 +380,6 @@ public class Chassis extends SubsystemBase {
 		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
 	}
 
-	public void initMonitorPitch() {
-		maxPitch = 0.0;
-		minPitch = 0.0;
-	}
-
 	/**
 	 * Returns the current robot pitch reported by navX sensor.
 	 * 
@@ -418,18 +391,6 @@ public class Chassis extends SubsystemBase {
 		// adjust for pitch on floor
 		return ahrs.getRoll() + 3.05;
 	}
-
-	// public double getAvgRate() {
-	// return avgRate;
-	// }
-
-	// public double getMinPitch() {
-	// return minPitch;
-	// }
-
-	// public double getMaxPitch() {
-	// return maxPitch;
-	// }
 
 	public void driveTankVolts(double leftVolts, double rightVolts) {
 		leftMaster.setVoltage(leftVolts);

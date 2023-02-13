@@ -37,6 +37,11 @@ public class Crane extends SubsystemBase {
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+  private final GenericEntry sbState = compTab.addPersistent("Crane State", "").getEntry();
+  private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "").getEntry();
+  private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "").getEntry();
+  private final GenericEntry sbElem = compTab.addPersistent("Element", "").getEntry();
+
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
       V.TOP,
       Map.of(H.LEFT, compTab.addPersistent("Top Left", false).getEntry(),
@@ -70,6 +75,11 @@ public class Crane extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    sbState.setString(getState().toString());
+    sbVert.setString(grid.vert.get().toString());
+    sbHorz.setString(grid.horz.get().toString());
+    sbElem.setString(grid.getElem().toString());
+
     readDPad();
   }
 

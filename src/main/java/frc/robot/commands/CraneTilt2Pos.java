@@ -5,30 +5,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.CraneTilt;
 
 public class CraneTilt2Pos extends CommandBase {
-  private Crane crane;
-  private double pos;
+  private CraneTilt craneTilt;
 
   /** Creates a new CraneNodeChooser. */
-  public CraneTilt2Pos(Crane crane, Double pos) {
-    this.crane = crane;
-    this.pos = pos;
+  public CraneTilt2Pos(CraneTilt craneTilt) {
+    this.craneTilt = craneTilt;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    pos = crane.getGridZ();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    crane.setTiltSetPoint(pos);
+    craneTilt.setTiltSetPoint(craneTilt.getTiltSetPoint());
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +34,6 @@ public class CraneTilt2Pos extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return crane.atTiltSetPoint();
+    return false;
   }
 }

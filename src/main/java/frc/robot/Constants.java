@@ -165,7 +165,11 @@ public final class Constants {
 		public static final double kTurretI = 1e-6;;
 		public static final double kTurretD = 0.0;
 		public static final double kTurretInitPos = 0.0; // degrees
-
+		public static final double kTurretStowPos = 0.0; // degrees
+		public static final double kTurretReceivePos = 0.0; // degrees
+		public static final double kTurretReadyPos = 180.0; // degrees
+		public static final double kTurretNodePos = 180.0; // degrees
+	
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
 		public static final double kTurretAllowErr = 0.5;
@@ -178,6 +182,10 @@ public final class Constants {
 		public static final double kTiltI = 1e-6;
 		public static final double kTiltD = 0.0;
 		public static final double kTiltInitPos = -80.0; // degrees
+		public static final double kTiltRotatePos = -45.0; // degrees
+		public static final double kTiltStowPos = -80.0; // degrees
+		public static final double kTiltReceivePos = -70.0; // degrees
+		public static final double kTiltReadyPos = 0.0; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.000156;
@@ -191,6 +199,9 @@ public final class Constants {
 		public static final double kArmI = 1e-6;
 		public static final double kArmD = 0.0;
 		public static final double kArmInitPos = 25.065; // inches
+		public static final double kArmStowPos = 25.065; // inches
+		public static final double kArmReceivePos = 30.0; // inches
+		public static final double kArmReadyPos = 25.065; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;
@@ -208,8 +219,6 @@ public final class Constants {
 		public static final double kTurretMaxVel = 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
 		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPM^2
 
-		public static final double kTurretPosFactor = kTurretDegreesPerRotation;
-
 		public static final double kTiltSprocketTeeth = 60;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
@@ -219,8 +228,6 @@ public final class Constants {
 		public static final double kTiltMaxVel = 360.0 / kTiltDegreesPerRotation * 60.0; // RPM
 		public static final double kTiltMaxAccel = kTiltMaxVel * (2.0 / 3.0); // RPM^2
 
-		public static final double kTiltPosFactor = kTiltDegreesPerRotation;
-
 		public static final double kArmShaftDia = 0.75;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
 		public static final double kArmGearBoxRatio = 4;
@@ -228,8 +235,6 @@ public final class Constants {
 		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
 		public static final double kArmMaxVel = 36.0 / kArmInchesPerRotation * 60.0; // RPM
 		public static final double kArmMaxAccel = kArmMaxVel * (2.0 / 3.0); // RPM^2
-
-		public static final double kArmPosFactor = kArmInchesPerRotation;
 
 		public static final double kCraneArmClear = 0.0; // inches
 		public static final double kCraneArmEngage = 5.0; // inches

@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Intake;

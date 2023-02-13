@@ -25,7 +25,7 @@ public class Claw extends SubsystemBase {
   public Claw() {
     System.out.println("+++++ Claw Constructor starting +++++");
 
-    setClaw(CylinderState.CUBECLOSE);
+    setClaw(CylinderState.CONECLOSE);
 
     System.out.println("+++++ Claw Constructor finishing +++++");
   }
@@ -36,8 +36,6 @@ public class Claw extends SubsystemBase {
   }
 
   public void setClaw(CylinderState state) {
-    leftPiston.set(Value.kOff);
-    rightPiston.set(Value.kOff);
     switch (state) {
       case OPEN:
         leftPiston.set(Value.kReverse);

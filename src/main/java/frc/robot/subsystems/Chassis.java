@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -517,6 +518,7 @@ public class Chassis extends SubsystemBase {
 				gearShifter.set(Value.kReverse);
 				break;
 			default:
+				DriverStation.reportWarning(String.format("Chassis: Illegal GearShifter State %s", state), false);
 		}
 	}
 

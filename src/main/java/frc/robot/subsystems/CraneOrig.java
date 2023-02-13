@@ -26,7 +26,7 @@ import frc.robot.GridCalcs.E;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
 
-public class Crane extends SubsystemBase {
+public class CraneOrig extends SubsystemBase {
   // ==============================================================
   // Define the left side motors, master and follower
   private final CANSparkMax turretMotor = new CANSparkMax(
@@ -53,21 +53,11 @@ public class Crane extends SubsystemBase {
   private double tiltSetPoint = CraneConstants.kTiltInitPos;
   private double armSetPoint = CraneConstants.kArmInitPos;
 
-  public enum CraneState {
-    STOW,
-    RECEIVE,
-    READY,
-    NODE,
-    MOVING,
-    NA
-  }
-
-  private CraneState craneState = CraneState.NA;
   private GridCalcs grid = new GridCalcs();
   private XboxController operator;
   private int dpadValue;
 
- // ==============================================================
+  // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   private final GenericEntry sbTurretSP = craneTab.addPersistent("Turret SetPoint", 0).getEntry();
@@ -103,7 +93,7 @@ public class Crane extends SubsystemBase {
       E.CUBE, compTab.addPersistent("Cube", false).getEntry()));
 
   /** Creates a new Crane. */
-  public Crane(XboxController operator) {
+  public CraneOrig(XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
 
     this.operator = operator;
@@ -212,14 +202,6 @@ public class Crane extends SubsystemBase {
     sbTurretVel.setDouble(turretEncoder.getVelocity());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
     sbArmVel.setDouble(armEncoder.getVelocity());
-  }
-
-  public void setState(CraneState state) {
-    craneState = state;
-  }
-
-  public CraneState getState() {
-    return craneState;
   }
 
   public double getArmSBPos() {

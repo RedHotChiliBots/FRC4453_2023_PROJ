@@ -8,6 +8,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -33,6 +34,7 @@ public class Crane extends SubsystemBase {
   private GridCalcs grid = new GridCalcs();
   private XboxController operator;
   private int dpadValue;
+  private Timer timer = new Timer();
 
   // ==============================================================
   // Define Shuffleboard data
@@ -46,15 +48,15 @@ public class Crane extends SubsystemBase {
       V.TOP,
       Map.of(H.LEFT, compTab.addPersistent("Top Left", false).getEntry(),
           H.CENTER, compTab.addPersistent("Top Center", false).getEntry(),
-          H.RIGHT, compTab.addPersistent("Top Center", false).getEntry()),
+          H.RIGHT, compTab.addPersistent("Top Right", false).getEntry()),
       V.MID,
       Map.of(H.LEFT, compTab.addPersistent("Mid Left", false).getEntry(),
           H.CENTER, compTab.addPersistent("Mid Center", true).getEntry(),
-          H.RIGHT, compTab.addPersistent("Mid Center", false).getEntry()),
+          H.RIGHT, compTab.addPersistent("Mid Right", false).getEntry()),
       V.BOT,
       Map.of(H.LEFT, compTab.addPersistent("Bot Left", false).getEntry(),
-          H.CENTER, compTab.addPersistent("BOT Center", false).getEntry(),
-          H.RIGHT, compTab.addPersistent("Bot Center", false).getEntry())));
+          H.CENTER, compTab.addPersistent("Bot Center", false).getEntry(),
+          H.RIGHT, compTab.addPersistent("Bot Right", false).getEntry())));
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
       E.CONE, compTab.addPersistent("Cone", true).getEntry(),
@@ -68,6 +70,8 @@ public class Crane extends SubsystemBase {
     grid.vert.set(V.MID);
     grid.horz.set(H.CENTER);
     grid.setElem(E.CONE);
+
+    timer.start();
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }
@@ -102,7 +106,7 @@ public class Crane extends SubsystemBase {
   public double getGridZ() {
     return grid.getZ();
   }
-
+  
   public void readDPad() {
     dpadValue = operator.getPOV();
     if (dpadValue != -1) {

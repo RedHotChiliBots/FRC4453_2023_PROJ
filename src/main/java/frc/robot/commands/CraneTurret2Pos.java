@@ -15,6 +15,7 @@ public class CraneTurret2Pos extends CommandBase {
     this.craneTurret = craneTurret;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(craneTurret);
   }
 
   // Called when the command is initially scheduled.

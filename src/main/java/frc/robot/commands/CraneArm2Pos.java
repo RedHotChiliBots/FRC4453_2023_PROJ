@@ -15,6 +15,7 @@ public class CraneArm2Pos extends CommandBase {
     this.craneArm = craneArm;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(craneArm);
   }
 
   // Called when the command is initially scheduled.

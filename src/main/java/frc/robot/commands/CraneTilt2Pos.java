@@ -15,6 +15,7 @@ public class CraneTilt2Pos extends CommandBase {
     this.craneTilt = craneTilt;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(craneTilt);
   }
 
   // Called when the command is initially scheduled.

@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -166,14 +166,14 @@ public class RobotContainer {
 
 		// ==============================================================================
 		// Add Subsystems to Dashboard
-		SmartDashboard.putData("Chassis", chassis);
-		SmartDashboard.putData("Claw", claw);
-		SmartDashboard.putData("Crane", crane);
-		SmartDashboard.putData("Crane Turret", craneTurret);
-		SmartDashboard.putData("Crane Tilt", craneTilt);
-		SmartDashboard.putData("Crane Arm", craneArm);
-		SmartDashboard.putData("Intake", intake);
-		SmartDashboard.putData("Vision", vision);
+		Shuffleboard.getTab("SubSystems").add("Chassis", chassis);
+		Shuffleboard.getTab("SubSystems").add("Claw", claw);
+		Shuffleboard.getTab("SubSystems").add("Crane", crane);
+		Shuffleboard.getTab("SubSystems").add("Crane Turret", craneTurret);
+		Shuffleboard.getTab("SubSystems").add("Crane Tilt", craneTilt);
+		Shuffleboard.getTab("SubSystems").add("Crane Arm", craneArm);
+		Shuffleboard.getTab("SubSystems").add("Intake", intake);
+		Shuffleboard.getTab("SubSystems").add("Vision", vision);
 
 		// =============================================================
 		// Configure default commands for each subsystem
@@ -261,7 +261,7 @@ public class RobotContainer {
 		// Build chooser for autonomous commands
 
 		// Put the chooser on the dashboard
-		SmartDashboard.putData(chooser);
+		Shuffleboard.getTab("Competition").add("Auton Command", chooser);
 
 		configureButtonBindings();
 

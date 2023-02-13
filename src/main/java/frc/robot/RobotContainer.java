@@ -169,6 +169,9 @@ public class RobotContainer {
 		SmartDashboard.putData("Chassis", chassis);
 		SmartDashboard.putData("Claw", claw);
 		SmartDashboard.putData("Crane", crane);
+		SmartDashboard.putData("Crane Turret", craneTurret);
+		SmartDashboard.putData("Crane Tilt", craneTilt);
+		SmartDashboard.putData("Crane Arm", craneArm);
 		SmartDashboard.putData("Intake", intake);
 		SmartDashboard.putData("Vision", vision);
 

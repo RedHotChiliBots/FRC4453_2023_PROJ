@@ -45,6 +45,7 @@ public class Intake extends SubsystemBase {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
     stopMoters();
+    setIntake(CylinderState.OPEN);
 
     System.out.println("+++++ Intake Constructor finishing +++++");
   }
@@ -71,7 +72,6 @@ public class Intake extends SubsystemBase {
   }
 
   public void setIntake(CylinderState state) {
-    intakeArm.set(Value.kOff);
     switch (state) {
       case OPEN:
         intakeArm.set(Value.kForward);

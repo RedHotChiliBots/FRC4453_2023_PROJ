@@ -5,30 +5,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.CraneTurret;
 
 public class CraneTurret2Pos extends CommandBase {
-  private Crane crane;
-  private double pos;
+  private CraneTurret craneTurret;
 
   /** Creates a new CraneNodeChooser. */
-  public CraneTurret2Pos(Crane crane, Double pos) {
-    this.crane = crane;
-    this.pos = pos;
+  public CraneTurret2Pos(CraneTurret craneTurret) {
+    this.craneTurret = craneTurret;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    pos = crane.getGridX();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    crane.setTurretSetPoint(pos);
+    craneTurret.setTurretSetPoint(craneTurret.getTurretSetPoint());
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +34,6 @@ public class CraneTurret2Pos extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return crane.atTurrentSetPoint();
+    return false;
   }
 }

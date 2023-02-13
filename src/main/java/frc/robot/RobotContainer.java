@@ -32,6 +32,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.CraneArm;
+import frc.robot.subsystems.CraneTilt;
+import frc.robot.subsystems.CraneTurret;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.ChassisTankDrive;
@@ -82,8 +85,11 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
 	private static final Claw claw = new Claw();
-	private static final Crane crane = new Crane(operator);
 	private static final Intake intake = new Intake();
+	private static final Crane crane = new Crane(operator);
+	private static final CraneTurret craneTurret = new CraneTurret();
+	private static final CraneTilt craneTilt = new CraneTilt();
+	private static final CraneArm craneArm = new CraneArm();
 	private static final Vision vision = new Vision();
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
@@ -120,9 +126,9 @@ public class RobotContainer {
 	private final ChassisSetGearShifter chassisShiftHI = new ChassisSetGearShifter(chassis, GearShifterState.HI);
 	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis,  GearShifterState.LO);
 
-	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(crane, crane.getArmSBPos());
-	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(crane, crane.getTiltSBPos());
-	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(crane, crane.getTurretSBPos());
+	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
+	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
+	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
 
 	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
 	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
@@ -173,8 +179,10 @@ public class RobotContainer {
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
 		claw.setDefaultCommand(clawGrabCone);
-		//crane.setDefaultCommand(chassisArcadeDrive);
 		intake.setDefaultCommand(intakeStow);
+		craneTurret.setDefaultCommand(craneTurret2Pos);
+		craneTilt.setDefaultCommand(craneTilt2Pos);
+		craneArm.setDefaultCommand(craneArm2Pos);
 		vision.setDefaultCommand(teleopTrackAprilTag);
 
 		// =============================================================

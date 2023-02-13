@@ -62,7 +62,6 @@ import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
-import frc.robot.commands.PIDLevel;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.OIConstants;
@@ -110,8 +109,6 @@ public class RobotContainer {
 			() -> getJoystick(-driver.getLeftX()));
 
 	private final DoRumble doRumble = new DoRumble(this);
-
-	private final PIDLevel pidLevel = new PIDLevel(chassis);
 
 	// =============================================================
 	// Define Autonomous Commands here

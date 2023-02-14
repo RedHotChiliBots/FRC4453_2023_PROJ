@@ -49,6 +49,7 @@ public class CraneArm extends SubsystemBase {
     armMotor.clearFaults();
 
     armMotor.setIdleMode(IdleMode.kBrake);
+    armMotor.setInverted(true);
 
     // ==============================================================
     // Configure PID controllers
@@ -116,8 +117,9 @@ public class CraneArm extends SubsystemBase {
   }
 
   public void setArmSetPoint(double setPoint) {
+    double sp = CraneConstants.kArmInitPos + ((setPoint - CraneConstants.kArmInitPos) / 2.0);
     this.armSetPoint = setPoint;
-    armPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
+    armPID.setReference(sp, CANSparkMax.ControlType.kSmartMotion);
   }
 
   // TODO

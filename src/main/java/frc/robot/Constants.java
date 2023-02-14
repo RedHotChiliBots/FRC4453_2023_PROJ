@@ -228,7 +228,7 @@ public final class Constants {
 		public static final double kTiltMaxVel = 360.0 / kTiltDegreesPerRotation * 60.0; // RPM
 		public static final double kTiltMaxAccel = kTiltMaxVel * (2.0 / 3.0); // RPM^2
 
-		public static final double kArmShaftDia = 0.75;
+		public static final double kArmShaftDia = 1.0;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
 		public static final double kArmGearBoxRatio = 4;
 		public static final double kArmRotationsPerInch = kArmGearBoxRatio / kArmShaftCirc;

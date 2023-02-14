@@ -178,8 +178,6 @@ public class RobotContainer {
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
-		claw.setDefaultCommand(clawGrabCone);
-		intake.setDefaultCommand(intakeStow);
 		craneTurret.setDefaultCommand(craneTurret2Pos);
 		craneTilt.setDefaultCommand(craneTilt2Pos);
 		craneArm.setDefaultCommand(craneArm2Pos);

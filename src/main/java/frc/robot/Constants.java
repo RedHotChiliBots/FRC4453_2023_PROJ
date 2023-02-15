@@ -54,8 +54,8 @@ public final class Constants {
 	public static final class PneumaticChannelConstants {
 		public static final int kChassisShifterHi = 0;
 		public static final int kChassisShifterLo = 1;
-		public static final int kIntakeArmClose = 2;
-		public static final int kIntakeArmOpen = 3;
+		public static final int kIntakeArmOpen = 2;
+		public static final int kIntakeArmClose = 3;
 		public static final int kClawLeftClose = 4;
 		public static final int kClawLeftOpen = 5;
 		public static final int kClawRightClose = 6;

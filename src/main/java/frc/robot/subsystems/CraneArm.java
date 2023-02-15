@@ -117,6 +117,7 @@ public class CraneArm extends SubsystemBase {
   }
 
   public void setArmSetPoint(double setPoint) {
+    // The Arm moves in two sections.  Command 1" will move it 2".  Need divide the delta by 2.
     double sp = CraneConstants.kArmInitPos + ((setPoint - CraneConstants.kArmInitPos) / 2.0);
     this.armSetPoint = setPoint;
     armPID.setReference(sp, CANSparkMax.ControlType.kSmartMotion);

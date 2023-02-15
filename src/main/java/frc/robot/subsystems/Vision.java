@@ -150,7 +150,7 @@ public class Vision extends SubsystemBase {
       double range = PhotonUtils.calculateDistanceToTargetMeters(
           VisionConstants.kCameraHeight,
           VisionConstants.kTargetHeight,
-          VisionConstants.kCameraHeight,
+          VisionConstants.kCameraPitch,
           Units.degreesToRadians(target.getPitch()));
 
       // Use this range as the measurement we give to the PID controller.

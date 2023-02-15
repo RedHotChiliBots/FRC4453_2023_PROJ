@@ -49,6 +49,7 @@ public class CraneTilt extends SubsystemBase {
     tiltMotor.clearFaults();
 
     tiltMotor.setIdleMode(IdleMode.kBrake);
+    tiltMotor.setInverted(true);
 
     // ==============================================================
     // Configure PID controllers

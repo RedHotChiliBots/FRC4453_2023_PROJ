@@ -162,7 +162,7 @@ public final class Constants {
 	public static final class CraneConstants {
 		public static final int kTurretSlot = 0;
 		public static final double kTurretP = 5e-5;
-		public static final double kTurretI = 1e-6;;
+		public static final double kTurretI = 0.0; 			//1e-6;
 		public static final double kTurretD = 0.0;
 		public static final double kTurretInitPos = 0.0; // degrees
 		public static final double kTurretStowPos = 0.0; // degrees
@@ -211,18 +211,18 @@ public final class Constants {
 		public static final double kArmMinVel = 0.0;
 
 		public static final double kTurretSprocketTeeth = 170;
-		public static final double kTurretMotorSprocketTeeth = 18;
+		public static final double kTurretMotorSprocketTeeth = 16;
 		public static final double kTurretSprocketRatio = kTurretSprocketTeeth / kTurretMotorSprocketTeeth;
 		public static final double kTurretGearBoxRatio = 1;
 		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
 		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
-		public static final double kTurretMaxVel = 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
-		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPM^2
+		public static final double kTurretMaxVel = 540.0 / kTurretDegreesPerRotation * 60.0; // RPM
+		public static final double kTurretMaxAccel = kTurretMaxVel* (1.0 / 2.0); // RPM^2
 
 		public static final double kTiltSprocketTeeth = 60;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
-		public static final double kTiltGearBoxRatio = 20;
+		public static final double kTiltGearBoxRatio = 100;
 		public static final double kTiltRotationsPerDegree = (kTiltSprocketRatio * kTiltGearBoxRatio) / 360.0;
 		public static final double kTiltDegreesPerRotation = 360.0 / (kTiltSprocketRatio * kTiltGearBoxRatio);
 		public static final double kTiltMaxVel = 360.0 / kTiltDegreesPerRotation * 60.0; // RPM

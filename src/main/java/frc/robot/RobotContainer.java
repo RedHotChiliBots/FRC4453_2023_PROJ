@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -97,6 +98,7 @@ public class RobotContainer {
 
 	// Define a chooser for autonomous commands
 	private final SendableChooser<Command> chooser = new SendableChooser<>();
+	private final ShuffleboardTab cmdTab;
 
 	// =============================================================
 	// Define Commands here to avoid multiple instantiations
@@ -133,8 +135,8 @@ public class RobotContainer {
 	private final ClawFinger clawRelease = new ClawFinger(claw, FingerState.RELEASE);
 
 	private final IntakeStow intakeStow = new IntakeStow(intake);
-	private final IntakeMotor intakeMoterIn = new IntakeMotor(intake, MotorState.IN);
-	private final IntakeMotor IntakeMoterOut = new IntakeMotor(intake, MotorState.OUT);
+	private final IntakeMotor intakeMotorIn = new IntakeMotor(intake, MotorState.IN);
+	private final IntakeMotor IntakeMotorOut = new IntakeMotor(intake, MotorState.OUT);
 
 	private final IntakeArm intakeOpen = new IntakeArm(intake, ArmState.OPEN);
 	private final IntakeArm intakeClose = new IntakeArm(intake, ArmState.CLOSE);
@@ -266,6 +268,20 @@ public class RobotContainer {
 		// Put the chooser on the dashboard
 		Shuffleboard.getTab("Competition").add("Auton Command", chooser);
 
+		cmdTab = Shuffleboard.getTab("Commands");
+		cmdTab.add("Gear Shift HI", chassisShiftHI);
+		cmdTab.add("Gear Shift LO", chassisShiftLO);
+		cmdTab.add("Claw Grab Cone", clawGrabCone);
+		cmdTab.add("Claw Grab Cube", clawGrabCube);
+		cmdTab.add("Claw Release", clawRelease);
+		cmdTab.add("Tilt Ratchet Lock", ratchetLock);
+		cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock);
+		cmdTab.add("Intake Stow", intakeStow);
+		cmdTab.add("Intake Open", intakeOpen);
+		cmdTab.add("Intake Close", intakeClose);
+		cmdTab.add("Intake In", intakeMotorIn);
+		cmdTab.add("Intake Out", IntakeMotorOut);
+
 		configureButtonBindings();
 
 		System.out.println("+++++ RobotContainer Constructor finished +++++");
@@ -304,8 +320,8 @@ public class RobotContainer {
 		new JoystickButton(operator, Button.kRightBumper.value).onTrue(craneTurret2Pos);
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
-		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMoterIn);
-		new JoystickButton(operator, Button.kA.value).whileTrue(IntakeMoterOut);
+		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMotorIn);
+		new JoystickButton(operator, Button.kA.value).whileTrue(IntakeMotorOut);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
 	}

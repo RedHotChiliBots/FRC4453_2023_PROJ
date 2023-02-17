@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
       Pneumatic0ChannelConstants.kIntakeArmOpen,
       Pneumatic0ChannelConstants.kIntakeArmClose);
 
-      private final DoubleSolenoid bar = new DoubleSolenoid(
+  private final DoubleSolenoid intakeBar = new DoubleSolenoid(
       PneumaticModuleConstants.kPCM1,
       PneumaticsModuleType.CTREPCM,
       Pneumatic1ChannelConstants.kIntakeBarEnabled,
@@ -87,6 +87,18 @@ public class Intake extends SubsystemBase {
         break;
       case CLOSE:
         intakeArm.set(Value.kReverse);
+        break;
+      default:
+    }
+  }
+
+  public void setBar(CylinderState state) {
+    switch (state) {
+      case OPEN:
+        intakeBar.set(Value.kForward);
+        break;
+      case CLOSE:
+        intakeBar.set(Value.kReverse);
         break;
       default:
     }

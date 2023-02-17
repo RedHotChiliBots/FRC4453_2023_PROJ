@@ -9,17 +9,21 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CylinderState;
-import frc.robot.Constants.PneumaticChannelConstants;
+import frc.robot.Constants.Pneumatic0ChannelConstants;
+import frc.robot.Constants.PneumaticModuleConstants;
 
 public class Claw extends SubsystemBase {
   private final DoubleSolenoid leftPiston = new DoubleSolenoid(
+      PneumaticModuleConstants.kPCM0,
       PneumaticsModuleType.CTREPCM,
-      PneumaticChannelConstants.kClawLeftOpen,
-      PneumaticChannelConstants.kClawLeftClose);
+      Pneumatic0ChannelConstants.kClawLeftOpen,
+      Pneumatic0ChannelConstants.kClawLeftClose);
+
   private final DoubleSolenoid rightPiston = new DoubleSolenoid(
+      PneumaticModuleConstants.kPCM0,
       PneumaticsModuleType.CTREPCM,
-      PneumaticChannelConstants.kClawRightOpen,
-      PneumaticChannelConstants.kClawRightClose);
+      Pneumatic0ChannelConstants.kClawRightOpen,
+      Pneumatic0ChannelConstants.kClawRightClose);
 
   /** Creates a new Claw. */
   public Claw() {

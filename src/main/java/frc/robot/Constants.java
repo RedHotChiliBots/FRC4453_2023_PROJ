@@ -51,7 +51,12 @@ public final class Constants {
 		public static final int kIntakeRightMotor = 31;
 	}
 
-	public static final class PneumaticChannelConstants {
+	public static final class PneumaticModuleConstants {
+		public static final int kPCM0 = 0;
+		public static final int kPCM1 = 1;
+	}
+
+	public static final class Pneumatic0ChannelConstants {
 		public static final int kChassisShifterHi = 0;
 		public static final int kChassisShifterLo = 1;
 		public static final int kIntakeArmOpen = 2;
@@ -60,6 +65,13 @@ public final class Constants {
 		public static final int kClawLeftOpen = 5;
 		public static final int kClawRightClose = 6;
 		public static final int kClawRightOpen = 7;
+	}
+
+	public static final class Pneumatic1ChannelConstants {
+		public static final int kRatchetLock = 0;
+		public static final int kRatchetUnlock = 1;
+		public static final int kIntakeBarEnabled = 2;
+		public static final int kIntakeBarDisabled = 3;
 	}
 
 	public static final class DIOChannelConstants {
@@ -120,7 +132,8 @@ public final class Constants {
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kGearBoxRatio = 10.71;
 		public static final double kPosFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution); // Meters / Rev
-		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters / Sec
+		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters /
+																											// Sec
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 
 		public static final double kPosFactorMPR = kWheelCirc / kCountsPerRevGearbox; // Meters / Rev
@@ -162,14 +175,14 @@ public final class Constants {
 	public static final class CraneConstants {
 		public static final int kTurretSlot = 0;
 		public static final double kTurretP = 5e-5;
-		public static final double kTurretI = 0.0; 			//1e-6;
+		public static final double kTurretI = 0.0; // 1e-6;
 		public static final double kTurretD = 0.0;
 		public static final double kTurretInitPos = 0.0; // degrees
 		public static final double kTurretStowPos = 0.0; // degrees
 		public static final double kTurretReceivePos = 0.0; // degrees
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
-	
+
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
 		public static final double kTurretAllowErr = 0.5;
@@ -181,9 +194,9 @@ public final class Constants {
 		public static final double kTiltP = 5e-5;
 		public static final double kTiltI = 1e-6;
 		public static final double kTiltD = 0.0;
-		public static final double kTiltInitPos = -80.0; // degrees
+		public static final double kTiltInitPos = -83.2; // degrees
 		public static final double kTiltRotatePos = -45.0; // degrees
-		public static final double kTiltStowPos = -80.0; // degrees
+		public static final double kTiltStowPos = -83.2; // degrees
 		public static final double kTiltReceivePos = -70.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 
@@ -217,7 +230,7 @@ public final class Constants {
 		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
 		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
 		public static final double kTurretMaxVel = 540.0 / kTurretDegreesPerRotation * 60.0; // RPM
-		public static final double kTurretMaxAccel = kTurretMaxVel* (1.0 / 2.0); // RPM^2
+		public static final double kTurretMaxAccel = kTurretMaxVel * (1.0 / 2.0); // RPM^2
 
 		public static final double kTiltSprocketTeeth = 60;
 		public static final double kTiltMotorSprocketTeeth = 18;
@@ -238,10 +251,10 @@ public final class Constants {
 
 		public static final double kCraneArmClear = 0.0; // inches
 		public static final double kCraneArmEngage = 5.0; // inches
-		public static final double kCraneTiltClear = -45.0;	// degrees
+		public static final double kCraneTiltClear = -45.0; // degrees
 		public static final double kCraneTurretGridSide = 180.0; // degrees
-		public static final double kCraneTurretElemSide = 0.0;	// degrees
-		public static final double kCraneWait = 2.0;	// seconds
+		public static final double kCraneTurretElemSide = 0.0; // degrees
+		public static final double kCraneWait = 2.0; // seconds
 	}
 
 	public static final class VisionConstants {

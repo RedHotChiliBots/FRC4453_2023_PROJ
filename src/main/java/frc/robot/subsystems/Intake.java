@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CylinderState;
-import frc.robot.Constants.PneumaticChannelConstants;
+import frc.robot.Constants.Pneumatic0ChannelConstants;
+import frc.robot.Constants.Pneumatic1ChannelConstants;
+import frc.robot.Constants.PneumaticModuleConstants;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax leftMotor = new CANSparkMax(
@@ -30,9 +32,16 @@ public class Intake extends SubsystemBase {
       MotorType.kBrushless);
 
   private final DoubleSolenoid intakeArm = new DoubleSolenoid(
+      PneumaticModuleConstants.kPCM0,
       PneumaticsModuleType.CTREPCM,
-      PneumaticChannelConstants.kIntakeArmOpen,
-      PneumaticChannelConstants.kIntakeArmClose);
+      Pneumatic0ChannelConstants.kIntakeArmOpen,
+      Pneumatic0ChannelConstants.kIntakeArmClose);
+
+      private final DoubleSolenoid bar = new DoubleSolenoid(
+      PneumaticModuleConstants.kPCM1,
+      PneumaticsModuleType.CTREPCM,
+      Pneumatic1ChannelConstants.kIntakeBarEnabled,
+      Pneumatic1ChannelConstants.kIntakeBarDisabled);
 
   /** Creates a new Intake. */
   public Intake() {
@@ -45,7 +54,7 @@ public class Intake extends SubsystemBase {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
     stopMoters();
-    setIntake(CylinderState.OPEN);
+    setIntake(CylinderState.CLOSE);
 
     System.out.println("+++++ Intake Constructor finishing +++++");
   }
@@ -62,13 +71,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void revMoters() {
-    leftMotor.set(0.25);
-    rightMotor.set(-0.25);
+    leftMotor.set(-0.28);
+    rightMotor.set(0.28);
   }
 
   public void fwdMoters() {
-    leftMotor.set(-.25);
-    rightMotor.set(0.25);
+    leftMotor.set(0.28);
+    rightMotor.set(-0.28);
   }
 
   public void setIntake(CylinderState state) {

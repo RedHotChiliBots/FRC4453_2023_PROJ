@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,6 +20,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CylinderState;
+import frc.robot.Constants.Pneumatic1ChannelConstants;
+import frc.robot.Constants.PneumaticModuleConstants;
 
 public class CraneTilt extends SubsystemBase {
   // ==============================================================
@@ -31,6 +37,12 @@ public class CraneTilt extends SubsystemBase {
   private final SparkMaxPIDController tiltPID = tiltMotor.getPIDController();
 
   private double tiltSetPoint = CraneConstants.kTiltInitPos;
+
+  private final DoubleSolenoid ratchet = new DoubleSolenoid(
+      PneumaticModuleConstants.kPCM1,
+      PneumaticsModuleType.CTREPCM,
+      Pneumatic1ChannelConstants.kRatchetLock,
+      Pneumatic1ChannelConstants.kRatchetUnlock);
 
   // ==============================================================
   // Define Shuffleboard data
@@ -138,5 +150,17 @@ public class CraneTilt extends SubsystemBase {
  
   public void setTiltSpeed(double spd) {
     tiltMotor.set(spd);
+  }
+
+  public void setRatchet(CylinderState state) {
+    switch (state) {
+      case OPEN:
+        ratchet.set(Value.kForward);
+        break;
+      case CLOSE:
+        ratchet.set(Value.kReverse);
+        break;
+      default:
+    }
   }
 }

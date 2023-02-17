@@ -6,16 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CylinderState;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.CraneTilt;
 
-public class IntakeStow extends CommandBase {
-  Intake intake;
+public class TiltRatchetUnlock extends CommandBase {
+  CraneTilt craneTilt;
 
   /** Creates a new GrabCube. */
-  public IntakeStow(Intake intake) {
-    this.intake = intake;
+  public TiltRatchetUnlock(CraneTilt craneTilt) {
+    this.craneTilt = craneTilt;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -26,9 +25,7 @@ public class IntakeStow extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntake(CylinderState.CLOSE);
-    intake.stopMoters();
-
+    craneTilt.setRatchet(CylinderState.OPEN);
   }
 
   // Called once the command ends or is interrupted.

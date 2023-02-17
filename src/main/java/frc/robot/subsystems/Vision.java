@@ -33,15 +33,29 @@ public class Vision extends SubsystemBase {
   private double forwardSpeed;
   private double rotationSpeed;
 
+  // ==============================================================
+  // Define Shuffleboard data
   private final ShuffleboardTab visionTab = Shuffleboard.getTab("Vision");
-  private final GenericEntry sbYaw = visionTab.addPersistent("Yaw", 0).getEntry();
-  private final GenericEntry sbPitch = visionTab.addPersistent("Pitch", 0).getEntry();
-  private final GenericEntry sbArea = visionTab.addPersistent("Area", 0).getEntry();
-  private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0).getEntry();
-  private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false).getEntry();
-  private final GenericEntry sbDistAtTarget = visionTab.addPersistent("Dist At Target", false).getEntry();
-  private final GenericEntry sbTurnAtTarget = visionTab.addPersistent("Turn At Target", false).getEntry();
-  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0).getEntry();
+  private final GenericEntry sbVision = visionTab.add("Vision", "")
+      .withWidget("Network Table Tree")
+      .withPosition(5, 1).withSize(2, 3).getEntry();
+
+  private final GenericEntry sbYaw = visionTab.addPersistent("Yaw", 0)
+      .withWidget("Text View").withPosition(2, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbPitch = visionTab.addPersistent("Pitch", 0)
+      .withWidget("Text View").withPosition(1, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbArea = visionTab.addPersistent("Area", 0)
+      .withWidget("Text View").withPosition(4, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0)
+      .withWidget("Text View").withPosition(3, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false)
+      .withWidget("Text View").withPosition(2, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbDistAtTarget = visionTab.addPersistent("Dist At Target", false)
+      .withWidget("Text View").withPosition(3, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbTurnAtTarget = visionTab.addPersistent("Turn At Target", false)
+      .withWidget("Text View").withPosition(34, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0)
+      .withWidget("Text View").withPosition(1, 2).withSize(1, 1).getEntry();
 
   // // Query the latest result from PhotonVision
   // PhotonPipelineResult result = null;

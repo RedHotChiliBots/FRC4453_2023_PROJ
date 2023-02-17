@@ -35,10 +35,18 @@ public class CraneArm extends SubsystemBase {
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
-  private final GenericEntry sbArmSP = craneTab.addPersistent("Arm SetPoint", 0).getEntry();
-  private final GenericEntry sbArmPos = craneTab.addPersistent("Arm Pos", 0).getEntry();
-  private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0).getEntry();
-  private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor (ipr)", 0).getEntry();
+  private final GenericEntry sbArmSP = craneTab.addPersistent("Arm SetPoint", 0)
+      .withWidget("Text View")
+      .withPosition(1, 4).withSize(1, 1).getEntry();
+  private final GenericEntry sbArmPos = craneTab.addPersistent("Arm Pos", 0)
+      .withWidget("Text View")
+      .withPosition(1, 4).withSize(1, 1).getEntry();
+  private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0)
+      .withWidget("Text View")
+      .withPosition(3, 4).withSize(1, 1).getEntry();
+  private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor (ipr)", 0)
+      .withWidget("Text View")
+      .withPosition(5, 4).withSize(1, 1).getEntry();
 
   /** Creates a new Crane. */
   public CraneArm() {
@@ -62,7 +70,7 @@ public class CraneArm extends SubsystemBase {
 
     armPID.setSmartMotionMaxVelocity(CraneConstants.kArmMaxVel, CraneConstants.kArmSlot);
     armPID.setSmartMotionMinOutputVelocity(CraneConstants.kArmMinVel, CraneConstants.kArmSlot);
-    armPID.setSmartMotionMaxAccel(CraneConstants.kArmMaxAccel, CraneConstants.kTiltSlot);
+    armPID.setSmartMotionMaxAccel(CraneConstants.kArmMaxAccel, CraneConstants.kArmSlot);
     armPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kArmAllowErr, CraneConstants.kArmSlot);
 
     // ==============================================================

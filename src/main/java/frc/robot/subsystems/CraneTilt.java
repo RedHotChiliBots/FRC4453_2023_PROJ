@@ -46,10 +46,18 @@ public class CraneTilt extends SubsystemBase {
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
-  private final GenericEntry sbTiltSP = craneTab.addPersistent("Tilt SetPoint", 0).getEntry();
-  private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0).getEntry();
-  private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
-  private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0).getEntry();
+  private final GenericEntry sbTiltSP = craneTab.addPersistent("Tilt SetPoint", 0)
+      .withWidget("Text View")
+      .withPosition(1, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0)
+      .withWidget("Text View")
+      .withPosition(1, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0)
+      .withWidget("Text View")
+      .withPosition(3, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0)
+      .withWidget("Text View")
+      .withPosition(5, 3).withSize(1, 1).getEntry();
 
   public enum RatchetState {
     LOCK,

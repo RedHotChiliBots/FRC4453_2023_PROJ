@@ -266,7 +266,14 @@ public class RobotContainer {
 		// Build chooser for autonomous commands
 
 		// Put the chooser on the dashboard
-		Shuffleboard.getTab("Competition").add("Auton Command", chooser);
+		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+		compTab.add("Competition", "")
+				.withWidget("Network Table Tree")
+				.withPosition(5, 1).withSize(2, 5).getEntry();
+				
+		compTab.add("Auton Command", chooser)
+				.withWidget("ComboBox Chooser")
+				.withPosition(1, 1).withSize(2, 1);
 
 		cmdTab = Shuffleboard.getTab("Commands");
 		cmdTab.add("Gear Shift HI", chassisShiftHI);

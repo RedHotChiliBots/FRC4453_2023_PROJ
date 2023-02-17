@@ -52,6 +52,8 @@ import frc.robot.commands.IntakeMoterIn;
 import frc.robot.commands.IntakeMoterOut;
 import frc.robot.commands.IntakeOpen;
 import frc.robot.commands.IntakeStow;
+import frc.robot.commands.TiltRatchetLock;
+import frc.robot.commands.TiltRatchetUnlock;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
@@ -134,8 +136,12 @@ public class RobotContainer {
 	private final IntakeStow intakeStow = new IntakeStow(intake);
 	private final IntakeMoterIn intakeMoterIn = new IntakeMoterIn(intake);
 	private final IntakeMoterOut IntakeMoterOut = new IntakeMoterOut(intake);
+
 	private final IntakeOpen intakeOpen = new IntakeOpen(intake);
 	private final IntakeClose intakeClose = new IntakeClose(intake);
+
+	private final TiltRatchetLock ratchetLock = new TiltRatchetLock(craneTilt);
+	private final TiltRatchetUnlock ratchetUnlock = new TiltRatchetUnlock(craneTilt);
 
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
@@ -290,6 +296,9 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
 		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
+
+		new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
+		new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
 
 		new JoystickButton(driver, Button.kA.value).onTrue(craneArm2Pos);
 		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(craneTilt2Pos);

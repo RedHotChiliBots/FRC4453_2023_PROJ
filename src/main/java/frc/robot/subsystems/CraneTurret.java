@@ -48,6 +48,7 @@ public class CraneTurret extends SubsystemBase {
     turretMotor.clearFaults();
 
     turretMotor.setIdleMode(IdleMode.kBrake);
+    turretMotor.setInverted(true);
 
     // ==============================================================
     // Configure PID controllers

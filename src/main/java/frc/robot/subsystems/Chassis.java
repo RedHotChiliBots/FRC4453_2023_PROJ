@@ -42,8 +42,8 @@ import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.GearShifterState;
-import frc.robot.Constants.PneumaticChannelConstants;
-
+import frc.robot.Constants.Pneumatic0ChannelConstants;
+import frc.robot.Constants.PneumaticModuleConstants;
 import frc.robot.Library;
 
 public class Chassis extends SubsystemBase {
@@ -96,7 +96,8 @@ public class Chassis extends SubsystemBase {
 	// ==============================================================
 	// Identify PDP and PCM
 	private final PowerDistribution pdp = new PowerDistribution();
-	private final PneumaticsControlModule pcm = new PneumaticsControlModule();
+	private final PneumaticsControlModule pcm0 = new PneumaticsControlModule();
+	private final PneumaticsControlModule pcm1 = new PneumaticsControlModule();
 	private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 	// ==============================================================
@@ -108,9 +109,10 @@ public class Chassis extends SubsystemBase {
 	// Identify pneumatics for gear shifters
 
 	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
+			PneumaticModuleConstants.kPCM0,
 			PneumaticsModuleType.CTREPCM,
-			PneumaticChannelConstants.kChassisShifterHi,
-			PneumaticChannelConstants.kChassisShifterLo);
+			Pneumatic0ChannelConstants.kChassisShifterHi,
+			Pneumatic0ChannelConstants.kChassisShifterLo);
 
 	// ==============================================================
 	// Define local variables
@@ -139,9 +141,9 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
 
-	private final GenericEntry sbX = chassisTab.addPersistent("Pose X",	0).getEntry();
-	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y",	0).getEntry();
-	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg",	0).getEntry();
+	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0).getEntry();
+	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0).getEntry();
+	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0).getEntry();
 
 	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint",
 	// 0.0).getEntry();
@@ -163,7 +165,8 @@ public class Chassis extends SubsystemBase {
 		// ==============================================================
 		// Configure PDP and PCM
 		pdp.clearStickyFaults();
-		pcm.clearAllStickyFaults();
+		pcm0.clearAllStickyFaults();
+		pcm1.clearAllStickyFaults();
 
 		// ==============================================================
 		// Configure the left side motors, master and follower
@@ -244,7 +247,7 @@ public class Chassis extends SubsystemBase {
 		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
 		stopChassis();
-		
+
 		setGearShifter(GearShifterState.HI);
 
 		lib.initLibrary();

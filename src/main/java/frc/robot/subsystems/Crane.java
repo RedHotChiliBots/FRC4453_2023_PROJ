@@ -39,28 +39,43 @@ public class Crane extends SubsystemBase {
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-  private final GenericEntry sbState = compTab.addPersistent("Crane State", "").getEntry();
-  private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "").getEntry();
-  private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "").getEntry();
-  private final GenericEntry sbElem = compTab.addPersistent("Element", "").getEntry();
+  private final GenericEntry sbState = compTab.addPersistent("Crane State", "")
+      .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry();
+  private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "")
+      .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry();
+  private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "")
+      .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry();
+  private final GenericEntry sbElem = compTab.addPersistent("Element", "")
+      .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry();
 
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
       V.TOP,
-      Map.of(H.LEFT, compTab.addPersistent("Top Left", false).getEntry(),
-          H.CENTER, compTab.addPersistent("Top Center", false).getEntry(),
-          H.RIGHT, compTab.addPersistent("Top Right", false).getEntry()),
+      Map.of(H.LEFT, compTab.addPersistent("Top Left", false)
+          .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.CENTER, compTab.addPersistent("Top Center", false)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.RIGHT, compTab.addPersistent("Top Right", false)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry()),
       V.MID,
-      Map.of(H.LEFT, compTab.addPersistent("Mid Left", false).getEntry(),
-          H.CENTER, compTab.addPersistent("Mid Center", true).getEntry(),
-          H.RIGHT, compTab.addPersistent("Mid Right", false).getEntry()),
+      Map.of(H.LEFT, compTab.addPersistent("Mid Left", false)
+          .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.CENTER, compTab.addPersistent("Mid Center", true)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.RIGHT, compTab.addPersistent("Mid Right", false)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry()),
       V.BOT,
-      Map.of(H.LEFT, compTab.addPersistent("Bot Left", false).getEntry(),
-          H.CENTER, compTab.addPersistent("Bot Center", false).getEntry(),
-          H.RIGHT, compTab.addPersistent("Bot Right", false).getEntry())));
+      Map.of(H.LEFT, compTab.addPersistent("Bot Left", false)
+          .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.CENTER, compTab.addPersistent("Bot Center", false)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+          H.RIGHT, compTab.addPersistent("Bot Right", false)
+              .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry())));
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
-      E.CONE, compTab.addPersistent("Cone", true).getEntry(),
-      E.CUBE, compTab.addPersistent("Cube", false).getEntry()));
+      E.CONE, compTab.addPersistent("Cone", true)
+          .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry(),
+      E.CUBE, compTab.addPersistent("Cube", false)
+          .withWidget("").withPosition(0, 0).withSize(0, 0).getEntry()));
 
   /** Creates a new Crane. */
   public Crane(XboxController operator) {
@@ -104,7 +119,7 @@ public class Crane extends SubsystemBase {
   public double getGridZ() {
     return grid.getZ();
   }
-  
+
   public void readDPad() {
     dpadValue = operator.getPOV();
     if (lib.deBounce(10) && dpadValue != -1) {

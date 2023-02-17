@@ -5,15 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Claw.FingerState;
 
-public class ClawGrabCone extends CommandBase {
+public class ClawFinger extends CommandBase {
   Claw claw;
+  FingerState state;
   
   /** Creates a new GrabCube. */
-  public ClawGrabCone(Claw claw) {
+  public ClawFinger(Claw claw, FingerState state) {
     this.claw = claw;
+    this.state = state;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
   }
@@ -25,8 +28,7 @@ public class ClawGrabCone extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    claw.setClaw(CylinderState.CONECLOSE);
-    claw.setClaw(CylinderState.CUBECLOSE);
+    claw.setFinger(state);
   }
 
   // Called once the command ends or is interrupted.

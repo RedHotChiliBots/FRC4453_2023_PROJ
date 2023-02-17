@@ -37,23 +37,22 @@ import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Intake.ArmState;
+import frc.robot.subsystems.Intake.MotorState;
+import frc.robot.subsystems.Claw.FingerState;
+import frc.robot.subsystems.CraneTilt.RatchetState;
 import frc.robot.commands.ChassisTankDrive;
-import frc.robot.commands.ClawGrabCone;
-import frc.robot.commands.ClawGrabCube;
-import frc.robot.commands.ClawRelease;
+import frc.robot.commands.ClawFinger;
 import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
-import frc.robot.commands.IntakeClose;
-import frc.robot.commands.IntakeMoterIn;
-import frc.robot.commands.IntakeMoterOut;
-import frc.robot.commands.IntakeOpen;
+import frc.robot.commands.IntakeArm;
+import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
-import frc.robot.commands.TiltRatchetLock;
-import frc.robot.commands.TiltRatchetUnlock;
+import frc.robot.commands.TiltRatchet;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
@@ -123,25 +122,25 @@ public class RobotContainer {
 	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
 	private final ChassisSetGearShifter chassisShiftHI = new ChassisSetGearShifter(chassis, GearShifterState.HI);
-	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis,  GearShifterState.LO);
+	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis, GearShifterState.LO);
 
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
 
-	private final ClawGrabCone clawGrabCone = new ClawGrabCone(claw);
-	private final ClawGrabCube clawGrabCube = new ClawGrabCube(claw);
-	private final ClawRelease clawRelease = new ClawRelease(claw);
+	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONEGRAB);
+	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBEGRAB);
+	private final ClawFinger clawRelease = new ClawFinger(claw, FingerState.RELEASE);
 
 	private final IntakeStow intakeStow = new IntakeStow(intake);
-	private final IntakeMoterIn intakeMoterIn = new IntakeMoterIn(intake);
-	private final IntakeMoterOut IntakeMoterOut = new IntakeMoterOut(intake);
+	private final IntakeMotor intakeMoterIn = new IntakeMotor(intake, MotorState.IN);
+	private final IntakeMotor IntakeMoterOut = new IntakeMotor(intake, MotorState.OUT);
 
-	private final IntakeOpen intakeOpen = new IntakeOpen(intake);
-	private final IntakeClose intakeClose = new IntakeClose(intake);
+	private final IntakeArm intakeOpen = new IntakeArm(intake, ArmState.OPEN);
+	private final IntakeArm intakeClose = new IntakeArm(intake, ArmState.CLOSE);
 
-	private final TiltRatchetLock ratchetLock = new TiltRatchetLock(craneTilt);
-	private final TiltRatchetUnlock ratchetUnlock = new TiltRatchetUnlock(craneTilt);
+	private final TiltRatchet ratchetLock = new TiltRatchet(craneTilt, RatchetState.LOCK);
+	private final TiltRatchet ratchetUnlock = new TiltRatchet(craneTilt, RatchetState.UNLOCK);
 
 	// =============================================================
 	// Create a voltage constraint to ensure we don't accelerate too fast
@@ -289,7 +288,7 @@ public class RobotContainer {
 		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 
-//		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneStartPIDs);
+		// new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneStartPIDs);
 		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(chassisShiftHI);
 		new JoystickButton(driver, Button.kRightBumper.value).onTrue(chassisShiftLO);
 

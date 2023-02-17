@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
-import frc.robot.Constants.CylinderState;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
@@ -43,6 +42,22 @@ public class Intake extends SubsystemBase {
       Pneumatic1ChannelConstants.kIntakeBarEnabled,
       Pneumatic1ChannelConstants.kIntakeBarDisabled);
 
+  public enum MotorState {
+    STOP,
+    IN,
+    OUT
+  }
+
+  public enum ArmState {
+    OPEN,
+    CLOSE
+  }
+
+  public enum BarState {
+    DEPLOY,
+    STOW
+  }
+
   /** Creates a new Intake. */
   public Intake() {
     System.out.println("+++++ Intake Constructor starting +++++");
@@ -53,8 +68,10 @@ public class Intake extends SubsystemBase {
     rightMotor.clearFaults();
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
-    stopMoters();
-    setIntake(CylinderState.CLOSE);
+
+    setMotor(MotorState.STOP);
+    setArm(ArmState.CLOSE);
+    setBar(BarState.STOW);
 
     System.out.println("+++++ Intake Constructor finishing +++++");
   }
@@ -65,22 +82,25 @@ public class Intake extends SubsystemBase {
 
   }
 
-  public void stopMoters() {
-    leftMotor.set(0.0);
-    rightMotor.set(0.0);
+  public void setMotor(MotorState state) {
+    switch (state) {
+      case STOP:
+        leftMotor.set(0.0);
+        rightMotor.set(0.0);
+        break;
+      case IN:
+        leftMotor.set(0.28);
+        rightMotor.set(-0.28);
+        break;
+      case OUT:
+        leftMotor.set(-0.28);
+        rightMotor.set(0.28);
+        break;
+      default:
+    }
   }
 
-  public void revMoters() {
-    leftMotor.set(-0.28);
-    rightMotor.set(0.28);
-  }
-
-  public void fwdMoters() {
-    leftMotor.set(0.28);
-    rightMotor.set(-0.28);
-  }
-
-  public void setIntake(CylinderState state) {
+  public void setArm(ArmState state) {
     switch (state) {
       case OPEN:
         intakeArm.set(Value.kForward);
@@ -92,12 +112,12 @@ public class Intake extends SubsystemBase {
     }
   }
 
-  public void setBar(CylinderState state) {
+  public void setBar(BarState state) {
     switch (state) {
-      case OPEN:
+      case STOW:
         intakeBar.set(Value.kForward);
         break;
-      case CLOSE:
+      case DEPLOY:
         intakeBar.set(Value.kReverse);
         break;
       default:

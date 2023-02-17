@@ -5,32 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.CylinderState;
-import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.CraneTilt;
+import frc.robot.subsystems.CraneTilt.RatchetState;
 
-public class ClawGrabCube extends CommandBase {
-  Claw claw;
-  
+public class TiltRatchet extends CommandBase {
+  CraneTilt craneTilt;
+  RatchetState state;
+
   /** Creates a new GrabCube. */
-  public ClawGrabCube(Claw claw) {
-    this.claw = claw;
-
+  public TiltRatchet(CraneTilt craneTilt, RatchetState state) {
+    this.craneTilt = craneTilt;
+    this.state = state;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    claw.setClaw(CylinderState.CUBECLOSE);
+    craneTilt.setRatchet(state);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

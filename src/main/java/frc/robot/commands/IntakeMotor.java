@@ -6,13 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake.MotorState;
 
-public class IntakeMoterIn extends CommandBase {
+public class IntakeMotor extends CommandBase {
   Intake intake;
+  MotorState state;
 
   /** Creates a new GrabCube. */
-  public IntakeMoterIn(Intake intake) {
+  public IntakeMotor(Intake intake, MotorState state) {
     this.intake = intake;
+    this.state = state;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -25,7 +29,7 @@ public class IntakeMoterIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.fwdMoters();
+    intake.setMotor(state);
 
   }
 

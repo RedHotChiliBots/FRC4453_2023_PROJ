@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.CylinderState;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 
@@ -25,11 +24,17 @@ public class Claw extends SubsystemBase {
       Pneumatic0ChannelConstants.kClawRightOpen,
       Pneumatic0ChannelConstants.kClawRightClose);
 
+  public enum FingerState {
+    RELEASE,
+    CONEGRAB,
+    CUBEGRAB
+  }
+      
   /** Creates a new Claw. */
   public Claw() {
     System.out.println("+++++ Claw Constructor starting +++++");
 
-    setClaw(CylinderState.CONECLOSE);
+    setFinger(FingerState.CONEGRAB);
 
     System.out.println("+++++ Claw Constructor finishing +++++");
   }
@@ -39,17 +44,17 @@ public class Claw extends SubsystemBase {
 
   }
 
-  public void setClaw(CylinderState state) {
+  public void setFinger(FingerState state) {
     switch (state) {
-      case OPEN:
+      case RELEASE:
         leftPiston.set(Value.kReverse);
         rightPiston.set(Value.kReverse);
         break;
-      case CUBECLOSE:
+      case CUBEGRAB:
         leftPiston.set(Value.kForward);
         rightPiston.set(Value.kReverse);
         break;
-      case CONECLOSE:
+      case CONEGRAB:
         rightPiston.set(Value.kForward);
         leftPiston.set(Value.kForward);
         break;

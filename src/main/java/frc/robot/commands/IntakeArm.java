@@ -5,15 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.CylinderState;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake.ArmState;
 
-public class IntakeClose extends CommandBase {
+public class IntakeArm extends CommandBase {
   Intake intake;
+  ArmState state;
 
   /** Creates a new GrabCube. */
-  public IntakeClose(Intake intake) {
+  public IntakeArm(Intake intake, ArmState state) {
     this.intake = intake;
+    this.state = state;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -26,7 +29,7 @@ public class IntakeClose extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntake(CylinderState.CLOSE);
+    intake.setArm(state);
   }
 
   // Called once the command ends or is interrupted.

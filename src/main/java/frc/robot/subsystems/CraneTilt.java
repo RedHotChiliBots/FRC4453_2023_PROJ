@@ -20,7 +20,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
-import frc.robot.Constants.CylinderState;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 
@@ -51,6 +50,11 @@ public class CraneTilt extends SubsystemBase {
   private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0).getEntry();
   private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0).getEntry();
   private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0).getEntry();
+
+  public enum RatchetState {
+    LOCK,
+    UNLOCK
+  }
 
   /** Creates a new Crane. */
   public CraneTilt() {
@@ -83,9 +87,10 @@ public class CraneTilt extends SubsystemBase {
     tiltEncoder.setPositionConversionFactor(CraneConstants.kTiltDegreesPerRotation);
 
     // ==============================================================
-    // Initialize Axis Positions and Set Points
+    // Initialize Axis Positions, Set Points, and Cylinder
     initTiltPos();
     setTiltSetPoint(tiltSetPoint);
+    setRatchet(RatchetState.UNLOCK);
 
     // ==============================================================
     // Configure ShuffleBoard data
@@ -98,7 +103,7 @@ public class CraneTilt extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
- 
+
     if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
       tiltSetPoint = sbTiltSP.getDouble(0.0);
       setTiltSetPoint(tiltSetPoint);
@@ -112,15 +117,15 @@ public class CraneTilt extends SubsystemBase {
   }
 
   // public double getGridX() {
-  //   return grid.getX();
+  // return grid.getX();
   // }
 
   // public double getGridY() {
-  //   return grid.getY();
+  // return grid.getY();
   // }
 
   // public double getGridZ() {
-  //   return grid.getZ();
+  // return grid.getZ();
   // }
 
   public void initTiltPos() {
@@ -140,6 +145,7 @@ public class CraneTilt extends SubsystemBase {
   public double getTiltPosition() {
     return tiltEncoder.getPosition();
   }
+
   public double getTiltSetPoint() {
     return tiltSetPoint;
   }
@@ -147,17 +153,17 @@ public class CraneTilt extends SubsystemBase {
   public void stopTilt() {
     tiltMotor.set(0.0);
   }
- 
+
   public void setTiltSpeed(double spd) {
     tiltMotor.set(spd);
   }
 
-  public void setRatchet(CylinderState state) {
+  public void setRatchet(RatchetState state) {
     switch (state) {
-      case OPEN:
+      case LOCK:
         ratchet.set(Value.kForward);
         break;
-      case CLOSE:
+      case UNLOCK:
         ratchet.set(Value.kReverse);
         break;
       default:

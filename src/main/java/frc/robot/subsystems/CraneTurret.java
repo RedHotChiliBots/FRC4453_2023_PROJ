@@ -36,16 +36,16 @@ public class CraneTurret extends SubsystemBase {
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   private final GenericEntry sbTurretSP = craneTab.addPersistent("Turret SetPoint", 0)
       .withWidget("Text View")
-      .withPosition(1, 2).withSize(1, 1).getEntry();
+      .withPosition(0, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbTurretPos = craneTab.addPersistent("Turret Pos", 0)
       .withWidget("Text View")
-      .withPosition(1, 2).withSize(1, 1).getEntry();
+      .withPosition(1, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbTurretVel = craneTab.addPersistent("Turret Vel", 0)
       .withWidget("Text View")
-      .withPosition(3, 2).withSize(1, 1).getEntry();
+      .withPosition(2, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbTurretFactor = craneTab.addPersistent("Turret Factor (dpr)", 0)
       .withWidget("Text View")
-      .withPosition(5, 2).withSize(1, 1).getEntry();
+      .withPosition(3, 1).withSize(1, 1).getEntry();
 
   /** Creates a new Crane. */
   public CraneTurret() {

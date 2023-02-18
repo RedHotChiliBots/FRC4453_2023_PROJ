@@ -173,14 +173,30 @@ public class RobotContainer {
 
 		// ==============================================================================
 		// Add Subsystems to Dashboard
-		Shuffleboard.getTab("SubSystems").add("Chassis", chassis);
-		Shuffleboard.getTab("SubSystems").add("Claw", claw);
-		Shuffleboard.getTab("SubSystems").add("Crane", crane);
-		Shuffleboard.getTab("SubSystems").add("Crane Turret", craneTurret);
-		Shuffleboard.getTab("SubSystems").add("Crane Tilt", craneTilt);
-		Shuffleboard.getTab("SubSystems").add("Crane Arm", craneArm);
-		Shuffleboard.getTab("SubSystems").add("Intake", intake);
-		Shuffleboard.getTab("SubSystems").add("Vision", vision);
+		Shuffleboard.getTab("SubSystems").add("Chassis", chassis)
+				.withWidget("Basic Subsystem")
+				.withPosition(0, 0).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Claw", claw)
+				.withWidget("Basic Subsystem")
+				.withPosition(0, 1).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Intake", intake)
+				.withWidget("Basic Subsystem")
+				.withPosition(0, 2).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Vision", vision)
+				.withWidget("Basic Subsystem")
+				.withPosition(0, 3).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Crane", crane)
+				.withWidget("Basic Subsystem")
+				.withPosition(2, 0).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Crane Turret", craneTurret)
+				.withWidget("Basic Subsystem")
+				.withPosition(2, 1).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Crane Tilt", craneTilt)
+				.withWidget("Basic Subsystem")
+				.withPosition(2, 2).withSize(2, 1);
+		Shuffleboard.getTab("SubSystems").add("Crane Arm", craneArm)
+				.withWidget("Basic Subsystem")
+				.withPosition(2, 3).withSize(2, 1);
 
 		// =============================================================
 		// Configure default commands for each subsystem
@@ -267,27 +283,51 @@ public class RobotContainer {
 
 		// Put the chooser on the dashboard
 		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-		compTab.add("Competition", "")
-				.withWidget("Network Table Tree")
-				.withPosition(5, 1).withSize(2, 5).getEntry();
-				
+		// compTab.add("Competition", "")
+		// 		.withWidget("Network Table Tree")
+		// 		.withPosition(5, 1).withSize(2, 5).getEntry();
+
 		compTab.add("Auton Command", chooser)
 				.withWidget("ComboBox Chooser")
-				.withPosition(1, 1).withSize(2, 1);
+				.withPosition(0, 0).withSize(2, 1);
 
 		cmdTab = Shuffleboard.getTab("Commands");
-		cmdTab.add("Gear Shift HI", chassisShiftHI);
-		cmdTab.add("Gear Shift LO", chassisShiftLO);
-		cmdTab.add("Claw Grab Cone", clawGrabCone);
-		cmdTab.add("Claw Grab Cube", clawGrabCube);
-		cmdTab.add("Claw Release", clawRelease);
-		cmdTab.add("Tilt Ratchet Lock", ratchetLock);
-		cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock);
-		cmdTab.add("Intake Stow", intakeStow);
-		cmdTab.add("Intake Open", intakeOpen);
-		cmdTab.add("Intake Close", intakeClose);
-		cmdTab.add("Intake In", intakeMotorIn);
-		cmdTab.add("Intake Out", IntakeMotorOut);
+		cmdTab.add("Gear Shift HI", chassisShiftHI)
+				.withWidget("Command")
+				.withPosition(0, 0).withSize(1, 1);
+		cmdTab.add("Gear Shift LO", chassisShiftLO)
+				.withWidget("Command")
+				.withPosition(0, 1).withSize(1, 1);
+		cmdTab.add("Tilt Ratchet Lock", ratchetLock)
+				.withWidget("Command")
+				.withPosition(0, 3).withSize(1, 1);
+		cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock)
+				.withWidget("Command")
+				.withPosition(0, 4).withSize(1, 1);
+		cmdTab.add("Claw Grab Cone", clawGrabCone)
+				.withWidget("Command")
+				.withPosition(1, 0).withSize(1, 1);
+		cmdTab.add("Claw Grab Cube", clawGrabCube)
+				.withWidget("Command")
+				.withPosition(1, 1).withSize(1, 1);
+		cmdTab.add("Claw Release", clawRelease)
+				.withWidget("Command")
+				.withPosition(1, 2).withSize(1, 1);
+		cmdTab.add("Intake In", intakeMotorIn)
+				.withWidget("Command")
+				.withPosition(2, 0).withSize(1, 1);
+		cmdTab.add("Intake Out", IntakeMotorOut)
+				.withWidget("Command")
+				.withPosition(2, 1).withSize(1, 1);
+		cmdTab.add("Intake Stow", intakeStow)
+				.withWidget("Command")
+				.withPosition(2, 2).withSize(1, 1);
+		cmdTab.add("Intake Open", intakeOpen)
+				.withWidget("Command")
+				.withPosition(2, 3).withSize(1, 1);
+		cmdTab.add("Intake Close", intakeClose)
+				.withWidget("Command")
+				.withPosition(2, 4).withSize(1, 1);
 
 		configureButtonBindings();
 

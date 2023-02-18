@@ -126,36 +126,47 @@ public class Chassis extends SubsystemBase {
 	// Define Shuffleboard data
 
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
-	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0).getEntry();
+	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0)
+			.withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
 	// private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML
 	// Velocity", 0).getEntry();
-	private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0).getEntry();
+	private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0)
+			.withWidget("Text View").withPosition(1, 2).withSize(1, 1).getEntry();
 	// private final GenericEntry sbRightVel = chassisTab.addPersistent("MR
 	// Velocity", 0).getEntry();
 	// private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power",
 	// 0).getEntry();
 	// private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power",
 	// 0).getEntry();
-	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0).getEntry();
-	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0).getEntry();
-	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0).getEntry();
-	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0).getEntry();
+	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0)
+			.withWidget("Text View").withPosition(0, 0).withSize(1, 1).getEntry();
+	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0)
+			.withWidget("Text View").withPosition(1, 0).withSize(1, 1).getEntry();
+	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0)
+			.withWidget("Text View").withPosition(2, 0).withSize(1, 1).getEntry();
+	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0)
+			.withWidget("Text View").withPosition(3, 0).withSize(1, 1).getEntry();
 
-	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0).getEntry();
-	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0).getEntry();
-	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0).getEntry();
-
+	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0)
+			.withWidget("Text View").withPosition(3, 2).withSize(1, 1).getEntry();
+	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0)
+			.withWidget("Text View").withPosition(3, 3).withSize(1, 1).getEntry();
+	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0)
+			.withWidget("Text View").withPosition(3, 4).withSize(1, 1).getEntry();
 	// private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint",
 	// 0.0).getEntry();
 	// private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error",
 	// 0.0).getEntry();
 	// private final GenericEntry sbRightErr = chassisTab.addPersistent("Right
 	// Error", 0.0).getEntry();
-	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false).getEntry();
+	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false)
+			.withWidget("Boolean Box").withPosition(2, 1).withSize(1, 1).getEntry();
 
-	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
-	private final GenericEntry sbHiPressure = pneumaticsTab.addPersistent("Hi Pressure", 0).getEntry();
-	private final GenericEntry sbLoPressure = pneumaticsTab.addPersistent("Lo Pressure", 0).getEntry();
+//	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
+	private final GenericEntry sbHiPressure = chassisTab.addPersistent("Hi Pressure", 0)
+			.withWidget("Text View").withPosition(5, 3).withSize(1, 1).getEntry();
+	private final GenericEntry sbLoPressure = chassisTab.addPersistent("Lo Pressure", 0)
+			.withWidget("Text View").withPosition(5, 4).withSize(1, 1).getEntry();
 
 	public final Library lib = new Library();
 
@@ -234,10 +245,14 @@ public class Chassis extends SubsystemBase {
 
 		// ==============================================================
 		// Add static variables to Shuffleboard
-		chassisTab.addPersistent("ML Pos Factor", leftEncoder.getPositionConversionFactor());
-		chassisTab.addPersistent("MR Pos Factor", rightEncoder.getPositionConversionFactor());
-		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor());
-		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor());
+		chassisTab.addPersistent("ML Pos Factor", leftEncoder.getPositionConversionFactor())
+				.withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+		chassisTab.addPersistent("MR Pos Factor", rightEncoder.getPositionConversionFactor())
+				.withWidget("Text View").withPosition(1, 3).withSize(1, 1).getEntry();
+		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor())
+				.withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
+		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor())
+				.withWidget("Text View").withPosition(1, 4).withSize(1, 1).getEntry();
 
 		// ==============================================================
 		// Initialize devices before starting

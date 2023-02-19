@@ -32,10 +32,10 @@ public class Crane extends SubsystemBase {
  
   private CraneState craneState = CraneState.NA;
   private int dpadValue;
+  private int deBounce;
 
   private final XboxController operator;
   private final GridCalcs grid = new GridCalcs();
-  private final Library lib = new Library();
 
   // private Intake intake;
 
@@ -143,7 +143,12 @@ public class Crane extends SubsystemBase {
 
   public void readDPad() {
     dpadValue = operator.getPOV();
-    if (lib.deBounce(10) && dpadValue != -1) {
+    
+    if (dpadValue == -1) {
+      deBounce = 0;
+    }
+
+    if (dpadValue != -1 && deBounce % 10 == 0) {
       sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(false);
       switch (dpadValue) {
         case 0:

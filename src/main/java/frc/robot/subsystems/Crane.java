@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.GridCalcs;
-import frc.robot.Library;
 import frc.robot.Constants.E;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
@@ -143,7 +142,7 @@ public class Crane extends SubsystemBase {
 
   public void readDPad() {
     dpadValue = operator.getPOV();
-    
+
     if (dpadValue == -1) {
       deBounce = 0;
     }

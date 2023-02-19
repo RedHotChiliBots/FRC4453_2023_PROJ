@@ -20,20 +20,6 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-	public enum GearShifterState {
-		NA,
-		HI,
-		LO
-	}
-
-	public enum CylinderState {
-		NA,
-		OPEN,
-		CLOSE,
-		CUBECLOSE,
-		CONECLOSE
-	}
-
 	public enum E {
 		NA,
 		CONE,

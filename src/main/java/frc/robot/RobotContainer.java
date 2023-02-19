@@ -41,6 +41,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Intake.ArmState;
 import frc.robot.subsystems.Intake.MotorState;
 import frc.robot.subsystems.Claw.FingerState;
+import frc.robot.subsystems.Chassis.GearShifterState;
 import frc.robot.subsystems.CraneTilt.RatchetState;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ClawFinger;
@@ -67,7 +68,6 @@ import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
 import frc.robot.Constants.ChassisConstants;
-import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.OIConstants;
 
 /**

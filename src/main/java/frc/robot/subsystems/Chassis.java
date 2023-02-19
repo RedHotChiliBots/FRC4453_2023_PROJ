@@ -41,7 +41,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
-import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 import frc.robot.Library;
@@ -119,6 +118,12 @@ public class Chassis extends SubsystemBase {
 	public enum DirState {
 		FORWARD,
 		REVERSE
+	}
+
+	public enum GearShifterState {
+		NA,
+		HI,
+		LO
 	}
 
 	private double setPoint = 0.0;

@@ -41,7 +41,7 @@ public class Crane_Move2StowPos extends CommandBase {
         if (crane.getState() == CraneState.STOW) {
           finish = true;
         } else {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltRotatePos);
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltClearChassisPos);
           craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
           crane.setState(CraneState.MOVING);
           state++;
@@ -49,7 +49,7 @@ public class Crane_Move2StowPos extends CommandBase {
         break;
 
       case 1:
-        if ((craneTilt.getTiltPosition() == CraneConstants.kTiltRotatePos)
+        if ((craneTilt.getTiltPosition() == CraneConstants.kTiltClearChassisPos)
             && (craneArm.getArmPosition() == CraneConstants.kArmStowPos)) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretStowPos);
           state++;

@@ -77,7 +77,8 @@ public class CraneTurret extends SubsystemBase {
     turretEncoder.setPositionConversionFactor(CraneConstants.kTurretDegreesPerRotation);
 
     // ==============================================================
-    // Initialize Axis Positions and Set Points
+    // Initialize Axis Positions and Set Points at PowerUp/Reboot
+    // This requires that the Turret is On Hard Stop before PowerUp/Reboot
     reset();
 
     // ==============================================================

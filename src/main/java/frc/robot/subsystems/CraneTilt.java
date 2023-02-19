@@ -95,7 +95,8 @@ public class CraneTilt extends SubsystemBase {
     tiltEncoder.setPositionConversionFactor(CraneConstants.kTiltDegreesPerRotation);
 
     // ==============================================================
-    // Initialize Axis Positions, Set Points, and Cylinder
+    // Initialize Axis Positions, Set Points, and Cylinder at PowerUp/Reboot
+    // This requires that the Tilt is On Hard Stop before PowerUp/Reboot
     reset();
 
     // ==============================================================

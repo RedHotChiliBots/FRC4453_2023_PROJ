@@ -15,11 +15,14 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
@@ -79,6 +82,10 @@ public class Intake extends SubsystemBase {
     STOW
   }
 
+  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+  private final GenericEntry sbElemIn = compTab.add("Element In", false)
+      .withWidget("Boolean Box").withPosition(4, 1).withSize(1, 1).getEntry();
+
   /** Creates a new Intake. */
   public Intake(Crane crane) {
     System.out.println("+++++ Intake Constructor starting +++++");
@@ -97,7 +104,7 @@ public class Intake extends SubsystemBase {
 
     colorMatcher.addColorMatch(colorCone);
     colorMatcher.addColorMatch(colorCube);
-    
+
     System.out.println("+++++ Intake Constructor finishing +++++");
   }
 
@@ -114,6 +121,8 @@ public class Intake extends SubsystemBase {
     } else {
       element = E.NA;
     }
+
+//    sbElemIn.setBoolean(isElementIn());
 
     crane.setElem(element);
   }

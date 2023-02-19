@@ -181,7 +181,7 @@ public final class Constants {
 		public static final double kTiltI = 1e-6;
 		public static final double kTiltD = 0.0;
 		public static final double kTiltInitPos = -83.2; // degrees
-		public static final double kTiltRotatePos = -45.0; // degrees
+		public static final double kTiltClearChassisPos = -45.0; // degrees
 		public static final double kTiltStowPos = -83.2; // degrees
 		public static final double kTiltReceivePos = -70.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees

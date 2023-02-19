@@ -26,6 +26,7 @@ public class Crane extends SubsystemBase {
     RECEIVE,
     READY,
     NODE,
+    CLEAR2MOVE,
     MOVING,
     NA
   }
@@ -35,7 +36,7 @@ public class Crane extends SubsystemBase {
   private int deBounce;
   private DriverStation.Alliance dsAlliance;
   private int dsLocation;
-  
+
   private final XboxController operator;
   private final GridCalcs grid = new GridCalcs();
 
@@ -108,11 +109,19 @@ public class Crane extends SubsystemBase {
     sbHorz.setString(grid.horz.get().toString());
     sbElem.setString(grid.getElem().toString());
 
-    readDPad();
+    if (grid.getElem() == E.CONE) {
+      sbElemType.get(E.CONE).setBoolean(true);
+    } else {
+      sbElemType.get(E.CONE).setBoolean(false);
+    }
 
-    // if (intake.isElementIn()) {
-    //   grid.setElem(intake.getElement());
-    // }
+    if (grid.getElem() == E.CUBE) {
+      sbElemType.get(E.CUBE).setBoolean(true);
+    } else {
+      sbElemType.get(E.CUBE).setBoolean(false);
+    }
+
+    readDPad();
   }
 
   public void setState(CraneState state) {

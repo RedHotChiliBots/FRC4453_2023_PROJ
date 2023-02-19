@@ -78,7 +78,8 @@ public class CraneArm extends SubsystemBase {
     armEncoder.setPositionConversionFactor(CraneConstants.kArmInchesPerRotation);
 
     // ==============================================================
-    // Initialize Axis Positions and Set Points   
+    // Initialize Axis Positions and Set Points at PowerUp/Reboot
+    // This requires that the Arm is Retracted before PowerUp/Reboot
     reset();
 
     // ==============================================================

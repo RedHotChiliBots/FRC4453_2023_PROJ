@@ -37,56 +37,71 @@ public class Crane_Move2NodePos extends CommandBase {
   @Override
   public void execute() {
     switch (state) {
+      // If already at Node, then finish, else Retract Arm and check Tilt will clear Chassis
       case 0:
         if (crane.getState() == CraneState.NODE &&
-            (craneTurret.getTurretSetPoint() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
-            craneTilt.getTiltSetPoint() == crane.getGridZ() &&
-            craneArm.getArmSetPoint() == crane.getGridY()) {
+            (craneTurret.getTurretPosition() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
+            craneTilt.getTiltPosition() == crane.getGridZ() &&
+            craneArm.getArmPosition() == crane.getGridY()) {
           finish = true;
         } else {
+          craneArm.setArmSetPoint(CraneConstants.kArmInitPos);
+            
+          if (craneTilt.getTiltPosition() < CraneConstants.kTiltClearChassisPos) {
+            craneTilt.setTiltSetPoint(CraneConstants.kTiltClearChassisPos);
+            crane.setState(CraneState.MOVING);
+          }
           state++;
         }
         break;
 
+      // If Tilt is below ClearChassis, raise to ClearChassis
       case 1:
-        if (crane.getState() != CraneState.READY && crane.getState() != CraneState.NODE) {
+        if (craneTilt.getTiltPosition() >= CraneConstants.kTiltClearChassisPos) {
+          crane.setState(CraneState.CLEAR2MOVE);
+          state++;
+        }
+        break;
+
+      // If Crane is in Clear2Move, then move Turret and Tilt to Node's position
+      case 2:
+        if (crane.getState() == CraneState.CLEAR2MOVE) {
           finish = true;
         } else {
           craneTurret.setTurretSetPoint(crane.getGridX() + CraneConstants.kTurretNodePos);
           craneTilt.setTiltSetPoint(crane.getGridZ());
-          craneArm.setArmSetPoint(crane.getGridY());
           crane.setState(CraneState.MOVING);
           state++;
         }
         break;
 
-      case 2:
-        if ((craneTurret.getTurretSetPoint() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
-            craneTilt.getTiltSetPoint() == crane.getGridZ() &&
-            craneArm.getArmSetPoint() == crane.getGridY()) {
+      // If Crane Turret and Tilt are positioned for Node, them move Arm
+      case 3:
+        if ((craneTurret.getTurretPosition() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
+            craneTilt.getTiltPosition() == crane.getGridZ()) {
+          craneArm.setArmSetPoint(crane.getGridY());
           state++;
         }
         break;
 
-      case 3:
-
-        crane.setState(CraneState.NODE);
-        finish = true;
+      // If Crane Arm is at Node position, then finished
+      case 4:
+        if (craneArm.getArmPosition() == crane.getGridY()) {
+          crane.setState(CraneState.NODE);
+          finish = true;
+        }
         break;
-
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    crane.setState(CraneState.NODE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return finish;
   }
 }

@@ -37,7 +37,7 @@ public class Crane extends SubsystemBase {
   private final GridCalcs grid = new GridCalcs();
   private final Library lib = new Library();
 
-  private Intake intake;
+  // private Intake intake;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -88,7 +88,7 @@ public class Crane extends SubsystemBase {
   /** Creates a new Crane. */
   public Crane(XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
-    this.intake = intake;
+    // this.intake = intake;
 
     this.operator = operator;
     grid.vert.set(V.MID);
@@ -108,9 +108,9 @@ public class Crane extends SubsystemBase {
 
     readDPad();
 
-    if (intake.isElementIn()) {
-      grid.setElem(intake.getElement());
-    }
+    // if (intake.isElementIn()) {
+    //   grid.setElem(intake.getElement());
+    // }
   }
 
   public void setState(CraneState state) {
@@ -119,6 +119,14 @@ public class Crane extends SubsystemBase {
 
   public CraneState getState() {
     return craneState;
+  }
+
+  public void setElem(E elem) {
+    grid.setElem(elem);
+  }
+
+  public E getElem() {
+    return grid.getElem();
   }
 
   public double getGridX() {

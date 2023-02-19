@@ -41,9 +41,13 @@ public class IntakeMotor extends CommandBase {
     }
   }
 
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (state == MotorState.IN) {
+      intake.setMotor(MotorState.STOP);
+    }
   }
 
   // Returns true when the command should end.

@@ -51,7 +51,8 @@ public class Intake extends SubsystemBase {
       Pneumatic1ChannelConstants.kIntakeBarDisabled);
 
   private final DigitalInput elemIn = new DigitalInput(DIOChannelConstants.kElementIn);
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+
+  private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
   private final Color colorCone = Color.kYellow;
@@ -59,6 +60,7 @@ public class Intake extends SubsystemBase {
 
   private Color detectedColor;
   private ColorMatchResult colorMatch;
+  private Crane crane;
   private E element;
 
   public enum MotorState {
@@ -80,6 +82,7 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public Intake(Crane crane) {
     System.out.println("+++++ Intake Constructor starting +++++");
+    this.crane = crane;
 
     leftMotor.restoreFactoryDefaults();
     rightMotor.restoreFactoryDefaults();
@@ -111,6 +114,8 @@ public class Intake extends SubsystemBase {
     } else {
       element = E.NA;
     }
+
+    crane.setElem(element);
   }
 
   public boolean isElementIn() {

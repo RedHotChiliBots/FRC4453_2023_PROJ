@@ -9,14 +9,22 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
+import frc.robot.Constants.DIOChannelConstants;
+import frc.robot.Constants.E;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
@@ -42,6 +50,17 @@ public class Intake extends SubsystemBase {
       Pneumatic1ChannelConstants.kIntakeBarEnabled,
       Pneumatic1ChannelConstants.kIntakeBarDisabled);
 
+  private final DigitalInput elemIn = new DigitalInput(DIOChannelConstants.kElementIn);
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorMatch colorMatcher = new ColorMatch();
+  private final Color colorCone = Color.kYellow;
+  private final Color colorCube = Color.kPurple;
+
+  private Color detectedColor;
+  private ColorMatchResult colorMatch;
+  private E element;
+
   public enum MotorState {
     STOP,
     IN,
@@ -59,7 +78,7 @@ public class Intake extends SubsystemBase {
   }
 
   /** Creates a new Intake. */
-  public Intake() {
+  public Intake(Crane crane) {
     System.out.println("+++++ Intake Constructor starting +++++");
 
     leftMotor.restoreFactoryDefaults();
@@ -73,6 +92,9 @@ public class Intake extends SubsystemBase {
     setArm(ArmState.CLOSE);
     setBar(BarState.STOW);
 
+    colorMatcher.addColorMatch(colorCone);
+    colorMatcher.addColorMatch(colorCube);
+    
     System.out.println("+++++ Intake Constructor finishing +++++");
   }
 
@@ -80,6 +102,23 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    detectedColor = colorSensor.getColor();
+    colorMatch = colorMatcher.matchClosestColor(detectedColor);
+    if (colorMatch.color == colorCone) {
+      element = E.CONE;
+    } else if (colorMatch.color == colorCube) {
+      element = E.CUBE;
+    } else {
+      element = E.NA;
+    }
+  }
+
+  public boolean isElementIn() {
+    return elemIn.get();
+  }
+
+  public E getElement() {
+    return element;
   }
 
   public void setMotor(MotorState state) {
@@ -89,12 +128,12 @@ public class Intake extends SubsystemBase {
         rightMotor.set(0.0);
         break;
       case IN:
-        leftMotor.set(0.28);
-        rightMotor.set(-0.28);
+        leftMotor.set(0.25);
+        rightMotor.set(-0.25);
         break;
       case OUT:
-        leftMotor.set(-0.28);
-        rightMotor.set(0.28);
+        leftMotor.set(-0.25);
+        rightMotor.set(0.25);
         break;
       default:
     }

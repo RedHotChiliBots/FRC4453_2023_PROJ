@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
-import frc.robot.GridCalcs.E;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
+import frc.robot.Constants.E;
 import frc.robot.GridCalcs.C;
 
 @TestMethodOrder(OrderAnnotation.class)

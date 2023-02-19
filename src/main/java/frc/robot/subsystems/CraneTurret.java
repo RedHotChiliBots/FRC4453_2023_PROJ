@@ -78,8 +78,7 @@ public class CraneTurret extends SubsystemBase {
 
     // ==============================================================
     // Initialize Axis Positions and Set Points
-    initTurretPos();
-    setTurretSetPoint(turretSetPoint);
+    reset();
 
     // ==============================================================
     // Configure ShuffleBoard data
@@ -117,6 +116,11 @@ public class CraneTurret extends SubsystemBase {
   // public double getGridZ() {
   // return grid.getZ();
   // }
+
+  public void reset() {
+    initTurretPos();
+    setTurretSetPoint(turretSetPoint);
+  }
 
   public void initTurretPos() {
     turretEncoder.setPosition(CraneConstants.kTurretInitPos);

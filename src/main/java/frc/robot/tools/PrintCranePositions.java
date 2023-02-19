@@ -4,7 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import frc.robot.GridCalcs;
-import frc.robot.GridCalcs.E;
+import frc.robot.Constants.E;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
 

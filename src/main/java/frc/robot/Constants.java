@@ -34,6 +34,12 @@ public final class Constants {
 		CONECLOSE
 	}
 
+	public enum E {
+		NA,
+		CONE,
+		CUBE
+	}
+
 	public static final class CANidConstants {
 		public static final int kPDP = 0;
 		public static final int kCompressor = 0;
@@ -75,13 +81,7 @@ public final class Constants {
 	}
 
 	public static final class DIOChannelConstants {
-		public static final int kClimberLeftLimit = 0;
-		public static final int kClimberRightLimit = 1;
-		public static final int kCollectorExiting = 2;
-		public static final int kHopperEntering = 3;
-		public static final int kHopperExiting = 4;
-		public static final int kFeederEntering = 5;
-		public static final int kFeederExiting = 6;
+		public static final int kElementIn = 0;
 	}
 
 	public static final class PWMChannelConstants {
@@ -109,15 +109,15 @@ public final class Constants {
 
 	public static final class ChassisConstants {
 		// Constants for Drive PIDs
-		public static final double kP = 5.5108E-07; // from sysID
+		public static final double kP = 0.0032218; // from sysID
 		public static final double kI = 0.0; // from sysID
-		public static final double kD = 0.0; // from sysID
+		public static final double kD = 0.00047213; // from sysID
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.000156;
 
-		public static final double kA = 0.29701; // from sysID
-		public static final double kS = 0.16439; // from SysID
-		public static final double kV = 1.3349; // from sysID
+		public static final double kA = 0.69884; // from sysID
+		public static final double kS = 0.087827; // from SysID
+		public static final double kV = 1.0907; // from sysID
 
 		public static final double kMinOutput = -1.0; // -0.5;
 		public static final double kMaxOutput = 1.0; // 0.5;
@@ -224,13 +224,13 @@ public final class Constants {
 		public static final double kArmMinVel = 0.0;
 
 		public static final double kTurretSprocketTeeth = 170;
-		public static final double kTurretMotorSprocketTeeth = 16;
+		public static final double kTurretMotorSprocketTeeth = 24;
 		public static final double kTurretSprocketRatio = kTurretSprocketTeeth / kTurretMotorSprocketTeeth;
-		public static final double kTurretGearBoxRatio = 1;
+		public static final double kTurretGearBoxRatio = 20;
 		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
 		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
-		public static final double kTurretMaxVel = 540.0 / kTurretDegreesPerRotation * 60.0; // RPM
-		public static final double kTurretMaxAccel = kTurretMaxVel * (1.0 / 2.0); // RPM^2
+		public static final double kTurretMaxVel = 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
+		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPM^2
 
 		public static final double kTiltSprocketTeeth = 60;
 		public static final double kTiltMotorSprocketTeeth = 18;
@@ -262,7 +262,7 @@ public final class Constants {
 
 		// Constants such as camera and target height stored. Change per robot and goal!
 		public static final double kCameraHeight = Units.inchesToMeters(15.5);
-		public static final double kTargetHeight = Units.inchesToMeters(21.75);
+		public static final double kTargetHeight = Units.inchesToMeters(18.75);
 
 		// Angle between horizontal and the camera.
 		public static final double kCameraPitch = Units.degreesToRadians(0);

@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.EnumMap;
 import java.util.Map;
 
+import frc.robot.Constants.E;
+
 /** Add your docs here. */
 public class GridCalcs {
 
@@ -15,10 +17,10 @@ public class GridCalcs {
 		BLUE
 	}
 
-	public enum E {
-		CONE,
-		CUBE
-	}
+	// public enum E {
+	// 	CONE,
+	// 	CUBE
+	// }
 
 	public enum V {
 		TOP,

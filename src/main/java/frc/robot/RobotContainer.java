@@ -45,6 +45,7 @@ import frc.robot.subsystems.CraneTilt.RatchetState;
 import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ClawFinger;
 import frc.robot.commands.CraneArm2Pos;
+import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.ChassisArcadeDrive;
@@ -64,6 +65,7 @@ import frc.robot.commands.AutonReturnToGrid;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
+import frc.robot.commands.ChassisToggleDir;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.GearShifterState;
 import frc.robot.Constants.OIConstants;
@@ -86,8 +88,8 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
 	private static final Claw claw = new Claw();
-	private static final Intake intake = new Intake();
 	private static final Crane crane = new Crane(operator);
+	private static final Intake intake = new Intake(crane);
 	private static final CraneTurret craneTurret = new CraneTurret();
 	private static final CraneTilt craneTilt = new CraneTilt();
 	private static final CraneArm craneArm = new CraneArm();
@@ -119,13 +121,16 @@ public class RobotContainer {
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
-	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision);
+	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision, 2);
 
 	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
 
 	private final ChassisSetGearShifter chassisShiftHI = new ChassisSetGearShifter(chassis, GearShifterState.HI);
 	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis, GearShifterState.LO);
 
+	private final ChassisToggleDir chassisToggleDir = new ChassisToggleDir(chassis);
+
+	private final CraneReset craneReset = new CraneReset(crane, craneTurret, craneTilt, craneArm);
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
@@ -136,7 +141,8 @@ public class RobotContainer {
 
 	private final IntakeStow intakeStow = new IntakeStow(intake);
 	private final IntakeMotor intakeMotorIn = new IntakeMotor(intake, MotorState.IN);
-	private final IntakeMotor IntakeMotorOut = new IntakeMotor(intake, MotorState.OUT);
+	private final IntakeMotor intakeMotorOut = new IntakeMotor(intake, MotorState.OUT);
+	private final IntakeMotor intakeMotorStop = new IntakeMotor(intake, MotorState.STOP);
 
 	private final IntakeArm intakeOpen = new IntakeArm(intake, ArmState.OPEN);
 	private final IntakeArm intakeClose = new IntakeArm(intake, ArmState.CLOSE);
@@ -298,6 +304,9 @@ public class RobotContainer {
 		cmdTab.add("Gear Shift LO", chassisShiftLO)
 				.withWidget("Command")
 				.withPosition(0, 1).withSize(1, 1);
+		cmdTab.add("Direction", chassisToggleDir)
+				.withWidget("Command")
+				.withPosition(0, 2).withSize(1, 1);
 		cmdTab.add("Tilt Ratchet Lock", ratchetLock)
 				.withWidget("Command")
 				.withPosition(0, 3).withSize(1, 1);
@@ -316,7 +325,7 @@ public class RobotContainer {
 		cmdTab.add("Intake In", intakeMotorIn)
 				.withWidget("Command")
 				.withPosition(2, 0).withSize(1, 1);
-		cmdTab.add("Intake Out", IntakeMotorOut)
+		cmdTab.add("Intake Out", intakeMotorOut)
 				.withWidget("Command")
 				.withPosition(2, 1).withSize(1, 1);
 		cmdTab.add("Intake Stow", intakeStow)
@@ -328,6 +337,12 @@ public class RobotContainer {
 		cmdTab.add("Intake Close", intakeClose)
 				.withWidget("Command")
 				.withPosition(2, 4).withSize(1, 1);
+		cmdTab.add("Crane Reset", craneReset)
+				.withWidget("Command")
+				.withPosition(3, 0).withSize(1, 1);
+		cmdTab.add("Intake Stop", intakeMotorStop)
+				.withWidget("Command")
+				.withPosition(3, 2).withSize(1, 1);
 
 		configureButtonBindings();
 
@@ -368,7 +383,7 @@ public class RobotContainer {
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMotorIn);
-		new JoystickButton(operator, Button.kA.value).whileTrue(IntakeMotorOut);
+		new JoystickButton(operator, Button.kA.value).whileTrue(intakeMotorOut);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
 	}

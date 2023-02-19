@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.GridCalcs;
 import frc.robot.Library;
+import frc.robot.Constants.E;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
-import frc.robot.GridCalcs.E;
 
 public class Crane extends SubsystemBase {
 
@@ -36,6 +36,8 @@ public class Crane extends SubsystemBase {
   private final XboxController operator;
   private final GridCalcs grid = new GridCalcs();
   private final Library lib = new Library();
+
+  private Intake intake;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -79,13 +81,14 @@ public class Crane extends SubsystemBase {
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
       E.CONE, compTab.addPersistent("Cone", true)
-          .withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 1).withSize(1, 1).getEntry(),
       E.CUBE, compTab.addPersistent("Cube", false)
-          .withWidget("Text View").withPosition(1, 1).withSize(1, 1).getEntry()));
+          .withWidget("Boolean Box").withPosition(1, 1).withSize(1, 1).getEntry()));
 
   /** Creates a new Crane. */
   public Crane(XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
+    this.intake = intake;
 
     this.operator = operator;
     grid.vert.set(V.MID);
@@ -104,6 +107,10 @@ public class Crane extends SubsystemBase {
     sbElem.setString(grid.getElem().toString());
 
     readDPad();
+
+    if (intake.isElementIn()) {
+      grid.setElem(intake.getElement());
+    }
   }
 
   public void setState(CraneState state) {

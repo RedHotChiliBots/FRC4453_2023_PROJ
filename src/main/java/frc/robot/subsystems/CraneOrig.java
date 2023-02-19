@@ -22,9 +22,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.GridCalcs;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
-import frc.robot.GridCalcs.E;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.E;
 
 public class CraneOrig extends SubsystemBase {
   // ==============================================================

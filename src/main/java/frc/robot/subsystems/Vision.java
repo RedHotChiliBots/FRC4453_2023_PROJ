@@ -4,16 +4,26 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+import java.util.Map;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
@@ -24,6 +34,9 @@ public class Vision extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera(VisionConstants.kCameraName);
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
+  private List<PhotonTrackedTarget> targets = null;
+  private double range;
+  private int targetId;
 
   private PIDController distController = new PIDController(VisionConstants.kDistP, VisionConstants.kDistI,
       VisionConstants.kDistD);
@@ -36,26 +49,27 @@ public class Vision extends SubsystemBase {
   // ==============================================================
   // Define Shuffleboard data
   private final ShuffleboardTab visionTab = Shuffleboard.getTab("Vision");
-  // private final GenericEntry sbVision = visionTab.add("Vision", "")
-  //     .withWidget("Network Table Tree")
-  //     .withPosition(4, 0).withSize(2, 3).getEntry();
 
+  private final GenericEntry sbRange = visionTab.addPersistent("Range", 0)
+      .withWidget("Text View").withPosition(0, 0).withSize(1, 1).getEntry();
   private final GenericEntry sbPitch = visionTab.addPersistent("Pitch", 0)
       .withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbYaw = visionTab.addPersistent("Yaw", 0)
-      .withWidget("Text View").withPosition(1, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0)
-      .withWidget("Text View").withPosition(2, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbArea = visionTab.addPersistent("Area", 0)
-      .withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0)
       .withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbSkew = visionTab.addPersistent("Skew", 0)
+      .withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbArea = visionTab.addPersistent("Area", 0)
+      .withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
+  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0)
+      .withWidget("Text View").withPosition(1, 0).withSize(1, 1).getEntry();
+  private final GenericEntry sbHasTargets = visionTab.addPersistent("Has Targets", false)
+      .withWidget("Boolean Box").withPosition(1, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbHasTarget = visionTab.addPersistent("Has Target", false)
       .withWidget("Boolean Box").withPosition(1, 2).withSize(1, 1).getEntry();
   private final GenericEntry sbDistAtTarget = visionTab.addPersistent("Dist At Target", false)
-      .withWidget("Boolean Box").withPosition(2, 2).withSize(1, 1).getEntry();
+      .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry();
   private final GenericEntry sbTurnAtTarget = visionTab.addPersistent("Turn At Target", false)
-      .withWidget("Boolean Box").withPosition(3, 2).withSize(1, 1).getEntry();
+      .withWidget("Boolean Box").withPosition(1, 4).withSize(1, 1).getEntry();
 
   // // Query the latest result from PhotonVision
   // PhotonPipelineResult result = null;
@@ -87,6 +101,15 @@ public class Vision extends SubsystemBase {
 
   public Vision() {
     System.out.println("+++++ Vision Constructor starting +++++");
+
+    // NetworkTableEntry video =
+    // NetworkTableInstance.getDefault().getTable("").getEntry(VisionConstants.kCameraName);
+    // video.
+    // sbCamera.add
+    visionTab.addCamera("Camera", VisionConstants.kCameraName,
+        "http://photonvision.local:1182/stream.mjpg")
+        .withWidget("Camera Stream").withPosition(2, 0).withSize(4, 4);
+    // .withProperties(Map.of("crosshaircolor", #7cfc00, "showcontrols", false));
 
     // // Set driver mode to on.
     // camera.setDriverMode(true);
@@ -138,21 +161,44 @@ public class Vision extends SubsystemBase {
     result = camera.getLatestResult();
 
     if (result.hasTargets()) {
-      target = result.getBestTarget();
-      
-      sbHasTarget.setBoolean(true);
+      sbHasTargets.setBoolean(true);
 
-      sbYaw.setDouble(target.getYaw());
-      sbPitch.setDouble(target.getPitch());
-      sbArea.setDouble(target.getArea());
-      sbSkew.setDouble(target.getSkew());
-      sbTargetID.setDouble(target.getFiducialId());
-      sbDistAtTarget.setBoolean(atDistTarget());
-      sbTurnAtTarget.setBoolean(atTurnTarget());
+      targets = result.getTargets();
+      target = null;
+      sbHasTarget.setBoolean(false);
 
+      for (PhotonTrackedTarget t : targets) {
+        if (t.getFiducialId() == targetId) {
+          target = t;
+          sbHasTarget.setBoolean(true);
+        }
+      }
+
+      if (target == null) {
+        sbHasTarget.setBoolean(false);
+        
+      } else {
+        // target = result.getBestTarget();
+
+        range = PhotonUtils.calculateDistanceToTargetMeters(
+            VisionConstants.kCameraHeight,
+            VisionConstants.kTargetHeight,
+            VisionConstants.kCameraPitch,
+            Units.degreesToRadians(target.getPitch()));
+
+        sbRange.setDouble(range);
+
+        sbYaw.setDouble(target.getYaw());
+        sbPitch.setDouble(target.getPitch());
+        sbArea.setDouble(target.getArea());
+        sbSkew.setDouble(target.getSkew());
+        sbTargetID.setDouble(target.getFiducialId());
+        sbDistAtTarget.setBoolean(atDistTarget());
+        sbTurnAtTarget.setBoolean(atTurnTarget());
+      }
     } else {
       // If we have no targets, stay still.
-      sbHasTarget.setBoolean(false);
+      sbHasTargets.setBoolean(false);
     }
   }
 
@@ -161,11 +207,6 @@ public class Vision extends SubsystemBase {
     if (hasTargets()) {
 
       // First calculate range
-      double range = PhotonUtils.calculateDistanceToTargetMeters(
-          VisionConstants.kCameraHeight,
-          VisionConstants.kTargetHeight,
-          VisionConstants.kCameraPitch,
-          Units.degreesToRadians(target.getPitch()));
 
       // Use this range as the measurement we give to the PID controller.
       // -1.0 required to ensure positive PID controller effort _increases_ range
@@ -181,6 +222,14 @@ public class Vision extends SubsystemBase {
     }
 
     return new double[] { forwardSpeed, rotationSpeed };
+  }
+
+  public void setTargetId(int id) {
+    targetId = id;
+  }
+
+  public int getTargetId() {
+    return targetId;
   }
 
   public boolean hasTargets() {

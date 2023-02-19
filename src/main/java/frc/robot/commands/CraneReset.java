@@ -4,41 +4,41 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Intake.MotorState;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.CraneArm;
+import frc.robot.subsystems.CraneTilt;
+import frc.robot.subsystems.CraneTurret;
+import frc.robot.subsystems.Crane.CraneState;
 
-public class IntakeMotor extends CommandBase {
-  Intake intake;
-  MotorState state;
-  Timer timer = new Timer();
-  boolean oneTime = true;
+public class CraneReset extends CommandBase {
+  Crane crane;
+  CraneTurret craneTurret;
+  CraneTilt craneTilt;
+  CraneArm craneArm;
 
-  /** Creates a new GrabCube. */
-  public IntakeMotor(Intake intake, MotorState state) {
-    this.intake = intake;
-    this.state = state;
-
+  /** Creates a new CraneMove2Pos. */
+  public CraneReset(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
+    this.crane = crane;
+    this.craneTurret = craneTurret;
+    this.craneTilt = craneTilt;
+    this.craneArm = craneArm;
+    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setMotor(state);
-
-    if (state == MotorState.IN && intake.isElementIn() && oneTime) {
-      timer.reset();
-      oneTime = false;
-    }
+    craneTurret.reset();
+    craneTilt.reset();
+    craneArm.reset();
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +49,6 @@ public class IntakeMotor extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return state == MotorState.IN && timer.hasElapsed(0.5);
+    return true;
   }
 }

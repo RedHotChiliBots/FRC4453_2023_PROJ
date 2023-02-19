@@ -116,9 +116,15 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define local variables
+	public enum DirState {
+		FORWARD,
+		REVERSE
+	}
+
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
+	private DirState dir = DirState.FORWARD;
 
 	public SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 
@@ -161,8 +167,11 @@ public class Chassis extends SubsystemBase {
 	// Error", 0.0).getEntry();
 	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false)
 			.withWidget("Boolean Box").withPosition(2, 1).withSize(1, 1).getEntry();
+	private final GenericEntry sbDir = chassisTab.addPersistent("Direction", "")
+			.withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
 
-//	private final ShuffleboardTab pneumaticsTab = Shuffleboard.getTab("Pneumatics");
+	// private final ShuffleboardTab pneumaticsTab =
+	// Shuffleboard.getTab("Pneumatics");
 	private final GenericEntry sbHiPressure = chassisTab.addPersistent("Hi Pressure", 0)
 			.withWidget("Text View").withPosition(5, 3).withSize(1, 1).getEntry();
 	private final GenericEntry sbLoPressure = chassisTab.addPersistent("Lo Pressure", 0)
@@ -292,6 +301,8 @@ public class Chassis extends SubsystemBase {
 		// sbRightErr.setDouble(rightError);
 		sbAtTgt.setBoolean(atTarget());
 
+		sbDir.setString(dir.toString());
+
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
 
@@ -416,12 +427,47 @@ public class Chassis extends SubsystemBase {
 		diffDrive.feed();
 	}
 
+	public void toggleDir() {
+		DirState dir = getDir();
+		switch (dir) {
+			case FORWARD:
+				dir = DirState.REVERSE;
+				break;
+			case REVERSE:
+				dir = DirState.FORWARD;
+				break;
+		}
+		this.dir = dir;
+	}
+
+	public void setDir(DirState dir) {
+		this.dir = dir;
+	}
+
+	public DirState getDir() {
+		return dir;
+	}
+
 	public void driveTank(double left, double right) {
-		diffDrive.tankDrive(left, right);
+		switch (dir) {
+			case FORWARD:
+				diffDrive.tankDrive(left, right);
+				break;
+			case REVERSE:
+				diffDrive.tankDrive(-right, -left);
+				break;
+		}
 	}
 
 	public void driveArcade(double spd, double rot) {
-		diffDrive.arcadeDrive(spd, -rot);
+		switch (dir) {
+			case FORWARD:
+				diffDrive.arcadeDrive(spd, -rot);
+				break;
+			case REVERSE:
+				diffDrive.arcadeDrive(-spd, -rot);
+				break;
+		}
 	}
 
 	/**
@@ -491,10 +537,10 @@ public class Chassis extends SubsystemBase {
 	public void setGearShifter(GearShifterState state) {
 		switch (state) {
 			case HI:
-				gearShifter.set(Value.kForward);
+				gearShifter.set(Value.kReverse);
 				break;
 			case LO:
-				gearShifter.set(Value.kReverse);
+				gearShifter.set(Value.kForward);
 				break;
 			default:
 				DriverStation.reportWarning(String.format("Chassis: Illegal GearShifter State %s", state), false);

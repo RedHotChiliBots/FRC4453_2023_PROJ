@@ -11,11 +11,14 @@ import frc.robot.subsystems.Vision;
 public class AutonTrackAprilTag extends CommandBase {
   Chassis chassis;
   Vision vision;
+  int targetId;
   
   /** Creates a new AutonTrackAprilTag. */
-  public AutonTrackAprilTag(Chassis chassis, Vision vision) {
+  public AutonTrackAprilTag(Chassis chassis, Vision vision, int targetId) {
     this.chassis = chassis;
     this.vision = vision;
+    this.targetId = targetId;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,6 +26,7 @@ public class AutonTrackAprilTag extends CommandBase {
   @Override
   public void initialize() {
     chassis.disableCompressor();
+    vision.setTargetId(targetId);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

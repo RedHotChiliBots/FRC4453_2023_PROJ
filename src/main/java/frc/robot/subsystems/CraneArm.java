@@ -79,8 +79,7 @@ public class CraneArm extends SubsystemBase {
 
     // ==============================================================
     // Initialize Axis Positions and Set Points   
-    initArmPos();
-    setArmSetPoint(armSetPoint);
+    reset();
 
     // ==============================================================
     // Configure ShuffleBoard data
@@ -120,6 +119,11 @@ public class CraneArm extends SubsystemBase {
   //   return grid.getZ();
   // }
 
+  public void reset() {
+    initArmPos();
+    setArmSetPoint(armSetPoint);
+  }
+    
   public void initArmPos() {
     armEncoder.setPosition(CraneConstants.kArmInitPos);
   }

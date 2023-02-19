@@ -4,40 +4,31 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Intake.MotorState;
+import frc.robot.subsystems.Chassis;
 
-public class IntakeMotor extends CommandBase {
-  Intake intake;
-  MotorState state;
-  Timer timer = new Timer();
-  boolean oneTime = true;
+public class ChassisToggleDir extends CommandBase {
+  Chassis chassis;
+  int count = 0;
 
-  /** Creates a new GrabCube. */
-  public IntakeMotor(Intake intake, MotorState state) {
-    this.intake = intake;
-    this.state = state;
+  /** Creates a new ChassisToggleDir. */
+  public ChassisToggleDir(Chassis chassis) {
+    this.chassis = chassis;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
+    count = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setMotor(state);
-
-    if (state == MotorState.IN && intake.isElementIn() && oneTime) {
-      timer.reset();
-      oneTime = false;
+    if (count++ % 5 == 0) {
+      chassis.toggleDir();
     }
   }
 
@@ -49,6 +40,6 @@ public class IntakeMotor extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return state == MotorState.IN && timer.hasElapsed(0.5);
+    return true;
   }
 }

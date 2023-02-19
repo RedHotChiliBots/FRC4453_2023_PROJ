@@ -96,9 +96,7 @@ public class CraneTilt extends SubsystemBase {
 
     // ==============================================================
     // Initialize Axis Positions, Set Points, and Cylinder
-    initTiltPos();
-    setTiltSetPoint(tiltSetPoint);
-    setRatchet(RatchetState.UNLOCK);
+    reset();
 
     // ==============================================================
     // Configure ShuffleBoard data
@@ -135,6 +133,12 @@ public class CraneTilt extends SubsystemBase {
   // public double getGridZ() {
   // return grid.getZ();
   // }
+
+  public void reset() {
+    initTiltPos();
+    setTiltSetPoint(tiltSetPoint);
+    setRatchet(RatchetState.UNLOCK);
+  }
 
   public void initTiltPos() {
     tiltEncoder.setPosition(CraneConstants.kTiltInitPos);

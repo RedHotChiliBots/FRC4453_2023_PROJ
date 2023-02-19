@@ -8,6 +8,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -32,11 +33,11 @@ public class Crane extends SubsystemBase {
   private CraneState craneState = CraneState.NA;
   private int dpadValue;
   private int deBounce;
-
+  private DriverStation.Alliance dsAlliance;
+  private int dsLocation;
+  
   private final XboxController operator;
   private final GridCalcs grid = new GridCalcs();
-
-  // private Intake intake;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -87,12 +88,14 @@ public class Crane extends SubsystemBase {
   /** Creates a new Crane. */
   public Crane(XboxController operator) {
     System.out.println("+++++ Crane Constructor starting +++++");
-    // this.intake = intake;
 
     this.operator = operator;
     grid.vert.set(V.MID);
     grid.horz.set(H.CENTER);
     grid.setElem(E.CONE);
+
+    dsAlliance = DriverStation.getAlliance();
+    dsLocation = DriverStation.getLocation();
 
     System.out.println("+++++ Crane Constructor finished +++++");
   }

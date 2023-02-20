@@ -58,11 +58,11 @@ public class Intake extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
-  private final Color colorCone = new Color(1.0, 1.0, 0.0);
-  private final Color colorCube = new Color(1.0, 0.0, 1.0);
+  private final Color colorCone = new Color(255, 255, 0);
+  private final Color colorCube = new Color(255, 0, 255);
 
   private Color detectedColor;
-  private ColorMatchResult colorMatch;
+  private ColorMatchResult match;
   private Crane crane;
   private E element;
 
@@ -121,10 +121,11 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
 
     detectedColor = colorSensor.getColor();
-    colorMatch = colorMatcher.matchClosestColor(detectedColor);
-    if (colorMatch.color == colorCone) {
+    match = colorMatcher.matchClosestColor(detectedColor);
+
+    if (match.color.equals(colorCone)) {
       element = E.CONE;
-    } else if (colorMatch.color == colorCube) {
+    } else if (match.color.equals(colorCube)) {
       element = E.CUBE;
     } else {
       element = E.NA;
@@ -133,7 +134,7 @@ public class Intake extends SubsystemBase {
     sbElemRed.setDouble(detectedColor.red);
     sbElemGreen.setDouble(detectedColor.green);
     sbElemBlue.setDouble(detectedColor.blue);
-    sbElemConf.setDouble(colorMatch.confidence);
+    sbElemConf.setDouble(match.confidence);
     sbElemInside.setBoolean(isElementIn());
 
     crane.setElem(element);

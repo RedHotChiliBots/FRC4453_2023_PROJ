@@ -58,8 +58,8 @@ public class Intake extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
-  private final Color colorCone = Color.kYellow;
-  private final Color colorCube = Color.kPurple;
+  private final Color colorCone = new Color(1.0, 1.0, 0.0);
+  private final Color colorCube = new Color(1.0, 0.0, 1.0);
 
   private Color detectedColor;
   private ColorMatchResult colorMatch;
@@ -82,9 +82,17 @@ public class Intake extends SubsystemBase {
     STOW
   }
 
-  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-  private final GenericEntry sbElemIn = compTab.add("Element In", false)
-      .withWidget("Boolean Box").withPosition(4, 1).withSize(1, 1).getEntry();
+  private final ShuffleboardTab intakeTab = Shuffleboard.getTab("Intake");
+  private final GenericEntry sbElemInside = intakeTab.add("Element Inside", false)
+      .withWidget("Boolean Box").withPosition(0, 0).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemRed = intakeTab.add("Red", 0)
+      .withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemGreen = intakeTab.add("Green", 0)
+      .withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemBlue = intakeTab.add("Blue", 0)
+      .withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemConf = intakeTab.add("Confidence", 0)
+      .withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
 
   /** Creates a new Intake. */
   public Intake(Crane crane) {
@@ -122,13 +130,17 @@ public class Intake extends SubsystemBase {
       element = E.NA;
     }
 
-//    sbElemIn.setBoolean(isElementIn());
+    sbElemRed.setDouble(detectedColor.red);
+    sbElemGreen.setDouble(detectedColor.green);
+    sbElemBlue.setDouble(detectedColor.blue);
+    sbElemConf.setDouble(colorMatch.confidence);
+    sbElemInside.setBoolean(isElementIn());
 
     crane.setElem(element);
   }
 
   public boolean isElementIn() {
-    return elemIn.get();
+    return !elemIn.get();
   }
 
   public E getElement() {

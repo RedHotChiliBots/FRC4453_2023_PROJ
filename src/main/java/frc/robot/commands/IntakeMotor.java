@@ -14,6 +14,7 @@ public class IntakeMotor extends CommandBase {
   MotorState state;
   Timer timer = new Timer();
   boolean oneTime = true;
+  boolean finish = true;
 
   /** Creates a new GrabCube. */
   public IntakeMotor(Intake intake, MotorState state) {
@@ -34,18 +35,33 @@ public class IntakeMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (state == MotorState.IN) {
+      finish = false;
+    }
+    System.out.println(
+        "oneTime: " + oneTime + "   MotorState: " + state + "    isElementIn: " + intake.isElementIn());
+
     if (oneTime) {
+      System.out.println("State 1");
+
       if (state != MotorState.IN ||
           (state == MotorState.IN && !intake.isElementIn())) {
+            System.out.println("State 2");
+
         intake.setMotor(state);
 
       } else if (oneTime && state == MotorState.IN && intake.isElementIn()) {
+        System.out.println("State 3");
+
         timer.reset();
         oneTime = false;
       }
 
     } else if (state == MotorState.IN && timer.hasElapsed(0.5)) {
+      System.out.println("State 4");
+
       intake.setMotor(MotorState.STOP);
+      finish = true;
     }
   }
 
@@ -57,6 +73,6 @@ public class IntakeMotor extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return finish;
   }
 }

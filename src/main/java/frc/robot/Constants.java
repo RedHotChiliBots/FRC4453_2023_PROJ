@@ -23,7 +23,8 @@ public final class Constants {
 	public enum E {
 		NA,
 		CONE,
-		CUBE
+		CUBE,
+		OTHER
 	}
 
 	public static final class CANidConstants {
@@ -241,6 +242,18 @@ public final class Constants {
 		public static final double kCraneTurretGridSide = 180.0; // degrees
 		public static final double kCraneTurretElemSide = 0.0; // degrees
 		public static final double kCraneWait = 2.0; // seconds
+	}
+
+	public static final class IntakeConstants {
+		public static final double colorConf = 0.95;
+		
+		public static final double coneR = 0.34509;
+		public static final double coneG = 0.51764;
+		public static final double coneB = 0.13333;
+
+		public static final double cubeR = 0.22745;
+		public static final double cubeG = 0.39607;
+		public static final double cubeB = 0.37254;
 	}
 
 	public static final class VisionConstants {

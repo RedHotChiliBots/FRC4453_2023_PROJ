@@ -14,6 +14,7 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ColorSensorV3.RawColor;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.DIOChannelConstants;
 import frc.robot.Constants.E;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
@@ -58,11 +60,12 @@ public class Intake extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch colorMatcher = new ColorMatch();
-  private final Color colorCone = new Color(255, 255, 0);
-  private final Color colorCube = new Color(255, 0, 255);
+  private final Color colorCone = new Color(IntakeConstants.coneR, IntakeConstants.coneG, IntakeConstants.coneB);
+  private final Color colorCube = new Color(IntakeConstants.cubeR, IntakeConstants.cubeG, IntakeConstants.cubeB);
 
   private Color detectedColor;
   private ColorMatchResult match;
+  private RawColor rawColor;
   private Crane crane;
   private E element;
 
@@ -88,11 +91,19 @@ public class Intake extends SubsystemBase {
   private final GenericEntry sbElemRed = intakeTab.add("Red", 0)
       .withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbElemGreen = intakeTab.add("Green", 0)
-      .withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemBlue = intakeTab.add("Blue", 0)
       .withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemConf = intakeTab.add("Confidence", 0)
+  private final GenericEntry sbElemBlue = intakeTab.add("Blue", 0)
+      .withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemIR = intakeTab.add("IR", 0)
       .withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemConf = intakeTab.add("Confidence", 0)
+      .withWidget("Text View").withPosition(1, 0).withSize(1, 1).getEntry();
+  private final GenericEntry sbElem = intakeTab.addPersistent("Element", "")
+      .withWidget("Text View").withPosition(1, 1).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemCone = intakeTab.addPersistent("Cone", true)
+      .withWidget("Boolean Box").withPosition(1, 2).withSize(1, 1).getEntry();
+  private final GenericEntry sbElemCube = intakeTab.addPersistent("Cube", false)
+      .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry();
 
   /** Creates a new Intake. */
   public Intake(Crane crane) {
@@ -110,6 +121,7 @@ public class Intake extends SubsystemBase {
     setArm(ArmState.CLOSE);
     setBar(BarState.STOW);
 
+    colorMatcher.setConfidenceThreshold(IntakeConstants.colorConf);
     colorMatcher.addColorMatch(colorCone);
     colorMatcher.addColorMatch(colorCube);
 
@@ -121,23 +133,42 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
 
     detectedColor = colorSensor.getColor();
-    match = colorMatcher.matchClosestColor(detectedColor);
+    match = colorMatcher.matchColor(detectedColor);
 
-    if (match.color.equals(colorCone)) {
+    rawColor = colorSensor.getRawColor();
+
+    if (match == null) {
+      element = E.NA;
+    } else if (match.color == colorCone) {
       element = E.CONE;
-    } else if (match.color.equals(colorCube)) {
+    } else if (match.color == colorCube) {
       element = E.CUBE;
     } else {
-      element = E.NA;
+      element = E.OTHER;
     }
 
-    sbElemRed.setDouble(detectedColor.red);
-    sbElemGreen.setDouble(detectedColor.green);
-    sbElemBlue.setDouble(detectedColor.blue);
-    sbElemConf.setDouble(match.confidence);
+    crane.setElem(element);
+
+    sbElemRed.setDouble(colorSensor.getRed());
+    sbElemGreen.setDouble(colorSensor.getGreen());
+    sbElemBlue.setDouble(colorSensor.getBlue());
+    sbElemIR.setDouble(rawColor.ir);
+//    sbElemConf.setDouble(match.confidence);
     sbElemInside.setBoolean(isElementIn());
 
-    crane.setElem(element);
+    sbElem.setString(crane.getElem().toString());
+
+    if (crane.getElem() == E.CONE) {
+      sbElemCone.setBoolean(true);
+    } else {
+      sbElemCone.setBoolean(false);
+    }
+
+    if (crane.getElem() == E.CUBE) {
+      sbElemCube.setBoolean(true);
+    } else {
+      sbElemCube.setBoolean(false);
+    }
   }
 
   public boolean isElementIn() {

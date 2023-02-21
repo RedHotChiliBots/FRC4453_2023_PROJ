@@ -55,6 +55,7 @@ import frc.robot.commands.DoRumble;
 import frc.robot.commands.IntakeArm;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
+import frc.robot.commands.IntakeToggleElem;
 import frc.robot.commands.TiltRatchet;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
@@ -143,6 +144,7 @@ public class RobotContainer {
 	private final IntakeMotor intakeMotorIn = new IntakeMotor(intake, MotorState.IN);
 	private final IntakeMotor intakeMotorOut = new IntakeMotor(intake, MotorState.OUT);
 	private final IntakeMotor intakeMotorStop = new IntakeMotor(intake, MotorState.STOP);
+	private final IntakeToggleElem intakeToggleElem = new IntakeToggleElem(intake);
 
 	private final IntakeArm intakeOpen = new IntakeArm(intake, ArmState.OPEN);
 	private final IntakeArm intakeClose = new IntakeArm(intake, ArmState.CLOSE);
@@ -385,7 +387,8 @@ public class RobotContainer {
 		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMotorIn);
 		new JoystickButton(operator, Button.kA.value).whileTrue(intakeMotorOut);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
-		new JoystickButton(operator, Button.kStart.value).onTrue(intakeClose);
+		new JoystickButton(operator, Button.kBack.value).onTrue(intakeClose);
+		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
 	}
 
 	public double getDPad() {

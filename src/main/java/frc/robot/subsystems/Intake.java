@@ -179,6 +179,19 @@ public class Intake extends SubsystemBase {
     return element;
   }
 
+  public void toggleElem() {
+    E elem = crane.getElem();
+    switch (elem) {
+      case CONE:
+        crane.setElem(E.CUBE);
+      break;
+
+      case CUBE:
+        crane.setElem(E.CONE);
+      break;
+    }
+  }
+
   public void setMotor(MotorState state) {
     switch (state) {
       case STOP:

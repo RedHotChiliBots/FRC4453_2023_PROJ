@@ -46,11 +46,11 @@ public class IntakeMotor extends CommandBase {
 
       if (state != MotorState.IN ||
           (state == MotorState.IN && !intake.isElementIn())) {
-            System.out.println("State 2");
+        System.out.println("State 2");
 
         intake.setMotor(state);
 
-      } else if (oneTime && state == MotorState.IN && intake.isElementIn()) {
+      } else if (state == MotorState.IN && intake.isElementIn()) {
         System.out.println("State 3");
 
         timer.reset();

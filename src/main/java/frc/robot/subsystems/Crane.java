@@ -88,6 +88,7 @@ public class Crane extends SubsystemBase {
     grid.vert.set(V.MID);
     grid.horz.set(H.CENTER);
     grid.setElem(E.CONE);
+    craneState = CRANESTATE.STOW;
 
     dsAlliance = DriverStation.getAlliance();
     dsLocation = DriverStation.getLocation();

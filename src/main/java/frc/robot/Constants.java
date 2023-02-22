@@ -169,7 +169,8 @@ public final class Constants {
 		public static final double kTurretReceivePos = 0.0; // degrees
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
-
+		public static final double kTurretSafe2TiltArm = -40.0;	// degrees
+		
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
 		public static final double kTurretAllowErr = 0.5;
@@ -186,6 +187,7 @@ public final class Constants {
 		public static final double kTiltStowPos = -83.2; // degrees
 		public static final double kTiltReceivePos = -70.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
+		public static final double kTiltSafe2Rotate = -60; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.000156;
@@ -202,6 +204,7 @@ public final class Constants {
 		public static final double kArmStowPos = 25.065; // inches
 		public static final double kArmReceivePos = 30.0; // inches
 		public static final double kArmReadyPos = 25.065; // inches
+		public static final double kArmSafe2Rotate = 25.0;	// inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;

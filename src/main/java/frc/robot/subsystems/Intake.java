@@ -153,7 +153,7 @@ public class Intake extends SubsystemBase {
     sbElemGreen.setDouble(colorSensor.getGreen());
     sbElemBlue.setDouble(colorSensor.getBlue());
     sbElemIR.setDouble(rawColor.ir);
-    if (match != null) sbElemConf.setDouble(match.confidence);
+    sbElemConf.setDouble((match != null) ? match.confidence : 0.0);
     sbElemInside.setBoolean(isElementIn());
 
     // sbElem.setString(crane.getElem().toString());
@@ -183,17 +183,19 @@ public class Intake extends SubsystemBase {
     switch (crane.getElem()) {
       case CONE:
         crane.setElem(E.CUBE);
-      break;
+        break;
 
       case CUBE:
         crane.setElem(E.CONE);
         break;
-      
+
       case NA:
       case OTHER:
       default:
         break;
     }
+
+    sbElem.setString(crane.getElem().toString());
   }
 
   public void setMotor(MotorState state) {

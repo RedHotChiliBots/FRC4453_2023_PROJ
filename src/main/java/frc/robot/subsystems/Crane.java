@@ -25,6 +25,7 @@ public class Crane extends SubsystemBase {
   public enum CraneState {
     STOW,
     RECEIVE,
+    GRIP,
     READY,
     NODE,
     CLEAR2MOVE,
@@ -34,7 +35,7 @@ public class Crane extends SubsystemBase {
  
   private CraneState craneState = CraneState.NA;
   private int dpadValue;
-  private int deBounce;
+//  private int deBounce;
   private DriverStation.Alliance dsAlliance;
   private int dsLocation;
 

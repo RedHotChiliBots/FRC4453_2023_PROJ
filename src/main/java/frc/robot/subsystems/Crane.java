@@ -42,7 +42,7 @@ public class Crane extends SubsystemBase {
 
   // ==============================================================
   // Define Shuffleboard data
-  private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
+  // private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   // private final GenericEntry sbCrane = craneTab.add("Crane", "")
 	// 			.withWidget("Network Table Tree")
 	// 			.withPosition(5, 1).withSize(2, 3).getEntry();
@@ -56,6 +56,8 @@ public class Crane extends SubsystemBase {
       .withWidget("Text View").withPosition(3, 0).withSize(1, 1).getEntry();
   private final GenericEntry sbElem = compTab.addPersistent("Element", "")
       .withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
+  private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance / Pos", "")
+      .withWidget("Text View").withPosition(4, 0).withSize(1, 1).getEntry();
 
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
       V.TOP,
@@ -108,6 +110,7 @@ public class Crane extends SubsystemBase {
     sbVert.setString(grid.vert.get().toString());
     sbHorz.setString(grid.horz.get().toString());
     sbElem.setString(grid.getElem().toString());
+    sbAlliancePos.setString(dsAlliance.toString()+"-"+String.valueOf(dsLocation));
 
     if (grid.getElem() == E.CONE) {
       sbElemType.get(E.CONE).setBoolean(true);

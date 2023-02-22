@@ -153,7 +153,7 @@ public class Intake extends SubsystemBase {
     sbElemGreen.setDouble(colorSensor.getGreen());
     sbElemBlue.setDouble(colorSensor.getBlue());
     sbElemIR.setDouble(rawColor.ir);
-//    sbElemConf.setDouble(match.confidence);
+    if (match != null) sbElemConf.setDouble(match.confidence);
     sbElemInside.setBoolean(isElementIn());
 
     sbElem.setString(crane.getElem().toString());
@@ -180,15 +180,19 @@ public class Intake extends SubsystemBase {
   }
 
   public void toggleElem() {
-    E elem = crane.getElem();
-    switch (elem) {
+    switch (crane.getElem()) {
       case CONE:
         crane.setElem(E.CUBE);
       break;
 
       case CUBE:
         crane.setElem(E.CONE);
-      break;
+        break;
+      
+      case NA:
+      case OTHER:
+      default:
+        break;
     }
   }
 

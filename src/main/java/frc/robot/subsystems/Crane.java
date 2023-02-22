@@ -17,27 +17,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.GridCalcs;
 import frc.robot.Library;
 import frc.robot.Constants.E;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
 
 public class Crane extends SubsystemBase {
 
-  public enum CraneState {
-    STOW,
-    RECEIVE,
-    GRIP,
-    READY,
-    NODE,
-    CLEAR2MOVE,
-    MOVING,
-    NA
-  }
- 
-  private CraneState craneState = CraneState.NA;
-  private int dpadValue;
-//  private int deBounce;
+  private CRANESTATE craneState = CRANESTATE.NA;
   private DriverStation.Alliance dsAlliance;
   private int dsLocation;
+  private int dpadValue;
 
   private final XboxController operator;
   private final GridCalcs grid = new GridCalcs();
@@ -47,8 +36,8 @@ public class Crane extends SubsystemBase {
   // Define Shuffleboard data
   // private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   // private final GenericEntry sbCrane = craneTab.add("Crane", "")
-	// 			.withWidget("Network Table Tree")
-	// 			.withPosition(5, 1).withSize(2, 3).getEntry();
+  // .withWidget("Network Table Tree")
+  // .withPosition(5, 1).withSize(2, 3).getEntry();
 
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
   private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "")
@@ -59,7 +48,7 @@ public class Crane extends SubsystemBase {
       .withWidget("Text View").withPosition(3, 0).withSize(1, 1).getEntry();
   private final GenericEntry sbElem = compTab.addPersistent("Element", "")
       .withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance / Pos", "")
+  private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance-Pos", "")
       .withWidget("Text View").withPosition(4, 0).withSize(1, 1).getEntry();
 
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
@@ -113,7 +102,7 @@ public class Crane extends SubsystemBase {
     sbVert.setString(grid.vert.get().toString());
     sbHorz.setString(grid.horz.get().toString());
     sbElem.setString(grid.getElem().toString());
-    sbAlliancePos.setString(dsAlliance.toString()+"-"+String.valueOf(dsLocation));
+    sbAlliancePos.setString(dsAlliance.toString() + "-" + String.valueOf(dsLocation));
 
     if (grid.getElem() == E.CONE) {
       sbElemType.get(E.CONE).setBoolean(true);
@@ -130,11 +119,11 @@ public class Crane extends SubsystemBase {
     readDPad();
   }
 
-  public void setState(CraneState state) {
+  public void setState(CRANESTATE state) {
     craneState = state;
   }
 
-  public CraneState getState() {
+  public CRANESTATE getState() {
     return craneState;
   }
 
@@ -160,10 +149,6 @@ public class Crane extends SubsystemBase {
 
   public void readDPad() {
     dpadValue = operator.getPOV();
-
-    // if (dpadValue == -1) {
-    //   deBounce = 0;
-    // }
 
     if (dpadValue != -1 && lib.deBounce(10)) {
       sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(false);

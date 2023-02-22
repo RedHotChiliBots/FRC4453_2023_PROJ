@@ -6,11 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
-import frc.robot.subsystems.Crane.CraneState;
 
 public class Crane_Move2ReadyPos extends CommandBase {
   Crane crane;
@@ -41,10 +41,10 @@ public class Crane_Move2ReadyPos extends CommandBase {
   public void execute() {
     switch (state) {
       case 0:
-        if (crane.getState() == CraneState.READY) {
+        if (crane.getState() == CRANESTATE.READY) {
           finish = true;
         } else {
-          crane.setState(CraneState.MOVING);
+          crane.setState(CRANESTATE.MOVING);
           state++;
         }
         break;
@@ -64,7 +64,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
 
       case 3:
         if (craneTurret.getTurretPosition() == CraneConstants.kTurretReadyPos) {
-          crane.setState(CraneState.READY);
+          crane.setState(CRANESTATE.READY);
           finish = true;
         }
         break;

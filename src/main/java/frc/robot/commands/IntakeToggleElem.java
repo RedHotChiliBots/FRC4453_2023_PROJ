@@ -5,13 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Library;
 import frc.robot.subsystems.Intake;
-
 
 public class IntakeToggleElem extends CommandBase {
   private Intake intake;
-  private Library lib = new Library();
 
   /** Creates a new ChassisToggleDir. */
   public IntakeToggleElem(Intake intake) {
@@ -22,14 +19,13 @@ public class IntakeToggleElem extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (lib.deBounce(10)) {
-      intake.toggleElem();
-    }
+    intake.toggleElem();
   }
 
   // Called once the command ends or is interrupted.

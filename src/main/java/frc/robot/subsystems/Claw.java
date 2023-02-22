@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.E;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 
@@ -26,15 +27,19 @@ public class Claw extends SubsystemBase {
 
   public enum FingerState {
     RELEASE,
-    CONEGRAB,
-    CUBEGRAB
+    GRIP,
+    CONE,
+    CUBE
   }
-      
-  /** Creates a new Claw. */
-  public Claw() {
-    System.out.println("+++++ Claw Constructor starting +++++");
 
-    setFinger(FingerState.CONEGRAB);
+  Crane crane;
+
+  /** Creates a new Claw. */
+  public Claw(Crane crane) {
+    System.out.println("+++++ Claw Constructor starting +++++");
+    this.crane = crane;
+
+    setFinger(FingerState.CONE);
 
     System.out.println("+++++ Claw Constructor finishing +++++");
   }
@@ -50,11 +55,28 @@ public class Claw extends SubsystemBase {
         leftPiston.set(Value.kReverse);
         rightPiston.set(Value.kReverse);
         break;
-      case CUBEGRAB:
+      case GRIP:
+        E elem = crane.getElem();
+        switch (elem) {
+          case CUBE:
+            leftPiston.set(Value.kForward);
+            rightPiston.set(Value.kReverse);
+            break;
+          case CONE:
+            rightPiston.set(Value.kForward);
+            leftPiston.set(Value.kForward);
+            break;
+          case NA:
+          case OTHER:
+          default:
+            break;
+        }
+        break;
+      case CUBE:
         leftPiston.set(Value.kForward);
         rightPiston.set(Value.kReverse);
         break;
-      case CONEGRAB:
+      case CONE:
         rightPiston.set(Value.kForward);
         leftPiston.set(Value.kForward);
         break;

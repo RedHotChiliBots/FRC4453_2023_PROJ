@@ -147,7 +147,7 @@ public class Intake extends SubsystemBase {
       element = E.OTHER;
     }
 
-    crane.setElem(element);
+    // crane.setElem(element);
 
     sbElemRed.setDouble(colorSensor.getRed());
     sbElemGreen.setDouble(colorSensor.getGreen());
@@ -156,19 +156,19 @@ public class Intake extends SubsystemBase {
     sbElemConf.setDouble((match != null) ? match.confidence : 0.0);
     sbElemInside.setBoolean(isElementIn());
 
-    // sbElem.setString(crane.getElem().toString());
+    sbElem.setString(crane.getElem().toString());
 
-    // if (crane.getElem() == E.CONE) {
-    //   sbElemCone.setBoolean(true);
-    // } else {
-    //   sbElemCone.setBoolean(false);
-    // }
+    if (crane.getElem() == E.CONE) {
+      sbElemCone.setBoolean(true);
+    } else {
+      sbElemCone.setBoolean(false);
+    }
 
-    // if (crane.getElem() == E.CUBE) {
-    //   sbElemCube.setBoolean(true);
-    // } else {
-    //   sbElemCube.setBoolean(false);
-    // }
+    if (crane.getElem() == E.CUBE) {
+      sbElemCube.setBoolean(true);
+    } else {
+      sbElemCube.setBoolean(false);
+    }
   }
 
   public boolean isElementIn() {

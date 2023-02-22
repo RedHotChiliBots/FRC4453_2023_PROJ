@@ -242,11 +242,12 @@ public final class Constants {
 		public static final double kCraneTurretGridSide = 180.0; // degrees
 		public static final double kCraneTurretElemSide = 0.0; // degrees
 		public static final double kCraneWait = 2.0; // seconds
+
 	}
 
 	public static final class IntakeConstants {
 		public static final double colorConf = 0.95;
-		
+
 		public static final double coneR = 0.34509;
 		public static final double coneG = 0.51764;
 		public static final double coneB = 0.13333;

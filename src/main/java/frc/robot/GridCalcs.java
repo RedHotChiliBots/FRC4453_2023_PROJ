@@ -18,9 +18,27 @@ public class GridCalcs {
 	}
 
 	// public enum E {
-	// 	CONE,
-	// 	CUBE
+	// CONE,
+	// CUBE
 	// }
+
+	public enum CRANESTATE {
+		STOW,
+		RECEIVE,
+		GRIP,
+		READY,
+		NODE,
+		CLEAR2MOVE,
+		MOVING,
+		NA
+	}
+
+	public enum CRANEAXIS {
+		TURRET,
+		TILT,
+		ARM,
+		NA
+	}
 
 	public enum V {
 		TOP,
@@ -162,6 +180,32 @@ public class GridCalcs {
 		return kZNode.get(v).get(e);
 	}
 
+	private final EnumMap<CRANESTATE, Map<CRANEAXIS, Double>> kCranePos = new EnumMap<>(Map.of(
+			CRANESTATE.STOW,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -83.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.RECEIVE,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -78.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.GRIP,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -78.0,
+					CRANEAXIS.ARM, 32.0),
+			CRANESTATE.READY,
+			Map.of(CRANEAXIS.TURRET, 180.0,
+					CRANEAXIS.TILT, 0.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.CLEAR2MOVE,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -45.0,
+					CRANEAXIS.ARM, 25.0)));
+
+	public double getCranePos(CRANESTATE cs, CRANEAXIS ca) {
+		return kCranePos.get(cs).get(ca);
+	}
+
 	private final EnumMap<V, Map<H, Map<E, Boolean>>> kNodeValid = new EnumMap<>(Map.of(
 			V.TOP,
 			Map.of(H.LEFT,
@@ -220,7 +264,8 @@ public class GridCalcs {
 	public double getZ() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			return Math
-					.toDegrees(Math.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+					.toDegrees(Math
+							.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
 		} else {
 			return Float.NaN;
 		}

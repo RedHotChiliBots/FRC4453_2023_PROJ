@@ -88,9 +88,9 @@ public class RobotContainer {
 
 	// The robot's subsystems and commands are defined here...
 	private static final Chassis chassis = new Chassis();
-	private static final Claw claw = new Claw();
 	private static final Crane crane = new Crane(operator);
 	private static final Intake intake = new Intake(crane);
+	private static final Claw claw = new Claw(crane);
 	private static final CraneTurret craneTurret = new CraneTurret();
 	private static final CraneTilt craneTilt = new CraneTilt();
 	private static final CraneArm craneArm = new CraneArm();
@@ -136,9 +136,10 @@ public class RobotContainer {
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
 
-	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONEGRAB);
-	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBEGRAB);
+	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);
+	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBE);
 	private final ClawFinger clawRelease = new ClawFinger(claw, FingerState.RELEASE);
+	private final ClawFinger clawGrip = new ClawFinger(claw, FingerState.GRIP);
 
 	private final IntakeStow intakeStow = new IntakeStow(intake);
 	private final IntakeMotor intakeMotorIn = new IntakeMotor(intake, MotorState.IN);
@@ -292,8 +293,8 @@ public class RobotContainer {
 		// Put the chooser on the dashboard
 		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
 		// compTab.add("Competition", "")
-		// 		.withWidget("Network Table Tree")
-		// 		.withPosition(5, 1).withSize(2, 5).getEntry();
+		// .withWidget("Network Table Tree")
+		// .withPosition(5, 1).withSize(2, 5).getEntry();
 
 		compTab.add("Auton Command", chooser)
 				.withWidget("ComboBox Chooser")
@@ -375,17 +376,18 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
 		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
+		new JoystickButton(driver, Button.kStart.value).onTrue(clawGrip);
 
-		new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
-		new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
+		// new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
+		// new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
 
 		new JoystickButton(driver, Button.kA.value).onTrue(craneArm2Pos);
 		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(craneTilt2Pos);
 		new JoystickButton(operator, Button.kRightBumper.value).onTrue(craneTurret2Pos);
 
 		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
-		new JoystickButton(operator, Button.kX.value).whileTrue(intakeMotorIn);
-		new JoystickButton(operator, Button.kA.value).whileTrue(intakeMotorOut);
+		new JoystickButton(operator, Button.kX.value).onTrue(intakeMotorIn).onFalse(intakeMotorStop);
+		new JoystickButton(operator, Button.kA.value).onTrue(intakeMotorOut).onFalse(intakeMotorStop);
 		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
 		new JoystickButton(operator, Button.kBack.value).onTrue(intakeClose);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);

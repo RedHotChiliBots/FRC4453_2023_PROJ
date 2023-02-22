@@ -6,11 +6,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.GridCalcs.CRANEAXIS;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
-import frc.robot.subsystems.Crane.CraneState;
 
 public class Crane_Move2NodePos extends CommandBase {
   Crane crane;
@@ -37,40 +38,46 @@ public class Crane_Move2NodePos extends CommandBase {
   @Override
   public void execute() {
     switch (state) {
-      // If already at Node, then finish, else Retract Arm and check Tilt will clear Chassis
+      // If already at Node, then finish, else Retract Arm and check Tilt will clear
+      // Chassis
       case 0:
-        if (crane.getState() == CraneState.NODE &&
+        if (crane.getState() == CRANESTATE.NODE &&
             (craneTurret.getTurretPosition() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
             craneTilt.getTiltPosition() == crane.getGridZ() &&
             craneArm.getArmPosition() == crane.getGridY()) {
           finish = true;
-        } else {
-          craneArm.setArmSetPoint(CraneConstants.kArmInitPos);
-            
-          if (craneTilt.getTiltPosition() < CraneConstants.kTiltClearChassisPos) {
-            craneTilt.setTiltSetPoint(CraneConstants.kTiltClearChassisPos);
-            crane.setState(CraneState.MOVING);
-          }
-          state++;
+        } else if (crane.getState() == CRANESTATE.NODE || crane.getState() == CRANESTATE.READY) {
+          craneTurret.setTurretSetPoint(crane.getGridX());
+          craneTilt.setTiltSetPoint(crane.getGridZ());
+          craneArm.setArmSetPoint(crane.getGridY());
+          crane.setState(CRANESTATE.MOVING);
         }
+        craneArm.setArmSetPoint(CraneConstants.kArmInitPos);
+
+        if (craneTilt.getTiltPosition() < CraneConstants.kTiltClearChassisPos) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltClearChassisPos);
+          crane.setState(CRANESTATE.MOVING);
+        }
+        state++;
+
         break;
 
       // If Tilt is below ClearChassis, raise to ClearChassis
       case 1:
         if (craneTilt.getTiltPosition() >= CraneConstants.kTiltClearChassisPos) {
-          crane.setState(CraneState.CLEAR2MOVE);
+          crane.setState(CRANESTATE.CLEAR2MOVE);
           state++;
         }
         break;
 
       // If Crane is in Clear2Move, then move Turret and Tilt to Node's position
       case 2:
-        if (crane.getState() == CraneState.CLEAR2MOVE) {
+        if (crane.getState() == CRANESTATE.CLEAR2MOVE) {
           finish = true;
         } else {
           craneTurret.setTurretSetPoint(crane.getGridX() + CraneConstants.kTurretNodePos);
           craneTilt.setTiltSetPoint(crane.getGridZ());
-          crane.setState(CraneState.MOVING);
+          crane.setState(CRANESTATE.MOVING);
           state++;
         }
         break;
@@ -87,11 +94,12 @@ public class Crane_Move2NodePos extends CommandBase {
       // If Crane Arm is at Node position, then finished
       case 4:
         if (craneArm.getArmPosition() == crane.getGridY()) {
-          crane.setState(CraneState.NODE);
+          crane.setState(CRANESTATE.NODE);
           finish = true;
         }
         break;
     }
+
   }
 
   // Called once the command ends or is interrupted.

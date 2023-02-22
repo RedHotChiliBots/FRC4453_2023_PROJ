@@ -156,19 +156,19 @@ public class Intake extends SubsystemBase {
     if (match != null) sbElemConf.setDouble(match.confidence);
     sbElemInside.setBoolean(isElementIn());
 
-    sbElem.setString(crane.getElem().toString());
+    // sbElem.setString(crane.getElem().toString());
 
-    if (crane.getElem() == E.CONE) {
-      sbElemCone.setBoolean(true);
-    } else {
-      sbElemCone.setBoolean(false);
-    }
+    // if (crane.getElem() == E.CONE) {
+    //   sbElemCone.setBoolean(true);
+    // } else {
+    //   sbElemCone.setBoolean(false);
+    // }
 
-    if (crane.getElem() == E.CUBE) {
-      sbElemCube.setBoolean(true);
-    } else {
-      sbElemCube.setBoolean(false);
-    }
+    // if (crane.getElem() == E.CUBE) {
+    //   sbElemCube.setBoolean(true);
+    // } else {
+    //   sbElemCube.setBoolean(false);
+    // }
   }
 
   public boolean isElementIn() {

@@ -29,21 +29,19 @@ public class GridCalcs {
 		READY,
 		NODE,
 		CLEAR2MOVE,
-		MOVING,
-		NA
+		MOVING
 	}
 
 	public enum CRANEAXIS {
 		TURRET,
 		TILT,
-		ARM,
-		NA
+		ARM
 	}
 
 	public enum V {
 		TOP,
-		MID,
-		BOT
+		MIDDLE,
+		BOTTOM
 	}
 
 	public class Vert {
@@ -141,7 +139,9 @@ public class GridCalcs {
 
 	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
 			E.CONE, 12.0,
-			E.CUBE, 6.0));
+			E.CUBE, 6.0,
+			E.NA, 0.0,
+			E.OTHER, 0.0));
 
 	public double getZG(E e) {
 		return kZG.get(e);
@@ -158,8 +158,8 @@ public class GridCalcs {
 
 	private final EnumMap<V, Double> kYNode = new EnumMap<>(Map.of(
 			V.TOP, 39.75,
-			V.MID, 22.75,
-			V.BOT, 8.0));
+			V.MIDDLE, 22.75,
+			V.BOTTOM, 8.0));
 
 	public double getYNode(V v) {
 		return kYNode.get(v);
@@ -169,10 +169,10 @@ public class GridCalcs {
 			V.TOP,
 			Map.of(E.CONE, 46.0,
 					E.CUBE, 35.5),
-			V.MID,
+			V.MIDDLE,
 			Map.of(E.CONE, 34.0,
 					E.CUBE, 23.5),
-			V.BOT,
+			V.BOTTOM,
 			Map.of(E.CONE, 5.0,
 					E.CUBE, 5.0)));
 
@@ -217,7 +217,7 @@ public class GridCalcs {
 					H.RIGHT,
 					Map.of(E.CUBE, false,
 							E.CONE, true)),
-			V.MID,
+			V.MIDDLE,
 			Map.of(H.LEFT,
 					Map.of(E.CUBE, false,
 							E.CONE, true),
@@ -227,7 +227,7 @@ public class GridCalcs {
 					H.RIGHT,
 					Map.of(E.CUBE, false,
 							E.CONE, true)),
-			V.BOT,
+			V.BOTTOM,
 			Map.of(H.LEFT,
 					Map.of(E.CUBE, true,
 							E.CONE, true),

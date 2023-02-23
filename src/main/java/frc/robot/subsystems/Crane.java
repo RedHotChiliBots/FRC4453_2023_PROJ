@@ -23,7 +23,7 @@ import frc.robot.GridCalcs.V;
 
 public class Crane extends SubsystemBase {
 
-  private CRANESTATE craneState = CRANESTATE.NA;
+  private CRANESTATE craneState = CRANESTATE.STOW;
   private DriverStation.Alliance dsAlliance;
   private int dsLocation;
   private int dpadValue;
@@ -59,14 +59,14 @@ public class Crane extends SubsystemBase {
               .withWidget("Boolean Box").withPosition(1, 2).withSize(1, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Top Right", false)
               .withWidget("Boolean Box").withPosition(2, 2).withSize(1, 1).getEntry()),
-      V.MID,
+      V.MIDDLE,
       Map.of(H.LEFT, compTab.addPersistent("Mid Left", false)
           .withWidget("Boolean Box").withPosition(0, 3).withSize(1, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Mid Center", true)
               .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Mid Right", false)
               .withWidget("Boolean Box").withPosition(2, 3).withSize(1, 1).getEntry()),
-      V.BOT,
+      V.BOTTOM,
       Map.of(H.LEFT, compTab.addPersistent("Bot Left", false)
           .withWidget("Boolean Box").withPosition(0, 4).withSize(1, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Bot Center", false)
@@ -85,7 +85,7 @@ public class Crane extends SubsystemBase {
     System.out.println("+++++ Crane Constructor starting +++++");
 
     this.operator = operator;
-    grid.vert.set(V.MID);
+    grid.vert.set(V.MIDDLE);
     grid.horz.set(H.CENTER);
     grid.setElem(E.CONE);
     craneState = CRANESTATE.STOW;

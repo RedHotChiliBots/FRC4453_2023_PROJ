@@ -17,8 +17,8 @@ public class GridSetGetTest {
 
    @Test
    public void testSettersGetters() throws Exception {
-      grid.vert.set(V.MID);
-      assertEquals(V.MID, grid.vert.get());
+      grid.vert.set(V.MIDDLE);
+      assertEquals(V.MIDDLE, grid.vert.get());
       grid.horz.set(H.LEFT);
       assertEquals(H.LEFT, grid.horz.get());
       grid.setElem(E.CONE);
@@ -29,7 +29,7 @@ public class GridSetGetTest {
       assertEquals(V.TOP, grid.vert.get());
       grid.horz.set(H.RIGHT);
       assertEquals(H.RIGHT, grid.horz.get());
-      grid.vert.set(V.BOT);
-      assertEquals(V.BOT, grid.vert.get());
+      grid.vert.set(V.BOTTOM);
+      assertEquals(V.BOTTOM, grid.vert.get());
    }
 }

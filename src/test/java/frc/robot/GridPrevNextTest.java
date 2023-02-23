@@ -28,10 +28,10 @@ public class GridPrevNextTest {
    @Test
    public void TestVert() {
       grid.vert.set(V.TOP);
-      assertEquals(V.MID, grid.vert.next());
-      assertEquals(V.BOT, grid.vert.next());
-      assertEquals(V.BOT, grid.vert.next());
-      assertEquals(V.MID, grid.vert.prev());
+      assertEquals(V.MIDDLE, grid.vert.next());
+      assertEquals(V.BOTTOM, grid.vert.next());
+      assertEquals(V.BOTTOM, grid.vert.next());
+      assertEquals(V.MIDDLE, grid.vert.prev());
       assertEquals(V.TOP, grid.vert.prev());
       assertEquals(V.TOP, grid.vert.prev());
    }

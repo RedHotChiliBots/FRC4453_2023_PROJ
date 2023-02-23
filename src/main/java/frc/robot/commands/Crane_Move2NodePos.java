@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
-import frc.robot.GridCalcs.CRANEAXIS;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
@@ -88,7 +87,6 @@ public class Crane_Move2NodePos extends CommandBase {
 
           state++;
         }
-
         break;
 
       // If Crane is in Node position, then finished
@@ -99,7 +97,6 @@ public class Crane_Move2NodePos extends CommandBase {
         }
         break;
     }
-
   }
 
   // Called once the command ends or is interrupted.

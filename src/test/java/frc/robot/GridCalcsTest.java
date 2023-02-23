@@ -57,7 +57,7 @@ public class GridCalcsTest {
    @Test
    public void TestMid() {
       grid.setElem(E.CONE);
-      grid.vert.set(V.MID);
+      grid.vert.set(V.MIDDLE);
       grid.horz.set(H.LEFT);
       assertEquals(-33.4206, grid.getX(), DELTA);
       assertEquals(38.5815, grid.getY(), DELTA);
@@ -95,7 +95,7 @@ public class GridCalcsTest {
    @Test
    public void TestBot() {
       grid.setElem(E.CONE);
-      grid.vert.set(V.BOT);
+      grid.vert.set(V.BOTTOM);
       grid.horz.set(H.LEFT);
       assertEquals(-37.2946, grid.getX(), DELTA);
       assertEquals(35.0709, grid.getY(), DELTA);

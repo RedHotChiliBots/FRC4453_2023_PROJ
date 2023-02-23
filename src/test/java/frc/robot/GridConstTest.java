@@ -40,17 +40,17 @@ public class GridConstTest {
    @Test
    public void TestYNode() {
       assertEquals(39.75, grid.getYNode(V.TOP), DELTA);
-      assertEquals(22.75, grid.getYNode(V.MID), DELTA);
-      assertEquals(8.0, grid.getYNode(V.BOT), DELTA);
+      assertEquals(22.75, grid.getYNode(V.MIDDLE), DELTA);
+      assertEquals(8.0, grid.getYNode(V.BOTTOM), DELTA);
    }
 
    @Test
    public void TestZNode() {
       assertEquals(46.0, grid.getZNode(V.TOP, E.CONE), DELTA);
       assertEquals(35.5, grid.getZNode(V.TOP, E.CUBE), DELTA);
-      assertEquals(34.0, grid.getZNode(V.MID, E.CONE), DELTA);
-      assertEquals(23.5, grid.getZNode(V.MID, E.CUBE), DELTA);
-      assertEquals(5.0, grid.getZNode(V.BOT, E.CONE), DELTA);
-      assertEquals(5.0, grid.getZNode(V.BOT, E.CUBE), DELTA);
+      assertEquals(34.0, grid.getZNode(V.MIDDLE, E.CONE), DELTA);
+      assertEquals(23.5, grid.getZNode(V.MIDDLE, E.CUBE), DELTA);
+      assertEquals(5.0, grid.getZNode(V.BOTTOM, E.CONE), DELTA);
+      assertEquals(5.0, grid.getZNode(V.BOTTOM, E.CUBE), DELTA);
    }
 }

@@ -34,7 +34,7 @@ public class GridValidTest {
       grid.setElem(E.CUBE);
       assertEquals(false, grid.isNodeValid(grid.vert.get(), grid.horz.get(), grid.getElem()));
 
-      grid.vert.set(V.MID);
+      grid.vert.set(V.MIDDLE);
       grid.horz.set(H.LEFT);
       grid.setElem(E.CONE);
       assertEquals(true, grid.isNodeValid(grid.vert.get(), grid.horz.get(), grid.getElem()));
@@ -51,7 +51,7 @@ public class GridValidTest {
       grid.setElem(E.CUBE);
       assertEquals(false, grid.isNodeValid(grid.vert.get(), grid.horz.get(), grid.getElem()));
 
-      grid.vert.set(V.BOT);
+      grid.vert.set(V.BOTTOM);
       grid.horz.set(H.LEFT);
       grid.setElem(E.CONE);
       assertEquals(true, grid.isNodeValid(grid.vert.get(), grid.horz.get(), grid.getElem()));

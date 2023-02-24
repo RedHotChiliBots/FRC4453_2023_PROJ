@@ -136,13 +136,13 @@ public class CraneArm extends SubsystemBase {
     armPID.setReference(sp, CANSparkMax.ControlType.kSmartMotion);
   }
 
+  public double getArmPosition() {
+    return CraneConstants.kArmInitPos + ((armEncoder.getPosition() - CraneConstants.kArmInitPos) * 2.0);
+  }
+
   // TODO
   public boolean atArmSetPoint() {
     return false;
-  }
-
-  public double getArmPosition() {
-    return armEncoder.getPosition();
   }
 
   public double getArmSetPoint() {

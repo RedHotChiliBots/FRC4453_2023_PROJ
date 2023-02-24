@@ -49,6 +49,7 @@ import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
+import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
@@ -135,6 +136,7 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
+	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm);
 
 	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);
 	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBE);
@@ -369,6 +371,7 @@ public class RobotContainer {
 		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 
+		new JoystickButton(driver, Button.kBack.value).onTrue(crane_Move2NodePos);
 		// new JoystickButton(driver, Button.kLeftBumper.value).onTrue(craneStartPIDs);
 		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(chassisShiftHI);
 		new JoystickButton(driver, Button.kRightBumper.value).onTrue(chassisShiftLO);

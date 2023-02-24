@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.GridCalcs;
 import frc.robot.Library;
+import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.E;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.GridCalcs.H;
@@ -137,7 +138,7 @@ public class Crane extends SubsystemBase {
   }
 
   public double getGridX() {
-    return grid.getX();
+    return grid.getX() + CraneConstants.kTurretNodePos;
   }
 
   public double getGridY() {

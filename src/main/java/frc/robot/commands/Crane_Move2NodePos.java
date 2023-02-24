@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Library;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
@@ -23,6 +25,9 @@ public class Crane_Move2NodePos extends CommandBase {
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2NodePos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
     this.crane = crane;
+    this.craneTurret = craneTurret;
+    this.craneTilt = craneTilt;
+    this.craneArm = craneArm;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -42,9 +47,10 @@ public class Crane_Move2NodePos extends CommandBase {
       case 0:
         // If already at Node, do nothing
         if (crane.getState() == CRANESTATE.NODE &&
-            (craneTurret.getTurretPosition() == crane.getGridX() + CraneConstants.kTurretNodePos) &&
-            craneTilt.getTiltPosition() == crane.getGridZ() &&
-            craneArm.getArmPosition() == crane.getGridY()) {
+            (Library.approx(craneTurret.getTurretPosition(), crane.getGridX(), 1.0)) &&
+            Library.approx(craneTilt.getTiltPosition(), crane.getGridZ(), 1.0) &&
+            Library.approx(craneArm.getArmPosition(), crane.getGridY(), 0.5)) {
+            DriverStation.reportWarning("Already at Node", false);
           finish = true;
           // If Rotating from Elem side to Grid side, Arm = STOW, Tilt = Safe Rotate
         } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
@@ -52,19 +58,26 @@ public class Crane_Move2NodePos extends CommandBase {
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           state = 1;
           crane.setState(CRANESTATE.MOVING);
+          DriverStation.reportWarning("Preparing Arm for Safe Move", false);
+
           // If Rotating within Grid or at Ready pos, Rotate = Node pos, Tilt = Node pos
         } else if (crane.getState() == CRANESTATE.NODE || crane.getState() == CRANESTATE.READY) {
           craneTurret.setTurretSetPoint(crane.getGridX());
           craneTilt.setTiltSetPoint(crane.getGridZ());
           state = 3;
           crane.setState(CRANESTATE.MOVING);
+          DriverStation.reportWarning("Moving to new Node", false);
         }
+        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: "+ crane
+            .getGridX(), false);
+        DriverStation.reportWarning("Finish State " + state, false);
+        finish = true;
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if (craneTilt.getTiltPosition() == CraneConstants.kTiltSafe2Rotate &&
-            craneArm.getArmPosition() == CraneConstants.kArmSafe2Rotate) {
+        if (Library.approx(craneTilt.getTiltPosition(), CraneConstants.kTiltSafe2Rotate, 1.0) &&
+            Library.approx(craneArm.getArmPosition(), CraneConstants.kArmSafe2Rotate, 0.5)) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretSafe2TiltArm);
           state++;
         }
@@ -72,7 +85,7 @@ public class Crane_Move2NodePos extends CommandBase {
 
       // If Turret is in safe position, move Turret and Tilt to Node pos
       case 2:
-        if (craneTurret.getTurretPosition() == CraneConstants.kTurretSafe2TiltArm) {
+        if (Library.approx(craneTurret.getTurretPosition(), CraneConstants.kTurretSafe2TiltArm, 1.0)) {
           craneTurret.setTurretSetPoint(crane.getGridX());
           craneTilt.setTiltSetPoint(crane.getGridZ());
           state++;
@@ -81,8 +94,8 @@ public class Crane_Move2NodePos extends CommandBase {
 
       // If Turret and Tilt are in Node pos, move Arm to Node pos
       case 3:
-        if (craneTurret.getTurretPosition() == crane.getGridX() + CraneConstants.kTurretNodePos &&
-            craneTilt.getTiltPosition() == crane.getGridZ()) {
+        if (Library.approx(craneTurret.getTurretPosition(), crane.getGridX(), 1.0) &&
+            Library.approx(craneTilt.getTiltPosition(), crane.getGridZ(), 1.0)) {
           craneArm.setArmSetPoint(crane.getGridY());
           state++;
         }
@@ -90,7 +103,7 @@ public class Crane_Move2NodePos extends CommandBase {
 
       // If Crane is in Node position, then finished
       case 4:
-        if (craneArm.getArmPosition() == crane.getGridY()) {
+        if (Library.approx(craneArm.getArmPosition(), crane.getGridY(), 0.5)) {
           crane.setState(CRANESTATE.NODE);
           finish = true;
         }

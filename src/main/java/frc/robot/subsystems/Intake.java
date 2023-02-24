@@ -147,7 +147,7 @@ public class Intake extends SubsystemBase {
       element = E.OTHER;
     }
 
-    // crane.setElem(element);
+//    crane.setElem(element);
 
     sbElemRed.setDouble(colorSensor.getRed());
     sbElemGreen.setDouble(colorSensor.getGreen());

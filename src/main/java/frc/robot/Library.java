@@ -121,4 +121,8 @@ public class Library {
          return false;
       }
    }
+
+   public static boolean approx(double a, double b, double delta) {
+      return Math.abs(a - b) < delta;
+   }
 }

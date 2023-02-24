@@ -95,12 +95,12 @@ public class CraneArm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    if (armSetPoint != sbArmSP.getDouble(0.0)) {
-      armSetPoint = sbArmSP.getDouble(0.0);
-      setArmSetPoint(armSetPoint);
-    }
-
-    sbArmPos.setDouble(armEncoder.getPosition());
+    // if (armSetPoint != sbArmSP.getDouble(0.0)) {
+    //   armSetPoint = sbArmSP.getDouble(0.0);
+    //   setArmSetPoint(armSetPoint);
+    // }
+    sbArmSP.setDouble(armSetPoint);
+    sbArmPos.setDouble(getArmPosition());
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
 
@@ -140,9 +140,8 @@ public class CraneArm extends SubsystemBase {
     return CraneConstants.kArmInitPos + ((armEncoder.getPosition() - CraneConstants.kArmInitPos) * 2.0);
   }
 
-  // TODO
   public boolean atArmSetPoint() {
-    return false;
+    return Math.abs(armSetPoint - getArmPosition()) < CraneConstants.kArmPositionTollerance;
   }
 
   public double getArmSetPoint() {

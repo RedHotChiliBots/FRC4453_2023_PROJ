@@ -94,10 +94,11 @@ public class CraneTurret extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    if (turretSetPoint != sbTurretSP.getDouble(0.0)) {
-      turretSetPoint = sbTurretSP.getDouble(0.0);
-      setTurretSetPoint(turretSetPoint);
-    }
+    // if (turretSetPoint != sbTurretSP.getDouble(0.0)) {
+    //   turretSetPoint = sbTurretSP.getDouble(0.0);
+    //   setTurretSetPoint(turretSetPoint);
+    // }
+    sbTurretSP.setDouble(turretSetPoint);
     sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
   }
@@ -132,9 +133,8 @@ public class CraneTurret extends SubsystemBase {
     turretPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  // TODO
   public boolean atTurrentSetPoint() {
-    return false;
+    return Math.abs(turretSetPoint - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 
   public double getTurretPosition() {

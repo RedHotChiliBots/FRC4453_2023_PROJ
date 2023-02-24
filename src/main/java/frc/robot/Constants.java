@@ -111,7 +111,6 @@ public final class Constants {
 		public static final double maxRPM = 5700;
 		public static final double maxVel = 2000;
 		public static final double minVel = 1000;
-		public static final double allowedErr = 100.0;
 		public static final double maxAcc = 1500;
 
 		public static final double kTrackWidth = Units.inchesToMeters(26.341); // meters
@@ -169,7 +168,8 @@ public final class Constants {
 		public static final double kTurretReceivePos = 0.0; // degrees
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
-		public static final double kTurretSafe2TiltArm = -40.0;	// degrees
+		public static final double kTurretSafe2TiltArm = -40.0; // degrees
+		public static final double kTurretPositionTollerance = 1.0;	// degrees
 		
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
@@ -188,6 +188,7 @@ public final class Constants {
 		public static final double kTiltReceivePos = -70.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 		public static final double kTiltSafe2Rotate = -60; // degrees
+		public static final double kTiltPositionTollerance = 1.0; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.000156;
@@ -205,6 +206,7 @@ public final class Constants {
 		public static final double kArmReceivePos = 30.0; // inches
 		public static final double kArmReadyPos = 25.065; // inches
 		public static final double kArmSafe2Rotate = 25.0;	// inches
+		public static final double kArmPositionTollerance = 1.0; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;

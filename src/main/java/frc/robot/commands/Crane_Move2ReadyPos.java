@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.GridCalcs.CRANESTATE;
@@ -26,6 +27,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
     this.craneTurret = craneTurret;
     this.craneTilt = craneTilt;
     this.craneArm = craneArm;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -40,30 +42,53 @@ public class Crane_Move2ReadyPos extends CommandBase {
   @Override
   public void execute() {
     switch (state) {
+      // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
       case 0:
+        // If already at Ready, do nothing
         if (crane.getState() == CRANESTATE.READY) {
+          DriverStation.reportWarning("Already in Ready position", false);
           finish = true;
-        } else {
+        }
+
+        // If in Node position, move to Ready
+        if (crane.getState() == CRANESTATE.NODE) {
+          craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
+          DriverStation.reportWarning("In Node position, moving to Ready", false);
+          state++;
           crane.setState(CRANESTATE.MOVING);
+
+          // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
+          // Rotate
+        } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
+          craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           state++;
+          crane.setState(CRANESTATE.MOVING);
+          DriverStation.reportWarning("Preparing Arm for Safe Move", false);
         }
+
+        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
+            .getGridX(), false);
+        DriverStation.reportWarning("Finish State " + state, false);
+        finish = true;
         break;
 
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
-        craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
-        state++;
-        break;
-
-      case 2:
-        if ((craneTilt.getTiltPosition() == CraneConstants.kTiltReadyPos) && (craneArm.getArmPosition() == CraneConstants.kArmReadyPos)) {
-          craneTurret.setTurretSetPoint(180.0);
+        if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
+          craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
           state++;
         }
         break;
 
-      case 3:
-        if (craneTurret.getTurretPosition() == CraneConstants.kTurretReadyPos) {
+      // If Turret and Tilt are in Node pos, move Arm to Ready pos
+      case 2:
+        if (craneTurret.atTurrentSetPoint() &&
+            craneTilt.atTiltSetPoint() &&
+            craneArm.atArmSetPoint()) {
           crane.setState(CRANESTATE.READY);
           finish = true;
         }

@@ -111,10 +111,11 @@ public class CraneTilt extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
-      tiltSetPoint = sbTiltSP.getDouble(0.0);
-      setTiltSetPoint(tiltSetPoint);
-    }
+    // if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
+    //   tiltSetPoint = sbTiltSP.getDouble(0.0);
+    //   setTiltSetPoint(tiltSetPoint);
+    // }
+    sbTiltSP.setDouble(tiltSetPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
   }
@@ -150,9 +151,8 @@ public class CraneTilt extends SubsystemBase {
     tiltPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  // TODO
   public boolean atTiltSetPoint() {
-    return false;
+    return Math.abs(tiltSetPoint - getTiltPosition()) < CraneConstants.kTiltPositionTollerance;
   }
 
   public double getTiltPosition() {

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.GridCalcs.CRANESTATE;
@@ -23,6 +24,10 @@ public class Crane_Move2StowPos extends CommandBase {
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2StowPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
     this.crane = crane;
+    this.craneTurret = craneTurret;
+    this.craneTilt = craneTilt;
+    this.craneArm = craneArm;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -37,34 +42,66 @@ public class Crane_Move2StowPos extends CommandBase {
   @Override
   public void execute() {
     switch (state) {
+      // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
       case 0:
+        // If already at Ready, do nothing
         if (crane.getState() == CRANESTATE.STOW) {
+          DriverStation.reportWarning("Already in Stow position", false);
           finish = true;
-        } else {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltClearChassisPos);
-          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
-          crane.setState(CRANESTATE.MOVING);
-          state++;
         }
+
+        // If in Node position, move to Ready
+        if (crane.getState() == CRANESTATE.RECEIVE) {
+          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
+          DriverStation.reportWarning("In Receive position, moving to Stow", false);
+          state++;
+          crane.setState(CRANESTATE.MOVING);
+
+          // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
+          // Rotate
+        } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
+          craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
+          state++;
+          crane.setState(CRANESTATE.MOVING);
+          DriverStation.reportWarning("Preparing Arm for Safe Move", false);
+        }
+
+        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
+            .getGridX(), false);
+        DriverStation.reportWarning("Finish State " + state, false);
+        finish = true;
         break;
 
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if ((craneTilt.getTiltPosition() == CraneConstants.kTiltClearChassisPos)
-            && (craneArm.getArmPosition() == CraneConstants.kArmStowPos)) {
+        if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretStowPos);
           state++;
         }
         break;
 
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 2:
-        if (craneTurret.getTurretPosition() == CraneConstants.kTurretStowPos) {
+        if (craneTurret.atTurrentSetPoint()) {
+          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
+          state++;
+        }
+        break;
+
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
+      case 3:
+        if (craneArm.atArmSetPoint()) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltStowPos);
           state++;
         }
         break;
 
-      case 3:
-        if (craneTilt.getTiltPosition() == CraneConstants.kTiltStowPos) {
+      // If Turret and Tilt are in Node pos, move Arm to Ready pos
+      case 4:
+        if (craneTurret.atTurrentSetPoint() &&
+            craneTilt.atTiltSetPoint() &&
+            craneArm.atArmSetPoint()) {
           crane.setState(CRANESTATE.STOW);
           finish = true;
         }
@@ -74,7 +111,8 @@ public class Crane_Move2StowPos extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

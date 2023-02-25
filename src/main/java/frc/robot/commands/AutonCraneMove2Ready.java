@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
@@ -13,16 +13,14 @@ import frc.robot.subsystems.CraneTurret;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutonCranePos2Node extends ParallelCommandGroup {
+public class AutonCraneMove2Ready extends SequentialCommandGroup {
   /** Creates a new AutonCranePos. */
-  public AutonCranePos2Node(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
+  public AutonCraneMove2Ready(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
-        // In Parallel, Set Turret and Tilt position
-        // Also in same Parallel, Run Sequetial Wait then Set Arm position
-        new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm),
-        new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm));
+      new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm)
+    );
   }
 }

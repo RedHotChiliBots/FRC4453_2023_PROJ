@@ -15,17 +15,17 @@ import frc.robot.subsystems.Claw.FingerState;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutonCraneScoreFromIntake extends SequentialCommandGroup {
+public class AutonCraneScoreAtNode extends SequentialCommandGroup {
   /** Creates a new AutonCranePos. */
-  public AutonCraneScoreFromIntake(Claw claw, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
+  public AutonCraneScoreAtNode(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm, Claw claw) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
 //      new Crane_Move2ElemClear(craneTilt, craneArm);
-      new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
+//      new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
       new ClawFinger(claw, FingerState.RELEASE),
-      new Crane_Move2StowPos(crane, craneTurret, craneTilt, craneArm)
+      new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm)
     );
   }
 }

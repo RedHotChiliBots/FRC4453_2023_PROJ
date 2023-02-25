@@ -49,6 +49,7 @@ import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
+import frc.robot.commands.Crane_Move2GripPos;
 import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.Crane_Move2ReadyPos;
 import frc.robot.commands.Crane_Move2ReceivePos;
@@ -65,6 +66,10 @@ import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.AutonChgStnRate;
+import frc.robot.commands.AutonCraneMove2Elem;
+import frc.robot.commands.AutonCraneMove2Node;
+import frc.robot.commands.AutonCraneMove2Ready;
+import frc.robot.commands.AutonCraneScoreAtNode;
 import frc.robot.commands.AutonGetGameElement;
 import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
@@ -143,10 +148,21 @@ public class RobotContainer {
 			craneArm);
 	private final Crane_Move2ReadyPos crane_Move2ReadyPos = new Crane_Move2ReadyPos(crane, craneTurret, craneTilt,
 			craneArm);
+	private final Crane_Move2GripPos crane_Move2GripPos = new Crane_Move2GripPos(crane, craneTurret, craneTilt,
+			craneArm);
 	private final Crane_Move2ReceivePos crane_Move2ReceivePos = new Crane_Move2ReceivePos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2StowPos crane_Move2StowPos = new Crane_Move2StowPos(crane, craneTurret, craneTilt,
 			craneArm);
+
+	private final AutonCraneMove2Elem auton_Move2ElemPos = new AutonCraneMove2Elem(crane, craneTurret, craneTilt,
+			craneArm, claw);
+	private final AutonCraneMove2Ready auton_Move2ReadyPos = new AutonCraneMove2Ready(crane, craneTurret, craneTilt,
+			craneArm);
+	private final AutonCraneMove2Node auton_Move2NodePos = new AutonCraneMove2Node(crane, craneTurret, craneTilt,
+			craneArm);
+	private final AutonCraneScoreAtNode auton_ScoreAtNodePos = new AutonCraneScoreAtNode(crane, craneTurret, craneTilt,
+			craneArm, claw);
 
 	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);
 	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBE);
@@ -322,21 +338,24 @@ public class RobotContainer {
 		cmdTab.add("Direction", chassisToggleDir)
 				.withWidget("Command")
 				.withPosition(0, 2).withSize(1, 1);
-		cmdTab.add("Tilt Ratchet Lock", ratchetLock)
-				.withWidget("Command")
-				.withPosition(0, 3).withSize(1, 1);
-		cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock)
-				.withWidget("Command")
-				.withPosition(0, 4).withSize(1, 1);
+		// cmdTab.add("Tilt Ratchet Lock", ratchetLock)
+		// 		.withWidget("Command")
+		// 		.withPosition(0, 3).withSize(1, 1);
+		// cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock)
+		// 		.withWidget("Command")
+		// 		.withPosition(0, 4).withSize(1, 1);
 		cmdTab.add("Claw Grab Cone", clawGrabCone)
 				.withWidget("Command")
 				.withPosition(1, 0).withSize(1, 1);
 		cmdTab.add("Claw Grab Cube", clawGrabCube)
 				.withWidget("Command")
 				.withPosition(1, 1).withSize(1, 1);
-		cmdTab.add("Claw Release", clawRelease)
+		cmdTab.add("Claw Grip", clawGrip)
 				.withWidget("Command")
 				.withPosition(1, 2).withSize(1, 1);
+		cmdTab.add("Claw Release", clawRelease)
+				.withWidget("Command")
+				.withPosition(1, 3).withSize(1, 1);
 		cmdTab.add("Intake In", intakeMotorIn)
 				.withWidget("Command")
 				.withPosition(2, 0).withSize(1, 1);
@@ -358,6 +377,35 @@ public class RobotContainer {
 		cmdTab.add("Intake Stop", intakeMotorStop)
 				.withWidget("Command")
 				.withPosition(3, 2).withSize(1, 1);
+		cmdTab.add("Move 2 Stow", crane_Move2StowPos)
+				.withWidget("Command")
+				.withPosition(4, 0).withSize(1, 1);
+		cmdTab.add("Move 2 Receive", crane_Move2ReceivePos)
+				.withWidget("Command")
+				.withPosition(4, 1).withSize(1, 1);
+		cmdTab.add("Move 2 Grip", crane_Move2GripPos)
+				.withWidget("Command")
+				.withPosition(4, 2).withSize(1, 1);
+		cmdTab.add("Move 2 Ready", crane_Move2ReadyPos)
+				.withWidget("Command")
+				.withPosition(4, 3).withSize(1, 1);
+		cmdTab.add("Move 2 Node", crane_Move2NodePos)
+				.withWidget("Command")
+				.withPosition(4, 4).withSize(1, 1);
+
+		compTab = Shuffleboard.getTab("Competition");
+		compTab.add("Get Elem", auton_Move2ElemPos)
+				.withWidget("Command")
+				.withPosition(4, 0).withSize(1, 1);
+		compTab.add("Move 2 Ready", auton_Move2ReadyPos)
+				.withWidget("Command")
+				.withPosition(4, 1).withSize(1, 1);
+		compTab.add("Move 2 Node", auton_Move2NodePos)
+				.withWidget("Command")
+				.withPosition(4, 2).withSize(1, 1);
+		compTab.add("Score At Node", auton_ScoreAtNodePos)
+				.withWidget("Command")
+				.withPosition(4, 3).withSize(1, 1);
 
 		configureButtonBindings();
 
@@ -387,13 +435,14 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
 		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
-		new JoystickButton(driver, Button.kStart.value).onTrue(clawGrip);
+		new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
 
 		// new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
 		// new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
 
 		new JoystickButton(driver, Button.kBack.value).onTrue(crane_Move2NodePos);
-		new JoystickButton(driver, Button.kA.value).onTrue(crane_Move2ReadyPos);
+		new JoystickButton(driver, Button.kStart.value).onTrue(crane_Move2ReadyPos);
+		new JoystickButton(driver, Button.kLeftStick.value).onTrue(crane_Move2GripPos);
 		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(crane_Move2ReceivePos);
 		new JoystickButton(operator, Button.kRightBumper.value).onTrue(crane_Move2StowPos);
 

@@ -205,7 +205,9 @@ public final class Constants {
 		public static final double kArmStowPos = 25.065; // inches
 		public static final double kArmReceivePos = 30.0; // inches
 		public static final double kArmReadyPos = 25.065; // inches
-		public static final double kArmSafe2Rotate = 25.0;	// inches
+		public static final double kArmSafe2Rotate = 25.0; // inches
+		public static final double kArmGripCone = 32.0; // inches
+		public static final double kArmGripCube = 30.0; // inches
 		public static final double kArmPositionTollerance = 1.0; // inches
 
 		public static final double kArmIz = 0.0;

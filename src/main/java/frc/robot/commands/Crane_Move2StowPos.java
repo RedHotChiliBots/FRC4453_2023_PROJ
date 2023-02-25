@@ -52,9 +52,10 @@ public class Crane_Move2StowPos extends CommandBase {
         }
 
         // If in Node position, move to Ready
-        if (crane.getState() == CRANESTATE.RECEIVE) {
+        if (crane.getState() == CRANESTATE.RECEIVE || crane.getState() == CRANESTATE.GRIP) {
           craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
-          DriverStation.reportWarning("In Receive position, moving to Stow", false);
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltStowPos);
+          DriverStation.reportWarning("In Receive or Grip position, moving to Stow", false);
           state++;
           crane.setState(CRANESTATE.MOVING);
 

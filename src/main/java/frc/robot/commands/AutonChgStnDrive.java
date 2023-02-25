@@ -42,7 +42,7 @@ public class AutonChgStnDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    motorSpd = 0.375;
+    motorSpd = -0.375;
     oneTime = false;
     printCount = 0;
     timer = new Timer();

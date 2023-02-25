@@ -11,6 +11,8 @@ public class Library {
    private static double lastAvgRate = 0.0;
    private static double maxPitch = 0.0;
    private static double minPitch = 0.0;
+   private static double maxAbsPitch = 0.0;
+   private static double minAbsPitch = 0.0;
    private static double avgPitch = 0.0;
    private static boolean isPitchIncreasing = false;
    private static boolean isPitchDecreasing = false;
@@ -27,6 +29,8 @@ public class Library {
       lastAvgRate = 0.0;
       maxPitch = 0.0;
       minPitch = 0.0;
+      maxAbsPitch = 0.0;
+      minAbsPitch = 0.0;
       avgPitch = 0.0;
       isPitchIncreasing = false;
       isPitchDecreasing = false;
@@ -58,6 +62,14 @@ public class Library {
       return maxPitch;
    }
 
+   public double getMinAbsPitch() {
+      return minAbsPitch;
+   }
+
+   public double getMaxAbsPitch() {
+      return maxAbsPitch;
+   }
+
    public double getAvgPitch() {
       return avgPitch;
    }
@@ -86,6 +98,11 @@ public class Library {
       if (pitch < minPitch)
          minPitch = pitch;
 
+      if (Math.abs(pitch) > maxAbsPitch)
+         maxAbsPitch = Math.abs(pitch);
+      if (Math.abs(pitch) < minAbsPitch)
+         minAbsPitch = Math.abs(pitch);
+
       // calc pitch rate
       lastAvgRate = avgRate;
       avgRate = 0.0;
@@ -96,7 +113,8 @@ public class Library {
 
       deltaRate = Math.abs(lastAvgRate - avgRate);
       // System.out.println("avgRate " + avgRate + " avgPitch " + avgPitch);
-      if (avgRate < -0.5 && (avgPitch > 16.0)) {
+ //     if (Math.abs(avgRate) < 0.5 && (Math.abs(avgPitch) > 16.0)) {
+      if (Math.abs(pitch) < getMaxAbsPitch()) {
          tipSwitch = true;
       }
 

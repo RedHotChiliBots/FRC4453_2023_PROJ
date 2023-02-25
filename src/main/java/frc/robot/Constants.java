@@ -185,7 +185,7 @@ public final class Constants {
 		public static final double kTiltInitPos = -83.2; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
 		public static final double kTiltStowPos = -83.2; // degrees
-		public static final double kTiltReceivePos = -70.0; // degrees
+		public static final double kTiltReceivePos = -76.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 		public static final double kTiltSafe2Rotate = -60; // degrees
 		public static final double kTiltPositionTollerance = 1.0; // degrees
@@ -208,11 +208,11 @@ public final class Constants {
 		public static final double kArmSafe2Rotate = 25.0; // inches
 		public static final double kArmGripCone = 32.0; // inches
 		public static final double kArmGripCube = 30.0; // inches
-		public static final double kArmPositionTollerance = 1.0; // inches
+		public static final double kArmPositionTollerance = 0.5; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;
-		public static final double kArmAllowErr = 0.5;
+		public static final double kArmAllowErr = 0.125;
 		public static final double kArmMinOutput = -1.0;
 		public static final double kArmMaxOutput = 1;
 		public static final double kArmMinVel = 0.0;
@@ -237,7 +237,7 @@ public final class Constants {
 
 		public static final double kArmShaftDia = 1.0;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
-		public static final double kArmGearBoxRatio = 4;
+		public static final double kArmGearBoxRatio = 20;
 		public static final double kArmRotationsPerInch = kArmGearBoxRatio / kArmShaftCirc;
 		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
 		public static final double kArmMaxVel = 36.0 / kArmInchesPerRotation * 60.0; // RPM

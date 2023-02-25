@@ -425,17 +425,17 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		// new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
+		 new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
 		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-		// new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		 new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 
 		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(chassisShiftHI);
 		new JoystickButton(driver, Button.kRightBumper.value).onTrue(chassisShiftLO);
 
 		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
-		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
+//		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
 		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
-		new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
+//		new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
 
 		// new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
 		// new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);

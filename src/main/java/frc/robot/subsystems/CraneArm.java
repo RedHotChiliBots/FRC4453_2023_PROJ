@@ -48,9 +48,13 @@ public class CraneArm extends SubsystemBase {
       .withWidget("Text View")
       .withPosition(3, 3).withSize(1, 1).getEntry();
 
+  Crane crane;
+
   /** Creates a new Crane. */
-  public CraneArm() {
+  public CraneArm(Crane crane) {
     System.out.println("+++++ CraneArm Constructor starting +++++");
+
+    this.crane = crane;
 
     armMotor.restoreFactoryDefaults();
 
@@ -142,6 +146,10 @@ public class CraneArm extends SubsystemBase {
 
   public boolean atArmSetPoint() {
     return Math.abs(armSetPoint - getArmPosition()) < CraneConstants.kArmPositionTollerance;
+  }
+
+  public boolean atArmNextPoint() {
+    return Math.abs(crane.getGridY() - getArmPosition()) < CraneConstants.kArmPositionTollerance;
   }
 
   public double getArmSetPoint() {

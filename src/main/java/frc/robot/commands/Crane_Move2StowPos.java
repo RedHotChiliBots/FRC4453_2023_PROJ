@@ -29,6 +29,7 @@ public class Crane_Move2StowPos extends CommandBase {
     this.craneArm = craneArm;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(crane);
   }
 
   // Called when the command is initially scheduled.
@@ -59,7 +60,7 @@ public class Crane_Move2StowPos extends CommandBase {
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
-        } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
+        } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretStowPos) > 90.0) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           state++;
@@ -70,7 +71,6 @@ public class Crane_Move2StowPos extends CommandBase {
         DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
             .getGridX(), false);
         DriverStation.reportWarning("Finish State " + state, false);
-        finish = true;
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes

@@ -47,9 +47,12 @@ public class CraneTurret extends SubsystemBase {
       .withWidget("Text View")
       .withPosition(3, 1).withSize(1, 1).getEntry();
 
+  Crane crane;
+
   /** Creates a new Crane. */
-  public CraneTurret() {
+  public CraneTurret(Crane crane) {
     System.out.println("+++++ CraneTurret Constructor starting +++++");
+    this.crane = crane;
 
     turretMotor.restoreFactoryDefaults();
 
@@ -135,6 +138,10 @@ public class CraneTurret extends SubsystemBase {
 
   public boolean atTurrentSetPoint() {
     return Math.abs(turretSetPoint - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
+  }
+
+  public boolean atTurrentNextPoint() {
+    return Math.abs(crane.getGridX() - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 
   public double getTurretPosition() {

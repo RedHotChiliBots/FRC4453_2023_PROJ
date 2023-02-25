@@ -29,6 +29,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
     this.craneArm = craneArm;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(crane);
   }
 
   // Called when the command is initially scheduled.
@@ -53,7 +54,6 @@ public class Crane_Move2ReadyPos extends CommandBase {
         // If in Node position, move to Ready
         if (crane.getState() == CRANESTATE.NODE) {
           craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           DriverStation.reportWarning("In Node position, moving to Ready", false);
           state++;
           crane.setState(CRANESTATE.MOVING);
@@ -71,7 +71,6 @@ public class Crane_Move2ReadyPos extends CommandBase {
         DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
             .getGridX(), false);
         DriverStation.reportWarning("Finish State " + state, false);
-        finish = true;
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes

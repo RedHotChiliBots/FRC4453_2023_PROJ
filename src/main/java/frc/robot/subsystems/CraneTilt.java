@@ -59,14 +59,18 @@ public class CraneTilt extends SubsystemBase {
       .withWidget("Text View")
       .withPosition(3, 2).withSize(1, 1).getEntry();
 
+  Crane crane;
+
   public enum RatchetState {
     LOCK,
     UNLOCK
   }
 
   /** Creates a new Crane. */
-  public CraneTilt() {
+  public CraneTilt(Crane crane) {
     System.out.println("+++++ CraneTilt Constructor starting +++++");
+
+    this.crane = crane;
 
     tiltMotor.restoreFactoryDefaults();
 
@@ -153,6 +157,10 @@ public class CraneTilt extends SubsystemBase {
 
   public boolean atTiltSetPoint() {
     return Math.abs(tiltSetPoint - getTiltPosition()) < CraneConstants.kTiltPositionTollerance;
+  }
+
+  public boolean atTiltNextPoint() {
+    return Math.abs(crane.getGridZ() - getTiltPosition()) < CraneConstants.kTiltPositionTollerance;
   }
 
   public double getTiltPosition() {

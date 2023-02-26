@@ -65,7 +65,7 @@ public class Crane_Move2GripPos extends CommandBase {
 
        // If Turret and Tilt are in Node pos, move Arm to Ready pos
       case 1:
-        if (craneTurret.atTurrentSetPoint() &&
+        if (craneTurret.atTurretSetPoint() &&
             craneTilt.atTiltSetPoint() &&
             craneArm.atArmSetPoint()) {
           crane.setState(CRANESTATE.GRIP);

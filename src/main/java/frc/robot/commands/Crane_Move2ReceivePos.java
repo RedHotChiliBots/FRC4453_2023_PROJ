@@ -68,16 +68,19 @@ public class Crane_Move2ReceivePos extends CommandBase {
           crane.setState(CRANESTATE.MOVING);
           DriverStation.reportWarning("Preparing Arm for Safe Move", false);
         }
-
-        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
-            .getGridX(), false);
-        DriverStation.reportWarning("Finish State " + state, false);
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
         if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretReceivePos);
+          state++;
+        }
+        break;
+
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
+      case 2:
+        if (craneTurret.atTurretSetPoint()) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltReceivePos);
           craneArm.setArmSetPoint(CraneConstants.kArmReceivePos);
           state++;
@@ -85,8 +88,8 @@ public class Crane_Move2ReceivePos extends CommandBase {
         break;
 
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
-      case 2:
-        if (craneTurret.atTurrentSetPoint() &&
+      case 3:
+        if (craneTurret.atTurretSetPoint() &&
             craneTilt.atTiltSetPoint() &&
             craneArm.atArmSetPoint()) {
           crane.setState(CRANESTATE.RECEIVE);

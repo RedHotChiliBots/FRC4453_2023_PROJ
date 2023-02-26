@@ -112,18 +112,6 @@ public class CraneArm extends SubsystemBase {
     return sbArmSP.getDouble(0.0);
   }
 
-  // public double getGridX() {
-  //   return grid.getX();
-  // }
-
-  // public double getGridY() {
-  //   return grid.getY();
-  // }
-
-  // public double getGridZ() {
-  //   return grid.getZ();
-  // }
-
   public void reset() {
     initArmPos();
     setArmSetPoint(armSetPoint);

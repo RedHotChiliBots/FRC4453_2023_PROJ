@@ -110,18 +110,6 @@ public class CraneTurret extends SubsystemBase {
     return sbTurretSP.getDouble(0.0);
   }
 
-  // public double getGridX() {
-  // return grid.getX();
-  // }
-
-  // public double getGridY() {
-  // return grid.getY();
-  // }
-
-  // public double getGridZ() {
-  // return grid.getZ();
-  // }
-
   public void reset() {
     initTurretPos();
     setTurretSetPoint(turretSetPoint);
@@ -136,11 +124,11 @@ public class CraneTurret extends SubsystemBase {
     turretPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public boolean atTurrentSetPoint() {
+  public boolean atTurretSetPoint() {
     return Math.abs(turretSetPoint - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 
-  public boolean atTurrentNextPoint() {
+  public boolean atTurretNextPoint() {
     return Math.abs(crane.getGridX() - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 

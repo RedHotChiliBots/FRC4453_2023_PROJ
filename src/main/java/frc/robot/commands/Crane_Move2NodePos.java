@@ -53,7 +53,7 @@ public class Crane_Move2NodePos extends CommandBase {
         case 0:
           // If already at Node, do nothing
           if (crane.getState() == CRANESTATE.NODE &&
-              craneTurret.atTurrentNextPoint() &&
+              craneTurret.atTurretNextPoint() &&
               craneTilt.atTiltNextPoint() &&
               craneArm.atArmNextPoint()) {
             DriverStation.reportWarning("Already at Node", false);
@@ -94,7 +94,7 @@ public class Crane_Move2NodePos extends CommandBase {
 
         // If Turret is in safe position, move Turret and Tilt to Node pos
         // case 2:
-        //   if (craneTurret.atTurrentSetPoint()) {
+        //   if (craneTurret.atTurretSetPoint()) {
         //     craneTurret.setTurretSetPoint(crane.getGridX());
         //     craneTilt.setTiltSetPoint(crane.getGridZ());
         //     state++;
@@ -103,7 +103,7 @@ public class Crane_Move2NodePos extends CommandBase {
 
         // If Turret and Tilt are in Node pos, move Arm to Node pos
         case 2:
-          if (craneTurret.atTurrentSetPoint() && craneTilt.atTiltSetPoint()) {
+          if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
             craneArm.setArmSetPoint(crane.getGridY());
             state++;
           }

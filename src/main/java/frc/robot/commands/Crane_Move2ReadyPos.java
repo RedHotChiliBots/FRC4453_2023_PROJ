@@ -60,17 +60,13 @@ public class Crane_Move2ReadyPos extends CommandBase {
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
-        } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
+        } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretReadyPos) > 90.0) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
+          DriverStation.reportWarning("Preparing Arm for Safe Move", false);
           state++;
           crane.setState(CRANESTATE.MOVING);
-          DriverStation.reportWarning("Preparing Arm for Safe Move", false);
         }
-
-        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
-            .getGridX(), false);
-        DriverStation.reportWarning("Finish State " + state, false);
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
@@ -85,7 +81,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
 
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
       case 2:
-        if (craneTurret.atTurrentSetPoint() &&
+        if (craneTurret.atTurretSetPoint() &&
             craneTilt.atTiltSetPoint() &&
             craneArm.atArmSetPoint()) {
           crane.setState(CRANESTATE.READY);

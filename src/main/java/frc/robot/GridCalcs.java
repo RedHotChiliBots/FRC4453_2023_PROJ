@@ -17,11 +17,6 @@ public class GridCalcs {
 		BLUE
 	}
 
-	// public enum E {
-	// CONE,
-	// CUBE
-	// }
-
 	public enum CRANESTATE {
 		STOW,
 		RECEIVE,

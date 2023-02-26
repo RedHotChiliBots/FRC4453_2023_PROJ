@@ -6,4 +6,7 @@ Offset from Center (x)
     LEFT  -21.2500  CENTER    0.0000   RIGHT   21.2500
 Depth of Grid (y)
        TOP   39.7500    MIDDLE   22.7500    BOTTOM    8.0000
-NA      Height from Floor (z)
+CONE    Height from Floor (z)
+       TOP   46.0000    MIDDLE   34.0000    BOTTOM    5.0000
+CUBE    Height from Floor (z)
+       TOP   35.5000    MIDDLE   23.5000    BOTTOM    5.0000

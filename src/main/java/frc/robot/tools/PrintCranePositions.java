@@ -34,7 +34,9 @@ public class PrintCranePositions {
       GridCalcs grid = new GridCalcs();
 
       for (E e : E.values()) {
-
+         if (e == E.NA || e == E.OTHER)
+            continue;
+            
          printStr(String.format("\n======= %s =======\n", e));
          grid.setElem(e);
 

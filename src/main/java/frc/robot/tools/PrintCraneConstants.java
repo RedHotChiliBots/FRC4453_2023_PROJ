@@ -59,9 +59,10 @@ public class PrintCraneConstants {
       printStr("\n");
 
       for (E e : E.values()) {
+         if (e == E.NA || e == E.OTHER)
+            continue;
          printStr(String.format("%-8sHeight from Floor (z)\n", e));
          for (V v : V.values()) {
-            
             printStr(String.format("%10s%10.4f", v, grid.getZNode(v, e)));
          }
          printStr("\n");

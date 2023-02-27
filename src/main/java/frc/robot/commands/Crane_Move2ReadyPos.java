@@ -73,15 +73,14 @@ public class Crane_Move2ReadyPos extends CommandBase {
       case 1:
         if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
           state++;
         }
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 2:
-        if (craneTurret.atTurretSetPoint() && craneArm.atArmSetPoint()) {
-          craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
+        if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
           craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
           state++;
         }

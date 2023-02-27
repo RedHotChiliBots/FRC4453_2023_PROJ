@@ -54,10 +54,10 @@ public final class Constants {
 		public static final int kChassisShifterLo = 1;
 		public static final int kIntakeArmOpen = 2;
 		public static final int kIntakeArmClose = 3;
-		public static final int kClawLeftOpen = 4;
-		public static final int kClawLeftClose = 5;
-		public static final int kClawRightOpen = 6;
-		public static final int kClawRightClose = 7;
+		public static final int kClawRightOpen = 4;
+		public static final int kClawRightClose = 5;
+		public static final int kClawLeftOpen = 6;
+		public static final int kClawLeftClose = 7;
 	}
 
 	public static final class Pneumatic1ChannelConstants {
@@ -166,6 +166,7 @@ public final class Constants {
 		public static final double kTurretInitPos = 0.0; // degrees
 		public static final double kTurretStowPos = 0.0; // degrees
 		public static final double kTurretReceivePos = 0.0; // degrees
+		public static final double kTurretGripPos = 0.0; // degrees
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
 		public static final double kTurretSafe2TiltArm = -40.0; // degrees
@@ -185,7 +186,9 @@ public final class Constants {
 		public static final double kTiltInitPos = -83.2; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
 		public static final double kTiltStowPos = -83.2; // degrees
+		public static final double kTiltGripPos = -76.0; // degrees
 		public static final double kTiltReceivePos = -76.0; // degrees
+		public static final double kTiltHoldPos = -76.0; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 		public static final double kTiltSafe2Rotate = -60; // degrees
 		public static final double kTiltPositionTollerance = 1.0; // degrees
@@ -203,11 +206,12 @@ public final class Constants {
 		public static final double kArmD = 0.0;
 		public static final double kArmInitPos = 25.065; // inches
 		public static final double kArmStowPos = 25.065; // inches
-		public static final double kArmReceivePos = 30.0; // inches
+		public static final double kArmHoldPos = 25.065; // inches
 		public static final double kArmReadyPos = 25.065; // inches
+		public static final double kArmReceivePos = 30.0; // inches
 		public static final double kArmSafe2Rotate = 25.0; // inches
-		public static final double kArmGripCone = 32.0; // inches
-		public static final double kArmGripCube = 30.0; // inches
+		public static final double kArmGripCone = 35.5; // inches
+		public static final double kArmGripCube = 34.0; // inches
 		public static final double kArmPositionTollerance = 0.5; // inches
 
 		public static final double kArmIz = 0.0;
@@ -226,7 +230,7 @@ public final class Constants {
 		public static final double kTurretMaxVel = 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
 		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPM^2
 
-		public static final double kTiltSprocketTeeth = 60;
+		public static final double kTiltSprocketTeeth = 120;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
 		public static final double kTiltGearBoxRatio = 100;

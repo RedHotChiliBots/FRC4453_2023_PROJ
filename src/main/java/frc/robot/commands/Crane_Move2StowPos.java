@@ -52,17 +52,18 @@ public class Crane_Move2StowPos extends CommandBase {
         }
 
         // If in Node position, move to Ready
-        if (crane.getState() == CRANESTATE.RECEIVE || crane.getState() == CRANESTATE.GRIP) {
+        if (crane.getState() == CRANESTATE.RECEIVE ||
+            crane.getState() == CRANESTATE.GRIP ||
+            crane.getState() == CRANESTATE.HOLD) {
           craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
           craneTilt.setTiltSetPoint(CraneConstants.kTiltStowPos);
           DriverStation.reportWarning("In Receive or Grip position, moving to Stow", false);
-          state++;
+          state = 4;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
         } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretStowPos) > 90.0) {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           state++;
           crane.setState(CRANESTATE.MOVING);
@@ -72,7 +73,8 @@ public class Crane_Move2StowPos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
+        if (craneArm.atArmSetPoint()) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneTurret.setTurretSetPoint(CraneConstants.kTurretStowPos);
           state++;
         }
@@ -80,15 +82,16 @@ public class Crane_Move2StowPos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 2:
-        if (craneTurret.atTurretSetPoint()) {
-          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
+        if (craneTilt.atTiltSetPoint()) {
           state++;
         }
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 3:
-        if (craneArm.atArmSetPoint()) {
+        if (craneTurret.atTurretSetPoint()) {
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretStowPos);
+          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
           craneTilt.setTiltSetPoint(CraneConstants.kTiltStowPos);
           state++;
         }

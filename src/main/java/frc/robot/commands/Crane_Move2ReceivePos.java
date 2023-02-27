@@ -52,17 +52,18 @@ public class Crane_Move2ReceivePos extends CommandBase {
         }
 
         // If in Node position, move to Receive
-        if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.GRIP) {
+        if (crane.getState() == CRANESTATE.STOW ||
+            crane.getState() == CRANESTATE.GRIP ||
+            crane.getState() == CRANESTATE.HOLD) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltReceivePos);
           craneArm.setArmSetPoint(CraneConstants.kArmReceivePos);
           DriverStation.reportWarning("In Stow or Grip position, moving to Receive", false);
-          state++;
+          state = 3;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
         } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretReceivePos) > 90.0) {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           state++;
           crane.setState(CRANESTATE.MOVING);
@@ -72,7 +73,8 @@ public class Crane_Move2ReceivePos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
+        if (craneArm.atArmSetPoint()) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneTurret.setTurretSetPoint(CraneConstants.kTurretReceivePos);
           state++;
         }
@@ -80,7 +82,7 @@ public class Crane_Move2ReceivePos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 2:
-        if (craneTurret.atTurretSetPoint()) {
+        if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltReceivePos);
           craneArm.setArmSetPoint(CraneConstants.kArmReceivePos);
           state++;

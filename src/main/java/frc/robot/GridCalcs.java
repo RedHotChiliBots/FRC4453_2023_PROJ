@@ -20,6 +20,7 @@ public class GridCalcs {
 	public enum CRANESTATE {
 		STOW,
 		RECEIVE,
+		HOLD,
 		GRIP,
 		READY,
 		NODE,

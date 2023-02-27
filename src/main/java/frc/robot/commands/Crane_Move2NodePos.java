@@ -61,9 +61,9 @@ public class Crane_Move2NodePos extends CommandBase {
 
             // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
             // Rotate
-          } else if (Math.abs(craneTurret.getTurretPosition() - crane.getGridX()) > 90.0) {
-//            craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
-            craneTilt.setTiltSetPoint(crane.getGridZ());
+          } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
+            craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
+//            craneTilt.setTiltSetPoint(crane.getGridZ());
             craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
             state = 1;
             crane.setState(CRANESTATE.MOVING);
@@ -73,7 +73,8 @@ public class Crane_Move2NodePos extends CommandBase {
           } else if (crane.getState() == CRANESTATE.NODE || crane.getState() == CRANESTATE.READY) {
             craneTurret.setTurretSetPoint(crane.getGridX());
             craneTilt.setTiltSetPoint(crane.getGridZ());
-            state = 3;
+            craneArm.setArmSetPoint(crane.getGridY());
+            state = 4;
             crane.setState(CRANESTATE.MOVING);
             DriverStation.reportWarning("Moving to new Node", false);
           }
@@ -86,24 +87,22 @@ public class Crane_Move2NodePos extends CommandBase {
         // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
         case 1:
           if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
-//            craneTurret.setTurretSetPoint(CraneConstants.kTurretSafe2TiltArm + CraneConstants.kTurretNodePos);
               craneTurret.setTurretSetPoint(crane.getGridX());
             state++;
           }
           break;
 
-        // If Turret is in safe position, move Turret and Tilt to Node pos
-        // case 2:
-        //   if (craneTurret.atTurretSetPoint()) {
-        //     craneTurret.setTurretSetPoint(crane.getGridX());
-        //     craneTilt.setTiltSetPoint(crane.getGridZ());
-        //     state++;
-        //   }
-        //   break;
-
         // If Turret and Tilt are in Node pos, move Arm to Node pos
         case 2:
-          if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
+          if (craneTurret.atTurretSetPoint()) {
+            craneTilt.setTiltSetPoint(crane.getGridZ());
+            state++;
+          }
+          break;
+
+        // If Turret and Tilt are in Node pos, move Arm to Node pos
+        case 3:
+          if (craneTilt.atTiltSetPoint()) {
             craneArm.setArmSetPoint(crane.getGridY());
             state++;
           }
@@ -111,7 +110,9 @@ public class Crane_Move2NodePos extends CommandBase {
 
         // If Crane is in Node position, then finished
         case 4:
-          if (craneArm.atArmSetPoint()) {
+          if (craneTurret.atTurretSetPoint() &&
+              craneTilt.atTiltSetPoint() &&
+              craneArm.atArmSetPoint()) {
             crane.setState(CRANESTATE.NODE);
             finish = true;
           }

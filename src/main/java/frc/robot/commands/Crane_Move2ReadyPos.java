@@ -55,12 +55,12 @@ public class Crane_Move2ReadyPos extends CommandBase {
         if (crane.getState() == CRANESTATE.NODE) {
           craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
           DriverStation.reportWarning("In Node position, moving to Ready", false);
-          state++;
+          state = 2;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
-        } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretReadyPos) > 90.0) {
+        } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
           craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
           DriverStation.reportWarning("Preparing Arm for Safe Move", false);
@@ -69,9 +69,17 @@ public class Crane_Move2ReadyPos extends CommandBase {
         }
         break;
 
-      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
+        // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
         if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
+          state++;
+        }
+        break;
+
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
+      case 2:
+        if (craneTurret.atTurretSetPoint() && craneArm.atArmSetPoint()) {
           craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
           craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
           craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
@@ -80,7 +88,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
         break;
 
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
-      case 2:
+      case 3:
         if (craneTurret.atTurretSetPoint() &&
             craneTilt.atTiltSetPoint() &&
             craneArm.atArmSetPoint()) {

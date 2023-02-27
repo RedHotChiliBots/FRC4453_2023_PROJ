@@ -156,7 +156,7 @@ public class RobotContainer {
 			craneArm);
 
 	private final AutonCraneMove2Elem auton_Move2ElemPos = new AutonCraneMove2Elem(crane, craneTurret, craneTilt,
-			craneArm, claw);
+			craneArm, claw, intake);
 	private final AutonCraneMove2Ready auton_Move2ReadyPos = new AutonCraneMove2Ready(crane, craneTurret, craneTilt,
 			craneArm);
 	private final AutonCraneMove2Node auton_Move2NodePos = new AutonCraneMove2Node(crane, craneTurret, craneTilt,

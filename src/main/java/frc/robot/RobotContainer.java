@@ -54,6 +54,7 @@ import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.Crane_Move2ReadyPos;
 import frc.robot.commands.Crane_Move2ReceivePos;
 import frc.robot.commands.Crane_Move2StowPos;
+import frc.robot.commands.Crane_MoveTilt2Zero;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
@@ -153,6 +154,9 @@ public class RobotContainer {
 	private final Crane_Move2ReceivePos crane_Move2ReceivePos = new Crane_Move2ReceivePos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2StowPos crane_Move2StowPos = new Crane_Move2StowPos(crane, craneTurret, craneTilt,
+			craneArm);
+
+	private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
 			craneArm);
 
 	private final AutonCraneMove2Elem auton_Move2ElemPos = new AutonCraneMove2Elem(crane, craneTurret, craneTilt,
@@ -378,6 +382,10 @@ public class RobotContainer {
 				.withWidget("Command")
 				.withPosition(3, 2).withSize(1, 1);
 	
+		cmdTab.add("Move 2 Stow", crane_MoveTilt2Zero)
+				.withWidget("Command")
+				.withPosition(5, 0).withSize(1, 1);
+
 		cmdTab.add("Move 2 Stow", crane_Move2StowPos)
 				.withWidget("Command")
 				.withPosition(4, 0).withSize(1, 1);

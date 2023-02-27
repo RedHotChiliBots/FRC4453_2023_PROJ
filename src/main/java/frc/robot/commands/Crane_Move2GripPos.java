@@ -68,7 +68,7 @@ public class Crane_Move2GripPos extends CommandBase {
           if (crane.getElem() == E.CONE) {
             craneArm.setArmSetPoint(CraneConstants.kArmGripCone);
 
-          } else if (crane.getElem() == E.CONE) {
+          } else if (crane.getElem() == E.CUBE) {
             craneArm.setArmSetPoint(CraneConstants.kArmGripCube);
           }
           crane.setState(CRANESTATE.MOVING);

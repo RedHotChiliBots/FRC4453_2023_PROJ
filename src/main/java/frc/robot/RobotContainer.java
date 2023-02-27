@@ -381,8 +381,8 @@ public class RobotContainer {
 		cmdTab.add("Intake Stop", intakeMotorStop)
 				.withWidget("Command")
 				.withPosition(3, 2).withSize(1, 1);
-	
-		cmdTab.add("Move 2 Stow", crane_MoveTilt2Zero)
+
+		cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero)
 				.withWidget("Command")
 				.withPosition(5, 0).withSize(1, 1);
 

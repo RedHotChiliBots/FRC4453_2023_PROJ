@@ -32,7 +32,7 @@ public class AutonCraneMove2Elem extends SequentialCommandGroup {
         new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
         new Crane_Move2GripPos(crane, craneTurret, craneTilt, craneArm),
         new ClawFinger(claw, FingerState.GRIP),
-        new WaitCommand(2.0),
+        new WaitCommand(1.0),
         new Crane_Move2HoldPos(crane, craneTurret, craneTilt, craneArm));
   }
 }

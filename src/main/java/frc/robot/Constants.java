@@ -181,7 +181,7 @@ public final class Constants {
 
 		public static final int kTiltSlot = 0;
 		public static final double kTiltP = 5e-5;
-		public static final double kTiltI = 1e-6;
+		public static final double kTiltI = 0.0;	//1e-6;
 		public static final double kTiltD = 0.0;
 		public static final double kTiltInitPos = -83.2; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
@@ -211,7 +211,7 @@ public final class Constants {
 		public static final double kArmReceivePos = 30.0; // inches
 		public static final double kArmSafe2Rotate = 25.0; // inches
 		public static final double kArmGripCone = 35.5; // inches
-		public static final double kArmGripCube = 34.0; // inches
+		public static final double kArmGripCube = 33.0; // inches
 		public static final double kArmPositionTollerance = 0.5; // inches
 
 		public static final double kArmIz = 0.0;

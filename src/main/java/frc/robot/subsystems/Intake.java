@@ -147,7 +147,15 @@ public class Intake extends SubsystemBase {
       element = E.OTHER;
     }
 
-//    crane.setElem(element);
+    if (isElementIn() && ((match != null) && match.confidence > 90.0)) {
+      if (element == E.CUBE) {
+        crane.setElem(E.CUBE);
+      } else {
+        crane.setElem(E.CONE);
+      }
+    }
+
+    // crane.setElem(element);
 
     sbElemRed.setDouble(colorSensor.getRed());
     sbElemGreen.setDouble(colorSensor.getGreen());

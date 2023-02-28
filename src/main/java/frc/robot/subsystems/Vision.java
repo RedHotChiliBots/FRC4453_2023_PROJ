@@ -76,10 +76,10 @@ public class Vision extends SubsystemBase {
   // PhotonTrackedTarget target = null;
 
   // // Get information from target.
-  // double yaw = 0.0;
-  // double pitch = 0.0;
-  // double area = 0.0;
-  // double skew = 0.0;
+  double yaw = 0.0;
+  double pitch = 0.0;
+  double area = 0.0;
+  double skew = 0.0;
   // Transform3d pose = null;
   // List<TargetCorner> corners = null;
 
@@ -172,6 +172,11 @@ public class Vision extends SubsystemBase {
       } else {
         // target = result.getBestTarget();
 
+        yaw = target.getYaw();
+        pitch = target.getPitch();
+        area = target.getArea();
+        skew = target.getSkew();
+
         range = PhotonUtils.calculateDistanceToTargetMeters(
             VisionConstants.kCameraHeight,
             VisionConstants.kTargetHeight,
@@ -206,7 +211,7 @@ public class Vision extends SubsystemBase {
 
       // Also calculate angular power
       // -1.0 required to ensure positive PID controller effort _increases_ yaw
-      rotationSpeed = turnController.calculate(target.getYaw(), 0);
+      rotationSpeed = turnController.calculate(yaw, 0);
 
     } else {
       forwardSpeed = 0;
@@ -234,5 +239,25 @@ public class Vision extends SubsystemBase {
 
   public boolean atTurnTarget() {
     return turnController.atSetpoint();
+  }
+
+  public double getRange() {
+    return range;
+  }
+
+  public double getYaw() {
+    return yaw;
+  }
+
+  public double getPitch() {
+    return pitch;
+  }
+
+  public double getArea() {
+    return area;
+  }
+
+  public double getSkew() {
+    return skew;
   }
 }

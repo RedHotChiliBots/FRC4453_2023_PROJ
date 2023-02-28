@@ -63,7 +63,7 @@ public class Crane extends SubsystemBase {
       V.MIDDLE,
       Map.of(H.LEFT, compTab.addPersistent("Mid Left", false)
           .withWidget("Boolean Box").withPosition(0, 3).withSize(1, 1).getEntry(),
-          H.CENTER, compTab.addPersistent("Mid Center", true)
+          H.CENTER, compTab.addPersistent("Mid Center", false)
               .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Mid Right", false)
               .withWidget("Boolean Box").withPosition(2, 3).withSize(1, 1).getEntry()),
@@ -76,7 +76,7 @@ public class Crane extends SubsystemBase {
               .withWidget("Boolean Box").withPosition(2, 4).withSize(1, 1).getEntry())));
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
-      E.CONE, compTab.addPersistent("Cone", true)
+      E.CONE, compTab.addPersistent("Cone", false)
           .withWidget("Boolean Box").withPosition(0, 1).withSize(1, 1).getEntry(),
       E.CUBE, compTab.addPersistent("Cube", false)
           .withWidget("Boolean Box").withPosition(1, 1).withSize(1, 1).getEntry()));
@@ -86,10 +86,12 @@ public class Crane extends SubsystemBase {
     System.out.println("+++++ Crane Constructor starting +++++");
 
     this.operator = operator;
-    grid.vert.set(V.MIDDLE);
-    grid.horz.set(H.CENTER);
+    grid.vert.set(V.TOP);
+    grid.horz.set(H.LEFT);
     grid.setElem(E.CONE);
     craneState = CRANESTATE.STOW;
+    sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(true);
+    sbElemType.get(E.CONE).setBoolean(true);
 
     dsAlliance = DriverStation.getAlliance();
     dsLocation = DriverStation.getLocation();

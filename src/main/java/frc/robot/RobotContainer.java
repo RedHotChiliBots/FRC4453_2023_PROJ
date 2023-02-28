@@ -343,11 +343,11 @@ public class RobotContainer {
 				.withWidget("Command")
 				.withPosition(0, 2).withSize(1, 1);
 		// cmdTab.add("Tilt Ratchet Lock", ratchetLock)
-		// 		.withWidget("Command")
-		// 		.withPosition(0, 3).withSize(1, 1);
+		// .withWidget("Command")
+		// .withPosition(0, 3).withSize(1, 1);
 		// cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock)
-		// 		.withWidget("Command")
-		// 		.withPosition(0, 4).withSize(1, 1);
+		// .withWidget("Command")
+		// .withPosition(0, 4).withSize(1, 1);
 		cmdTab.add("Claw Grab Cone", clawGrabCone)
 				.withWidget("Command")
 				.withPosition(1, 0).withSize(1, 1);
@@ -434,32 +434,44 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		 new JoystickButton(driver, Button.kX.value).onTrue(autonChargingStation);
+
+		// new JoystickButton(driver, Button.kX.value).onTrue(auton_Move2ElemPos);
 		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
-		 new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
+		new JoystickButton(driver, Button.kB.value).onTrue(autonChargingStation);
 
-		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(chassisShiftHI);
-		new JoystickButton(driver, Button.kRightBumper.value).onTrue(chassisShiftLO);
+		new JoystickButton(driver, Button.kStart.value).onTrue(intakeOpen);
+		new JoystickButton(driver, Button.kBack.value).onTrue(intakeClose);
 
-		new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
-//		new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
-		new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
-//		new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
+		new JoystickButton(driver, Button.kLeftStick.value).onTrue(chassisShiftLO);
+		new JoystickButton(driver, Button.kRightStick.value).onTrue(chassisShiftHI);
+		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(intakeMotorOut).onFalse(intakeMotorStop);
+		new JoystickButton(driver, Button.kRightBumper.value).onTrue(intakeMotorIn).onFalse(intakeMotorStop);
+
+		// new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
+		// new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
+		// new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
+		// new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
 
 		// new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
 		// new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
 
-		new JoystickButton(driver, Button.kBack.value).onTrue(crane_Move2NodePos);
-		new JoystickButton(driver, Button.kStart.value).onTrue(crane_Move2ReadyPos);
-		new JoystickButton(driver, Button.kLeftStick.value).onTrue(crane_Move2GripPos);
-		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(crane_Move2ReceivePos);
-		new JoystickButton(operator, Button.kRightBumper.value).onTrue(crane_Move2StowPos);
+		// new JoystickButton(driver, Button.kBack.value).onTrue(crane_Move2NodePos);
+		// new JoystickButton(driver, Button.kStart.value).onTrue(crane_Move2ReadyPos);
+		// new JoystickButton(driver,
+		// Button.kLeftStick.value).onTrue(crane_Move2GripPos);
+		// new JoystickButton(operator,
+		// Button.kLeftBumper.value).onTrue(crane_Move2ReceivePos);
+		// new JoystickButton(operator,
+		// Button.kRightBumper.value).onTrue(crane_Move2StowPos);
 
-		new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
-		new JoystickButton(operator, Button.kX.value).onTrue(intakeMotorIn).onFalse(intakeMotorStop);
-		new JoystickButton(operator, Button.kA.value).onTrue(intakeMotorOut).onFalse(intakeMotorStop);
-		new JoystickButton(operator, Button.kB.value).onTrue(intakeOpen);
-		new JoystickButton(operator, Button.kBack.value).onTrue(intakeClose);
+		// new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
+
+		new JoystickButton(operator, Button.kBack.value).onTrue(crane_Move2StowPos);
+		new JoystickButton(operator, Button.kX.value).onTrue(auton_Move2ElemPos);
+		new JoystickButton(operator, Button.kY.value).onTrue(auton_Move2ReadyPos);
+		new JoystickButton(operator, Button.kB.value).onTrue(auton_Move2NodePos);
+		new JoystickButton(operator, Button.kA.value).onTrue(auton_ScoreAtNodePos);
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
 	}
 

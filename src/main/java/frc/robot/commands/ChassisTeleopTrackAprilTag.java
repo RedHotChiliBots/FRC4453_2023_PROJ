@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Vision;
 
@@ -31,17 +32,18 @@ public class ChassisTeleopTrackAprilTag extends CommandBase {
   @Override
   public void execute() {
     if (vision.hasTargets()) {
-      RobotContainer.setDriverRumble(RumbleType.kLeftRumble);
+      if (vision.getRange() < VisionConstants.kRange2Rumble) {
+        RobotContainer.setDriverRumble(RumbleType.kLeftRumble);
 
-      if (RobotContainer.driver.getAButton()) {
-        RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);
+        if (RobotContainer.driver.getAButton()) {
+          RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);
 
-        double[] spd = vision.trackAprilTag();
+          double[] spd = vision.trackAprilTag();
 
-        // Use our forward/turn speeds to control the drivetrain
-        chassis.driveArcade(spd[0], spd[1]);
+          // Use our forward/turn speeds to control the drivetrain
+          chassis.driveArcade(spd[0], spd[1]);
+        }
       }
-
     } else {
       RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);
     }

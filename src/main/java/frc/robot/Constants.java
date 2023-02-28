@@ -241,7 +241,7 @@ public final class Constants {
 
 		public static final double kArmShaftDia = 1.0;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
-		public static final double kArmGearBoxRatio = 20;
+		public static final double kArmGearBoxRatio = 12;
 		public static final double kArmRotationsPerInch = kArmGearBoxRatio / kArmShaftCirc;
 		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
 		public static final double kArmMaxVel = 36.0 / kArmInchesPerRotation * 60.0; // RPM
@@ -281,6 +281,8 @@ public final class Constants {
 		// How far from the target we want to be
 		public static final double kTargetDist = Units.feetToMeters(3);
 
+		public static final double kRange2Rumble = Units.feetToMeters(20.0);
+		
 		// PID constants should be tuned per robot
 		public static final double kDistP = 0.6;
 		public static final double kDistI = 0.0;

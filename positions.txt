@@ -2,33 +2,33 @@
 ======= CONE =======
 
      TOP
-    LEFT	X: -24.4592   Y:  51.3228   Z:  21.3532
-  CENTER	X:      NaN   Y:      NaN   Z:      NaN
-   RIGHT	X:  24.4592   Y:  51.3228   Z:  21.3532
+    LEFT	Turret: -22.2370   Tilt:  19.4390   Arm:  51.3228
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret:  22.2370   Tilt:  19.4390   Arm:  51.3228
 
   MIDDLE
-    LEFT	X: -37.0567   Y:  35.2635   Z:  10.9320
-  CENTER	X:      NaN   Y:      NaN   Z:      NaN
-   RIGHT	X:  37.0567   Y:  35.2635   Z:  10.9320
+    LEFT	Turret: -33.4206   Tilt:   9.9817   Arm:  35.2635
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret:  33.4206   Tilt:   9.9817   Arm:  35.2635
 
   BOTTOM
-    LEFT	X: -41.5234   Y:  32.0549   Z: -44.1127
-  CENTER	X:   0.0000   Y:  25.5006   Z: -61.0425
-   RIGHT	X:  41.5234   Y:  32.0549   Z: -44.1127
+    LEFT	Turret: -37.2947   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret:   0.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret:  37.2947   Tilt: -39.5098   Arm:  32.0549
 
 ======= CUBE =======
 
      TOP
-    LEFT	X:      NaN   Y:      NaN   Z:      NaN
-  CENTER	X:   0.0000   Y:  44.9562   Z:  10.4934
-   RIGHT	X:      NaN   Y:      NaN   Z:      NaN
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret:   0.0000   Tilt:   9.5820   Arm:  44.9562
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
 
   MIDDLE
-    LEFT	X:      NaN   Y:      NaN   Z:      NaN
-  CENTER	X:   0.0000   Y:  29.0011   Z:  -7.5540
-   RIGHT	X:      NaN   Y:      NaN   Z:      NaN
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret:   0.0000   Tilt:  -6.9010   Arm:  29.0011
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
 
   BOTTOM
-    LEFT	X: -41.5234   Y:  32.0549   Z: -44.1127
-  CENTER	X:   0.0000   Y:  25.5006   Z: -61.0425
-   RIGHT	X:  41.5234   Y:  32.0549   Z: -44.1127
+    LEFT	Turret: -37.2947   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret:   0.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret:  37.2947   Tilt: -39.5098   Arm:  32.0549

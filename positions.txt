@@ -2,33 +2,33 @@
 ======= CONE =======
 
      TOP
-    LEFT	X: -22.2370   Y:  56.1519   Z:  19.4390
+    LEFT	X: -24.4592   Y:  51.3228   Z:  21.3532
   CENTER	X:      NaN   Y:      NaN   Z:      NaN
-   RIGHT	X:  22.2370   Y:  56.1519   Z:  19.4390
+   RIGHT	X:  24.4592   Y:  51.3228   Z:  21.3532
 
   MIDDLE
-    LEFT	X: -33.4206   Y:  38.5815   Z:   9.9817
+    LEFT	X: -37.0567   Y:  35.2635   Z:  10.9320
   CENTER	X:      NaN   Y:      NaN   Z:      NaN
-   RIGHT	X:  33.4206   Y:  38.5815   Z:   9.9817
+   RIGHT	X:  37.0567   Y:  35.2635   Z:  10.9320
 
   BOTTOM
-    LEFT	X: -37.2947   Y:  35.0710   Z: -39.5098
-  CENTER	X:   0.0000   Y:  27.9000   Z: -53.1044
-   RIGHT	X:  37.2947   Y:  35.0710   Z: -39.5098
+    LEFT	X: -41.5234   Y:  32.0549   Z: -44.1127
+  CENTER	X:   0.0000   Y:  25.5006   Z: -61.0425
+   RIGHT	X:  41.5234   Y:  32.0549   Z: -44.1127
 
 ======= CUBE =======
 
      TOP
     LEFT	X:      NaN   Y:      NaN   Z:      NaN
-  CENTER	X:   0.0000   Y:  48.5493   Z:   2.5825
+  CENTER	X:   0.0000   Y:  44.9562   Z:  10.4934
    RIGHT	X:      NaN   Y:      NaN   Z:      NaN
 
   MIDDLE
     LEFT	X:      NaN   Y:      NaN   Z:      NaN
-  CENTER	X:   0.0000   Y:  32.9930   Z: -17.3022
+  CENTER	X:   0.0000   Y:  29.0011   Z:  -7.5540
    RIGHT	X:      NaN   Y:      NaN   Z:      NaN
 
   BOTTOM
-    LEFT	X: -32.8613   Y:  39.1628   Z: -46.2981
-  CENTER	X:   0.0000   Y:  32.8962   Z: -59.3910
-   RIGHT	X:  32.8613   Y:  39.1628   Z: -46.2981
+    LEFT	X: -41.5234   Y:  32.0549   Z: -44.1127
+  CENTER	X:   0.0000   Y:  25.5006   Z: -61.0425
+   RIGHT	X:  41.5234   Y:  32.0549   Z: -44.1127

@@ -119,15 +119,15 @@ public class GridCalcs {
 	}
 
 	public enum C {
-		X,
-		Y,
-		Z
+		TURRET,
+		ARM,
+		TILT
 	}
 
 	public final EnumMap<C, Double> kRobotArm = new EnumMap<>(Map.of(
-			C.X, 0.0,
-			C.Y, -8.75,
-			C.Z, 39.3125));
+			C.TURRET, 0.0,
+			C.ARM, -8.75,
+			C.TILT, 39.3125));
 
 	public double getRobotArm(C c) {
 		return kRobotArm.get(c);
@@ -143,25 +143,25 @@ public class GridCalcs {
 		return kZG.get(e);
 	}
 
-	private final EnumMap<H, Double> kXNode = new EnumMap<>(Map.of(
+	private final EnumMap<H, Double> kTurretNode = new EnumMap<>(Map.of(
 			H.LEFT, -21.25,
 			H.CENTER, 0.0,
 			H.RIGHT, 21.25));
 
-	public double getXNode(H h) {
-		return kXNode.get(h);
+	public double getTurretNode(H h) {
+		return kTurretNode.get(h);
 	}
 
-	private final EnumMap<V, Double> kYNode = new EnumMap<>(Map.of(
+	private final EnumMap<V, Double> kArmNode = new EnumMap<>(Map.of(
 			V.TOP, 39.75,
 			V.MIDDLE, 22.75,
 			V.BOTTOM, 8.0));
 
-	public double getYNode(V v) {
-		return kYNode.get(v);
+	public double getArmNode(V v) {
+		return kArmNode.get(v);
 	}
 
-	private final EnumMap<V, Map<E, Double>> kZNode = new EnumMap<>(Map.of(
+	private final EnumMap<V, Map<E, Double>> kTiltNode = new EnumMap<>(Map.of(
 			V.TOP,
 			Map.of(E.CONE, 46.0,
 					E.CUBE, 35.5),
@@ -172,8 +172,8 @@ public class GridCalcs {
 			Map.of(E.CONE, 5.0,
 					E.CUBE, 5.0)));
 
-	public double getZNode(V v, E e) {
-		return kZNode.get(v).get(e);
+	public double getTiltNode(V v, E e) {
+		return kTiltNode.get(v).get(e);
 	}
 
 	private final EnumMap<CRANESTATE, Map<CRANEAXIS, Double>> kCranePos = new EnumMap<>(Map.of(
@@ -238,30 +238,31 @@ public class GridCalcs {
 		return kNodeValid.get(v).get(h).get(e);
 	}
 
-	public double getY() {
+	public double getFwdArm() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			return 0.914 * Math.sqrt(
-					Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.X), 2) +
-							Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.Y), 2) +
-							Math.pow(kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));
+					Math.pow(kTurretNode.get(horz.get()) - kRobotArm.get(C.TURRET), 2) +
+							Math.pow(kArmNode.get(vert.get()) - kRobotArm.get(C.ARM), 2) +
+							Math.pow(kTiltNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.TILT), 2));
 		} else {
 			return Float.NaN;
 		}
 	}
 
-	public double getX() {
+	public double getFwdTurret() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.toDegrees(Math.asin(kXNode.get(horz.get()) / getY()));
+			return Math.toDegrees(Math.asin(kTurretNode.get(horz.get()) / getFwdArm()));
 		} else {
 			return Float.NaN;
 		}
 	}
 
-	public double getZ() {
+	public double getFwdTilt() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			return Math
 					.toDegrees(Math
-							.asin((kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z)) / getY()));
+							.asin((kTiltNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.TILT))
+									/ getFwdArm()));
 		} else {
 			return Float.NaN;
 		}

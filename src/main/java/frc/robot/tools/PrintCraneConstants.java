@@ -48,13 +48,13 @@ public class PrintCraneConstants {
 
       printStr("Offset from Center (x)\n");
       for (H h : H.values()) {
-         printStr(String.format("%8s%10.4f", h, grid.getXNode(h)));
+         printStr(String.format("%8s%10.4f", h, grid.getTurretNode(h)));
       }
-     printStr("\n");
+      printStr("\n");
 
       printStr("Depth of Grid (y)\n");
       for (V v : V.values()) {
-         printStr(String.format("%10s%10.4f", v, grid.getYNode(v)));
+         printStr(String.format("%10s%10.4f", v, grid.getArmNode(v)));
       }
       printStr("\n");
 
@@ -63,7 +63,7 @@ public class PrintCraneConstants {
             continue;
          printStr(String.format("%-8sHeight from Floor (z)\n", e));
          for (V v : V.values()) {
-            printStr(String.format("%10s%10.4f", v, grid.getZNode(v, e)));
+            printStr(String.format("%10s%10.4f", v, grid.getTiltNode(v, e)));
          }
          printStr("\n");
       }

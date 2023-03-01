@@ -19,9 +19,9 @@ public class GridConstTest {
 
    @Test
    public void TestkRobotArm() {
-      assertEquals(0.0, grid.getRobotArm(C.X), DELTA);
-      assertEquals(-8.75, grid.getRobotArm(C.Y), DELTA);
-      assertEquals(39.3125, grid.getRobotArm(C.Z), DELTA);
+      assertEquals(0.0, grid.getRobotArm(C.TURRET), DELTA);
+      assertEquals(-8.75, grid.getRobotArm(C.ARM), DELTA);
+      assertEquals(39.3125, grid.getRobotArm(C.TILT), DELTA);
    }
 
    @Test
@@ -32,25 +32,25 @@ public class GridConstTest {
 
    @Test
    public void TestXNode() {
-      assertEquals(-21.25, grid.getXNode(H.LEFT), DELTA);
-      assertEquals(0.0, grid.getXNode(H.CENTER), DELTA);
-      assertEquals(21.25, grid.getXNode(H.RIGHT), DELTA);
+      assertEquals(-21.25, grid.getTurretNode(H.LEFT), DELTA);
+      assertEquals(0.0, grid.getTurretNode(H.CENTER), DELTA);
+      assertEquals(21.25, grid.getTurretNode(H.RIGHT), DELTA);
    }
 
    @Test
    public void TestYNode() {
-      assertEquals(39.75, grid.getYNode(V.TOP), DELTA);
-      assertEquals(22.75, grid.getYNode(V.MIDDLE), DELTA);
-      assertEquals(8.0, grid.getYNode(V.BOTTOM), DELTA);
+      assertEquals(39.75, grid.getArmNode(V.TOP), DELTA);
+      assertEquals(22.75, grid.getArmNode(V.MIDDLE), DELTA);
+      assertEquals(8.0, grid.getArmNode(V.BOTTOM), DELTA);
    }
 
    @Test
    public void TestZNode() {
-      assertEquals(46.0, grid.getZNode(V.TOP, E.CONE), DELTA);
-      assertEquals(35.5, grid.getZNode(V.TOP, E.CUBE), DELTA);
-      assertEquals(34.0, grid.getZNode(V.MIDDLE, E.CONE), DELTA);
-      assertEquals(23.5, grid.getZNode(V.MIDDLE, E.CUBE), DELTA);
-      assertEquals(5.0, grid.getZNode(V.BOTTOM, E.CONE), DELTA);
-      assertEquals(5.0, grid.getZNode(V.BOTTOM, E.CUBE), DELTA);
+      assertEquals(46.0, grid.getTiltNode(V.TOP, E.CONE), DELTA);
+      assertEquals(35.5, grid.getTiltNode(V.TOP, E.CUBE), DELTA);
+      assertEquals(34.0, grid.getTiltNode(V.MIDDLE, E.CONE), DELTA);
+      assertEquals(23.5, grid.getTiltNode(V.MIDDLE, E.CUBE), DELTA);
+      assertEquals(5.0, grid.getTiltNode(V.BOTTOM, E.CONE), DELTA);
+      assertEquals(5.0, grid.getTiltNode(V.BOTTOM, E.CUBE), DELTA);
    }
 }

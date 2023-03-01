@@ -36,7 +36,7 @@ public class PrintCranePositions {
       for (E e : E.values()) {
          if (e == E.NA || e == E.OTHER)
             continue;
-            
+
          printStr(String.format("\n======= %s =======\n", e));
          grid.setElem(e);
 
@@ -48,7 +48,8 @@ public class PrintCranePositions {
                grid.horz.set(h);
                printStr(String.format("%8s\t", h));
 
-               printStr(String.format("X: %8.4f   Y: %8.4f   Z: %8.4f\n", grid.getX(), grid.getY(), grid.getZ()));
+               printStr(String.format("X: %8.4f   Y: %8.4f   Z: %8.4f\n", grid.getFwdTurret(), grid.getFwdArm(),
+                     grid.getFwdTilt()));
             }
          }
       }

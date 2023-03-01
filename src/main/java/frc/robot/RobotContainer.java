@@ -49,6 +49,7 @@ import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
+import frc.robot.commands.Crane_ManualMove;
 import frc.robot.commands.Crane_Move2GripPos;
 import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.Crane_Move2ReadyPos;
@@ -63,6 +64,7 @@ import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
 import frc.robot.commands.IntakeToggleElem;
 import frc.robot.commands.TiltRatchet;
+import frc.robot.commands.VisionToggleRumble;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
@@ -117,12 +119,18 @@ public class RobotContainer {
 	// Define Commands here to avoid multiple instantiations
 	// If commands use Shuffleboard and are instantiated multiple time, an error
 	// is thrown on the second instantiation becuase the "title" already exists.
+
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
 			() -> getJoystick(driver.getLeftY()),
 			() -> getJoystick(driver.getRightY()));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
 			() -> getJoystick(driver.getLeftY()),
 			() -> getJoystick(-driver.getLeftX()));
+
+	private final Crane_ManualMove craneManualMove = new Crane_ManualMove(crane, craneTurret, craneTilt, craneArm,
+			() -> getJoystick(operator.getRightX()),
+			() -> getJoystick(operator.getRightY()),
+			() -> getJoystick(operator.getLeftY()));
 
 	private final DoRumble doRumble = new DoRumble(this);
 
@@ -135,6 +143,8 @@ public class RobotContainer {
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision, 2);
 
 	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
+
+	private final VisionToggleRumble visionToggleRumble = new VisionToggleRumble(vision);
 
 	private final ChassisSetGearShifter chassisShiftHI = new ChassisSetGearShifter(chassis, GearShifterState.HI);
 	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis, GearShifterState.LO);
@@ -242,6 +252,7 @@ public class RobotContainer {
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisArcadeDrive);
+		crane.setDefaultCommand(craneManualMove);
 		craneTurret.setDefaultCommand(craneTurret2Pos);
 		craneTilt.setDefaultCommand(craneTilt2Pos);
 		craneArm.setDefaultCommand(craneArm2Pos);
@@ -386,35 +397,34 @@ public class RobotContainer {
 				.withWidget("Command")
 				.withPosition(5, 0).withSize(1, 1);
 
-		cmdTab.add("Move 2 Stow", crane_Move2StowPos)
+		cmdTab.add("Move Stow Pos", crane_Move2StowPos)
 				.withWidget("Command")
 				.withPosition(4, 0).withSize(1, 1);
-		cmdTab.add("Move 2 Receive", crane_Move2ReceivePos)
+		cmdTab.add("Move Receive Pos", crane_Move2ReceivePos)
 				.withWidget("Command")
 				.withPosition(4, 1).withSize(1, 1);
-		cmdTab.add("Move 2 Grip", crane_Move2GripPos)
+		cmdTab.add("Move Grip Pos", crane_Move2GripPos)
 				.withWidget("Command")
 				.withPosition(4, 2).withSize(1, 1);
-		cmdTab.add("Move 2 Ready", crane_Move2ReadyPos)
+		cmdTab.add("Move Ready Pos", crane_Move2ReadyPos)
 				.withWidget("Command")
 				.withPosition(4, 3).withSize(1, 1);
-		cmdTab.add("Move 2 Node", crane_Move2NodePos)
+		cmdTab.add("Move Node Pos", crane_Move2NodePos)
 				.withWidget("Command")
 				.withPosition(4, 4).withSize(1, 1);
 
-		compTab = Shuffleboard.getTab("Competition");
-		compTab.add("Get Elem", auton_Move2ElemPos)
+		cmdTab.add("Get Elem", auton_Move2ElemPos)
 				.withWidget("Command")
-				.withPosition(4, 0).withSize(1, 1);
-		compTab.add("Move 2 Ready", auton_Move2ReadyPos)
+				.withPosition(5, 1).withSize(1, 1);
+		cmdTab.add("Move 2 Ready", auton_Move2ReadyPos)
 				.withWidget("Command")
-				.withPosition(4, 1).withSize(1, 1);
-		compTab.add("Move 2 Node", auton_Move2NodePos)
+				.withPosition(5, 2).withSize(1, 1);
+		cmdTab.add("Move 2 Node", auton_Move2NodePos)
 				.withWidget("Command")
-				.withPosition(4, 2).withSize(1, 1);
-		compTab.add("Score At Node", auton_ScoreAtNodePos)
+				.withPosition(5, 3).withSize(1, 1);
+		cmdTab.add("Score At Node", auton_ScoreAtNodePos)
 				.withWidget("Command")
-				.withPosition(4, 3).withSize(1, 1);
+				.withPosition(5, 4).withSize(1, 1);
 
 		configureButtonBindings();
 
@@ -439,6 +449,7 @@ public class RobotContainer {
 		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
 		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 		new JoystickButton(driver, Button.kB.value).onTrue(autonChargingStation);
+		new JoystickButton(driver, Button.kX.value).onTrue(visionToggleRumble);
 
 		new JoystickButton(driver, Button.kStart.value).onTrue(intakeOpen);
 		new JoystickButton(driver, Button.kBack.value).onTrue(intakeClose);

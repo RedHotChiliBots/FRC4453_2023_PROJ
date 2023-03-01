@@ -38,8 +38,12 @@ public class Vision extends SubsystemBase {
   private double forwardSpeed;
   private double rotationSpeed;
 
+  private boolean cancelRumble = false;
+
   // ==============================================================
   // Define Shuffleboard data
+
+  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
   private final ShuffleboardTab visionTab = Shuffleboard.getTab("Vision");
 
   private final GenericEntry sbRange = visionTab.addPersistent("Range", 0)
@@ -98,9 +102,9 @@ public class Vision extends SubsystemBase {
     // NetworkTableInstance.getDefault().getTable("").getEntry(VisionConstants.kCameraName);
     // video.
     // sbCamera.add
-    visionTab.addCamera("Camera", VisionConstants.kCameraName,
+    compTab.addCamera("Camera", VisionConstants.kCameraName,
         "http://photonvision.local:1182/stream.mjpg")
-        .withWidget("Camera Stream").withPosition(2, 0).withSize(4, 4);
+        .withWidget("Camera Stream").withPosition(3, 2).withSize(3, 3);
     // .withProperties(Map.of("crosshaircolor", #7cfc00, "showcontrols", false));
 
     // // Set driver mode to on.
@@ -260,4 +264,13 @@ public class Vision extends SubsystemBase {
   public double getSkew() {
     return skew;
   }
+  public void toggleRumble() {
+    cancelRumble = !cancelRumble;
+  }
+
+  public boolean getCancelRumble() {
+    return cancelRumble;
+
+  }
+  
 }

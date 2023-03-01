@@ -50,7 +50,7 @@ public class Crane extends SubsystemBase {
   private final GenericEntry sbElem = compTab.addPersistent("Element", "")
       .withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance-Pos", "")
-      .withWidget("Text View").withPosition(3, 2).withSize(1, 1).getEntry();
+      .withWidget("Text View").withPosition(4, 0).withSize(1, 1).getEntry();
 
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
       V.TOP,

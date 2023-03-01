@@ -134,7 +134,7 @@ public class GridCalcs {
 	}
 
 	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
-			E.CONE, 18.0,
+			E.CONE, 12.0,
 			E.CUBE, 12.0,
 			E.NA, 0.0,
 			E.OTHER, 0.0));
@@ -240,7 +240,7 @@ public class GridCalcs {
 
 	public double getY() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.sqrt(
+			return 0.914 * Math.sqrt(
 					Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.X), 2) +
 							Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.Y), 2) +
 							Math.pow(kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.Z), 2));

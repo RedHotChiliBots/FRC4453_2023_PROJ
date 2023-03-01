@@ -254,6 +254,15 @@ public final class Constants {
 		public static final double kCraneTurretElemSide = 0.0; // degrees
 		public static final double kCraneWait = 2.0; // seconds
 
+		public static final double kTurretInc = 15.0 * 0.020; // degrees / step
+		public static final double kTurretMax = 225.0; // degrees
+		public static final double kTurretMin = 0.0; // degrees
+		public static final double kTiltInc = 7.5 * 0.020; // degrees / step
+		public static final double kTiltMax = 30.0; // degrees
+		public static final double kTiltMin = -83.0; // degrees
+		public static final double kArmInc = -1.5 * 0.020; // inches / step
+		public static final double kArmMax = 63.0; // inches
+		public static final double kArmMin = 25.0; // inches
 	}
 
 	public static final class IntakeConstants {
@@ -282,7 +291,7 @@ public final class Constants {
 		public static final double kTargetDist = Units.feetToMeters(3);
 
 		public static final double kRange2Rumble = Units.feetToMeters(20.0);
-		
+
 		// PID constants should be tuned per robot
 		public static final double kDistP = 0.6;
 		public static final double kDistI = 0.0;

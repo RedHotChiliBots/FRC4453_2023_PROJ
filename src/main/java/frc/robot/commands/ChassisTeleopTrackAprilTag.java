@@ -33,7 +33,9 @@ public class ChassisTeleopTrackAprilTag extends CommandBase {
   public void execute() {
     if (vision.hasTargets()) {
       if (vision.getRange() < VisionConstants.kRange2Rumble) {
-        RobotContainer.setDriverRumble(RumbleType.kLeftRumble);
+        if (!vision.getCancelRumble()) {
+          RobotContainer.setDriverRumble(RumbleType.kLeftRumble);
+        }
 
         if (RobotContainer.driver.getAButton()) {
           RobotContainer.resetDriverRumble(RumbleType.kLeftRumble);

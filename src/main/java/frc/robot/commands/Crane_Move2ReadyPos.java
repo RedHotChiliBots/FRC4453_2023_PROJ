@@ -55,7 +55,7 @@ public class Crane_Move2ReadyPos extends CommandBase {
         if (crane.getState() == CRANESTATE.NODE) {
           craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
           DriverStation.reportWarning("In Node position, moving to Ready", false);
-          state = 2;
+          state++;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.E;
@@ -21,6 +22,7 @@ public class Crane_Move2GripPos extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  Timer timer = new Timer();
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2GripPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
@@ -38,6 +40,7 @@ public class Crane_Move2GripPos extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -74,12 +77,14 @@ public class Crane_Move2GripPos extends CommandBase {
           crane.setState(CRANESTATE.MOVING);
           state++;
         }
+        timer.reset();
         break;
 
       case 2:
-        if (craneTurret.atTurretSetPoint() &&
+        if ((craneTurret.atTurretSetPoint() &&
             craneTilt.atTiltSetPoint() &&
-            craneArm.atArmSetPoint()) {
+            craneArm.atArmSetPoint()) ||
+            timer.hasElapsed(1.5)) {
 
           crane.setState(CRANESTATE.GRIP);
           finish = true;

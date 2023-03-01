@@ -143,4 +143,8 @@ public class Library {
    public static boolean approx(double a, double b, double delta) {
       return Math.abs(a - b) < delta;
    }
+
+   public static double clamp(double val, double max, double min) {
+      return val > max ? max : val < min ? min : val;
+   }
 }

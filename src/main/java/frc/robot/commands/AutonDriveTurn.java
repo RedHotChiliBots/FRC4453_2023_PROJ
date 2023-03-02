@@ -4,51 +4,50 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.subsystems.Chassis;
 
-public class AutonChassisDriveDist extends CommandBase {
-  /** Creates a new ChassisTankDrive. */
+public class AutonDriveTurn extends CommandBase {
+  Chassis chassis = null;
+  double motorSpd = 0.0;
 
-  private Chassis chassis;
-  private Timer timer = new Timer();
-
-  public AutonChassisDriveDist(Chassis chassis) {
+  /** Creates a new LevelChargingStation. */
+  public AutonDriveTurn(Chassis chassis) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.chassis = chassis;
-
     addRequirements(chassis);
+    this.chassis = chassis;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    motorSpd = chassis.driveTurn();
+  
+    chassis.getMotorData();
+    chassis.setMotorData(0.15, 0.15);
+
     chassis.resetEncoders();
-    chassis.setDistSetPoint(ChassisConstants.kAutonStraightDist);
-    timer.reset();
-    timer.start();
-    DriverStation.reportWarning("AutonChassisDriveDist finish Initialize", false);
+    chassis.setDistSetPoint(ChassisConstants.kAutonTurnDist);
+
+    motorSpd = chassis.driveTurn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("From command");
-    chassis.driveDistPosition(ChassisConstants.kAutonStraightDist);
+    motorSpd = chassis.driveTurn();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriverStation.reportWarning("AutonChassisDriveDist End", false);
+    chassis.setMotorData();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atTarget() || timer.hasElapsed(ChassisConstants.kAutonAbort);
+    return false;
   }
 }

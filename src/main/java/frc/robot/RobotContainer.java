@@ -74,6 +74,8 @@ import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
 import frc.robot.commands.AutonCraneScoreAtNode;
+import frc.robot.commands.AutonDriveDistance;
+import frc.robot.commands.AutonDriveTurn;
 import frc.robot.commands.AutonGetGameElement;
 import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
@@ -139,6 +141,10 @@ public class RobotContainer {
 	// Define Autonomous Commands here
 	private final AutonChargingStation autonChargingStation = new AutonChargingStation(chassis);
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
+
+	private final AutonDriveDistance autonDriveDistance = new AutonDriveDistance(chassis);
+	private final AutonDriveTurn autonDriveTurn = new AutonDriveTurn(chassis);
+
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision, 2);
@@ -156,7 +162,7 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(null, crane, craneTurret,
+	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(chassis, crane, craneTurret,
 			craneTilt, craneArm, claw);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
@@ -324,6 +330,8 @@ public class RobotContainer {
 		// Add commands to the autonomous command chooser
 		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
 		chooser.addOption("Scenario 1: Score Cone", autonCraneMove2AutonNode);
+		chooser.addOption("AutonDriveDistance", autonDriveDistance);
+		chooser.addOption("AutonDriveTurn", autonDriveTurn);
 		chooser.addOption("Charging Station", autonChargingStation);
 		chooser.addOption("Charging Station Drive", autonChgStnDrive);
 		chooser.addOption("Charging Station Rate", autonChgStnRate);

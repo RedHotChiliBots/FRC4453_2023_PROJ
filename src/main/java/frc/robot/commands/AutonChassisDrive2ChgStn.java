@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ChassisConstants;
@@ -25,21 +26,24 @@ public class AutonChassisDrive2ChgStn extends CommandBase {
   @Override
   public void initialize() {
     chassis.resetEncoders();
-    chassis.driveTank(0.35, 0.35);
+    DriverStation.reportWarning("AutonChassisDrive2ChgStn finish Initialize", false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    chassis.driveTank(0.35, 0.35);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    DriverStation.reportWarning("AutonChassisDrive2ChgStn End", false);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.getPitch() > 5.0;
+    return Math.abs(chassis.getPitch()) > 5.0;
   }
 }

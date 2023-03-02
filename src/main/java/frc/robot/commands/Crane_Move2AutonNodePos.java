@@ -47,10 +47,7 @@ public class Crane_Move2AutonNodePos extends CommandBase {
         // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
         case 0:
           // If already at Node, do nothing
-          if (crane.getState() == CRANESTATE.STOW &&
-              craneTurret.atTurretNextPoint() &&
-              craneTilt.atTiltNextPoint() &&
-              craneArm.atArmNextPoint()) {
+          if (crane.getState() == CRANESTATE.STOW) {
             DriverStation.reportWarning("At Stow", false);
             state++;
           }
@@ -72,11 +69,13 @@ public class Crane_Move2AutonNodePos extends CommandBase {
           break;
 
         // If Crane is at Auton Node Position, then finished
-        case 4:
+        case 3:
           if (craneTurret.atTurretSetPoint() &&
               craneTilt.atTiltSetPoint() &&
               craneArm.atArmSetPoint()) {
             crane.setState(CRANESTATE.AUTON);
+            DriverStation.reportWarning("Crane_Move2AutonNodePos finish in Auton", false);
+
             finish = true;
           }
           break;

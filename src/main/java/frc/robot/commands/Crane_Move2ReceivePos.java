@@ -61,10 +61,20 @@ public class Crane_Move2ReceivePos extends CommandBase {
           state = 3;
           crane.setState(CRANESTATE.MOVING);
 
+          // If in Node position, move to Receive
+        } else if (crane.getState() == CRANESTATE.AUTON) {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
+          craneArm.setArmSetPoint(CraneConstants.kArmStowPos);
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretReceivePos);
+          DriverStation.reportWarning("In Auton position, moving to Receive", false);
+          state = 1;
+          crane.setState(CRANESTATE.MOVING);
+
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
         } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kTurretReceivePos) > 90.0) {
           craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretReceivePos);
           state++;
           crane.setState(CRANESTATE.MOVING);
           DriverStation.reportWarning("Preparing Arm for Safe Move", false);

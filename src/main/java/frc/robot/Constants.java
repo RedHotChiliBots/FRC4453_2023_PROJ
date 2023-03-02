@@ -130,10 +130,6 @@ public final class Constants {
 		public static final double kMaxSpeedMetersPerSecond = 1.5; // was 1.0
 		public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // was 0.7
 
-		public static final double kDistP = 0.015;
-		public static final double kDistI = 0.0;
-		public static final double kDistD = 0.0;
-
 		public static final double kLevelP = 0.05;
 		public static final double kLevelI = 0.0;
 		public static final double kLevelD = 0.0;
@@ -149,8 +145,26 @@ public final class Constants {
 		public static final double kRateSetTolerance = 1.0;
 
 		public static final double kDistanceTolerance = 0.025; // meters
+		public static final int kDistSlot = 0;
 
-		public static final double kAngleRungAttached = 15.0; // degrees
+		public static final double kDistP = 0.1;	//5e-5;
+		public static final double kDistI = 1e-4;	//1e-6;
+		public static final double kDistD = 1.0;	//0.0;
+		public static final double kDistIz = 0.0;
+		public static final double kDistFF = 0.0;	//0.000156;
+
+		// public static final double kDistA = 0.69884; // from sysID
+		// public static final double kDistS = 0.087827; // from SysID
+		// public static final double kDistV = 1.0907; // from sysID
+
+		public static final double kDistMinOutput = -1.0; // -0.5;
+		public static final double kDistMaxOutput = 1.0; // 0.5;
+		// public static final double kDistMaxRPM = 5700;
+		// public static final double kDistMaxVel = 2000;
+		// public static final double kDistMinVel = 1000;
+		// public static final double kDistMaxAcc = 1500;
+		// public static final double kDistAllowErr = 0.125;
+		// public static final double kDistSetTolerance = 0.5;
 
 		public static final double kAutonStraightDist = Units.feetToMeters(20.0); // meters
 		public static final double kAutonTurnDist = Units.inchesToMeters((Math.PI * kTrackWidth) / 2.0); // meters
@@ -268,9 +282,9 @@ public final class Constants {
 		public static final double kArmMax = 63.0; // inches
 		public static final double kArmMin = 25.0; // inches
 
-		public static final double kAutonTurretPos = 0.0;
-		public static final double kAutonTiltPos = 0.0;
-		public static final double kAutonArmPos = 0.0;
+		public static final double kAutonTurretPos = -21.0;
+		public static final double kAutonTiltPos = 18.0;
+		public static final double kAutonArmPos = 55.0;
 	}
 
 	public static final class IntakeConstants {

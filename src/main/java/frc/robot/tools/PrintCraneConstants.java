@@ -36,7 +36,7 @@ public class PrintCraneConstants {
 
       printStr("Robot Arm\n");
       for (C c : C.values()) {
-         printStr(String.format("%8s%10.4f", c, grid.getRobotArm(c)));
+         printStr(String.format("%8s%10.4f", c, grid.getRobotRevPos(c)));
       }
       printStr("\n");
 

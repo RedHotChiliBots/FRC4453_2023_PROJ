@@ -140,15 +140,15 @@ public class Crane extends SubsystemBase {
   }
 
   public double getGridX() {
-    return grid.getFwdTurret() + CraneConstants.kTurretNodePos;
+    return grid.getRevTurret() + CraneConstants.kTurretNodePos;
   }
 
   public double getGridY() {
-    return grid.getFwdArm();
+    return grid.getRevArm();
   }
 
   public double getGridZ() {
-    return grid.getFwdTilt();
+    return grid.getRevTilt();
   }
 
   public void readDPad() {

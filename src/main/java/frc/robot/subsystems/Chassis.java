@@ -533,6 +533,11 @@ public class Chassis extends SubsystemBase {
 		rightPIDController.setReference(setPoint, ControlType.kPosition);
 	}
 
+	public void drivePosition(double leftSetPoint, double rightSetPoint) {
+		leftPIDController.setReference(leftSetPoint, ControlType.kPosition);
+		rightPIDController.setReference(rightSetPoint, ControlType.kPosition);
+	}
+
 	public boolean atTarget() {
 		leftError = Math.abs(setPoint - leftEncoder.getPosition());
 		rightError = Math.abs(setPoint - rightEncoder.getPosition());

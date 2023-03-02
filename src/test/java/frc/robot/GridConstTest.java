@@ -19,9 +19,9 @@ public class GridConstTest {
 
    @Test
    public void TestkRobotArm() {
-      assertEquals(0.0, grid.getRobotArm(C.TURRET), DELTA);
-      assertEquals(-8.75, grid.getRobotArm(C.ARM), DELTA);
-      assertEquals(39.3125, grid.getRobotArm(C.TILT), DELTA);
+      assertEquals(0.0, grid.getRobotRevPos(C.TURRET), DELTA);
+      assertEquals(-8.75, grid.getRobotRevPos(C.ARM), DELTA);
+      assertEquals(39.3125, grid.getRobotRevPos(C.TILT), DELTA);
    }
 
    @Test

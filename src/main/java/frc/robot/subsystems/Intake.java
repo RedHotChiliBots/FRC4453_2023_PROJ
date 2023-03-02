@@ -213,12 +213,12 @@ public class Intake extends SubsystemBase {
         rightMotor.set(0.0);
         break;
       case IN:
-        leftMotor.set(0.25);
-        rightMotor.set(-0.25);
+        leftMotor.set(0.27);
+        rightMotor.set(-0.27);
         break;
       case OUT:
-        leftMotor.set(-0.25);
-        rightMotor.set(0.25);
+        leftMotor.set(-0.27);
+        rightMotor.set(0.27);
         break;
       default:
     }

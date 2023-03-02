@@ -57,7 +57,7 @@ public class IntakeMotor extends CommandBase {
         oneTime = false;
       }
 
-    } else if (state == MotorState.IN && timer.hasElapsed(0.5)) {
+    } else if (state == MotorState.IN && timer.hasElapsed(0.4)) {
       System.out.println("State 4");
 
       intake.setMotor(MotorState.STOP);

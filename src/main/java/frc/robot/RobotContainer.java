@@ -69,6 +69,7 @@ import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.AutonChgStnRate;
+import frc.robot.commands.AutonCraneMove2AutonNode;
 import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
@@ -155,6 +156,8 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
+	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(null, crane, craneTurret,
+			craneTilt, craneArm, claw);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2ReadyPos crane_Move2ReadyPos = new Crane_Move2ReadyPos(crane, craneTurret, craneTilt,
@@ -320,6 +323,7 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add commands to the autonomous command chooser
 		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
+		chooser.addOption("Scenario 1: Score Cone", autonCraneMove2AutonNode);
 		chooser.addOption("Charging Station", autonChargingStation);
 		chooser.addOption("Charging Station Drive", autonChgStnDrive);
 		chooser.addOption("Charging Station Rate", autonChgStnRate);

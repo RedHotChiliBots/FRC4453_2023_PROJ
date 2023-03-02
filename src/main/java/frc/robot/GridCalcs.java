@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Vector;
 
 import frc.robot.Constants.E;
 
@@ -19,6 +18,7 @@ public class GridCalcs {
 	}
 
 	public enum CRANESTATE {
+		AUTON,
 		STOW,
 		RECEIVE,
 		HOLD,
@@ -119,19 +119,33 @@ public class GridCalcs {
 		}
 	}
 
+	public enum DIR {
+		FWD,
+		REV
+	}
+
 	public enum C {
 		TURRET,
 		ARM,
 		TILT
 	}
 
-	public final EnumMap<C, Double> kRobotArm = new EnumMap<>(Map.of(
+	public final EnumMap<C, Double> kRobotRevPos = new EnumMap<>(Map.of(
 			C.TURRET, 0.0,
 			C.ARM, -8.75,
 			C.TILT, 39.3125));
 
-	public double getRobotArm(C c) {
-		return kRobotArm.get(c);
+	public double getRobotRevPos(C c) {
+		return kRobotRevPos.get(c);
+	}
+
+	public final EnumMap<C, Double> kRobotFwdPos = new EnumMap<>(Map.of(
+			C.TURRET, 0.0,
+			C.ARM, -27.25,
+			C.TILT, 39.3125));
+
+	public double getRobotFwdPos(C c) {
+		return kRobotFwdPos.get(c);
 	}
 
 	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
@@ -240,44 +254,45 @@ public class GridCalcs {
 	}
 
 	private final double fudge = 0.914;
-	public double getFwdArm() {
+
+	public double getRevArm() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			return fudge * Math.sqrt(
-					Math.pow(kXNode.get(horz.get()) - kRobotArm.get(C.TURRET), 2) +
-							Math.pow(kYNode.get(vert.get()) - kRobotArm.get(C.ARM), 2) +
-							Math.pow(kZNode.get(vert.get()).get(elem) - kRobotArm.get(C.TILT) + kZG.get(elem), 2));
+					Math.pow(kXNode.get(horz.get()) - kRobotRevPos.get(C.TURRET), 2) +
+							Math.pow(kYNode.get(vert.get()) - kRobotRevPos.get(C.ARM), 2) +
+							Math.pow(kZNode.get(vert.get()).get(elem) - kRobotRevPos.get(C.TILT) + kZG.get(elem), 2));
 		} else {
 			return Float.NaN;
 		}
 	}
 
-	public double getFwdTurret() {
+	public double getRevTurret() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			// return Math.toDegrees(Math.asin(kTurretNode.get(horz.get()) / getFwdArm()));
 			// return Math.toDegrees(Math.atan(
-			// 		kXNode.get(horz.get()) - kRobotArm.get(C.TURRET) /
-			// 				kYNode.get(vert.get()) - kRobotArm.get(C.ARM)));
+			// kXNode.get(horz.get()) - kRobotArm.get(C.TURRET) /
+			// kYNode.get(vert.get()) - kRobotArm.get(C.ARM)));
 			return Math.toDegrees(Math.asin(
-					(kXNode.get(horz.get()) - kRobotArm.get(C.TURRET)) /
-							(getFwdArm() / fudge)));
+					(kXNode.get(horz.get()) - kRobotRevPos.get(C.TURRET)) /
+							(getRevArm() / fudge)));
 		} else {
 			return Float.NaN;
 		}
 	}
 
-	public double getFwdTilt() {
+	public double getRevTilt() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
 			// return Math.toDegrees(
 			// Math.asin((kTiltNode.get(vert.get()).get(elem) + kZG.get(elem) -
 			// kRobotArm.get(C.TILT)) / getFwdArm()));
 			// return Math.toDegrees(
-			// 		Math.atan(
-			// 				kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.TILT)) /
-			// 				kYNode.get(vert.get()) - kRobotArm.get(C.ARM));
+			// Math.atan(
+			// kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.TILT)) /
+			// kYNode.get(vert.get()) - kRobotArm.get(C.ARM));
 			return Math.toDegrees(
 					Math.asin(
-							(kZNode.get(vert.get()).get(elem) - kRobotArm.get(C.TILT) + kZG.get(elem)) /
-							(getFwdArm() / fudge)));
+							(kZNode.get(vert.get()).get(elem) - kRobotRevPos.get(C.TILT) + kZG.get(elem)) /
+									(getRevArm() / fudge)));
 		} else {
 			return Float.NaN;
 		}

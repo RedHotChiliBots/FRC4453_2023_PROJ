@@ -152,6 +152,10 @@ public final class Constants {
 
 		public static final double kAngleRungAttached = 15.0; // degrees
 
+		public static final double kAutonStraightDist = Units.feetToMeters(20.0); // meters
+		public static final double kAutonTurnDist = Units.inchesToMeters((Math.PI * kTrackWidth) / 2.0); // meters
+		public static final double kAutonAbort = 10.0; // sec
+
 		// Reasonable baseline values for a RAMSETE follower in units of meters and
 		// seconds
 		public static final double kRamseteB = 2;
@@ -170,8 +174,8 @@ public final class Constants {
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
 		public static final double kTurretSafe2TiltArm = -40.0; // degrees
-		public static final double kTurretPositionTollerance = 1.0;	// degrees
-		
+		public static final double kTurretPositionTollerance = 1.0; // degrees
+
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
 		public static final double kTurretAllowErr = 0.5;
@@ -181,7 +185,7 @@ public final class Constants {
 
 		public static final int kTiltSlot = 0;
 		public static final double kTiltP = 5e-5;
-		public static final double kTiltI = 0.0;	//1e-6;
+		public static final double kTiltI = 0.0; // 1e-6;
 		public static final double kTiltD = 0.0;
 		public static final double kTiltInitPos = -83.2; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
@@ -263,6 +267,10 @@ public final class Constants {
 		public static final double kArmInc = -1.5 * 0.020; // inches / step
 		public static final double kArmMax = 63.0; // inches
 		public static final double kArmMin = 25.0; // inches
+
+		public static final double kAutonTurretPos = 0.0;
+		public static final double kAutonTiltPos = 0.0;
+		public static final double kAutonArmPos = 0.0;
 	}
 
 	public static final class IntakeConstants {

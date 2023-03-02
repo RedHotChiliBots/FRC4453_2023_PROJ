@@ -48,8 +48,9 @@ public class PrintCranePositions {
                grid.horz.set(h);
                printStr(String.format("%8s\t", h));
 
-               printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n", grid.getFwdTurret(), grid.getFwdTilt(),
-                     grid.getFwdArm()));
+               printStr(
+                     String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n", grid.getRevTurret(), grid.getRevTilt(),
+                           grid.getRevArm()));
             }
          }
       }

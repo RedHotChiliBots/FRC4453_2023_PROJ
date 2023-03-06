@@ -26,6 +26,7 @@ public class AutonCraneScoreAtNode extends SequentialCommandGroup {
     addCommands(
         // new Crane_Move2ElemClear(craneTilt, craneArm);
         // new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
+        new Crane_PlaceElement(crane, craneTurret, craneTilt, craneArm),
         new ClawFinger(claw, FingerState.RELEASE),
         new WaitCommand(1.0),
         new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));

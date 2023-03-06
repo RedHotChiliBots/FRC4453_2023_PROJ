@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.E;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
@@ -32,12 +35,18 @@ public class Claw extends SubsystemBase {
     CUBE
   }
 
-  Crane crane;
+  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+  private final GenericEntry sbElemInside = compTab.add("Element Inside", false)
+      .withWidget("Boolean Box").withPosition(4, 1).withSize(1, 1).getEntry();
+
+      Crane crane;
+  Intake intake;
 
   /** Creates a new Claw. */
-  public Claw(Crane crane) {
+  public Claw(Crane crane, Intake intake) {
     System.out.println("+++++ Claw Constructor starting +++++");
     this.crane = crane;
+    this.intake = intake;
 
     setFinger(FingerState.CONE);
 
@@ -46,6 +55,7 @@ public class Claw extends SubsystemBase {
 
   @Override
   public void periodic() {
+    sbElemInside.setBoolean(intake.isElementIn());
 
   }
 

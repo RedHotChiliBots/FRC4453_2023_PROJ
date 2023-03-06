@@ -66,10 +66,13 @@ import frc.robot.commands.IntakeToggleElem;
 import frc.robot.commands.TiltRatchet;
 import frc.robot.commands.VisionToggleRumble;
 import frc.robot.commands.AutonChargingStation;
+import frc.robot.commands.AutonChassisDriveTime;
+import frc.robot.commands.AutonChassisDriveTurn;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.AutonChgStnRate;
 import frc.robot.commands.AutonCraneMove2AutonNode;
+import frc.robot.commands.AutonCraneMove2AutonNodeDock;
 import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
@@ -105,7 +108,7 @@ public class RobotContainer {
 	private static final Chassis chassis = new Chassis();
 	private static final Crane crane = new Crane(operator);
 	private static final Intake intake = new Intake(crane);
-	private static final Claw claw = new Claw(crane);
+	private static final Claw claw = new Claw(crane, intake);
 	private static final CraneTurret craneTurret = new CraneTurret(crane);
 	private static final CraneTilt craneTilt = new CraneTilt(crane);
 	private static final CraneArm craneArm = new CraneArm(crane);
@@ -142,8 +145,8 @@ public class RobotContainer {
 	private final AutonChargingStation autonChargingStation = new AutonChargingStation(chassis);
 	private final AutonChgStnDrive autonChgStnDrive = new AutonChgStnDrive(chassis);
 
-	private final AutonDriveDistance autonDriveDistance = new AutonDriveDistance(chassis);
-	private final AutonDriveTurn autonDriveTurn = new AutonDriveTurn(chassis);
+	private final AutonChassisDriveTime autonChassisDriveTime10 = new AutonChassisDriveTime(chassis, -0.55, 10.0);
+	private final AutonChassisDriveTime autonChassisDriveTime5 = new AutonChassisDriveTime(chassis, -0.55, 5.0);
 
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
@@ -162,7 +165,11 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(chassis, crane, craneTurret,
+	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(chassis,
+			crane, craneTurret,
+			craneTilt, craneArm, claw);
+	private final AutonCraneMove2AutonNodeDock autonCraneMove2AutonNodeDock = new AutonCraneMove2AutonNodeDock(chassis,
+			crane, craneTurret,
 			craneTilt, craneArm, claw);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
@@ -329,9 +336,10 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add commands to the autonomous command chooser
 		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
-		chooser.addOption("Scenario 1: Score Cone", autonCraneMove2AutonNode);
-		chooser.addOption("AutonDriveDistance", autonDriveDistance);
-		chooser.addOption("AutonDriveTurn", autonDriveTurn);
+		chooser.addOption("Auton 1: Score Cone, Mobility", autonCraneMove2AutonNode);
+		chooser.addOption("Auton 2: Score Cone, Mobility, Dock", autonCraneMove2AutonNodeDock);
+		chooser.addOption("AutonChassisDriveTime10", autonChassisDriveTime10);
+		chooser.addOption("AutonChassisDriveTime5", autonChassisDriveTime5);
 		chooser.addOption("Charging Station", autonChargingStation);
 		chooser.addOption("Charging Station Drive", autonChgStnDrive);
 		chooser.addOption("Charging Station Rate", autonChgStnRate);
@@ -383,6 +391,9 @@ public class RobotContainer {
 		cmdTab.add("Claw Release", clawRelease)
 				.withWidget("Command")
 				.withPosition(1, 3).withSize(1, 1);
+		compTab.add("Claw Release", clawRelease)
+				.withWidget("Command")
+				.withPosition(6, 0).withSize(1, 1);
 		cmdTab.add("Intake In", intakeMotorIn)
 				.withWidget("Command")
 				.withPosition(2, 0).withSize(1, 1);

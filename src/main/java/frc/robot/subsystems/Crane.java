@@ -151,6 +151,14 @@ public class Crane extends SubsystemBase {
     return grid.getRevTilt();
   }
 
+  public H getHorz() {
+    return grid.horz.get();
+  }
+
+  public V getVert() {
+    return grid.vert.get();
+  }
+
   public void readDPad() {
     dpadValue = operator.getPOV();
 

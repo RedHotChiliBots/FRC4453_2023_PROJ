@@ -190,6 +190,12 @@ public class Chassis extends SubsystemBase {
 		pcm0.clearAllStickyFaults();
 		pcm1.clearAllStickyFaults();
 
+
+		leftMaster.setSmartCurrentLimit(25, 20);
+		leftFollower.setSmartCurrentLimit(25, 20);
+		rightMaster.setSmartCurrentLimit(25, 20);
+		rightFollower.setSmartCurrentLimit(25, 20);
+		
 		// ==============================================================
 		// Configure the left side motors, master and follower
 		leftMaster.restoreFactoryDefaults();
@@ -453,8 +459,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void driveTank(double left, double right) {
-		DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),
-				false);
+	//	DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),false);
 
 		switch (dir) {
 			case FORWARD:
@@ -467,8 +472,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void driveArcade(double spd, double rot) {
-		DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),
-				false);
+		//DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),false);
 
 		switch (dir) {
 			case FORWARD:
@@ -604,8 +608,8 @@ public class Chassis extends SubsystemBase {
 		// leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
 		// rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
 
-		DriverStation.reportWarning("SetPoint: " + this.setPoint, false);
-		DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(), false);
+	//	DriverStation.reportWarning("SetPoint: " + this.setPoint, false);
+	//	DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(), false);
 	
 		leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
 		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
@@ -625,7 +629,7 @@ public class Chassis extends SubsystemBase {
 	public boolean atTarget() {
 		leftError = Math.abs(setPoint - leftEncoder.getPosition());
 		rightError = Math.abs(setPoint - rightEncoder.getPosition());
-		DriverStation.reportWarning("Error: " + leftError + " : " + rightError, false);
+		//DriverStation.reportWarning("Error: " + leftError + " : " + rightError, false);
 		return leftError <= ChassisConstants.kDistanceTolerance && rightError <= ChassisConstants.kDistanceTolerance;
 	}
 

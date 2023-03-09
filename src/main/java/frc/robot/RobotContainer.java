@@ -57,6 +57,8 @@ import frc.robot.commands.Crane_Move2ReceivePos;
 import frc.robot.commands.Crane_Move2StowPos;
 import frc.robot.commands.Crane_MoveTilt2Zero;
 import frc.robot.commands.ChassisArcadeDrive;
+import frc.robot.commands.ChassisDriveSelected;
+import frc.robot.commands.ChassisLarcadeDrive;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
 import frc.robot.commands.IntakeArm;
@@ -86,6 +88,7 @@ import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
+import frc.robot.commands.ChassisToggleDrive;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
 
@@ -126,12 +129,20 @@ public class RobotContainer {
 	// If commands use Shuffleboard and are instantiated multiple time, an error
 	// is thrown on the second instantiation becuase the "title" already exists.
 
+	private final ChassisDriveSelected chassisDriveSelected = new ChassisDriveSelected(chassis,
+			() -> getJoystick(driver.getLeftX()),
+			() -> getJoystick(driver.getLeftY()),
+			() -> getJoystick(driver.getRightX()),
+			() -> getJoystick(driver.getRightY()));
 	private final ChassisTankDrive chassisTankDrive = new ChassisTankDrive(chassis,
 			() -> getJoystick(driver.getLeftY()),
 			() -> getJoystick(driver.getRightY()));
 	private final ChassisArcadeDrive chassisArcadeDrive = new ChassisArcadeDrive(chassis,
 			() -> getJoystick(driver.getLeftY()),
 			() -> getJoystick(-driver.getLeftX()));
+	private final ChassisLarcadeDrive chassisLarcadeDrive = new ChassisLarcadeDrive(chassis,
+			() -> getJoystick(driver.getLeftY()),
+			() -> getJoystick(-driver.getRightX()));
 
 	private final Crane_ManualMove craneManualMove = new Crane_ManualMove(crane, craneTurret, craneTilt, craneArm,
 			() -> getJoystick(operator.getRightX()),
@@ -160,6 +171,7 @@ public class RobotContainer {
 	private final ChassisSetGearShifter chassisShiftLO = new ChassisSetGearShifter(chassis, GearShifterState.LO);
 
 	private final ChassisToggleDir chassisToggleDir = new ChassisToggleDir(chassis);
+	private final ChassisToggleDrive chassisToggleDrive = new ChassisToggleDrive(chassis);
 
 	private final CraneReset craneReset = new CraneReset(crane, craneTurret, craneTilt, craneArm);
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
@@ -267,7 +279,7 @@ public class RobotContainer {
 
 		// =============================================================
 		// Configure default commands for each subsystem
-		chassis.setDefaultCommand(chassisArcadeDrive);
+		chassis.setDefaultCommand(chassisDriveSelected);
 		crane.setDefaultCommand(craneManualMove);
 		craneTurret.setDefaultCommand(craneTurret2Pos);
 		craneTilt.setDefaultCommand(craneTilt2Pos);
@@ -469,7 +481,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 
 		// new JoystickButton(driver, Button.kX.value).onTrue(auton_Move2ElemPos);
-		// new JoystickButton(driver, Button.kY.value).onTrue(chassisArcadeDrive);
+		new JoystickButton(driver, Button.kY.value).onTrue(chassisToggleDrive);
 		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 		new JoystickButton(driver, Button.kB.value).onTrue(autonChargingStation);
 		new JoystickButton(driver, Button.kX.value).onTrue(visionToggleRumble);
@@ -524,19 +536,15 @@ public class RobotContainer {
 	private double lastValue = 0.0;
 
 	public double getJoystick(double js) {
-		double val = 0.0;
-		if (js > 0) {
-			val = Math.pow(Math.abs(js) < DEADZONE ? 0.0 : js, 2);
-		} else {
-			val = -1 * Math.pow(Math.abs(js) < DEADZONE ? 0.0 : js, 2);
-		}
+		//return Math.copySign(Math.pow(Math.abs(js) < DEADZONE ? 0.0 : js, 2), js);
+		return Math.copySign(Math.abs(js) < DEADZONE ? 0.0 : js, js);
 
 		// if (Math.abs(val - lastValue) > MAXACCEL) {
 		// lastValue += MAXACCEL;
 		// val = lastValue;
 		// }
 
-		return val;
+		// return val;
 	}
 
 	public static void setDriverRumble(GenericHID.RumbleType t) {

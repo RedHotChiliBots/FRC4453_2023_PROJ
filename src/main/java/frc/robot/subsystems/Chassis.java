@@ -128,10 +128,17 @@ public class Chassis extends SubsystemBase {
 		LO
 	}
 
+	public enum DriveState {
+		TANK,
+		ARCADE,
+		LARCADE
+	}
+
 	private double setPoint = 0.0;
 	private double leftError = 0.0;
 	private double rightError = 0.0;
-	private DirState dir = DirState.FORWARD;
+	private DirState dirState = DirState.FORWARD;
+	private DriveState driveState = DriveState.TANK;	
 
 	public SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 
@@ -163,21 +170,43 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0)
 			.withWidget("Text View").withPosition(3, 4).withSize(1, 1).getEntry();
 	private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint",
-	0.0).getEntry();
+			0.0).getEntry();
 	private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error",
-	0.0).getEntry();
+			0.0).getEntry();
 	private final GenericEntry sbRightErr = chassisTab.addPersistent("Right Error", 0.0).getEntry();
 	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false)
 			.withWidget("Boolean Box").withPosition(2, 1).withSize(1, 1).getEntry();
-	private final GenericEntry sbDir = chassisTab.addPersistent("Direction", "")
-			.withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
 
 	// private final ShuffleboardTab pneumaticsTab =
 	// Shuffleboard.getTab("Pneumatics");
 	private final GenericEntry sbHiPressure = chassisTab.addPersistent("Hi Pressure", 0)
-			.withWidget("Text View").withPosition(5, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(4, 3).withSize(1, 1).getEntry();
 	private final GenericEntry sbLoPressure = chassisTab.addPersistent("Lo Pressure", 0)
-			.withWidget("Text View").withPosition(5, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(4, 4).withSize(1, 1).getEntry();
+
+	private final GenericEntry sbLeftFrontTemp = chassisTab.addPersistent("LF temp", 0)
+			.withWidget("Text View").withPosition(6, 1).withSize(1, 1).getEntry();
+	private final GenericEntry sbRightFrontTemp = chassisTab.addPersistent("RF temp", 0)
+			.withWidget("Text View").withPosition(6, 2).withSize(1, 1).getEntry();
+	private final GenericEntry sbLeftBackTemp = chassisTab.addPersistent("LB temp", 0)
+			.withWidget("Text View").withPosition(6, 3).withSize(1, 1).getEntry();
+	private final GenericEntry sbRightBackTemp = chassisTab.addPersistent("RB temp", 0)
+			.withWidget("Text View").withPosition(6, 4).withSize(1, 1).getEntry();
+
+	private final GenericEntry sbLeftFrontAmp = chassisTab.addPersistent("LF amp", 0)
+			.withWidget("Text View").withPosition(7, 1).withSize(1, 1).getEntry();
+	private final GenericEntry sbRightFrontAmp = chassisTab.addPersistent("RF amp", 0)
+			.withWidget("Text View").withPosition(7, 2).withSize(1, 1).getEntry();
+	private final GenericEntry sbLeftBackAmp = chassisTab.addPersistent("LB amp", 0)
+			.withWidget("Text View").withPosition(7, 3).withSize(1, 1).getEntry();
+	private final GenericEntry sbRightBackAmp = chassisTab.addPersistent("RB amp", 0)
+			.withWidget("Text View").withPosition(7, 4).withSize(1, 1).getEntry();
+
+	private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+	private final GenericEntry sbDriveType = compTab.addPersistent("Drive Type", "")
+			.withWidget("Text View").withPosition(5, 1).withSize(1, 1).getEntry();
+	private final GenericEntry sbDir = compTab.addPersistent("Direction", "")
+			.withWidget("Text View").withPosition(6, 1).withSize(1, 1).getEntry();
 
 	public final Library lib = new Library();
 
@@ -190,12 +219,16 @@ public class Chassis extends SubsystemBase {
 		pcm0.clearAllStickyFaults();
 		pcm1.clearAllStickyFaults();
 
+		// leftMaster.setSmartCurrentLimit(60, 40);
+		// leftFollower.setSmartCurrentLimit(60, 40);
+		// rightMaster.setSmartCurrentLimit(60, 40);
+		// rightFollower.setSmartCurrentLimit(60, 40);
 
-		leftMaster.setSmartCurrentLimit(25, 20);
-		leftFollower.setSmartCurrentLimit(25, 20);
-		rightMaster.setSmartCurrentLimit(25, 20);
-		rightFollower.setSmartCurrentLimit(25, 20);
-		
+		leftMaster.setSmartCurrentLimit(45, 30);
+		leftFollower.setSmartCurrentLimit(45, 30);
+		rightMaster.setSmartCurrentLimit(45, 30);
+		rightFollower.setSmartCurrentLimit(45, 30);
+
 		// ==============================================================
 		// Configure the left side motors, master and follower
 		leftMaster.restoreFactoryDefaults();
@@ -203,6 +236,9 @@ public class Chassis extends SubsystemBase {
 
 		leftMaster.clearFaults();
 		leftFollower.clearFaults();
+
+		// leftMaster.setIdleMode(IdleMode.kCoast);
+		// leftFollower.setIdleMode(IdleMode.kCoast);
 
 		leftMaster.setIdleMode(IdleMode.kBrake);
 		leftFollower.setIdleMode(IdleMode.kBrake);
@@ -213,6 +249,9 @@ public class Chassis extends SubsystemBase {
 
 		rightMaster.clearFaults();
 		rightFollower.clearFaults();
+
+		// rightMaster.setIdleMode(IdleMode.kCoast);
+		// rightFollower.setIdleMode(IdleMode.kCoast);
 
 		rightMaster.setIdleMode(IdleMode.kBrake);
 		rightFollower.setIdleMode(IdleMode.kBrake);
@@ -232,7 +271,7 @@ public class Chassis extends SubsystemBase {
 		// leftPIDController.setIZone(ChassisConstants.kIz);
 		// leftPIDController.setFF(ChassisConstants.kFF);
 		leftPIDController.setOutputRange(ChassisConstants.kMinOutput,
-		ChassisConstants.kMaxOutput);
+				ChassisConstants.kMaxOutput);
 
 		rightPIDController.setP(ChassisConstants.kP);
 		rightPIDController.setI(ChassisConstants.kI);
@@ -240,7 +279,7 @@ public class Chassis extends SubsystemBase {
 		// rightPIDController.setIZone(ChassisConstants.kIz);
 		// rightPIDController.setFF(ChassisConstants.kFF);
 		rightPIDController.setOutputRange(ChassisConstants.kMinOutput,
-		ChassisConstants.kMaxOutput);
+				ChassisConstants.kMaxOutput);
 
 		levelPIDController.setSetpoint(ChassisConstants.kLevelSetPoint);
 		levelPIDController.setTolerance(ChassisConstants.kLevelSetTolerance);
@@ -282,7 +321,9 @@ public class Chassis extends SubsystemBase {
 
 		stopChassis();
 
-		setGearShifter(GearShifterState.LO);
+		setGearShifter(GearShifterState.HI);
+		setDriveState(DriveState.TANK);
+		setDirState(DirState.FORWARD);
 
 		lib.initLibrary();
 
@@ -303,6 +344,16 @@ public class Chassis extends SubsystemBase {
 		sbAngle.setDouble(getAngle().getDegrees());
 		sbHeading.setDouble(getHeading());
 
+		sbLeftFrontTemp.setDouble(leftMaster.getMotorTemperature());
+		sbRightFrontTemp.setDouble(rightMaster.getMotorTemperature());
+		sbLeftBackTemp.setDouble(leftFollower.getMotorTemperature());
+		sbRightBackTemp.setDouble(rightFollower.getMotorTemperature());
+
+		sbLeftFrontAmp.setDouble(leftMaster.getOutputCurrent());
+		sbRightFrontAmp.setDouble(rightMaster.getOutputCurrent());
+		sbLeftBackAmp.setDouble(leftFollower.getOutputCurrent());
+		sbRightBackAmp.setDouble(rightFollower.getOutputCurrent());
+
 		sbHiPressure.setDouble(getHiPressure());
 		sbLoPressure.setDouble(getLoPressure());
 
@@ -311,7 +362,8 @@ public class Chassis extends SubsystemBase {
 		sbRightErr.setDouble(rightError);
 		sbAtTgt.setBoolean(atTarget());
 
-		sbDir.setString(dir.toString());
+		sbDir.setString(dirState.toString());
+		sbDriveType.setString(driveState.toString());
 
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
@@ -438,7 +490,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void toggleDir() {
-		DirState dir = getDir();
+		DirState dir = getDirState();
 		switch (dir) {
 			case FORWARD:
 				dir = DirState.REVERSE;
@@ -447,21 +499,85 @@ public class Chassis extends SubsystemBase {
 				dir = DirState.FORWARD;
 				break;
 		}
-		this.dir = dir;
+		this.dirState = dir;
 	}
 
-	public void setDir(DirState dir) {
-		this.dir = dir;
+	public void setDirState(DirState dir) {
+		this.dirState = dir;
 	}
 
-	public DirState getDir() {
-		return dir;
+	public DirState getDirState() {
+		return dirState;
+	}
+
+	public void setDriveState(DriveState d) {
+		this.driveState = d;
+	}
+
+	public DriveState getDriveState() {
+		return driveState;
+	}
+
+	public DriveState toggleDriveState() {
+		switch (driveState) {
+			case TANK:
+				driveState = DriveState.LARCADE;
+				break;
+			case ARCADE:
+				driveState = DriveState.TANK;
+				break;
+			case LARCADE:
+				driveState = DriveState.TANK;
+				break;
+		}
+		return driveState;
+	}
+
+	public void driveSelected(double leftX, double leftY, double rightX, double rightY) {
+		// DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : "
+		// + rightEncoder.getPosition(),false);
+
+		switch (driveState) {
+			case TANK:
+				switch (dirState) {
+					case FORWARD:
+						diffDrive.tankDrive(leftY, rightY);
+						break;
+					case REVERSE:
+						diffDrive.tankDrive(-rightY, -leftY);
+						break;
+				}
+				break;
+
+			case ARCADE:
+				switch (dirState) {
+					case FORWARD:
+						diffDrive.arcadeDrive(leftY, leftX);
+						break;
+					case REVERSE:
+						diffDrive.arcadeDrive(-leftY, -leftX);
+						break;
+				}
+				break;
+
+			case LARCADE:
+				switch (dirState) {
+					case FORWARD:
+						diffDrive.arcadeDrive(leftY, rightX);
+						break;
+					case REVERSE:
+						diffDrive.arcadeDrive(-leftY, -rightX);
+						break;
+				}
+				break;
+		}
 	}
 
 	public void driveTank(double left, double right) {
-	//	DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),false);
+		// DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : "
+		// + rightEncoder.getPosition(),false);
 
-		switch (dir) {
+		switch (dirState) {
 			case FORWARD:
 				diffDrive.tankDrive(left, right);
 				break;
@@ -472,9 +588,10 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void driveArcade(double spd, double rot) {
-		//DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(),false);
+		// DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : "
+		// + rightEncoder.getPosition(),false);
 
-		switch (dir) {
+		switch (dirState) {
 			case FORWARD:
 				diffDrive.arcadeDrive(spd, -rot);
 				break;
@@ -545,13 +662,16 @@ public class Chassis extends SubsystemBase {
 		// leftPIDController.setIZone(ChassisConstants.kDistIz);
 		// leftPIDController.setFF(ChassisConstants.kDistFF);
 		// leftPIDController.setOutputRange(ChassisConstants.kDistMinOutput,
-		// 		ChassisConstants.kDistMaxOutput);
+		// ChassisConstants.kDistMaxOutput);
 
-		// leftPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel, ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel, ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc, ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionAllowedClosedLoopError(ChassisConstants.kDistAllowErr, 
-		// 		ChassisConstants.kDistSlot);
+		// leftPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel,
+		// ChassisConstants.kDistSlot);
+		// leftPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel,
+		// ChassisConstants.kDistSlot);
+		// leftPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc,
+		// ChassisConstants.kDistSlot);
+		// leftPIDController.setSmartMotionAllowedClosedLoopError(ChassisConstants.kDistAllowErr,
+		// ChassisConstants.kDistSlot);
 
 		// rightPIDController.setP(ChassisConstants.kDistP);
 		// rightPIDController.setI(ChassisConstants.kDistI);
@@ -559,13 +679,16 @@ public class Chassis extends SubsystemBase {
 		// rightPIDController.setIZone(ChassisConstants.kDistIz);
 		// rightPIDController.setFF(ChassisConstants.kDistFF);
 		// rightPIDController.setOutputRange(ChassisConstants.kDistMinOutput,
-		// 		ChassisConstants.kDistMaxOutput);
+		// ChassisConstants.kDistMaxOutput);
 
-		// rightPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel, ChassisConstants.kDistSlot);
-		// rightPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel, ChassisConstants.kDistSlot);
-		// rightPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc, ChassisConstants.kDistSlot);
+		// rightPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel,
+		// ChassisConstants.kDistSlot);
+		// rightPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel,
+		// ChassisConstants.kDistSlot);
+		// rightPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc,
+		// ChassisConstants.kDistSlot);
 		// rightPIDController.setSmartMotionAllowedClosedLoopError(ChassisConstants.kDistAllowErr,
-		// 		ChassisConstants.kDistSlot);
+		// ChassisConstants.kDistSlot);
 
 		this.setPoint = setPoint;
 		distPIDController.setSetpoint(setPoint);
@@ -605,12 +728,15 @@ public class Chassis extends SubsystemBase {
 	public void driveDistPosition(double setPoint) {
 
 		this.setPoint = setPoint;
-		// leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
-		// rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
+		// leftPIDController.setReference(setPoint,
+		// CANSparkMax.ControlType.kSmartMotion);
+		// rightPIDController.setReference(setPoint,
+		// CANSparkMax.ControlType.kSmartMotion);
 
-	//	DriverStation.reportWarning("SetPoint: " + this.setPoint, false);
-	//	DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : " + rightEncoder.getPosition(), false);
-	
+		// DriverStation.reportWarning("SetPoint: " + this.setPoint, false);
+		// DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : "
+		// + rightEncoder.getPosition(), false);
+
 		leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
 		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
 
@@ -619,8 +745,10 @@ public class Chassis extends SubsystemBase {
 
 	public void driveTurnPosition(double setPoint) {
 		this.setPoint = setPoint;
-		// leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
-		// rightPIDController.setReference(-setPoint, CANSparkMax.ControlType.kSmartMotion);
+		// leftPIDController.setReference(setPoint,
+		// CANSparkMax.ControlType.kSmartMotion);
+		// rightPIDController.setReference(-setPoint,
+		// CANSparkMax.ControlType.kSmartMotion);
 
 		leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
 		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
@@ -629,7 +757,8 @@ public class Chassis extends SubsystemBase {
 	public boolean atTarget() {
 		leftError = Math.abs(setPoint - leftEncoder.getPosition());
 		rightError = Math.abs(setPoint - rightEncoder.getPosition());
-		//DriverStation.reportWarning("Error: " + leftError + " : " + rightError, false);
+		// DriverStation.reportWarning("Error: " + leftError + " : " + rightError,
+		// false);
 		return leftError <= ChassisConstants.kDistanceTolerance && rightError <= ChassisConstants.kDistanceTolerance;
 	}
 

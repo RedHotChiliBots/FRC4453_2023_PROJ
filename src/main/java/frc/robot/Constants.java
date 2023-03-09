@@ -116,10 +116,13 @@ public final class Constants {
 		public static final double kTrackWidth = Units.inchesToMeters(26.341); // meters
 		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 8.0); // meters
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
-		public static final double kGearBoxRatio = 10.71;
+		public static final double kTBGearBoxRatio = 10.71;
+		public static final double kHIGearBoxRatio = 25.0 / 6.0;
+		public static final double kLOGearBoxRatio = 15625 / 1734;
+		public static final double kGearBoxRatio = kHIGearBoxRatio;
 		public static final double kPosFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution); // Meters / Rev
 		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters /
-																											// Sec
+	    // Sec
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 
 		public static final double kPosFactorMPR = kWheelCirc / kCountsPerRevGearbox; // Meters / Rev

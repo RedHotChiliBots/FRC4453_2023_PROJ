@@ -69,21 +69,20 @@ import frc.robot.commands.TiltRatchet;
 import frc.robot.commands.VisionToggleRumble;
 import frc.robot.commands.AutonChargingStation;
 import frc.robot.commands.AutonChassisDriveTime;
-import frc.robot.commands.AutonChassisDriveTurn;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.AutonChgStnRate;
-import frc.robot.commands.AutonCraneMove2AutonNode;
-import frc.robot.commands.AutonCraneMove2AutonNodeDock;
+import frc.robot.commands.AutonScoreMobility;
+import frc.robot.commands.AutonScoreMobilityEngage;
+import frc.robot.commands.AutonScoreMobilityPark;
 import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
 import frc.robot.commands.AutonCraneScoreAtNode;
-import frc.robot.commands.AutonDriveDistance;
-import frc.robot.commands.AutonDriveTurn;
 import frc.robot.commands.AutonGetGameElement;
 import frc.robot.commands.AutonReturn;
 import frc.robot.commands.AutonReturnToGrid;
+import frc.robot.commands.AutonScore;
 import frc.robot.commands.AutonStraight;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
@@ -177,12 +176,14 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonCraneMove2AutonNode autonCraneMove2AutonNode = new AutonCraneMove2AutonNode(chassis,
-			crane, craneTurret,
-			craneTilt, craneArm, claw);
-	private final AutonCraneMove2AutonNodeDock autonCraneMove2AutonNodeDock = new AutonCraneMove2AutonNodeDock(chassis,
-			crane, craneTurret,
-			craneTilt, craneArm, claw);
+	private final AutonScore autonScore= new AutonScore(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw);
+	private final AutonScoreMobility autonScoreMobility = new AutonScoreMobility(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw);
+	private final AutonScoreMobilityPark autonScoreMobilityPark = new AutonScoreMobilityPark(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw);
+	private final AutonScoreMobilityEngage autonScoreMobilityEngage = new AutonScoreMobilityEngage(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2ReadyPos crane_Move2ReadyPos = new Crane_Move2ReadyPos(crane, craneTurret, craneTilt,
@@ -330,7 +331,7 @@ public class RobotContainer {
 				revConfig);
 
 		try {
-			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Straight.wpilib.json");
+			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve("output/AT1-Element.wpilib.json");
 			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
 
 			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
@@ -348,10 +349,10 @@ public class RobotContainer {
 		// ==============================================================================
 		// Add commands to the autonomous command chooser
 		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
-		chooser.addOption("Auton 1: Score Cone, Mobility", autonCraneMove2AutonNode);
-		chooser.addOption("Auton 2: Score Cone, Mobility, Dock", autonCraneMove2AutonNodeDock);
-		chooser.addOption("AutonChassisDriveTime10", autonChassisDriveTime10);
-		chooser.addOption("AutonChassisDriveTime5", autonChassisDriveTime5);
+		chooser.addOption("Auton 1: Score", autonScore);
+		chooser.addOption("Auton 2: Score, Mobility", autonScoreMobility);
+		chooser.addOption("Auton 3: Score, Mobility, Engage", autonScoreMobilityEngage);
+		chooser.addOption("Auton 4: Score, Mobility, Park", autonScoreMobilityPark);
 		chooser.addOption("Charging Station", autonChargingStation);
 		chooser.addOption("Charging Station Drive", autonChgStnDrive);
 		chooser.addOption("Charging Station Rate", autonChgStnRate);

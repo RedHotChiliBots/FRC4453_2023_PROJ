@@ -17,7 +17,7 @@ import frc.robot.subsystems.CraneTurret;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html 1TSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS7DDDDDDDDDDDDDDDDDDDDDDDDE48ZER.8/I8'
 
 
-public class AutonCraneMove2AutonNode extends SequentialCommandGroup {
+public class AutonScore extends SequentialCommandGroup {
   Chassis chassis;
   Crane crane;
   CraneTurret craneTurret;
@@ -26,7 +26,7 @@ public class AutonCraneMove2AutonNode extends SequentialCommandGroup {
   Claw claw;
 
   /** Creates a new AutonCranePos. */
-  public AutonCraneMove2AutonNode(Chassis chassis, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt,
+  public AutonScore(Chassis chassis, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt,
       CraneArm craneArm, Claw claw) {
     this.chassis = chassis;
     this.crane = crane;
@@ -40,14 +40,10 @@ public class AutonCraneMove2AutonNode extends SequentialCommandGroup {
     // Chassis "U" facing Grid
     // Cone in Claw
     // Crane in Stow
-    addCommands(
+//    addCommands(
         // Move Crane to Scoring position, release Cone, and return to Receive position
-		    new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm),
-		    new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
-        new AutonCraneScoreAtNode(crane, craneTurret, craneTilt, craneArm, claw),
-        // Drive over Charging Station
-        new AutonChassisDriveTime(chassis, -0.55, 5.0));
-        // Drive up to Charging Station and Balance
-//        new AutonChassisDrive2ChgStn(chassis, 0.55));
+		    // new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm),
+		    // new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
+        // new AutonCraneScoreAtNode(crane, craneTurret, craneTilt, craneArm, claw));   
   }
 }

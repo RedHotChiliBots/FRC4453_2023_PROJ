@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -32,9 +33,11 @@ public final class Constants {
 		public static final int kCompressor = 0;
 
 		public static final int kRightMasterMotor = 10;
-		public static final int kRightFollowerMotor = 11;
+		public static final int kRightFollower1Motor = 11;
+		public static final int kRightFollower2Motor = 14;
 		public static final int kLeftMasterMotor = 12;
-		public static final int kLeftFollowerMotor = 13;
+		public static final int kLeftFollower1Motor = 13;
+		public static final int kLeftFollower2Motor = 15;
 
 		public static final int kCraneTurretMotor = 20;
 		public static final int kCraneTiltMotor = 21;
@@ -95,10 +98,11 @@ public final class Constants {
 	}
 
 	public static final class ChassisConstants {
+		public static final int kDriveSlot = 0; // from sysID
 		// Constants for Drive PIDs
-		public static final double kP = 0.0032218; // from sysID
+		public static final double kP = 1.0442E-06; // 0.0032218; // from sysID
 		public static final double kI = 0.0; // from sysID
-		public static final double kD = 0.00047213; // from sysID
+		public static final double kD = 0.0; // 0.00047213; // from sysID
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.000156;
 
@@ -106,14 +110,31 @@ public final class Constants {
 		public static final double kS = 0.087827; // from SysID
 		public static final double kV = 1.0907; // from sysID
 
+		// Example value only - as above, this must be tuned for your drive!
+		public static final double kPDriveVel = 0.5;
+
+		public static final double kTrackWidth = Units.inchesToMeters(23.0); // meters
+		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
+
+		public static final double kMaxSpeedMetersPerSecond = 3.0; // was 1.0
+		public static final double kMaxAccelerationMetersPerSecondSquared = 1.0; // was 0.7
+
+		// Reasonable baseline values for a RAMSETE follower in units of meters and
+		// seconds
+		public static final double kRamseteB = 2;
+		public static final double kRamseteZeta = 0.7;
+
+		// ============================================================================
+
 		public static final double kMinOutput = -1.0; // -0.5;
 		public static final double kMaxOutput = 1.0; // 0.5;
-		public static final double maxRPM = 5700;
-		public static final double maxVel = 2000;
-		public static final double minVel = 1000;
-		public static final double maxAcc = 1500;
+		public static final double kDriveMaxRPM = 5700;
+		public static final double kDriveMaxVel = 11.0; // RPM
+		public static final double kDriveMaxAccel = kDriveMaxVel * (2.0 / 3.0); // RPM^2
+		public static final double kDriveMinVel = 1000;
+		public static final double kDriveMaxAcc = 1500;
+		public static final double kDriveAllowErr = 0.01;
 
-		public static final double kTrackWidth = Units.inchesToMeters(26.341); // meters
 		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 8.0); // meters
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kTBGearBoxRatio = 10.71;
@@ -122,16 +143,11 @@ public final class Constants {
 		public static final double kGearBoxRatio = kHIGearBoxRatio;
 		public static final double kPosFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution); // Meters / Rev
 		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters /
-	    // Sec
+		// Sec
 		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 
 		public static final double kPosFactorMPR = kWheelCirc / kCountsPerRevGearbox; // Meters / Rev
 		public static final double kPosFactorRPM = kCountsPerRevGearbox / kWheelCirc; // Rev / Meter
-		// Example value only - as above, this must be tuned for your drive!
-		public static final double kPDriveVel = 0.5;
-
-		public static final double kMaxSpeedMetersPerSecond = 1.5; // was 1.0
-		public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // was 0.7
 
 		public static final double kLevelP = 0.05;
 		public static final double kLevelI = 0.0;
@@ -150,11 +166,11 @@ public final class Constants {
 		public static final double kDistanceTolerance = 0.025; // meters
 		public static final int kDistSlot = 0;
 
-		public static final double kDistP = 0.1;	//5e-5;
-		public static final double kDistI = 1e-4;	//1e-6;
-		public static final double kDistD = 1.0;	//0.0;
+		public static final double kDistP = 0.1; // 5e-5;
+		public static final double kDistI = 1e-4; // 1e-6;
+		public static final double kDistD = 1.0; // 0.0;
 		public static final double kDistIz = 0.0;
-		public static final double kDistFF = 0.0;	//0.000156;
+		public static final double kDistFF = 0.0; // 0.000156;
 
 		// public static final double kDistA = 0.69884; // from sysID
 		// public static final double kDistS = 0.087827; // from SysID
@@ -169,14 +185,11 @@ public final class Constants {
 		// public static final double kDistAllowErr = 0.125;
 		// public static final double kDistSetTolerance = 0.5;
 
-		public static final double kAutonStraightDist = Units.feetToMeters(20.0); // meters
+		public static final double kAutonMobilityDist = Units.feetToMeters(-20.0); // meters
+		public static final double kAutonParkDist = Units.feetToMeters(10.0); // meters
+
 		public static final double kAutonTurnDist = Units.inchesToMeters((Math.PI * kTrackWidth) / 2.0); // meters
 		public static final double kAutonAbort = 10.0; // sec
-
-		// Reasonable baseline values for a RAMSETE follower in units of meters and
-		// seconds
-		public static final double kRamseteB = 2;
-		public static final double kRamseteZeta = 0.7;
 	}
 
 	public static final class CraneConstants {

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ChassisConstants;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
@@ -14,10 +15,9 @@ import frc.robot.subsystems.CraneTurret;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html 1TSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS7DDDDDDDDDDDDDDDDDDDDDDDDE48ZER.8/I8'
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html 
 
-
-public class AutonCraneMove2AutonNodeDock extends SequentialCommandGroup {
+public class AutonScoreMobilityPark extends SequentialCommandGroup {
   Chassis chassis;
   Crane crane;
   CraneTurret craneTurret;
@@ -26,7 +26,7 @@ public class AutonCraneMove2AutonNodeDock extends SequentialCommandGroup {
   Claw claw;
 
   /** Creates a new AutonCranePos. */
-  public AutonCraneMove2AutonNodeDock(Chassis chassis, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt,
+  public AutonScoreMobilityPark(Chassis chassis, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt,
       CraneArm craneArm, Claw claw) {
     this.chassis = chassis;
     this.crane = crane;
@@ -42,12 +42,12 @@ public class AutonCraneMove2AutonNodeDock extends SequentialCommandGroup {
     // Crane in Stow
     addCommands(
         // Move Crane to Scoring position, release Cone, and return to Receive position
-		    new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm),
-		    new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm),
-        new AutonCraneScoreAtNode(crane, craneTurret, craneTilt, craneArm, claw),
+        new AutonScore(chassis, crane, craneTurret, craneTilt, craneArm, claw),
         // Drive over Charging Station
-        new AutonChassisDriveTime(chassis, -0.55, 5.0),
-        // Drive up to Charging Station and Balance
-        new AutonChassisDrive2ChgStn(chassis, 0.55));
+        new AutonChassisDriveDist(chassis, ChassisConstants.kAutonMobilityDist, ChassisConstants.kAutonAbort),
+        new AutonChassisDriveDist(chassis, ChassisConstants.kAutonParkDist, ChassisConstants.kAutonAbort));
+
+
   }
+
 }

@@ -23,12 +23,12 @@ public class AutonDriveDistance extends CommandBase {
   @Override
   public void initialize() {
     motorSpd = chassis.driveDistance();
-  
+
     chassis.getMotorData();
     chassis.setMotorData(0.25, 0.25);
 
     chassis.resetEncoders();
-    chassis.setDistSetPoint(ChassisConstants.kAutonStraightDist);
+    chassis.setDistSetPoint(ChassisConstants.kAutonMobilityDist);
 
     motorSpd = chassis.driveDistance();
   }

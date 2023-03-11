@@ -7,18 +7,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ChassisConstants;
 import frc.robot.subsystems.Chassis;
 
 public class AutonChassisDriveDist extends CommandBase {
   /** Creates a new ChassisTankDrive. */
 
   private Chassis chassis;
+  private double dist;
+  private double time;
   private Timer timer = new Timer();
 
-  public AutonChassisDriveDist(Chassis chassis) {
+  public AutonChassisDriveDist(Chassis chassis, double dist, double time) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.chassis = chassis;
+    this.dist = dist;
+    this.time = time;
 
     addRequirements(chassis);
   }
@@ -27,17 +30,17 @@ public class AutonChassisDriveDist extends CommandBase {
   @Override
   public void initialize() {
     chassis.resetEncoders();
-    chassis.setDistSetPoint(ChassisConstants.kAutonStraightDist);
-    timer.reset();
+//    chassis.setDistSetPoint(dist);
     timer.start();
+    timer.reset();
     DriverStation.reportWarning("AutonChassisDriveDist finish Initialize", false);
+    chassis.driveDistPosition(dist);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     System.out.println("From command");
-    chassis.driveDistPosition(ChassisConstants.kAutonStraightDist);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +52,6 @@ public class AutonChassisDriveDist extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atTarget() || timer.hasElapsed(ChassisConstants.kAutonAbort);
+    return chassis.atTarget() || timer.hasElapsed(time);
   }
 }

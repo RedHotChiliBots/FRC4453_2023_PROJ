@@ -27,7 +27,7 @@ public class AutonChassisDriveTurn extends CommandBase {
   @Override
   public void initialize() {
     chassis.resetEncoders();
-    chassis.setDistSetPoint(ChassisConstants.kAutonStraightDist);
+    chassis.setDistSetPoint(ChassisConstants.kAutonMobilityDist);
     timer.reset();
     timer.start();
     DriverStation.reportWarning("AutonChassisDriveTurn finish Initialize", false);
@@ -43,7 +43,7 @@ public class AutonChassisDriveTurn extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-        DriverStation.reportWarning("AutonChassisDriveDist End", false);
+    DriverStation.reportWarning("AutonChassisDriveDist End", false);
   }
 
   // Returns true when the command should end.

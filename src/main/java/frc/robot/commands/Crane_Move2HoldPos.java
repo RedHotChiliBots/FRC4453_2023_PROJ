@@ -51,10 +51,13 @@ public class Crane_Move2HoldPos extends CommandBase {
           finish = true;
 
         } else if (crane.getState() != CRANESTATE.GRIP && crane.getState() != CRANESTATE.SUBSTATION) {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltReceivePos);
           DriverStation.reportWarning("Crane must be in Grip or SubStation position", false);
           finish = true;
+
         } else {
+          craneTilt.setTiltSetPoint(CraneConstants.kTiltHoldPos);
+          craneTurret.setTurretSetPoint(CraneConstants.kTurretHoldPos);
+          crane.setState(CRANESTATE.MOVING);
           state++;
         }
         break;

@@ -175,7 +175,7 @@ public class GridCalcs {
 	}
 
 	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
-			E.CONE, 18.0,
+			E.CONE, 12.0,
 			E.CUBE, 12.0,
 			E.NA, 0.0,
 			E.OTHER, 0.0));

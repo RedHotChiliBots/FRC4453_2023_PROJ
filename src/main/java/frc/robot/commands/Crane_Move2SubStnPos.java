@@ -49,15 +49,13 @@ public class Crane_Move2SubStnPos extends CommandBase {
       // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
       case 0:
         // If already at Node, do nothing
-        if (crane.getState() == CRANESTATE.SUBSTATION &&
-            craneTurret.atTurretNextPoint() &&
-            craneTilt.atTiltNextPoint() &&
-            craneArm.atArmNextPoint()) {
+        if (crane.getState() == CRANESTATE.SUBSTATION) {
           DriverStation.reportWarning("Already at SubStation", false);
           finish = true;
 
           // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
-        } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD) {
+        } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD
+            || crane.getState() == CRANESTATE.RECEIVE) {
           craneTurret.setTurretSetPoint(grid.getSubStationPos(C.TURRET));
           craneTilt.setTiltSetPoint(grid.getSubStationPos(C.TILT));
           craneArm.setArmSetPoint(grid.getSubStationPos(C.ARM));

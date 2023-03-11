@@ -156,7 +156,7 @@ public class GridCalcs {
 
 	public double getSubStationPos(C c) {
 		double result = 0.0;
-		double length = kSubStation.get(C.ARM) + kRobotFwdPos.get(C.ARM);
+		double length = kSubStation.get(C.ARM) - kRobotFwdPos.get(C.ARM);
 		double height = kSubStation.get(C.TILT) + (getElem() == E.CONE ? 8.0 : 4.5) - kRobotFwdPos.get(C.TILT);
 
 		switch (c) {

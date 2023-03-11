@@ -176,7 +176,7 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonScore autonScore= new AutonScore(chassis,
+	private final AutonScore autonScore = new AutonScore(chassis,
 			crane, craneTurret, craneTilt, craneArm, claw);
 	private final AutonScoreMobility autonScoreMobility = new AutonScoreMobility(chassis,
 			crane, craneTurret, craneTilt, craneArm, claw);
@@ -255,28 +255,28 @@ public class RobotContainer {
 		// Add Subsystems to Dashboard
 		Shuffleboard.getTab("SubSystems").add("Chassis", chassis)
 				.withWidget("Basic Subsystem")
-				.withPosition(0, 0).withSize(2, 1);
+				.withPosition(1, 0).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Claw", claw)
 				.withWidget("Basic Subsystem")
-				.withPosition(0, 1).withSize(2, 1);
+				.withPosition(1, 2).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Intake", intake)
 				.withWidget("Basic Subsystem")
-				.withPosition(0, 2).withSize(2, 1);
+				.withPosition(1, 4).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Vision", vision)
 				.withWidget("Basic Subsystem")
-				.withPosition(0, 3).withSize(2, 1);
+				.withPosition(1, 6).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Crane", crane)
 				.withWidget("Basic Subsystem")
-				.withPosition(2, 0).withSize(2, 1);
+				.withPosition(6, 0).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Crane Turret", craneTurret)
 				.withWidget("Basic Subsystem")
-				.withPosition(2, 1).withSize(2, 1);
+				.withPosition(6, 2).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Crane Tilt", craneTilt)
 				.withWidget("Basic Subsystem")
-				.withPosition(2, 2).withSize(2, 1);
+				.withPosition(6, 4).withSize(4, 2);
 		Shuffleboard.getTab("SubSystems").add("Crane Arm", craneArm)
 				.withWidget("Basic Subsystem")
-				.withPosition(2, 3).withSize(2, 1);
+				.withPosition(6, 6).withSize(4, 2);
 
 		// =============================================================
 		// Configure default commands for each subsystem
@@ -331,7 +331,8 @@ public class RobotContainer {
 				revConfig);
 
 		try {
-			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath().resolve("output/AT1-Element.wpilib.json");
+			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath()
+					.resolve("output/AT1-Element.wpilib.json");
 			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
 
 			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
@@ -368,99 +369,65 @@ public class RobotContainer {
 
 		// Put the chooser on the dashboard
 		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-		// compTab.add("Competition", "")
-		// .withWidget("Network Table Tree")
-		// .withPosition(5, 1).withSize(2, 5).getEntry();
-
 		compTab.add("Auton Command", chooser)
 				.withWidget("ComboBox Chooser")
-				.withPosition(0, 0).withSize(2, 1);
+				.withPosition(0, 0).withSize(4, 1);
 
 		cmdTab = Shuffleboard.getTab("Commands");
-		cmdTab.add("Gear Shift HI", chassisShiftHI)
-				.withWidget("Command")
-				.withPosition(0, 0).withSize(1, 1);
-		cmdTab.add("Gear Shift LO", chassisShiftLO)
-				.withWidget("Command")
-				.withPosition(0, 1).withSize(1, 1);
-		cmdTab.add("Direction", chassisToggleDir)
-				.withWidget("Command")
-				.withPosition(0, 2).withSize(1, 1);
-		// cmdTab.add("Tilt Ratchet Lock", ratchetLock)
-		// .withWidget("Command")
-		// .withPosition(0, 3).withSize(1, 1);
-		// cmdTab.add("Tilt Ratchet Unlock", ratchetUnlock)
-		// .withWidget("Command")
-		// .withPosition(0, 4).withSize(1, 1);
-		cmdTab.add("Claw Grab Cone", clawGrabCone)
-				.withWidget("Command")
-				.withPosition(1, 0).withSize(1, 1);
-		cmdTab.add("Claw Grab Cube", clawGrabCube)
-				.withWidget("Command")
-				.withPosition(1, 1).withSize(1, 1);
-		cmdTab.add("Claw Grip", clawGrip)
-				.withWidget("Command")
-				.withPosition(1, 2).withSize(1, 1);
-		cmdTab.add("Claw Release", clawRelease)
-				.withWidget("Command")
-				.withPosition(1, 3).withSize(1, 1);
-		compTab.add("Claw Release", clawRelease)
-				.withWidget("Command")
-				.withPosition(6, 0).withSize(1, 1);
-		cmdTab.add("Intake In", intakeMotorIn)
-				.withWidget("Command")
-				.withPosition(2, 0).withSize(1, 1);
-		cmdTab.add("Intake Out", intakeMotorOut)
-				.withWidget("Command")
-				.withPosition(2, 1).withSize(1, 1);
-		cmdTab.add("Intake Stow", intakeStow)
-				.withWidget("Command")
-				.withPosition(2, 2).withSize(1, 1);
-		cmdTab.add("Intake Open", intakeOpen)
-				.withWidget("Command")
-				.withPosition(2, 3).withSize(1, 1);
-		cmdTab.add("Intake Close", intakeClose)
-				.withWidget("Command")
-				.withPosition(2, 4).withSize(1, 1);
-		cmdTab.add("Crane Reset", craneReset)
-				.withWidget("Command")
-				.withPosition(3, 0).withSize(1, 1);
-		cmdTab.add("Intake Stop", intakeMotorStop)
-				.withWidget("Command")
-				.withPosition(3, 2).withSize(1, 1);
+		cmdTab.add("Gear Shift HI", chassisShiftHI).withWidget("Command")
+				.withPosition(0, 0).withSize(2, 1);
+		cmdTab.add("Gear Shift LO", chassisShiftLO).withWidget("Command")
+				.withPosition(0, 1).withSize(2, 1);
+		cmdTab.add("Direction", chassisToggleDir).withWidget("Command")
+				.withPosition(0, 2).withSize(2, 1);
 
-		cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero)
-				.withWidget("Command")
-				.withPosition(5, 0).withSize(1, 1);
+		cmdTab.add("Claw Grab Cone", clawGrabCone).withWidget("Command")
+				.withPosition(3, 0).withSize(2, 1);
+		cmdTab.add("Claw Grab Cube", clawGrabCube).withWidget("Command")
+				.withPosition(3, 1).withSize(2, 1);
+		cmdTab.add("Claw Grip", clawGrip).withWidget("Command")
+				.withPosition(3, 2).withSize(2, 1);
+		cmdTab.add("Claw Release", clawRelease).withWidget("Command")
+				.withPosition(3, 3).withSize(2, 1);
+		compTab.add("Claw Release", clawRelease).withWidget("Command")
+				.withPosition(12, 0).withSize(2, 1);
 
-		cmdTab.add("Move Stow Pos", crane_Move2StowPos)
-				.withWidget("Command")
-				.withPosition(4, 0).withSize(1, 1);
-		cmdTab.add("Move Receive Pos", crane_Move2ReceivePos)
-				.withWidget("Command")
-				.withPosition(4, 1).withSize(1, 1);
-		cmdTab.add("Move Grip Pos", crane_Move2GripPos)
-				.withWidget("Command")
-				.withPosition(4, 2).withSize(1, 1);
-		cmdTab.add("Move Ready Pos", crane_Move2ReadyPos)
-				.withWidget("Command")
-				.withPosition(4, 3).withSize(1, 1);
-		cmdTab.add("Move Node Pos", crane_Move2NodePos)
-				.withWidget("Command")
-				.withPosition(4, 4).withSize(1, 1);
+		cmdTab.add("Intake In", intakeMotorIn).withWidget("Command")
+				.withPosition(6, 0).withSize(2, 1);
+		cmdTab.add("Intake Out", intakeMotorOut).withWidget("Command")
+				.withPosition(6, 1).withSize(2, 1);
+		cmdTab.add("Intake Stow", intakeStow).withWidget("Command")
+				.withPosition(6, 2).withSize(2, 1);
+		cmdTab.add("Intake Open", intakeOpen).withWidget("Command")
+				.withPosition(6, 3).withSize(2, 1);
+		cmdTab.add("Intake Close", intakeClose).withWidget("Command")
+				.withPosition(6, 4).withSize(2, 1);
+		cmdTab.add("Intake Stop", intakeMotorStop).withWidget("Command")
+				.withPosition(6, 5).withSize(2, 1);
 
-		cmdTab.add("Get Elem", auton_Move2ElemPos)
-				.withWidget("Command")
-				.withPosition(5, 1).withSize(1, 1);
-		cmdTab.add("Move 2 Ready", auton_Move2ReadyPos)
-				.withWidget("Command")
-				.withPosition(5, 2).withSize(1, 1);
-		cmdTab.add("Move 2 Node", auton_Move2NodePos)
-				.withWidget("Command")
-				.withPosition(5, 3).withSize(1, 1);
-		cmdTab.add("Score At Node", auton_ScoreAtNodePos)
-				.withWidget("Command")
-				.withPosition(5, 4).withSize(1, 1);
+		cmdTab.add("Crane Reset", craneReset).withWidget("Command")
+				.withPosition(9, 0).withSize(2, 1);
+		cmdTab.add("Move Stow Pos", crane_Move2StowPos).withWidget("Command")
+				.withPosition(9, 1).withSize(2, 1);
+		cmdTab.add("Move Receive Pos", crane_Move2ReceivePos).withWidget("Command")
+				.withPosition(9, 2).withSize(2, 1);
+		cmdTab.add("Move Grip Pos", crane_Move2GripPos).withWidget("Command")
+				.withPosition(9, 3).withSize(2, 1);
+		cmdTab.add("Move Ready Pos", crane_Move2ReadyPos).withWidget("Command")
+				.withPosition(9, 4).withSize(2, 1);
+		cmdTab.add("Move Node Pos", crane_Move2NodePos).withWidget("Command")
+				.withPosition(9, 5).withSize(2, 1);
+
+		cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero).withWidget("Command")
+				.withPosition(12, 0).withSize(2, 1);
+		cmdTab.add("Get Elem", auton_Move2ElemPos).withWidget("Command")
+				.withPosition(12, 1).withSize(2, 1);
+		cmdTab.add("Move 2 Ready", auton_Move2ReadyPos).withWidget("Command")
+				.withPosition(12, 2).withSize(2, 1);
+		cmdTab.add("Move 2 Node", auton_Move2NodePos).withWidget("Command")
+				.withPosition(12, 3).withSize(2, 1);
+		cmdTab.add("Score At Node", auton_ScoreAtNodePos).withWidget("Command")
+				.withPosition(12, 4).withSize(2, 1);
 
 		configureButtonBindings();
 
@@ -537,7 +504,7 @@ public class RobotContainer {
 	private double lastValue = 0.0;
 
 	public double getJoystick(double js) {
-		//return Math.copySign(Math.pow(Math.abs(js) < DEADZONE ? 0.0 : js, 2), js);
+		// return Math.copySign(Math.pow(Math.abs(js) < DEADZONE ? 0.0 : js, 2), js);
 		return Math.copySign(Math.abs(js) < DEADZONE ? 0.0 : js, js);
 
 		// if (Math.abs(val - lastValue) > MAXACCEL) {

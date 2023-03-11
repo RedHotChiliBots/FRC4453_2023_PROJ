@@ -156,80 +156,81 @@ public class Chassis extends SubsystemBase {
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 
 	private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint", 0.0)
-			.withWidget("Text View").withPosition(0, 0).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftErr = chassisTab.addPersistent("Left Error", 0.0)
-			.withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftPos = chassisTab.addPersistent("ML Position", 0)
-			.withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftVel = chassisTab.addPersistent("ML Velocity", 0)
-			.withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 3).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftPow = chassisTab.addPersistent("ML Power", 0)
-			.withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 4).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbAtTgt = chassisTab.addPersistent("At Target", false)
-			.withWidget("Boolean Box").withPosition(1, 0).withSize(1, 1).getEntry();
+			.withWidget("Boolean Box").withPosition(2, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightErr = chassisTab.addPersistent("Right Error", 0.0)
-			.withWidget("Text View").withPosition(1, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(2, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightPos = chassisTab.addPersistent("MR Position", 0)
-			.withWidget("Text View").withPosition(1, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(2, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightVel = chassisTab.addPersistent("MR Velocity", 0)
-			.withWidget("Text View").withPosition(1, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(2, 3).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightPow = chassisTab.addPersistent("MR Power", 0)
-			.withWidget("Text View").withPosition(1, 4).withSize(1, 1).getEntry();
-	
+			.withWidget("Text View").withPosition(2, 4).withSize(2, 1).getEntry();
+
 	private final GenericEntry sbAngle = chassisTab.addPersistent("Angle", 0)
-			.withWidget("Text View").withPosition(3, 0).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(5, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0)
-			.withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(5, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0)
-			.withWidget("Text View").withPosition(3, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(5, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbHiPressure = chassisTab.addPersistent("Hi Pressure", 0)
-			.withWidget("Text View").withPosition(3, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(5, 5).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0)
-			.withWidget("Text View").withPosition(4, 0).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(7, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0)
-			.withWidget("Text View").withPosition(4, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(7, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0)
-			.withWidget("Text View").withPosition(4, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(7, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0)
-			.withWidget("Text View").withPosition(4, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(6, 3).withSize(2, 1).getEntry();
 	private final GenericEntry sbLoPressure = chassisTab.addPersistent("Lo Pressure", 0)
-			.withWidget("Text View").withPosition(4, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(7, 5).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbLeftFrontTemp = chassisTab.addPersistent("LF temp", 0)
-			.withWidget("Text View").withPosition(6, 0).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightFrontTemp = chassisTab.addPersistent("RF temp", 0)
-			.withWidget("Text View").withPosition(6, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftBackTemp = chassisTab.addPersistent("LB temp", 0)
-			.withWidget("Text View").withPosition(6, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightBackTemp = chassisTab.addPersistent("RB temp", 0)
-			.withWidget("Text View").withPosition(6, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 3).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftCenterTemp = chassisTab.addPersistent("LC temp", 0)
-			.withWidget("Text View").withPosition(6, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 4).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightCenterTemp = chassisTab.addPersistent("RC temp", 0)
-			.withWidget("Text View").withPosition(6, 5).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(10, 5).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbLeftFrontAmp = chassisTab.addPersistent("LF amp", 0)
-			.withWidget("Text View").withPosition(7, 0).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightFrontAmp = chassisTab.addPersistent("RF amp", 0)
-			.withWidget("Text View").withPosition(7, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 1).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftBackAmp = chassisTab.addPersistent("LB amp", 0)
-			.withWidget("Text View").withPosition(7, 2).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 2).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightBackAmp = chassisTab.addPersistent("RB amp", 0)
-			.withWidget("Text View").withPosition(7, 3).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 3).withSize(2, 1).getEntry();
 	private final GenericEntry sbLeftCenterAmp = chassisTab.addPersistent("LC amp", 0)
-			.withWidget("Text View").withPosition(7, 4).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 4).withSize(2, 1).getEntry();
 	private final GenericEntry sbRightCenterAmp = chassisTab.addPersistent("RC amp", 0)
-			.withWidget("Text View").withPosition(7, 5).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(12, 5).withSize(2, 1).getEntry();
 
 	// ==============================================================
 	// Define Shuffleboard data - Competition Tab
 	private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+
 	private final GenericEntry sbDriveType = compTab.addPersistent("Drive Type", "")
-			.withWidget("Text View").withPosition(5, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(9, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbDir = compTab.addPersistent("Direction", "")
-			.withWidget("Text View").withPosition(6, 1).withSize(1, 1).getEntry();
+			.withWidget("Text View").withPosition(9, 1).withSize(2, 1).getEntry();
 
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");
@@ -333,13 +334,13 @@ public class Chassis extends SubsystemBase {
 		// ==============================================================
 		// Add static variables to Shuffleboard
 		chassisTab.addPersistent("ML Pos Factor", leftEncoder.getPositionConversionFactor())
-				.withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
+				.withWidget("Text View").withPosition(0, 6).withSize(2, 1).getEntry();
 		chassisTab.addPersistent("MR Pos Factor", rightEncoder.getPositionConversionFactor())
-				.withWidget("Text View").withPosition(1, 3).withSize(1, 1).getEntry();
+				.withWidget("Text View").withPosition(2, 6).withSize(2, 1).getEntry();
 		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor())
-				.withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
+				.withWidget("Text View").withPosition(0, 7).withSize(2, 1).getEntry();
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor())
-				.withWidget("Text View").withPosition(1, 4).withSize(1, 1).getEntry();
+				.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
 
 		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
@@ -347,7 +348,7 @@ public class Chassis extends SubsystemBase {
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
 		// Update field position - for autonomous
-//		resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
+		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
 		stopChassis();
 

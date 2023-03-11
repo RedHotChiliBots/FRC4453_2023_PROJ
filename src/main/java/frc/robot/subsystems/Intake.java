@@ -85,25 +85,30 @@ public class Intake extends SubsystemBase {
     STOW
   }
 
+  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
+  private final GenericEntry sbCompElemInside = compTab.add("Element Inside", false)
+      .withWidget("Boolean Box").withPosition(2, 2).withSize(2, 1).getEntry();
+
   private final ShuffleboardTab intakeTab = Shuffleboard.getTab("Intake");
-  private final GenericEntry sbElemInside = intakeTab.add("Element Inside", false)
-      .withWidget("Boolean Box").withPosition(0, 0).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemRed = intakeTab.add("Red", 0)
-      .withWidget("Text View").withPosition(0, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemGreen = intakeTab.add("Green", 0)
-      .withWidget("Text View").withPosition(0, 2).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemBlue = intakeTab.add("Blue", 0)
-      .withWidget("Text View").withPosition(0, 3).withSize(1, 1).getEntry();
-  private final GenericEntry sbElemIR = intakeTab.add("IR", 0)
-      .withWidget("Text View").withPosition(0, 4).withSize(1, 1).getEntry();
   private final GenericEntry sbElemConf = intakeTab.add("Confidence", 0)
-      .withWidget("Text View").withPosition(1, 0).withSize(1, 1).getEntry();
+      .withWidget("Text View").withPosition(0, 0).withSize(2, 1).getEntry();
+  private final GenericEntry sbElemRed = intakeTab.add("Red", 0)
+      .withWidget("Text View").withPosition(0, 1).withSize(2, 1).getEntry();
+  private final GenericEntry sbElemGreen = intakeTab.add("Green", 0)
+      .withWidget("Text View").withPosition(0, 2).withSize(2, 1).getEntry();
+  private final GenericEntry sbElemBlue = intakeTab.add("Blue", 0)
+      .withWidget("Text View").withPosition(0, 3).withSize(2, 1).getEntry();
+  private final GenericEntry sbElemIR = intakeTab.add("IR", 0)
+      .withWidget("Text View").withPosition(0, 4).withSize(2, 1).getEntry();
+
+  private final GenericEntry sbElemInside = intakeTab.add("Element Inside", false)
+      .withWidget("Boolean Box").withPosition(3, 0).withSize(2, 1).getEntry();
   private final GenericEntry sbElem = intakeTab.addPersistent("Element", "")
-      .withWidget("Text View").withPosition(1, 1).withSize(1, 1).getEntry();
+      .withWidget("Text View").withPosition(3, 1).withSize(2, 1).getEntry();
   private final GenericEntry sbElemCone = intakeTab.addPersistent("Cone", true)
-      .withWidget("Boolean Box").withPosition(1, 2).withSize(1, 1).getEntry();
+      .withWidget("Boolean Box").withPosition(3, 2).withSize(2, 1).getEntry();
   private final GenericEntry sbElemCube = intakeTab.addPersistent("Cube", false)
-      .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry();
+      .withWidget("Boolean Box").withPosition(3, 3).withSize(2, 1).getEntry();
 
   /** Creates a new Intake. */
   public Intake(Crane crane) {
@@ -166,6 +171,7 @@ public class Intake extends SubsystemBase {
     sbElemIR.setDouble(rawColor.ir);
     sbElemConf.setDouble((match != null) ? match.confidence : 0.0);
     sbElemInside.setBoolean(isElementIn());
+    sbCompElemInside.setBoolean(isElementIn());
 
     sbElem.setString(crane.getElem().toString());
 

@@ -35,11 +35,8 @@ public class Claw extends SubsystemBase {
     CUBE
   }
 
-  private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-  private final GenericEntry sbElemInside = compTab.add("Element Inside", false)
-      .withWidget("Boolean Box").withPosition(4, 1).withSize(1, 1).getEntry();
 
-      Crane crane;
+  Crane crane;
   Intake intake;
 
   /** Creates a new Claw. */
@@ -54,10 +51,7 @@ public class Claw extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    sbElemInside.setBoolean(intake.isElementIn());
-
-  }
+  public void periodic() {}
 
   public void setFinger(FingerState state) {
     switch (state) {

@@ -37,16 +37,16 @@ public class CraneArm extends SubsystemBase {
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   private final GenericEntry sbArmSP = craneTab.addPersistent("Arm SetPoint", 0)
       .withWidget("Text View")
-      .withPosition(0, 3).withSize(1, 1).getEntry();
+      .withPosition(0, 3).withSize(2, 1).getEntry();
   private final GenericEntry sbArmPos = craneTab.addPersistent("Arm Pos", 0)
       .withWidget("Text View")
-      .withPosition(1, 3).withSize(1, 1).getEntry();
+      .withPosition(2, 3).withSize(2, 1).getEntry();
   private final GenericEntry sbArmVel = craneTab.addPersistent("Arm Vel", 0)
       .withWidget("Text View")
-      .withPosition(2, 3).withSize(1, 1).getEntry();
+      .withPosition(4, 3).withSize(2, 1).getEntry();
   private final GenericEntry sbArmFactor = craneTab.addPersistent("Arm Factor (ipr)", 0)
       .withWidget("Text View")
-      .withPosition(3, 3).withSize(1, 1).getEntry();
+      .withPosition(7, 3).withSize(2, 1).getEntry();
 
   Crane crane;
 

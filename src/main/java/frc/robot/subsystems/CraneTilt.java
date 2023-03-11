@@ -48,16 +48,16 @@ public class CraneTilt extends SubsystemBase {
   private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
   private final GenericEntry sbTiltSP = craneTab.addPersistent("Tilt SetPoint", 0)
       .withWidget("Text View")
-      .withPosition(0, 2).withSize(1, 1).getEntry();
+      .withPosition(0, 2).withSize(2, 1).getEntry();
   private final GenericEntry sbTiltPos = craneTab.addPersistent("Tilt Pos", 0)
       .withWidget("Text View")
-      .withPosition(1, 2).withSize(1, 1).getEntry();
+      .withPosition(2, 2).withSize(2, 1).getEntry();
   private final GenericEntry sbTiltVel = craneTab.addPersistent("Tilt Vel", 0)
       .withWidget("Text View")
-      .withPosition(2, 2).withSize(1, 1).getEntry();
+      .withPosition(4, 2).withSize(2, 1).getEntry();
   private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0)
       .withWidget("Text View")
-      .withPosition(3, 2).withSize(1, 1).getEntry();
+      .withPosition(7, 2).withSize(2, 1).getEntry();
 
   Crane crane;
 

@@ -41,45 +41,46 @@ public class Crane extends SubsystemBase {
   // .withPosition(5, 1).withSize(2, 3).getEntry();
 
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-  private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "")
-      .withWidget("Text View").withPosition(2, 0).withSize(1, 1).getEntry();
-  private final GenericEntry sbState = compTab.addPersistent("Crane State", "")
-      .withWidget("Text View").withPosition(2, 1).withSize(1, 1).getEntry();
-  private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "")
-      .withWidget("Text View").withPosition(3, 0).withSize(1, 1).getEntry();
-  private final GenericEntry sbElem = compTab.addPersistent("Element", "")
-      .withWidget("Text View").withPosition(3, 1).withSize(1, 1).getEntry();
   private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance-Pos", "")
-      .withWidget("Text View").withPosition(4, 0).withSize(1, 1).getEntry();
+      .withWidget("Text View").withPosition(6, 0).withSize(2, 1).getEntry();
+  private final GenericEntry sbState = compTab.addPersistent("Crane State", "")
+      .withWidget("Text View").withPosition(6, 1).withSize(2, 1).getEntry();
+
+  private final GenericEntry sbElem = compTab.addPersistent("Element", "")
+      .withWidget("Text View").withPosition(0, 8).withSize(2, 1).getEntry();
+  private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "")
+      .withWidget("Text View").withPosition(2, 8).withSize(2, 1).getEntry();
+  private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "")
+      .withWidget("Text View").withPosition(4, 8).withSize(2, 1).getEntry();
 
   private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
       V.TOP,
       Map.of(H.LEFT, compTab.addPersistent("Top Left", false)
-          .withWidget("Boolean Box").withPosition(0, 2).withSize(1, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 4).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Top Center", false)
-              .withWidget("Boolean Box").withPosition(1, 2).withSize(1, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 4).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Top Right", false)
-              .withWidget("Boolean Box").withPosition(2, 2).withSize(1, 1).getEntry()),
+              .withWidget("Boolean Box").withPosition(4, 4).withSize(2, 1).getEntry()),
       V.MIDDLE,
       Map.of(H.LEFT, compTab.addPersistent("Mid Left", false)
-          .withWidget("Boolean Box").withPosition(0, 3).withSize(1, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 5).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Mid Center", false)
-              .withWidget("Boolean Box").withPosition(1, 3).withSize(1, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 5).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Mid Right", false)
-              .withWidget("Boolean Box").withPosition(2, 3).withSize(1, 1).getEntry()),
+              .withWidget("Boolean Box").withPosition(4, 5).withSize(2, 1).getEntry()),
       V.BOTTOM,
       Map.of(H.LEFT, compTab.addPersistent("Bot Left", false)
-          .withWidget("Boolean Box").withPosition(0, 4).withSize(1, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 6).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Bot Center", false)
-              .withWidget("Boolean Box").withPosition(1, 4).withSize(1, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 6).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Bot Right", false)
-              .withWidget("Boolean Box").withPosition(2, 4).withSize(1, 1).getEntry())));
+              .withWidget("Boolean Box").withPosition(4, 6).withSize(2, 1).getEntry())));
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
       E.CONE, compTab.addPersistent("Cone", false)
-          .withWidget("Boolean Box").withPosition(0, 1).withSize(1, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(1, 3).withSize(2, 1).getEntry(),
       E.CUBE, compTab.addPersistent("Cube", false)
-          .withWidget("Boolean Box").withPosition(1, 1).withSize(1, 1).getEntry()));
+          .withWidget("Boolean Box").withPosition(3, 3).withSize(2, 1).getEntry()));
 
   /** Creates a new Crane. */
   public Crane(XboxController operator) {

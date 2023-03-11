@@ -26,6 +26,7 @@ public class GridCalcs {
 		READY,
 		NODE,
 		CLEAR2MOVE,
+		SUBSTATION,
 		MOVING
 	}
 
@@ -141,11 +142,36 @@ public class GridCalcs {
 
 	public final EnumMap<C, Double> kRobotFwdPos = new EnumMap<>(Map.of(
 			C.TURRET, 0.0,
-			C.ARM, -27.25,
+			C.ARM, -20.75,
 			C.TILT, 39.3125));
 
 	public double getRobotFwdPos(C c) {
 		return kRobotFwdPos.get(c);
+	}
+
+	public final EnumMap<C, Double> kSubStation = new EnumMap<>(Map.of(
+			C.TURRET, 0.0,
+			C.ARM, 6.5,
+			C.TILT, 37.375));
+
+	public double getSubStationPos(C c) {
+		double result = 0.0;
+		double length = kSubStation.get(C.ARM) + kRobotFwdPos.get(C.ARM);
+		double height = kSubStation.get(C.TILT) + (getElem() == E.CONE ? 8.0 : 4.5) - kRobotFwdPos.get(C.TILT);
+
+		switch (c) {
+			case TURRET:
+				result = kSubStation.get(C.TURRET);
+				break;
+			case ARM:
+				result = Math.sqrt(Math.pow(length, 2) + Math.pow(height, 2));
+				break;
+			case TILT:
+				result = Math.toDegrees(Math.atan(height / length));
+				break;
+			default:
+		}
+		return result;
 	}
 
 	public final EnumMap<E, Double> kZG = new EnumMap<>(Map.of(
@@ -268,10 +294,6 @@ public class GridCalcs {
 
 	public double getRevTurret() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			// return Math.toDegrees(Math.asin(kTurretNode.get(horz.get()) / getFwdArm()));
-			// return Math.toDegrees(Math.atan(
-			// kXNode.get(horz.get()) - kRobotArm.get(C.TURRET) /
-			// kYNode.get(vert.get()) - kRobotArm.get(C.ARM)));
 			return Math.toDegrees(Math.asin(
 					(kXNode.get(horz.get()) - kRobotRevPos.get(C.TURRET)) /
 							(getRevArm() / fudge)));
@@ -282,13 +304,6 @@ public class GridCalcs {
 
 	public double getRevTilt() {
 		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			// return Math.toDegrees(
-			// Math.asin((kTiltNode.get(vert.get()).get(elem) + kZG.get(elem) -
-			// kRobotArm.get(C.TILT)) / getFwdArm()));
-			// return Math.toDegrees(
-			// Math.atan(
-			// kZNode.get(vert.get()).get(elem) + kZG.get(elem) - kRobotArm.get(C.TILT)) /
-			// kYNode.get(vert.get()) - kRobotArm.get(C.ARM));
 			return Math.toDegrees(
 					Math.asin(
 							(kZNode.get(vert.get()).get(elem) - kRobotRevPos.get(C.TILT) + kZG.get(elem)) /

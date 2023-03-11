@@ -57,7 +57,7 @@ public class Crane_Move2SubStnPos extends CommandBase {
           finish = true;
 
           // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
-        } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.RECEIVE) {
+        } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD) {
           craneTurret.setTurretSetPoint(grid.getSubStationPos(C.TURRET));
           craneTilt.setTiltSetPoint(grid.getSubStationPos(C.TILT));
           craneArm.setArmSetPoint(grid.getSubStationPos(C.ARM));

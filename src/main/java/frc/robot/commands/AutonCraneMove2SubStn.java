@@ -29,10 +29,6 @@ public class AutonCraneMove2SubStn extends SequentialCommandGroup {
         // Lift Claw out of "U"
 //        new IntakeArm(intake, ArmState.OPEN),
         new ClawFinger(claw, FingerState.RELEASE),
-        new Crane_Move2SubStnPos(crane, craneTurret, craneTilt, craneArm),
-        new Crane_Move2GripPos(crane, craneTurret, craneTilt, craneArm),
-        new ClawFinger(claw, FingerState.GRIP),
-        new WaitCommand(1.0),
-        new Crane_Move2HoldPos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2SubStnPos(crane, craneTurret, craneTilt, craneArm));
   }
 }

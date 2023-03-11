@@ -51,6 +51,7 @@ import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.Crane_ManualMove;
 import frc.robot.commands.Crane_Move2GripPos;
+import frc.robot.commands.Crane_Move2HoldPos;
 import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.Crane_Move2ReadyPos;
 import frc.robot.commands.Crane_Move2ReceivePos;
@@ -78,6 +79,7 @@ import frc.robot.commands.AutonScoreMobilityPark;
 import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
+import frc.robot.commands.AutonCraneMove2SubStn;
 import frc.robot.commands.AutonCraneScoreAtNode;
 import frc.robot.commands.AutonGetGameElement;
 import frc.robot.commands.AutonReturn;
@@ -192,6 +194,8 @@ public class RobotContainer {
 			craneArm);
 	private final Crane_Move2ReceivePos crane_Move2ReceivePos = new Crane_Move2ReceivePos(crane, craneTurret, craneTilt,
 			craneArm);
+	private final Crane_Move2HoldPos crane_Move2HoldPos = new Crane_Move2HoldPos(crane, craneTurret, craneTilt,
+			craneArm);
 	private final Crane_Move2StowPos crane_Move2StowPos = new Crane_Move2StowPos(crane, craneTurret, craneTilt,
 			craneArm);
 
@@ -206,6 +210,8 @@ public class RobotContainer {
 			craneArm);
 	private final AutonCraneScoreAtNode auton_ScoreAtNodePos = new AutonCraneScoreAtNode(crane, craneTurret, craneTilt,
 			craneArm, claw);
+	private final AutonCraneMove2SubStn auton_Move2SubStnPos = new AutonCraneMove2SubStn(crane, craneTurret, craneTilt,
+			craneArm, claw, intake);
 
 	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);
 	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBE);
@@ -481,12 +487,16 @@ public class RobotContainer {
 
 		// new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 
-		new JoystickButton(operator, Button.kBack.value).onTrue(crane_Move2StowPos);
+		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
+		
 		new JoystickButton(operator, Button.kX.value).onTrue(auton_Move2ElemPos);
 		new JoystickButton(operator, Button.kY.value).onTrue(auton_Move2ReadyPos);
 		new JoystickButton(operator, Button.kB.value).onTrue(auton_Move2NodePos);
 		new JoystickButton(operator, Button.kA.value).onTrue(auton_ScoreAtNodePos);
-		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
+
+		new JoystickButton(operator, Button.kBack.value).onTrue(auton_Move2SubStnPos);
+		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(clawGrip);
+		new JoystickButton(operator, Button.kRightBumper.value).onTrue(crane_Move2HoldPos);
 	}
 
 	public double getDPad() {

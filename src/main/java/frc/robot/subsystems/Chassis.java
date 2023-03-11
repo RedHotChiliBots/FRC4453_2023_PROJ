@@ -147,10 +147,12 @@ public class Chassis extends SubsystemBase {
 	private DirState dirState = DirState.FORWARD;
 	private DriveState driveState = DriveState.TANK;
 
+	public final Library lib = new Library();
+
 	public SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 
 	// ==============================================================
-	// Define Shuffleboard data
+	// Define Shuffleboard data - Chassis Tab
 	private final ShuffleboardTab chassisTab = Shuffleboard.getTab("Chassis");
 
 	private final GenericEntry sbSetPt = chassisTab.addPersistent("Setpoint", 0.0)
@@ -221,13 +223,13 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbRightCenterAmp = chassisTab.addPersistent("RC amp", 0)
 			.withWidget("Text View").withPosition(7, 5).withSize(1, 1).getEntry();
 
+	// ==============================================================
+	// Define Shuffleboard data - Competition Tab
 	private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
 	private final GenericEntry sbDriveType = compTab.addPersistent("Drive Type", "")
 			.withWidget("Text View").withPosition(5, 1).withSize(1, 1).getEntry();
 	private final GenericEntry sbDir = compTab.addPersistent("Direction", "")
 			.withWidget("Text View").withPosition(6, 1).withSize(1, 1).getEntry();
-
-	public final Library lib = new Library();
 
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");
@@ -345,7 +347,7 @@ public class Chassis extends SubsystemBase {
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
 		// Update field position - for autonomous
-		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
+//		resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
 		stopChassis();
 

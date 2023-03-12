@@ -56,6 +56,7 @@ import frc.robot.commands.Crane_Move2NodePos;
 import frc.robot.commands.Crane_Move2ReadyPos;
 import frc.robot.commands.Crane_Move2ReceivePos;
 import frc.robot.commands.Crane_Move2StowPos;
+import frc.robot.commands.Crane_Move2SubStnPos;
 import frc.robot.commands.Crane_MoveTilt2Zero;
 import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.ChassisDriveSelected;
@@ -197,6 +198,8 @@ public class RobotContainer {
 	private final Crane_Move2HoldPos crane_Move2HoldPos = new Crane_Move2HoldPos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2StowPos crane_Move2StowPos = new Crane_Move2StowPos(crane, craneTurret, craneTilt,
+			craneArm);
+	private final Crane_Move2SubStnPos crane_Move2SubStnPos = new Crane_Move2SubStnPos(crane, craneTurret, craneTilt,
 			craneArm);
 
 	private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
@@ -423,6 +426,10 @@ public class RobotContainer {
 				.withPosition(9, 4).withSize(2, 1);
 		cmdTab.add("Move Node Pos", crane_Move2NodePos).withWidget("Command")
 				.withPosition(9, 5).withSize(2, 1);
+		cmdTab.add("Move Hold Pos", crane_Move2HoldPos).withWidget("Command")
+				.withPosition(9, 6).withSize(2, 1);
+		cmdTab.add("Move SubStn Pos", crane_Move2SubStnPos).withWidget("Command")
+				.withPosition(9, 7).withSize(2, 1);
 
 		cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero).withWidget("Command")
 				.withPosition(12, 0).withSize(2, 1);
@@ -488,7 +495,7 @@ public class RobotContainer {
 		// new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
-		
+
 		new JoystickButton(operator, Button.kX.value).onTrue(auton_Move2ElemPos);
 		new JoystickButton(operator, Button.kY.value).onTrue(auton_Move2ReadyPos);
 		new JoystickButton(operator, Button.kB.value).onTrue(auton_Move2NodePos);

@@ -40,7 +40,7 @@ public class Crane_Move2ReceivePos extends CommandBase {
     state = 0;
     finish = false;
     origState = crane.getState();
-    tgtState = CRANESTATE.SUBSTATION;
+    tgtState = CRANESTATE.RECEIVE;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,10 +53,8 @@ public class Crane_Move2ReceivePos extends CommandBase {
         if (crane.getState() == CRANESTATE.RECEIVE) {
           DriverStation.reportWarning("Already in Receive position", false);
           finish = true;
-        }
 
-        // If in Node position, move to Receive
-        if (crane.getState() == CRANESTATE.STOW ||
+        } else if (crane.getState() == CRANESTATE.STOW ||
             crane.getState() == CRANESTATE.GRIP ||
             crane.getState() == CRANESTATE.HOLD) {
           craneTilt.setSetPoint(CraneConstants.kTiltReceivePos);
@@ -67,18 +65,15 @@ public class Crane_Move2ReceivePos extends CommandBase {
 
           // If in Node position, move to Receive
         } else if (crane.getState() == CRANESTATE.AUTON) {
-          craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
           craneArm.setSetPoint(CraneConstants.kArmStowPos);
-          craneTurret.setSetPoint(CraneConstants.kTurretReceivePos);
           DriverStation.reportWarning("In Auton position, moving to Receive", false);
-          state = 1;
+          state++;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
         } else if (Math.abs(craneTurret.getPosition() - CraneConstants.kTurretReceivePos) > 90.0) {
-          craneArm.setSetPoint(CraneConstants.kArmSafe2Rotate);
-          craneTurret.setSetPoint(CraneConstants.kTurretReceivePos);
+          craneArm.setSetPoint(CraneConstants.kArmStowPos);
           state++;
           crane.setState(CRANESTATE.MOVING);
           DriverStation.reportWarning("Preparing Arm for Safe Move", false);
@@ -116,12 +111,12 @@ public class Crane_Move2ReceivePos extends CommandBase {
 
     System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
         origState, tgtState, crane.getState(), state,
-        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()),
-        String.format("%7.3", craneTurret.getSetPoint()),
-        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
-        String.format("%6.3", craneTilt.getSetPoint()),
-        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
-        String.format("%6.3", craneArm.getSetPoint()));
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
+        String.format("%7.3f", craneTurret.getSetPoint()),
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
+        String.format("%6.3f", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
+        String.format("%6.3f", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

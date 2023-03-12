@@ -29,7 +29,7 @@ public class CraneTurret extends SubsystemBase {
 
   private final SparkMaxPIDController turretPID = turretMotor.getPIDController();
 
-  private double turretSetPoint = CraneConstants.kTurretInitPos;
+  private double setPoint = CraneConstants.kTurretInitPos;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -88,7 +88,7 @@ public class CraneTurret extends SubsystemBase {
     // Configure ShuffleBoard data
     sbTurretFactor.setDouble(CraneConstants.kTurretDegreesPerRotation);
 
-    sbTurretSP.setDouble(getTurretSetPoint());
+    sbTurretSP.setDouble(getSetPoint());
 
     System.out.println("+++++ CraneTurret Constructor finished +++++");
   }
@@ -98,10 +98,10 @@ public class CraneTurret extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // if (turretSetPoint != sbTurretSP.getDouble(0.0)) {
-    //   turretSetPoint = sbTurretSP.getDouble(0.0);
-    //   setTurretSetPoint(turretSetPoint);
+    // turretSetPoint = sbTurretSP.getDouble(0.0);
+    // setTurretSetPoint(turretSetPoint);
     // }
-    sbTurretSP.setDouble(turretSetPoint);
+    sbTurretSP.setDouble(setPoint);
     sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
   }
@@ -111,40 +111,40 @@ public class CraneTurret extends SubsystemBase {
   }
 
   public void reset() {
-    initTurretPos();
-    setTurretSetPoint(turretSetPoint);
+    initPos();
+    setSetPoint(setPoint);
   }
 
-  public void initTurretPos() {
+  public void initPos() {
     turretEncoder.setPosition(CraneConstants.kTurretInitPos);
   }
 
-  public void setTurretSetPoint(double setPoint) {
-    this.turretSetPoint = setPoint;
+  public void setSetPoint(double setPoint) {
+    this.setPoint = setPoint;
     turretPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public boolean atTurretSetPoint() {
-    return Math.abs(turretSetPoint - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
+  public boolean atSetPoint() {
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 
-  public boolean atTurretNextPoint() {
-    return Math.abs(crane.getGridX() - getTurretPosition()) < CraneConstants.kTurretPositionTollerance;
+  public boolean atNextPoint() {
+    return Math.abs(crane.getGridX() - getPosition()) < CraneConstants.kTurretPositionTollerance;
   }
 
-  public double getTurretPosition() {
+  public double getPosition() {
     return turretEncoder.getPosition();
   }
 
-  public double getTurretSetPoint() {
-    return turretSetPoint;
+  public double getSetPoint() {
+    return setPoint;
   }
 
-  public void stopTurret() {
+  public void stop() {
     turretMotor.set(0.0);
   }
 
-  public void setTurretSpeed(double spd) {
+  public void setSpeed(double spd) {
     turretMotor.set(spd);
   }
 }

@@ -21,6 +21,8 @@ public class Crane_Move2SubStnPos extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  CRANESTATE origState;
+  CRANESTATE tgtState;
   GridCalcs grid = new GridCalcs();
 
   /** Creates a new CraneMove2Pos. */
@@ -39,6 +41,8 @@ public class Crane_Move2SubStnPos extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    origState = crane.getState();
+    tgtState = CRANESTATE.SUBSTATION;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,29 +59,38 @@ public class Crane_Move2SubStnPos extends CommandBase {
           // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
         } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD
             || crane.getState() == CRANESTATE.RECEIVE) {
-          craneTurret.setTurretSetPoint(grid.getSubStationPos(C.TURRET));
-          craneTilt.setTiltSetPoint(grid.getSubStationPos(C.TILT));
-          craneArm.setArmSetPoint(grid.getSubStationPos(C.ARM));
-          state++;
+          craneTurret.setSetPoint(grid.getSubStationPos(C.TURRET));
+          craneTilt.setSetPoint(grid.getSubStationPos(C.TILT));
+          craneArm.setSetPoint(grid.getSubStationPos(C.ARM));
           crane.setState(CRANESTATE.MOVING);
-          DriverStation.reportWarning("Moving to new Node", false);
+          state++;
+          DriverStation.reportWarning("Moving to SubStation", false);
         }
 
-        DriverStation.reportWarning("Current Pos: " + craneTurret.getTurretPosition() + "   Target Pos: " + crane
+        DriverStation.reportWarning("Current Pos: " + craneTurret.getPosition() + "   Target Pos: " + crane
             .getGridX(), false);
         DriverStation.reportWarning("Next State " + state, false);
         break;
 
       // If Crane is in Node position, then finished
       case 1:
-        if (craneTurret.atTurretSetPoint() &&
-            craneTilt.atTiltSetPoint() &&
-            craneArm.atArmSetPoint()) {
+        if (craneTurret.atSetPoint() &&
+            craneTilt.atSetPoint() &&
+            craneArm.atSetPoint()) {
           crane.setState(CRANESTATE.SUBSTATION);
           finish = true;
         }
         break;
     }
+
+    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+        origState, tgtState, crane.getState(), state,
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()), 
+          String.format("%7.3", craneTurret.getSetPoint()), 
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
+          String.format("%6.3", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
+          String.format("%6.3", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

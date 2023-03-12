@@ -46,18 +46,18 @@ public class Crane_ManualMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    craneTurret.setTurretSetPoint(Library.clamp(
-        craneTurret.getTurretSetPoint() +
+    craneTurret.setSetPoint(Library.clamp(
+        craneTurret.getSetPoint() +
             (Math.abs(turretAxis.getAsDouble()) < 0.1 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
         CraneConstants.kTurretMax,
         CraneConstants.kTurretMin));
-    craneTilt.setTiltSetPoint(Library.clamp(
-        craneTilt.getTiltSetPoint() +
+    craneTilt.setSetPoint(Library.clamp(
+        craneTilt.getSetPoint() +
             (Math.abs(tiltAxis.getAsDouble()) < 0.1 ? 0.0 : tiltAxis.getAsDouble() * CraneConstants.kTiltInc),
         CraneConstants.kTiltMax,
         CraneConstants.kTiltMin));
-    craneArm.setArmSetPoint(Library.clamp(
-        craneArm.getArmSetPoint() +
+    craneArm.setSetPoint(Library.clamp(
+        craneArm.getSetPoint() +
             (Math.abs(armAxis.getAsDouble()) < 0.1 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
         CraneConstants.kArmMax,
         CraneConstants.kArmMin));

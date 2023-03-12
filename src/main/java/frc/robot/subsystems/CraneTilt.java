@@ -35,7 +35,7 @@ public class CraneTilt extends SubsystemBase {
 
   private final SparkMaxPIDController tiltPID = tiltMotor.getPIDController();
 
-  private double tiltSetPoint = CraneConstants.kTiltInitPos;
+  private double setPoint = CraneConstants.kTiltInitPos;
 
   private final DoubleSolenoid ratchet = new DoubleSolenoid(
       PneumaticModuleConstants.kPCM1,
@@ -106,7 +106,7 @@ public class CraneTilt extends SubsystemBase {
     // ==============================================================
     // Configure ShuffleBoard data
     sbTiltFactor.setDouble(CraneConstants.kTiltDegreesPerRotation);
-    sbTiltSP.setDouble(getTiltSetPoint());
+    sbTiltSP.setDouble(getSetPoint());
 
     System.out.println("+++++ CraneTilt Constructor finished +++++");
   }
@@ -116,10 +116,10 @@ public class CraneTilt extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
-    //   tiltSetPoint = sbTiltSP.getDouble(0.0);
-    //   setTiltSetPoint(tiltSetPoint);
+    // tiltSetPoint = sbTiltSP.getDouble(0.0);
+    // setTiltSetPoint(tiltSetPoint);
     // }
-    sbTiltSP.setDouble(tiltSetPoint);
+    sbTiltSP.setDouble(setPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
   }
@@ -129,41 +129,41 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public void reset() {
-    initTiltPos();
-    setTiltSetPoint(tiltSetPoint);
+    initPos();
+    setSetPoint(setPoint);
     setRatchet(RatchetState.UNLOCK);
   }
 
-  public void initTiltPos() {
+  public void initPos() {
     tiltEncoder.setPosition(CraneConstants.kTiltInitPos);
   }
 
-  public void setTiltSetPoint(double setPoint) {
-    this.tiltSetPoint = setPoint;
+  public void setSetPoint(double setPoint) {
+    this.setPoint = setPoint;
     tiltPID.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public boolean atTiltSetPoint() {
-    return Math.abs(tiltSetPoint - getTiltPosition()) < CraneConstants.kTiltPositionTollerance;
+  public boolean atSetPoint() {
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kTiltPositionTollerance;
   }
 
-  public boolean atTiltNextPoint() {
-    return Math.abs(crane.getGridZ() - getTiltPosition()) < CraneConstants.kTiltPositionTollerance;
+  public boolean atNextPoint() {
+    return Math.abs(crane.getGridZ() - getPosition()) < CraneConstants.kTiltPositionTollerance;
   }
 
-  public double getTiltPosition() {
+  public double getPosition() {
     return tiltEncoder.getPosition();
   }
 
-  public double getTiltSetPoint() {
-    return tiltSetPoint;
+  public double getSetPoint() {
+    return setPoint;
   }
 
-  public void stopTilt() {
+  public void stop() {
     tiltMotor.set(0.0);
   }
 
-  public void setTiltSpeed(double spd) {
+  public void setSpeed(double spd) {
     tiltMotor.set(spd);
   }
 

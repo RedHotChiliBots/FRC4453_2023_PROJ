@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
@@ -18,6 +18,8 @@ public class Crane_MoveTilt2Zero extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  CRANESTATE origState;
+  CRANESTATE tgtState;
 
   /** Creates a new CraneMove2Pos. */
   public Crane_MoveTilt2Zero(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
@@ -35,13 +37,24 @@ public class Crane_MoveTilt2Zero extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    origState = crane.getState();
+    tgtState = CRANESTATE.SUBSTATION;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    craneTilt.setTiltSetPoint(0.0);
+    craneTilt.setSetPoint(0.0);
     finish = true;
+
+    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+        origState, tgtState, crane.getState(), state,
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()),
+        String.format("%7.3", craneTurret.getSetPoint()),
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
+        String.format("%6.3", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
+        String.format("%6.3", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

@@ -29,8 +29,7 @@ public class CraneArm extends SubsystemBase {
 
   private final SparkMaxPIDController armPID = armMotor.getPIDController();
 
-  private double armSetPoint = CraneConstants.kArmInitPos;
-
+  private double setPoint = CraneConstants.kArmInitPos;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -90,7 +89,7 @@ public class CraneArm extends SubsystemBase {
     // Configure ShuffleBoard data
     sbArmFactor.setDouble(CraneConstants.kArmInchesPerRotation);
 
-    sbArmSP.setDouble(getArmSetPoint());
+    sbArmSP.setDouble(getSetPoint());
 
     System.out.println("+++++ CraneArm Constructor finished +++++");
   }
@@ -100,11 +99,11 @@ public class CraneArm extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // if (armSetPoint != sbArmSP.getDouble(0.0)) {
-    //   armSetPoint = sbArmSP.getDouble(0.0);
-    //   setArmSetPoint(armSetPoint);
+    // armSetPoint = sbArmSP.getDouble(0.0);
+    // setArmSetPoint(armSetPoint);
     // }
-    sbArmSP.setDouble(armSetPoint);
-    sbArmPos.setDouble(getArmPosition());
+    sbArmSP.setDouble(setPoint);
+    sbArmPos.setDouble(getPosition());
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
 
@@ -113,42 +112,43 @@ public class CraneArm extends SubsystemBase {
   }
 
   public void reset() {
-    initArmPos();
-    setArmSetPoint(armSetPoint);
+    initPos();
+    setSetPoint(setPoint);
   }
-    
-  public void initArmPos() {
+
+  public void initPos() {
     armEncoder.setPosition(CraneConstants.kArmInitPos);
   }
 
-  public void setArmSetPoint(double setPoint) {
-    // The Arm moves in two sections.  Command 1" will move it 2".  Need divide the delta by 2.
+  public void setSetPoint(double setPoint) {
+    // The Arm moves in two sections. Command 1" will move it 2". Need divide the
+    // delta by 2.
     double sp = CraneConstants.kArmInitPos + ((setPoint - CraneConstants.kArmInitPos) / 2.0);
-    this.armSetPoint = setPoint;
+    this.setPoint = setPoint;
     armPID.setReference(sp, CANSparkMax.ControlType.kSmartMotion);
   }
 
-  public double getArmPosition() {
+  public double getPosition() {
     return CraneConstants.kArmInitPos + ((armEncoder.getPosition() - CraneConstants.kArmInitPos) * 2.0);
   }
 
-  public boolean atArmSetPoint() {
-    return Math.abs(armSetPoint - getArmPosition()) < CraneConstants.kArmPositionTollerance;
+  public boolean atSetPoint() {
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kArmPositionTollerance;
   }
 
-  public boolean atArmNextPoint() {
-    return Math.abs(crane.getGridY() - getArmPosition()) < CraneConstants.kArmPositionTollerance;
+  public boolean atNextPoint() {
+    return Math.abs(crane.getGridY() - getPosition()) < CraneConstants.kArmPositionTollerance;
   }
 
-  public double getArmSetPoint() {
-    return armSetPoint;
+  public double getSetPoint() {
+    return setPoint;
   }
 
-  public void stopArm() {
+  public void stop() {
     armMotor.set(0.0);
   }
 
-  public void setArmSpeed(double spd) {
+  public void setSpeed(double spd) {
     armMotor.set(spd);
   }
 }

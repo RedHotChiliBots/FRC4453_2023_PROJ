@@ -20,6 +20,8 @@ public class Crane_Move2ReadyPos extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  CRANESTATE origState;
+  CRANESTATE tgtState;
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2ReadyPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
@@ -37,6 +39,8 @@ public class Crane_Move2ReadyPos extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    origState = crane.getState();
+    tgtState = CRANESTATE.SUBSTATION;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,53 +53,60 @@ public class Crane_Move2ReadyPos extends CommandBase {
         if (crane.getState() == CRANESTATE.READY) {
           DriverStation.reportWarning("Already in Ready position", false);
           finish = true;
-        }
 
-        // If in Node position, move to Ready
-        if (crane.getState() == CRANESTATE.NODE) {
-          craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
+        } else if (crane.getState() == CRANESTATE.NODE) {
+          craneArm.setSetPoint(CraneConstants.kArmReadyPos);
           DriverStation.reportWarning("In Node position, moving to Ready", false);
           state++;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
           // Rotate
-        } else if (Math.abs(craneTurret.getTurretPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltSafe2Rotate);
-          craneArm.setArmSetPoint(CraneConstants.kArmSafe2Rotate);
+        } else if (Math.abs(craneTurret.getPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
+          craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
+          craneArm.setSetPoint(CraneConstants.kArmSafe2Rotate);
           DriverStation.reportWarning("Preparing Arm for Safe Move", false);
           state++;
           crane.setState(CRANESTATE.MOVING);
         }
         break;
 
-        // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if (craneTilt.atTiltSetPoint() && craneArm.atArmSetPoint()) {
-          craneTurret.setTurretSetPoint(CraneConstants.kTurretReadyPos);
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltReadyPos);
+        if (craneTilt.atSetPoint() && craneArm.atSetPoint()) {
+          craneTurret.setSetPoint(CraneConstants.kTurretReadyPos);
+          craneTilt.setSetPoint(CraneConstants.kTiltReadyPos);
           state++;
         }
         break;
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 2:
-        if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
-          craneArm.setArmSetPoint(CraneConstants.kArmReadyPos);
+        if (craneTurret.atSetPoint() && craneTilt.atSetPoint()) {
+          craneArm.setSetPoint(CraneConstants.kArmReadyPos);
           state++;
         }
         break;
 
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
       case 3:
-        if (craneTurret.atTurretSetPoint() &&
-            craneTilt.atTiltSetPoint() &&
-            craneArm.atArmSetPoint()) {
+        if (craneTurret.atSetPoint() &&
+            craneTilt.atSetPoint() &&
+            craneArm.atSetPoint()) {
           crane.setState(CRANESTATE.READY);
           finish = true;
         }
         break;
     }
+
+    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+        origState, tgtState, crane.getState(), state,
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()),
+          String.format("%7.3", craneTurret.getSetPoint()),
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
+          String.format("%6.3", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
+          String.format("%6.3", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

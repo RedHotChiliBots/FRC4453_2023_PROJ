@@ -22,6 +22,8 @@ public class Crane_Move2GripPos extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  CRANESTATE origState;
+  CRANESTATE tgtState;
   Timer timer = new Timer();
 
   /** Creates a new CraneMove2Pos. */
@@ -40,6 +42,8 @@ public class Crane_Move2GripPos extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    origState = crane.getState();
+    tgtState = CRANESTATE.SUBSTATION;
     timer.start();
   }
 
@@ -65,14 +69,14 @@ public class Crane_Move2GripPos extends CommandBase {
 
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
       case 1:
-        if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
-          craneTurret.setTurretSetPoint(CraneConstants.kTurretGripPos);
-          craneTilt.setTiltSetPoint(CraneConstants.kTiltGripPos);
+        if (craneTurret.atSetPoint() && craneTilt.atSetPoint()) {
+          craneTurret.setSetPoint(CraneConstants.kTurretGripPos);
+          craneTilt.setSetPoint(CraneConstants.kTiltGripPos);
           if (crane.getElem() == E.CONE) {
-            craneArm.setArmSetPoint(CraneConstants.kArmGripCone);
+            craneArm.setSetPoint(CraneConstants.kArmGripCone);
 
           } else if (crane.getElem() == E.CUBE) {
-            craneArm.setArmSetPoint(CraneConstants.kArmGripCube);
+            craneArm.setSetPoint(CraneConstants.kArmGripCube);
           }
           crane.setState(CRANESTATE.MOVING);
           state++;
@@ -81,9 +85,9 @@ public class Crane_Move2GripPos extends CommandBase {
         break;
 
       case 2:
-        if ((craneTurret.atTurretSetPoint() &&
-            craneTilt.atTiltSetPoint() &&
-            craneArm.atArmSetPoint()) ||
+        if ((craneTurret.atSetPoint() &&
+            craneTilt.atSetPoint() &&
+            craneArm.atSetPoint()) ||
             timer.hasElapsed(1.5)) {
 
           crane.setState(CRANESTATE.GRIP);
@@ -92,6 +96,14 @@ public class Crane_Move2GripPos extends CommandBase {
         break;
     }
 
+    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+        origState, tgtState, crane.getState(), state,
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()),
+        String.format("%7.3", craneTurret.getSetPoint()),
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
+        String.format("%6.3", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
+        String.format("%6.3", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

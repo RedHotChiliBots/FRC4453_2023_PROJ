@@ -36,9 +36,9 @@ public class Crane_Stop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    craneTurret.setTurretSpeed(0.0);
-    craneTilt.setTiltSpeed(0.0);
-    craneArm.setArmSpeed(0.0);
+    craneTurret.setSpeed(0.0);
+    craneTilt.setSpeed(0.0);
+    craneArm.stop();
   }
 
   // Called once the command ends or is interrupted.

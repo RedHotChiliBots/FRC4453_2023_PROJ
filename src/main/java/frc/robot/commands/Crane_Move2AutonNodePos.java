@@ -20,6 +20,8 @@ public class Crane_Move2AutonNodePos extends CommandBase {
   CraneArm craneArm;
   int state = 0;
   boolean finish = false;
+  CRANESTATE origState;
+  CRANESTATE tgtState;
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2AutonNodePos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
@@ -37,50 +39,60 @@ public class Crane_Move2AutonNodePos extends CommandBase {
   public void initialize() {
     state = 0;
     finish = false;
+    origState = crane.getState();
+    tgtState = CRANESTATE.SUBSTATION;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-      switch (state) {
-        // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
-        case 0:
-          // If already at Node, do nothing
-          if (crane.getState() == CRANESTATE.STOW) {
-            DriverStation.reportWarning("At Stow", false);
-            state++;
-          }
-          break;
+    switch (state) {
+      // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
+      case 0:
+        // If already at Node, do nothing
+        if (crane.getState() == CRANESTATE.STOW) {
+          DriverStation.reportWarning("At Stow", false);
+          state++;
+        }
+        break;
 
-        // Move Tilt and Turret to Auton Scoring Postion
-        case 1:
-            craneTilt.setTiltSetPoint(CraneConstants.kAutonTiltPos);
-            craneTurret.setTurretSetPoint(CraneConstants.kAutonTurretPos);
-            state++;
-          break;
+      // Move Tilt and Turret to Auton Scoring Postion
+      case 1:
+        craneTilt.setSetPoint(CraneConstants.kAutonTiltPos);
+        craneTurret.setSetPoint(CraneConstants.kAutonTurretPos);
+        state++;
+        break;
 
-        // If Turret and Tilt are in Node pos, move Arm Auton Scoring Position
-        case 2:
-          if (craneTurret.atTurretSetPoint() && craneTilt.atTiltSetPoint()) {
-            craneArm.setArmSetPoint(CraneConstants.kAutonArmPos);
-            state++;
-          }
-          break;
+      // If Turret and Tilt are in Node pos, move Arm Auton Scoring Position
+      case 2:
+        if (craneTurret.atSetPoint() && craneTilt.atSetPoint()) {
+          craneArm.setSetPoint(CraneConstants.kAutonArmPos);
+          state++;
+        }
+        break;
 
-        // If Crane is at Auton Node Position, then finished
-        case 3:
-          if (craneTurret.atTurretSetPoint() &&
-              craneTilt.atTiltSetPoint() &&
-              craneArm.atArmSetPoint()) {
-            crane.setState(CRANESTATE.AUTON);
-            DriverStation.reportWarning("Crane_Move2AutonNodePos finish in Auton", false);
+      // If Crane is at Auton Node Position, then finished
+      case 3:
+        if (craneTurret.atSetPoint() &&
+            craneTilt.atSetPoint() &&
+            craneArm.atSetPoint()) {
+          crane.setState(CRANESTATE.AUTON);
+          DriverStation.reportWarning("Crane_Move2AutonNodePos finish in Auton", false);
 
-            finish = true;
-          }
-          break;
-      }
+          finish = true;
+        }
+        break;
+    }
 
+    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+        origState, tgtState, crane.getState(), state,
+        craneTurret.atSetPoint() ? "SP" : String.format("%7.3", craneTurret.getPosition()),
+        String.format("%7.3", craneTurret.getSetPoint()),
+        craneTilt.atSetPoint() ? "SP" : String.format("%6.3", craneTilt.getPosition()),
+        String.format("%6.3", craneTilt.getSetPoint()),
+        craneArm.atSetPoint() ? "SP" : String.format("%6.3", craneArm.getPosition()),
+        String.format("%6.3", craneArm.getSetPoint()));
   }
 
   // Called once the command ends or is interrupted.

@@ -26,7 +26,7 @@ public class GridConstTest {
 
    @Test
    public void TestkZG() {
-      assertEquals(18.0, grid.getZG(E.CONE), DELTA);
+      assertEquals(12.0, grid.getZG(E.CONE), DELTA);
       assertEquals(12.0, grid.getZG(E.CUBE), DELTA);
    }
 

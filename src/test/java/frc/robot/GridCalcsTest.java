@@ -21,14 +21,14 @@ public class GridCalcsTest {
       grid.vert.set(V.TOP);
       grid.horz.set(H.LEFT);
       grid.setElem(E.CONE);
-      assertEquals(-21.3291, grid.getRevTurret(), DELTA);
-      assertEquals(53.3989, grid.getRevArm(), DELTA);
-      assertEquals(24.9964, grid.getRevTilt(), DELTA);
+      assertEquals(-22.2369, grid.getRevTurret(), DELTA);
+      assertEquals(51.3228, grid.getRevArm(), DELTA);
+      assertEquals(19.4389, grid.getRevTilt(), DELTA);
 
       grid.horz.set(H.RIGHT);
-      assertEquals(21.3291, grid.getRevTurret(), DELTA);
-      assertEquals(53.3989, grid.getRevArm(), DELTA);
-      assertEquals(24.9964, grid.getRevTilt(), DELTA);
+      assertEquals(22.2369, grid.getRevTurret(), DELTA);
+      assertEquals(51.3228, grid.getRevArm(), DELTA);
+      assertEquals(19.4389, grid.getRevTilt(), DELTA);
 
       grid.setElem(E.CUBE);
       grid.horz.set(H.CENTER);
@@ -59,14 +59,14 @@ public class GridCalcsTest {
       grid.setElem(E.CONE);
       grid.vert.set(V.MIDDLE);
       grid.horz.set(H.LEFT);
-      assertEquals(-32.0363, grid.getRevTurret(), DELTA);
-      assertEquals(36.6146, grid.getRevArm(), DELTA);
-      assertEquals(18.4643, grid.getRevTilt(), DELTA);
+      assertEquals(-33.4206, grid.getRevTurret(), DELTA);
+      assertEquals(35.2635, grid.getRevArm(), DELTA);
+      assertEquals(9.9817, grid.getRevTilt(), DELTA);
 
       grid.horz.set(H.RIGHT);
-      assertEquals(32.0363, grid.getRevTurret(), DELTA);
-      assertEquals(36.6146, grid.getRevArm(), DELTA);
-      assertEquals(18.4643, grid.getRevTilt(), DELTA);
+      assertEquals(33.4206, grid.getRevTurret(), DELTA);
+      assertEquals(35.2635, grid.getRevArm(), DELTA);
+      assertEquals(9.9817, grid.getRevTilt(), DELTA);
 
       grid.setElem(E.CUBE);
       grid.horz.set(H.CENTER);
@@ -97,19 +97,19 @@ public class GridCalcsTest {
       grid.setElem(E.CONE);
       grid.vert.set(V.BOTTOM);
       grid.horz.set(H.LEFT);
-      assertEquals(-42.2666, grid.getRevTurret(), DELTA);
-      assertEquals(28.8775, grid.getRevArm(), DELTA);
-      assertEquals(-31.0847, grid.getRevTilt(), DELTA);
+      assertEquals(-37.2946, grid.getRevTurret(), DELTA);
+      assertEquals(32.0548, grid.getRevArm(), DELTA);
+      assertEquals(-39.5097, grid.getRevTilt(), DELTA);
 
       grid.horz.set(H.CENTER);
       assertEquals(0.0, grid.getRevTurret(), DELTA);
-      assertEquals(21.3700, grid.getRevArm(), DELTA);
-      assertEquals(-44.2418, grid.getRevTilt(), DELTA);
+      assertEquals(25.5006, grid.getRevArm(), DELTA);
+      assertEquals(-53.1044, grid.getRevTilt(), DELTA);
 
       grid.horz.set(H.RIGHT);
-      assertEquals(42.2666, grid.getRevTurret(), DELTA);
-      assertEquals(28.8775, grid.getRevArm(), DELTA);
-      assertEquals(-31.0847, grid.getRevTilt(), DELTA);
+      assertEquals(37.2946, grid.getRevTurret(), DELTA);
+      assertEquals(32.0548, grid.getRevArm(), DELTA);
+      assertEquals(-39.5097, grid.getRevTilt(), DELTA);
 
       grid.setElem(E.CUBE);
       grid.horz.set(H.LEFT);

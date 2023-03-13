@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,6 +25,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -152,6 +156,25 @@ public class RobotContainer {
 			() -> getJoystick(operator.getLeftY()));
 
 	private final DoRumble doRumble = new DoRumble(this);
+
+
+	// private static final RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
+	// 	chassis::getPose,
+	// 	new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
+	// 	new SimpleMotorFeedforward(
+	// 			ChassisConstants.kS,
+	// 			ChassisConstants.kV,
+	// 			ChassisConstants.kA),
+	// 	ChassisConstants.kDriveKinematics,
+	// 	chassis::getWheelSpeeds,
+	// 	chassis::leftPIDController,
+	// 	chassis::rightPIDController,
+	// 	chassis::driveTankVolts,
+	// 		chassis);
+
+
+
+
 
 	// =============================================================
 	// Define Autonomous Commands here

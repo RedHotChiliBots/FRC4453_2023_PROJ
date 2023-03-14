@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.subsystems.Chassis;
 
-public final class Autos {
+public class Autos {
 
-    private static Chassis chassis;
+    private Chassis chassis;
 
     // Define a chooser for autonomous commands
-    final SendableChooser<Command> chooser = new SendableChooser<>();
+    public final SendableChooser<Command> chooser = new SendableChooser<>();
 
     // Put the chooser on the dashboard
     private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
@@ -83,50 +83,41 @@ public final class Autos {
      */
     ));
 
-    private final RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
-            chassis::getPose, // Pose2d supplier
-            chassis::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
-            new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
-            ChassisConstants.kDriveKinematics, // SwerveDriveKinematics
-            new SimpleMotorFeedforward(ChassisConstants.kS, ChassisConstants.kV),
-            chassis::getWheelSpeeds,
-            new PIDConstants(ChassisConstants.kP,
-                    ChassisConstants.kI,
-                    ChassisConstants.kD), // PID constants to correct for rotation
-            // error (used to create the rotation
-            // // controller)
-            chassis::driveTankVolts, // Module states consumer used to output to the drive subsystem
-            eventMap,
-            true, // Should the path be automatically mirrored depending on alliance
-            // color.
-            // Optional, defaults to true
-            chassis // The drive subsystem. Used to properly set the requirements of path following
-                    // commands
-    );
+    private RamseteAutoBuilder autoBuilder;
 
     public Autos(Chassis chassis) {
         this.chassis = chassis;
     }
 
-    public Command threePiece() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
+    public Command scoreElement() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ScoreElement1",
                 new PathConstraints(4, 3)));
     }
 
-    public Command coneBalance() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ConePark",
+    public Command selectElement() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("SelectElement1",
                 new PathConstraints(4, 3)));
     }
 
-    public Command twoPieceBalance() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("TwoPieceBalance",
-                new PathConstraints(4, 3)));
-    }
+    // public Command threePiece() {
+    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
+    //             new PathConstraints(4, 3)));
+    // }
 
-    public Command threePiecePlace() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePieceMidPlace",
-                new PathConstraints(4, 4)));
-    }
+    // public Command coneBalance() {
+    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ConePark",
+    //             new PathConstraints(4, 3)));
+    // }
+
+    // public Command twoPieceBalance() {
+    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("TwoPieceBalance",
+    //             new PathConstraints(4, 3)));
+    // }
+
+    // public Command threePiecePlace() {
+    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePieceMidPlace",
+    //             new PathConstraints(4, 4)));
+    // }
 
     /**
      * Blank Autonomous to be used as default dashboard option
@@ -137,13 +128,36 @@ public final class Autos {
         return Commands.none();
     }
 
-
     public void init() {
 
+        autoBuilder = new RamseteAutoBuilder(
+                chassis::getPose, // Pose2d supplier
+                chassis::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
+                new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
+                ChassisConstants.kDriveKinematics, // SwerveDriveKinematics
+                new SimpleMotorFeedforward(ChassisConstants.kS,
+                        ChassisConstants.kV),
+//                        ChassisConstants.kA),
+                chassis::getWheelSpeeds,
+                new PIDConstants(ChassisConstants.kP,
+                        ChassisConstants.kI,
+                        ChassisConstants.kD), // PID constants to correct for rotation
+                // error (used to create the rotation
+                // // controller)
+                chassis::driveTankVolts, // Module states consumer used to output to the drive subsystem
+                eventMap,
+                true, // Should the path be automatically mirrored depending on alliance
+                // color.
+                // Optional, defaults to true
+                chassis // The drive subsystem. Used to properly set the requirements of path following
+                        // commands
+        );
         compTab.add("Auton Command", chooser).withWidget("ComboBox Chooser").withPosition(0, 0).withSize(4, 1);
 
         // ==============================================================================
         // Add commands to the autonomous command chooser
         chooser.setDefaultOption("None", none());
+        chooser.addOption("SelectElement", selectElement());
+        chooser.addOption("ScoreElement", scoreElement());
     }
 }

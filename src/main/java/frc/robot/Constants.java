@@ -100,15 +100,15 @@ public final class Constants {
 	public static final class ChassisConstants {
 		public static final int kDriveSlot = 0; // from sysID
 		// Constants for Drive PIDs
-		public static final double kP = 1.0442E-06; // 0.0032218; // from sysID
+		public static final double kP = 0.00074498; // 0.0032218; // from sysID
 		public static final double kI = 0.0; // from sysID
 		public static final double kD = 0.0; // 0.00047213; // from sysID
 		public static final double kIz = 0.0;
-		public static final double kFF = 0.000156;
+		public static final double kFF = 0.0;
 
-		public static final double kA = 0.69884; // from sysID
-		public static final double kS = 0.087827; // from SysID
-		public static final double kV = 1.0907; // from sysID
+		public static final double kA = 0.37529; // from sysID
+		public static final double kS = 0.021284; // from SysID
+		public static final double kV = 0.51487; // from sysID
 
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
@@ -116,8 +116,8 @@ public final class Constants {
 		public static final double kTrackWidth = Units.inchesToMeters(23.0); // meters
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
-		public static final double kMaxSpeedMetersPerSecond = 3.0; // was 1.0
-		public static final double kMaxAccelerationMetersPerSecondSquared = 1.0; // was 0.7
+		public static final double kMaxSpeedMetersPerSecond = 4.0; // was 1.0
+		public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; // was 0.7
 
 		// Reasonable baseline values for a RAMSETE follower in units of meters and
 		// seconds

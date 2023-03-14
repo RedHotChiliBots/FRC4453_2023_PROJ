@@ -299,7 +299,7 @@ public class RobotContainer {
 		vision.setDefaultCommand(teleopTrackAprilTag);
 
 		autos.init();
-		
+
 		// =============================================================
 		// Create a voltage constraint to ensure we don't accelerate too fast
 		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(

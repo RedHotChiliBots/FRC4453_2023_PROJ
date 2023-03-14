@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.GridCalcs;
 import frc.robot.GridCalcs.C;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
@@ -52,13 +51,16 @@ public class Crane_Move2SubStnPos extends CommandBase {
       // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
       case 0:
         // If already at Node, do nothing
-        if (crane.getState() == CRANESTATE.SUBSTATION) {
+        if (crane.getState() == CRANESTATE.SUBSTATION &&
+              craneTurret.atNextPoint() &&
+              craneTilt.atNextPoint() &&
+              craneArm.atNextPoint()) {
           DriverStation.reportWarning("Already at SubStation", false);
           finish = true;
 
           // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
         } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD
-            || crane.getState() == CRANESTATE.RECEIVE) {
+            || crane.getState() == CRANESTATE.RECEIVE || crane.getState() == CRANESTATE.SUBSTATION) {
           craneTurret.setSetPoint(crane.grid.getSubStationPos(C.TURRET));
           craneTilt.setSetPoint(crane.grid.getSubStationPos(C.TILT));
           craneArm.setSetPoint(crane.grid.getSubStationPos(C.ARM));

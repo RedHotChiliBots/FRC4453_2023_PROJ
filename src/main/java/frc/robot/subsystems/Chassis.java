@@ -16,6 +16,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -97,7 +98,8 @@ public class Chassis extends SubsystemBase {
 
 	private DifferentialDriveOdometry odometry;
 	private RamseteController ramseteController;
-	
+	private SimpleMotorFeedforward feedForward;
+
 	// ==============================================================
 	// Initialize NavX AHRS board
 	// Alternatively: I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB
@@ -350,7 +352,7 @@ public class Chassis extends SubsystemBase {
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 		ramseteController = new RamseteController(ChassisConstants.kRamseteB,
 				ChassisConstants.kRamseteZeta);
-
+		feedForward = new SimpleMotorFeedforward(ChassisConstants.kS, ChassisConstants.kV);
 		// Update field position - for autonomous
 		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
 
@@ -516,7 +518,7 @@ public class Chassis extends SubsystemBase {
 		odometry.update(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 	}
 
-	public void resetOdometry(Pose2d pose) {
+	public void resetPose(Pose2d pose) {
 		resetEncoders();
 		odometry.resetPosition(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
 	}

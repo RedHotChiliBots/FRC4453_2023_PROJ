@@ -68,6 +68,12 @@ public class PrintCraneConstants {
          printStr("\n");
       }
 
+      printStr("SubStation\n");
+      for (C c : C.values()) {
+         printStr(String.format("%10s%10.4f", c, grid.kSubStation.get(c)));
+      }
+      printStr("\n");
+
       try {
          fout.close();
       } catch (IOException e2) {

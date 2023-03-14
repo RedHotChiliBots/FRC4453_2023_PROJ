@@ -7,6 +7,7 @@ import frc.robot.GridCalcs;
 import frc.robot.Constants.E;
 import frc.robot.GridCalcs.H;
 import frc.robot.GridCalcs.V;
+import frc.robot.GridCalcs.C;
 
 public class PrintCranePositions {
 
@@ -33,6 +34,8 @@ public class PrintCranePositions {
 
       GridCalcs grid = new GridCalcs();
 
+      printStr(String.format("Grid\n"));
+
       for (E e : E.values()) {
          if (e == E.NA || e == E.OTHER)
             continue;
@@ -53,6 +56,21 @@ public class PrintCranePositions {
                            grid.getRevArm()));
             }
          }
+      }
+
+      printStr(String.format("\nSubstation\n"));
+
+      for (E e : E.values()) {
+         if (e == E.NA || e == E.OTHER)
+            continue;
+
+         printStr(String.format("\n======= %s =======\n", e));
+         grid.setElem(e);
+
+         for (C c : C.values()) {
+            printStr(String.format("%8s %8.4f\t", c, grid.getSubStationPos(c)));
+         }
+         printStr(String.format("\n"));
       }
 
       try {

@@ -10,3 +10,5 @@ CONE    Height from Floor (z)
        TOP   46.0000    MIDDLE   34.0000    BOTTOM    5.0000
 CUBE    Height from Floor (z)
        TOP   35.5000    MIDDLE   23.5000    BOTTOM    5.0000
+SubStation
+    TURRET    0.0000       ARM    6.5000      TILT   37.3750

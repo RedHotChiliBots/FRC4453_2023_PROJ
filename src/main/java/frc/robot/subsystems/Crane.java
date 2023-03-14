@@ -30,7 +30,7 @@ public class Crane extends SubsystemBase {
   private int dpadValue;
 
   private final XboxController operator;
-  private final GridCalcs grid = new GridCalcs();
+  public final GridCalcs grid = new GridCalcs();
   private final Library lib = new Library();
 
   // ==============================================================

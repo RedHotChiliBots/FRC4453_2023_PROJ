@@ -1,3 +1,4 @@
+Grid
 
 ======= CONE =======
 
@@ -32,3 +33,11 @@
     LEFT	Turret: -37.2947   Tilt: -39.5098   Arm:  32.0549
   CENTER	Turret:   0.0000   Tilt: -53.1044   Arm:  25.5006
    RIGHT	Turret:  37.2947   Tilt: -39.5098   Arm:  32.0549
+
+Substation
+
+======= CONE =======
+  TURRET   0.0000	     ARM  27.9162	    TILT  12.5427	
+
+======= CUBE =======
+  TURRET   0.0000	     ARM  27.3702	    TILT   5.3721	

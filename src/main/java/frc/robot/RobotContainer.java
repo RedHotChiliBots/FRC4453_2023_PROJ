@@ -123,6 +123,8 @@ public class RobotContainer {
 	private static final CraneArm craneArm = new CraneArm(crane);
 	private static final Vision vision = new Vision();
 
+	private static final Autos autos = new Autos(chassis);
+
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 

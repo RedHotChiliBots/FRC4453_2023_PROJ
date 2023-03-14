@@ -316,7 +316,7 @@ public class GridCalcs {
 	public Horz horz = new Horz();
 	public Vert vert = new Vert();
 
-	private E elem = null;
+	private E elem = E.CONE;
 
 	public void setElem(E e) {
 		this.elem = e;

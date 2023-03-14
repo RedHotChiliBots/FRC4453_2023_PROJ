@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.GridCalcs;
@@ -23,7 +24,6 @@ public class Crane_Move2SubStnPos extends CommandBase {
   boolean finish = false;
   CRANESTATE origState;
   CRANESTATE tgtState;
-  GridCalcs grid = new GridCalcs();
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2SubStnPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
@@ -59,12 +59,12 @@ public class Crane_Move2SubStnPos extends CommandBase {
           // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
         } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD
             || crane.getState() == CRANESTATE.RECEIVE) {
-          craneTurret.setSetPoint(grid.getSubStationPos(C.TURRET));
-          craneTilt.setSetPoint(grid.getSubStationPos(C.TILT));
-          craneArm.setSetPoint(grid.getSubStationPos(C.ARM));
+          craneTurret.setSetPoint(crane.grid.getSubStationPos(C.TURRET));
+          craneTilt.setSetPoint(crane.grid.getSubStationPos(C.TILT));
+          craneArm.setSetPoint(crane.grid.getSubStationPos(C.ARM));
           crane.setState(CRANESTATE.MOVING);
           state++;
-          DriverStation.reportWarning("Moving to SubStation", false);
+          DriverStation.reportWarning("Moving to SubStation to get " + crane.grid.getElem().toString(), false);
         }
 
         DriverStation.reportWarning("Current Pos: " + craneTurret.getPosition() + "   Target Pos: " + crane
@@ -82,15 +82,15 @@ public class Crane_Move2SubStnPos extends CommandBase {
         }
         break;
     }
-
-    System.out.printf("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
-        origState, tgtState, crane.getState(), state,
-        craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
-        String.format("%7.3f", craneTurret.getSetPoint()),
-        craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
-        String.format("%6.3f", craneTilt.getSetPoint()),
-        craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
-        String.format("%6.3f", craneArm.getSetPoint()));
+    DataLogManager.log(
+        String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+            origState, tgtState, crane.getState(), state,
+            craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
+            String.format("%7.3f", craneTurret.getSetPoint()),
+            craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
+            String.format("%6.3f", craneTilt.getSetPoint()),
+            craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
+            String.format("%6.3f", craneArm.getSetPoint())));
   }
 
   // Called once the command ends or is interrupted.

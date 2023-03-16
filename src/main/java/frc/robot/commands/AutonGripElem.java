@@ -18,21 +18,18 @@ import frc.robot.subsystems.Intake.ArmState;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutonCraneMove2Elem extends SequentialCommandGroup {
+public class AutonGripElem extends SequentialCommandGroup {
   /** Creates a new AutonCranePos. */
-  public AutonCraneMove2Elem(Crane crane,
+  public AutonGripElem(Crane crane,
       CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm, Claw claw, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
         // Lift Claw out of "U"
-        new IntakeArm(intake, ArmState.OPEN),
-        new ClawFinger(claw, FingerState.RELEASE),
-        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
         new Crane_Move2GripPos(crane, craneTurret, craneTilt, craneArm),
         new ClawFinger(claw, FingerState.GRIP),
-        new WaitCommand(0.2),
-        new Crane_Move2HoldPos(crane, craneTurret, craneTilt, craneArm));
+        new WaitCommand(0.1),
+        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));
   }
 }

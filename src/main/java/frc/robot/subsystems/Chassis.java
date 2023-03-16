@@ -38,13 +38,17 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AnalogInConstants;
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
+import frc.robot.Autos;
 import frc.robot.Library;
+import frc.robot.RobotContainer;
 
 public class Chassis extends SubsystemBase {
 
@@ -117,9 +121,9 @@ public class Chassis extends SubsystemBase {
 	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogInConstants.kHiPressureChannel);
 	private final AnalogInput loPressureSensor = new AnalogInput(AnalogInConstants.kLoPressureChannel);
 
+	private Field2d field = new Field2d();
 	// ==============================================================
 	// Identify pneumatics for gear shifters
-
 	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
 			PneumaticModuleConstants.kPCM0,
 			PneumaticsModuleType.CTREPCM,
@@ -279,9 +283,9 @@ public class Chassis extends SubsystemBase {
 		rightFollower1.setIdleMode(IdleMode.kBrake);
 		rightFollower2.setIdleMode(IdleMode.kBrake);
 
-		rightMaster.setInverted(true);
-		rightFollower1.setInverted(true);
-		rightFollower2.setInverted(true);
+		leftMaster.setInverted(true);
+		leftFollower1.setInverted(true);
+		leftFollower2.setInverted(true);
 
 		// Group the left and right motors
 		leftFollower1.follow(leftMaster);
@@ -346,6 +350,7 @@ public class Chassis extends SubsystemBase {
 		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor())
 				.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
 
+
 		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
@@ -353,8 +358,13 @@ public class Chassis extends SubsystemBase {
 		ramseteController = new RamseteController(ChassisConstants.kRamseteB,
 				ChassisConstants.kRamseteZeta);
 		feedForward = new SimpleMotorFeedforward(ChassisConstants.kS, ChassisConstants.kV);
+
+		// ==============================================================
+		// Define field on Smartdashboard with inital Auton pose
+		SmartDashboard.putData("Field", field);
+
 		// Update field position - for autonomous
-		// resetOdometry(RobotContainer.BlueRungSideCargoToHub.getInitialPose());
+		resetPose(Autos.selectElement1.getInitialPose());
 
 		stopChassis();
 
@@ -411,16 +421,7 @@ public class Chassis extends SubsystemBase {
 
 		updateOdometry();
 
-		// // Get the desired pose from the trajectory.
-		// var desiredPose = trajectory.sample(timer.get());
-
-		// // Get the reference chassis speeds from the Ramsete controller.
-		// var refChassisSpeeds = m_ramseteController.calculate(drive.getPose(),
-		// desiredPose);
-
-		// // Set the linear and angular speeds.
-		// drive.drive(refChassisSpeeds.vxMetersPerSecond,
-		// refChassisSpeeds.omegaRadiansPerSecond);
+		field.setRobotPose(odometry.getPoseMeters());
 
 		Pose2d pose = odometry.getPoseMeters();
 		Translation2d trans = pose.getTranslation();
@@ -703,10 +704,10 @@ public class Chassis extends SubsystemBase {
 			case TANK:
 				switch (dirState) {
 					case FORWARD:
-						diffDrive.tankDrive(leftY, rightY);
+						diffDrive.tankDrive(-leftY, -rightY);
 						break;
 					case REVERSE:
-						diffDrive.tankDrive(-rightY, -leftY);
+						diffDrive.tankDrive(rightY, leftY);
 						break;
 				}
 				break;
@@ -714,10 +715,10 @@ public class Chassis extends SubsystemBase {
 			case ARCADE:
 				switch (dirState) {
 					case FORWARD:
-						diffDrive.arcadeDrive(leftY, leftX);
+						diffDrive.arcadeDrive(-leftY, -leftX);
 						break;
 					case REVERSE:
-						diffDrive.arcadeDrive(-leftY, -leftX);
+						diffDrive.arcadeDrive(leftY, leftX);
 						break;
 				}
 				break;
@@ -725,10 +726,10 @@ public class Chassis extends SubsystemBase {
 			case LARCADE:
 				switch (dirState) {
 					case FORWARD:
-						diffDrive.arcadeDrive(leftY, rightX);
+						diffDrive.arcadeDrive(-leftY, -rightX);
 						break;
 					case REVERSE:
-						diffDrive.arcadeDrive(-leftY, -rightX);
+						diffDrive.arcadeDrive(leftY, rightX);
 						break;
 				}
 				break;

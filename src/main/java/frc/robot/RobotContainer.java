@@ -74,24 +74,16 @@ import frc.robot.commands.AutonChassisDriveTime;
 import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonChgStnLevel;
 import frc.robot.commands.AutonChgStnRate;
-import frc.robot.commands.AutonScoreMobility;
-import frc.robot.commands.AutonScoreMobilityEngage;
-import frc.robot.commands.AutonScoreMobilityPark;
 import frc.robot.commands.AutonCraneMove2Elem;
 import frc.robot.commands.AutonCraneMove2Node;
 import frc.robot.commands.AutonCraneMove2Ready;
 import frc.robot.commands.AutonCraneMove2SubStn;
 import frc.robot.commands.AutonCraneScoreAtNode;
-import frc.robot.commands.AutonGetGameElement;
-import frc.robot.commands.AutonReturn;
-import frc.robot.commands.AutonReturnToGrid;
-import frc.robot.commands.AutonScore;
-import frc.robot.commands.AutonStraight;
+import frc.robot.commands.AutonGripScore;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
 import frc.robot.commands.ChassisToggleDrive;
-import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.OIConstants;
 
 /**
@@ -181,14 +173,8 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonScore autonScore = new AutonScore(chassis,
-			crane, craneTurret, craneTilt, craneArm, claw);
-	private final AutonScoreMobility autonScoreMobility = new AutonScoreMobility(chassis,
-			crane, craneTurret, craneTilt, craneArm, claw);
-	private final AutonScoreMobilityPark autonScoreMobilityPark = new AutonScoreMobilityPark(chassis,
-			crane, craneTurret, craneTilt, craneArm, claw);
-	private final AutonScoreMobilityEngage autonScoreMobilityEngage = new AutonScoreMobilityEngage(chassis,
-			crane, craneTurret, craneTilt, craneArm, claw);
+	private final AutonGripScore autonGripScore = new AutonGripScore(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw, intake);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
 	private final Crane_Move2ReadyPos crane_Move2ReadyPos = new Crane_Move2ReadyPos(crane, craneTurret, craneTilt,
@@ -235,26 +221,26 @@ public class RobotContainer {
 	private final TiltRatchet ratchetLock = new TiltRatchet(craneTilt, RatchetState.LOCK);
 	private final TiltRatchet ratchetUnlock = new TiltRatchet(craneTilt, RatchetState.UNLOCK);
 
-	// =============================================================
-	// Create a voltage constraint to ensure we don't accelerate too fast
-	private DifferentialDriveVoltageConstraint autoVoltageConstraint;
+	// // =============================================================
+	// // Create a voltage constraint to ensure we don't accelerate too fast
+	// private DifferentialDriveVoltageConstraint autoVoltageConstraint;
 
-	// Create configs for trajectory
-	private TrajectoryConfig fwdConfig = null;
-	private TrajectoryConfig revConfig = null;
+	// // Create configs for trajectory
+	// private TrajectoryConfig fwdConfig = null;
+	// private TrajectoryConfig revConfig = null;
 
-	// =============================================================
-	// Define Trajectory Commands here and add Trajectors below
-	private Trajectory fwdStraight = null;
-	private AutonStraight autonStraight = null;
-	private Trajectory revStraight = null;
-	private AutonReturn autonReturn = null;
+	// // =============================================================
+	// // Define Trajectory Commands here and add Trajectors below
+	// private Trajectory fwdStraight = null;
+	// private AutonStraight autonStraight = null;
+	// private Trajectory revStraight = null;
+	// private AutonReturn autonReturn = null;
 
-	private Trajectory getGameElement = null;
-	private AutonGetGameElement autonGetGameElement = null;
+	// private Trajectory getGameElement = null;
+	// private AutonGetGameElement autonGetGameElement = null;
 
-	private Trajectory returnToGrid = null;
-	private AutonReturnToGrid autonReturnToGrid = null;
+	// private Trajectory returnToGrid = null;
+	// private AutonReturnToGrid autonReturnToGrid = null;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -300,87 +286,87 @@ public class RobotContainer {
 
 		autos.init();
 
-		// =============================================================
-		// Create a voltage constraint to ensure we don't accelerate too fast
-		autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-				new SimpleMotorFeedforward(
-						ChassisConstants.kS,
-						ChassisConstants.kV,
-						ChassisConstants.kA),
-				chassis.getKinematics(),
-				10);
+		// // =============================================================
+		// // Create a voltage constraint to ensure we don't accelerate too fast
+		// autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+		// 		new SimpleMotorFeedforward(
+		// 				ChassisConstants.kS,
+		// 				ChassisConstants.kV,
+		// 				ChassisConstants.kA),
+		// 		chassis.getKinematics(),
+		// 		10);
 
-		// Create config for trajectory
-		fwdConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(chassis.getKinematics())
-				// Apply the voltage constraint
-				.addConstraint(autoVoltageConstraint)
-				.setReversed(false);
+		// // Create config for trajectory
+		// fwdConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+		// 		ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
+		// 		// Add kinematics to ensure max speed is actually obeyed
+		// 		.setKinematics(chassis.getKinematics())
+		// 		// Apply the voltage constraint
+		// 		.addConstraint(autoVoltageConstraint)
+		// 		.setReversed(false);
 
-		revConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-				ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(chassis.getKinematics())
-				// Apply the voltage constraint
-				.addConstraint(autoVoltageConstraint)
-				.setReversed(true);
+		// revConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
+		// 		ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
+		// 		// Add kinematics to ensure max speed is actually obeyed
+		// 		.setKinematics(chassis.getKinematics())
+		// 		// Apply the voltage constraint
+		// 		.addConstraint(autoVoltageConstraint)
+		// 		.setReversed(true);
 
-		fwdStraight = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-				List.of(),
-				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				// Pass config
-				fwdConfig);
+		// fwdStraight = TrajectoryGenerator.generateTrajectory(
+		// 		// Start at the origin facing the +X direction
+		// 		new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
+		// 		List.of(),
+		// 		new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
+		// 		// Pass config
+		// 		fwdConfig);
 
-		revStraight = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-				List.of(),
-				new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-				// Pass config
-				revConfig);
+		// revStraight = TrajectoryGenerator.generateTrajectory(
+		// 		// Start at the origin facing the +X direction
+		// 		new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
+		// 		List.of(),
+		// 		new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
+		// 		// Pass config
+		// 		revConfig);
 
-		try {
-			Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath()
-					.resolve("output/AT1-Element.wpilib.json");
-			getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
+		// try {
+		// 	Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath()
+		// 			.resolve("output/AT1-Element.wpilib.json");
+		// 	getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
 
-			Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
-			returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
+		// 	Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
+		// 	returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
 
-		} catch (IOException e) {
-			DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
-		}
+		// } catch (IOException e) {
+		// 	DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
+		// }
 
-		autonStraight = new AutonStraight(chassis, fwdStraight);
-		autonReturn = new AutonReturn(chassis, revStraight);
-		autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
-		autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
+		// autonStraight = new AutonStraight(chassis, fwdStraight);
+		// autonReturn = new AutonReturn(chassis, revStraight);
+		// autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
+		// autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
 
-		// ==============================================================================
-		// Add commands to the autonomous command chooser
-		chooser.setDefaultOption("Tank Drive", chassisTankDrive);
-		chooser.addOption("Auton 1: Score", autonScore);
-		chooser.addOption("Auton 2: Score, Mobility", autonScoreMobility);
-		chooser.addOption("Auton 3: Score, Mobility, Engage", autonScoreMobilityEngage);
-		chooser.addOption("Auton 4: Score, Mobility, Park", autonScoreMobilityPark);
-		chooser.addOption("Charging Station", autonChargingStation);
-		chooser.addOption("Charging Station Drive", autonChgStnDrive);
-		chooser.addOption("Charging Station Rate", autonChgStnRate);
-		chooser.addOption("Charging Station Level", autonChgStnLevel);
-		chooser.addOption("Get Game Element", autonGetGameElement);
-		chooser.addOption("Return To Grid", autonReturnToGrid);
-		chooser.addOption("Straight", autonStraight);
-		chooser.addOption("Return", autonReturn);
-		chooser.addOption("Track April Tag", autonTrackAprilTag);
+		// // ==============================================================================
+		// // Add commands to the autonomous command chooser
+		// chooser.setDefaultOption("Tank Drive", chassisTankDrive);
+		// chooser.addOption("Auton 1: Score", autonScore);
+		// chooser.addOption("Auton 2: Score, Mobility", autonScoreMobility);
+		// chooser.addOption("Auton 3: Score, Mobility, Engage", autonScoreMobilityEngage);
+		// chooser.addOption("Auton 4: Score, Mobility, Park", autonScoreMobilityPark);
+		// chooser.addOption("Charging Station", autonChargingStation);
+		// chooser.addOption("Charging Station Drive", autonChgStnDrive);
+		// chooser.addOption("Charging Station Rate", autonChgStnRate);
+		// chooser.addOption("Charging Station Level", autonChgStnLevel);
+		// chooser.addOption("Get Game Element", autonGetGameElement);
+		// chooser.addOption("Return To Grid", autonReturnToGrid);
+		// chooser.addOption("Straight", autonStraight);
+		// chooser.addOption("Return", autonReturn);
+		// chooser.addOption("Track April Tag", autonTrackAprilTag);
 
-		// =============================================================
-		// Build chooser for autonomous commands
+		// // =============================================================
+		// // Build chooser for autonomous commands
 
-		// Put the chooser on the dashboard
+		// // Put the chooser on the dashboard
 		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
 //		compTab.add("Auton Command", chooser)
 //				.withWidget("ComboBox Chooser")
@@ -445,6 +431,9 @@ public class RobotContainer {
 				.withPosition(12, 3).withSize(2, 1);
 		cmdTab.add("Score At Node", auton_ScoreAtNodePos).withWidget("Command")
 				.withPosition(12, 4).withSize(2, 1);
+
+		cmdTab.add("Auton Grip Score", autonGripScore).withWidget("Command")
+				.withPosition(2, 6).withSize(2, 1);
 
 		configureButtonBindings();
 

@@ -1,10 +1,14 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
@@ -89,6 +93,26 @@ public class Autos {
         this.chassis = chassis;
     }
 
+    public static PathPlannerTrajectory selectElement1 = PathPlanner.loadPath("SelectElement1", new PathConstraints(4, 3));
+    public static PathPlannerTrajectory scoreElement1 = PathPlanner.loadPath("ScoreElement1", new PathConstraints(4, 3));
+    
+    public static PathPlannerTrajectory selectElement2 = PathPlanner.loadPath("SelectElement2", new PathConstraints(4, 3));
+    public static PathPlannerTrajectory scoreElement2 = PathPlanner.loadPath("ScoreElement2", new PathConstraints(4, 3));
+
+    List<PathPlannerTrajectory> scoreThreeElements = new ArrayList<>(Arrays.asList(selectElement1, scoreElement1, selectElement2, scoreElement2));
+
+    public Command scoreThreeElements() {
+        return autoBuilder.fullAuto(scoreThreeElements);
+    }
+
+    public Command scoreTwoElements() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ScoreTwoElements",
+                new PathConstraints(4, 3)));
+    }
+
+    // List<PathPlannerTrajectory> pathGroup1 = PathPlanner.loadPathGroup("Example Path Group",
+    //         new PathConstraints(4, 3));
+
     public Command scoreElement() {
         return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ScoreElement1",
                 new PathConstraints(4, 3)));
@@ -152,6 +176,7 @@ public class Autos {
                 chassis // The drive subsystem. Used to properly set the requirements of path following
                         // commands
         );
+
         compTab.add("Auton Command", chooser).withWidget("ComboBox Chooser").withPosition(0, 0).withSize(4, 1);
 
         // ==============================================================================
@@ -159,5 +184,7 @@ public class Autos {
         chooser.setDefaultOption("None", none());
         chooser.addOption("SelectElement", selectElement());
         chooser.addOption("ScoreElement", scoreElement());
+        chooser.addOption("Full Auto", scoreThreeElements());
+        chooser.addOption("Score Two Elements", scoreTwoElements());
     }
 }

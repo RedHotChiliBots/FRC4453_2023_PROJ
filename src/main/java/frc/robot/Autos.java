@@ -1,9 +1,6 @@
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.PathConstraints;
@@ -99,15 +96,20 @@ public class Autos {
     public static PathPlannerTrajectory selectElement2 = PathPlanner.loadPath("SelectElement2", new PathConstraints(4, 3));
     public static PathPlannerTrajectory scoreElement2 = PathPlanner.loadPath("ScoreElement2", new PathConstraints(4, 3));
 
-    List<PathPlannerTrajectory> scoreThreeElements = new ArrayList<>(Arrays.asList(selectElement1, scoreElement1, selectElement2, scoreElement2));
+    public static PathPlannerTrajectory scoreTwoElements = PathPlanner.loadPath("ScoreTwoElements",
+            new PathConstraints(4, 3));
+
+    public static PathPlannerTrajectory scoreThreeElements = PathPlanner.loadPath("ScoreThreeElements",
+            new PathConstraints(4, 3));
+
+    // public static List<PathPlannerTrajectory> scoreThreeElements = new ArrayList<>(Arrays.asList(selectElement1, scoreElement1, selectElement2, scoreElement2));
+
+    public Command scoreTwoElements() {
+        return autoBuilder.fullAuto(scoreTwoElements);
+    }
 
     public Command scoreThreeElements() {
         return autoBuilder.fullAuto(scoreThreeElements);
-    }
-
-    public Command scoreTwoElements() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ScoreTwoElements",
-                new PathConstraints(4, 3)));
     }
 
     // List<PathPlannerTrajectory> pathGroup1 = PathPlanner.loadPathGroup("Example Path Group",
@@ -184,7 +186,7 @@ public class Autos {
         chooser.setDefaultOption("None", none());
         chooser.addOption("SelectElement", selectElement());
         chooser.addOption("ScoreElement", scoreElement());
-        chooser.addOption("Full Auto", scoreThreeElements());
         chooser.addOption("Score Two Elements", scoreTwoElements());
+        chooser.addOption("Score Three Elements", scoreThreeElements());
     }
 }

@@ -72,6 +72,7 @@ public final class Constants {
 
 	public static final class DIOChannelConstants {
 		public static final int kElementIn = 0;
+		public static final int kTiltAngleSensor = 1;
 	}
 
 	public static final class PWMChannelConstants {
@@ -113,7 +114,7 @@ public final class Constants {
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
 
-		public static final double kTrackWidth = Units.inchesToMeters(23.0); // meters
+		public static final double kTrackWidth = 1.9631;	//Units.inchesToMeters(23.0); // meters
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
 		public static final double kMaxSpeedMetersPerSecond = 4.0; // was 1.0
@@ -140,14 +141,7 @@ public final class Constants {
 		public static final double kTBGearBoxRatio = 10.71;
 		public static final double kHIGearBoxRatio = 25.0 / 6.0;
 		public static final double kLOGearBoxRatio = 15625 / 1734;
-		public static final double kGearBoxRatio = kHIGearBoxRatio;
-		public static final double kPosFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution); // Meters / Rev
-		public static final double kVelFactor = kWheelCirc / (kGearBoxRatio * kEncoderResolution) / 60.0; // Meters /
-		// Sec
-		public static final double kCountsPerRevGearbox = kEncoderResolution * kGearBoxRatio;
 
-		public static final double kPosFactorMPR = kWheelCirc / kCountsPerRevGearbox; // Meters / Rev
-		public static final double kPosFactorRPM = kCountsPerRevGearbox / kWheelCirc; // Rev / Meter
 
 		public static final double kLevelP = 0.05;
 		public static final double kLevelI = 0.0;

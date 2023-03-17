@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -20,6 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.DIOChannelConstants;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 
@@ -42,6 +44,8 @@ public class CraneTilt extends SubsystemBase {
       PneumaticsModuleType.CTREPCM,
       Pneumatic1ChannelConstants.kRatchetLock,
       Pneumatic1ChannelConstants.kRatchetUnlock);
+
+  private final DigitalInput angleSensor = new DigitalInput(DIOChannelConstants.kTiltAngleSensor);
 
   // ==============================================================
   // Define Shuffleboard data

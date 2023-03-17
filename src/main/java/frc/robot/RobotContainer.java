@@ -43,12 +43,10 @@ import frc.robot.subsystems.Intake.MotorState;
 import frc.robot.subsystems.Claw.FingerState;
 import frc.robot.subsystems.Chassis.GearShifterState;
 import frc.robot.subsystems.CraneTilt.RatchetState;
-import frc.robot.commands.ChassisTankDrive;
 import frc.robot.commands.ClawFinger;
 import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
-import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.Crane_ManualMove;
 import frc.robot.commands.Crane_Move2GripPos;
 import frc.robot.commands.Crane_Move2HoldPos;
@@ -58,28 +56,30 @@ import frc.robot.commands.Crane_Move2ReceivePos;
 import frc.robot.commands.Crane_Move2StowPos;
 import frc.robot.commands.Crane_Move2SubStnPos;
 import frc.robot.commands.Crane_MoveTilt2Zero;
-import frc.robot.commands.ChassisArcadeDrive;
 import frc.robot.commands.ChassisDriveSelected;
-import frc.robot.commands.ChassisLarcadeDrive;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
 import frc.robot.commands.IntakeArm;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
 import frc.robot.commands.IntakeToggleElem;
-import frc.robot.commands.TiltRatchet;
 import frc.robot.commands.VisionToggleRumble;
-import frc.robot.commands.AutonChargingStation;
-import frc.robot.commands.AutonChassisDriveTime;
-import frc.robot.commands.AutonChgStnDrive;
-import frc.robot.commands.AutonChgStnLevel;
-import frc.robot.commands.AutonChgStnRate;
-import frc.robot.commands.AutonCraneMove2Elem;
-import frc.robot.commands.AutonCraneMove2Node;
-import frc.robot.commands.AutonCraneMove2Ready;
-import frc.robot.commands.AutonCraneMove2SubStn;
-import frc.robot.commands.AutonCraneScoreAtNode;
-import frc.robot.commands.AutonGripScore;
+import frc.robot.commands.old.AutonChargingStation;
+import frc.robot.commands.old.AutonChassisDriveTime;
+import frc.robot.commands.old.AutonChgStnDrive;
+import frc.robot.commands.old.AutonChgStnLevel;
+import frc.robot.commands.old.AutonChgStnRate;
+import frc.robot.commands.old.ChassisArcadeDrive;
+import frc.robot.commands.old.ChassisLarcadeDrive;
+import frc.robot.commands.old.ChassisTankDrive;
+import frc.robot.commands.old.CraneTurret2Pos;
+import frc.robot.commands.old.TiltRatchet;
+import frc.robot.commands.TeleopMove2Elem;
+import frc.robot.commands.TeleopMove2Node;
+import frc.robot.commands.TeleopMove2Ready;
+import frc.robot.commands.TeleopMove2SubStn;
+import frc.robot.commands.TeleopScoreAtNode;
+import frc.robot.commands.AutonGripMove2Node;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.ChassisTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
@@ -173,7 +173,7 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonGripScore autonGripScore = new AutonGripScore(chassis,
+	private final AutonGripMove2Node autonGripScore = new AutonGripMove2Node(chassis,
 			crane, craneTurret, craneTilt, craneArm, claw, intake);
 	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
 			craneArm);
@@ -193,15 +193,15 @@ public class RobotContainer {
 	private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
 			craneArm);
 
-	private final AutonCraneMove2Elem auton_Move2ElemPos = new AutonCraneMove2Elem(crane, craneTurret, craneTilt,
+	private final TeleopMove2Elem auton_Move2ElemPos = new TeleopMove2Elem(crane, craneTurret, craneTilt,
 			craneArm, claw, intake);
-	private final AutonCraneMove2Ready auton_Move2ReadyPos = new AutonCraneMove2Ready(crane, craneTurret, craneTilt,
+	private final TeleopMove2Ready auton_Move2ReadyPos = new TeleopMove2Ready(crane, craneTurret, craneTilt,
 			craneArm);
-	private final AutonCraneMove2Node auton_Move2NodePos = new AutonCraneMove2Node(crane, craneTurret, craneTilt,
+	private final TeleopMove2Node auton_Move2NodePos = new TeleopMove2Node(crane, craneTurret, craneTilt,
 			craneArm);
-	private final AutonCraneScoreAtNode auton_ScoreAtNodePos = new AutonCraneScoreAtNode(crane, craneTurret, craneTilt,
+	private final TeleopScoreAtNode auton_ScoreAtNodePos = new TeleopScoreAtNode(crane, craneTurret, craneTilt,
 			craneArm, claw);
-	private final AutonCraneMove2SubStn auton_Move2SubStnPos = new AutonCraneMove2SubStn(crane, craneTurret, craneTilt,
+	private final TeleopMove2SubStn auton_Move2SubStnPos = new TeleopMove2SubStn(crane, craneTurret, craneTilt,
 			craneArm, claw, intake);
 
 	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);

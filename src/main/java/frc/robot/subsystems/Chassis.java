@@ -48,7 +48,6 @@ import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
 import frc.robot.Autos;
 import frc.robot.Library;
-import frc.robot.RobotContainer;
 
 public class Chassis extends SubsystemBase {
 
@@ -155,6 +154,14 @@ public class Chassis extends SubsystemBase {
 	private DirState dirState = DirState.FORWARD;
 	private DriveState driveState = DriveState.TANK;
 
+	private GearShifterState shifterState;
+	private double gearBoxRatio;
+	private double posFactor; // Meters / Rev
+	private double velFactor; // Meters / Sec
+	private double countsPerRevGearbox;
+	private double posFactorMPR; // Meters / Rev
+	private double posFactorRPM; // Rev / Meter
+
 	public final Library lib = new Library();
 
 	public SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
@@ -231,6 +238,15 @@ public class Chassis extends SubsystemBase {
 	private final GenericEntry sbRightCenterAmp = chassisTab.addPersistent("RC amp", 0)
 			.withWidget("Text View").withPosition(12, 5).withSize(2, 1).getEntry();
 
+	private final GenericEntry sbMLPosFactor = chassisTab.addPersistent("ML Pos Factor", 0)
+				.withWidget("Text View").withPosition(0, 6).withSize(2, 1).getEntry();
+	private final GenericEntry sbMRPosFactor = chassisTab.addPersistent("MR Pos Factor", 0)
+				.withWidget("Text View").withPosition(2, 6).withSize(2, 1).getEntry();
+	private final GenericEntry sbMLVelFactor = chassisTab.addPersistent("ML Vel Factor", 0)
+				.withWidget("Text View").withPosition(0, 7).withSize(2, 1).getEntry();
+	private final GenericEntry sbMRVelFactor =chassisTab.addPersistent("MR Vel Factor", 0)
+				.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
+
 	// ==============================================================
 	// Define Shuffleboard data - Competition Tab
 	private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
@@ -239,6 +255,8 @@ public class Chassis extends SubsystemBase {
 			.withWidget("Text View").withPosition(9, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbDir = compTab.addPersistent("Direction", "")
 			.withWidget("Text View").withPosition(9, 1).withSize(2, 1).getEntry();
+	private final GenericEntry sbShifter = compTab.addPersistent("Gear Shift", "")
+			.withWidget("Text View").withPosition(9, 2).withSize(2, 1).getEntry();
 
 	public Chassis() {
 		System.out.println("+++++ Chassis Constructor starting +++++");
@@ -332,47 +350,26 @@ public class Chassis extends SubsystemBase {
 		distPIDController.setTolerance(ChassisConstants.kDistanceTolerance);
 
 		// ==============================================================
-		// Configure encoders
-		leftEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
-		rightEncoder.setPositionConversionFactor(ChassisConstants.kPosFactorMPR);
-
-		leftEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
-		rightEncoder.setVelocityConversionFactor(ChassisConstants.kVelFactor);
-
-		// ==============================================================
-		// Add static variables to Shuffleboard
-		chassisTab.addPersistent("ML Pos Factor", leftEncoder.getPositionConversionFactor())
-				.withWidget("Text View").withPosition(0, 6).withSize(2, 1).getEntry();
-		chassisTab.addPersistent("MR Pos Factor", rightEncoder.getPositionConversionFactor())
-				.withWidget("Text View").withPosition(2, 6).withSize(2, 1).getEntry();
-		chassisTab.addPersistent("ML Vel Factor", leftEncoder.getVelocityConversionFactor())
-				.withWidget("Text View").withPosition(0, 7).withSize(2, 1).getEntry();
-		chassisTab.addPersistent("MR Vel Factor", rightEncoder.getVelocityConversionFactor())
-				.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
-
-
-		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
-		ramseteController = new RamseteController(ChassisConstants.kRamseteB,
-				ChassisConstants.kRamseteZeta);
+		ramseteController = new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta);
 		feedForward = new SimpleMotorFeedforward(ChassisConstants.kS, ChassisConstants.kV);
-
-		// ==============================================================
-		// Define field on Smartdashboard with inital Auton pose
-		SmartDashboard.putData("Field", field);
-
-		// Update field position - for autonomous
-		resetPose(Autos.selectElement1.getInitialPose());
 
 		stopChassis();
 
 		setGearShifter(GearShifterState.HI);
 		setDriveState(DriveState.TANK);
 		setDirState(DirState.FORWARD);
-
+		
 		lib.initLibrary();
+
+		// Update field position - for autonomous
+		resetPose(Autos.scoreTwoElements.getInitialPose());
+
+		// ==============================================================
+		// Define field on Smartdashboard with inital Auton pose
+		SmartDashboard.putData("Field", field);
 
 		System.out.println("----- Chassis Constructor finished -----");
 	}
@@ -415,6 +412,12 @@ public class Chassis extends SubsystemBase {
 
 		sbDir.setString(dirState.toString());
 		sbDriveType.setString(driveState.toString());
+		sbShifter.setString(getGearShifter().toString());
+
+		sbMLPosFactor.setDouble(leftEncoder.getPositionConversionFactor());
+		sbMRPosFactor.setDouble(rightEncoder.getPositionConversionFactor());
+		sbMLVelFactor.setDouble(leftEncoder.getVelocityConversionFactor());
+		sbMRVelFactor.setDouble(rightEncoder.getVelocityConversionFactor());
 
 		// // Update field position - for autonomous
 		// resetOdometry(BlueSideRung.getInitialPose());
@@ -765,6 +768,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void setGearShifter(GearShifterState state) {
+		shifterState = state;
 		switch (state) {
 			case HI:
 				gearShifter.set(Value.kReverse);
@@ -775,6 +779,33 @@ public class Chassis extends SubsystemBase {
 			default:
 				DriverStation.reportWarning(String.format("Chassis: Illegal GearShifter State %s", state), false);
 		}
+
+		UpdateGearRatios(shifterState);
+	}
+
+	public GearShifterState getGearShifter() {
+		return shifterState;
+	}
+
+	public void UpdateGearRatios(GearShifterState shifterState) {
+		gearBoxRatio = (shifterState == Chassis.GearShifterState.HI ? ChassisConstants.kHIGearBoxRatio
+				: ChassisConstants.kLOGearBoxRatio);
+		posFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters																							// Rev
+		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution)
+				/ 60.0; // Meters / Sec
+
+		countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
+
+		posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters / Rev
+		posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev / Meter
+
+		// ==============================================================
+		// Configure encoders
+		leftEncoder.setPositionConversionFactor(posFactorMPR);
+		rightEncoder.setPositionConversionFactor(posFactorMPR);
+
+		leftEncoder.setVelocityConversionFactor(velFactor);
+		rightEncoder.setVelocityConversionFactor(velFactor);
 	}
 
 	public void disableCompressor() {

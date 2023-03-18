@@ -81,7 +81,7 @@ import frc.robot.commands.TeleopMove2SubStn;
 import frc.robot.commands.TeleopScoreAtNode;
 import frc.robot.commands.AutonGripMove2Node;
 import frc.robot.commands.AutonTrackAprilTag;
-import frc.robot.commands.ChassisTeleopTrackAprilTag;
+import frc.robot.commands.VisionTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
 import frc.robot.commands.ChassisToggleDrive;
 import frc.robot.Constants.OIConstants;
@@ -159,7 +159,7 @@ public class RobotContainer {
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision, 2);
 
-	private final ChassisTeleopTrackAprilTag teleopTrackAprilTag = new ChassisTeleopTrackAprilTag(chassis, vision);
+	private final VisionTeleopTrackAprilTag teleopTrackAprilTag = new VisionTeleopTrackAprilTag(chassis, vision, 2);
 
 	private final VisionToggleRumble visionToggleRumble = new VisionToggleRumble(vision);
 

@@ -11,14 +11,16 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Vision;
 
-public class ChassisTeleopTrackAprilTag extends CommandBase {
+public class VisionTeleopTrackAprilTag extends CommandBase {
   Chassis chassis;
   Vision vision;
+  int targetId;
 
   /** Creates a new AutonTrackAprilTag. */
-  public ChassisTeleopTrackAprilTag(Chassis chassis, Vision vision) {
+  public VisionTeleopTrackAprilTag(Chassis chassis, Vision vision, int targetId) {
     this.chassis = chassis;
     this.vision = vision;
+    this.targetId = targetId;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(vision);
   }
@@ -26,6 +28,8 @@ public class ChassisTeleopTrackAprilTag extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    chassis.disableCompressor();
+    vision.setTargetId(targetId);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,6 +59,7 @@ public class ChassisTeleopTrackAprilTag extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    chassis.enableCompressor();
   }
 
   // Returns true when the command should end.

@@ -794,15 +794,15 @@ public class Chassis extends SubsystemBase {
 		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution)
 				/ 60.0; // Meters / Sec
 
-		countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
+		//countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
 
-		posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters / Rev
-		posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev / Meter
+		//posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters / Rev
+		//posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev / Meter
 
 		// ==============================================================
 		// Configure encoders
-		leftEncoder.setPositionConversionFactor(posFactorMPR);
-		rightEncoder.setPositionConversionFactor(posFactorMPR);
+		leftEncoder.setPositionConversionFactor((posFactor/2.0)*1.2);	//1.17842);
+		rightEncoder.setPositionConversionFactor((posFactor/2.0)*1.2);	//1.17842);
 
 		leftEncoder.setVelocityConversionFactor(velFactor);
 		rightEncoder.setVelocityConversionFactor(velFactor);

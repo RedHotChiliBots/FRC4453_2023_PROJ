@@ -212,11 +212,11 @@ public class Vision extends SubsystemBase {
 
       // Use this range as the measurement we give to the PID controller.
       // -1.0 required to ensure positive PID controller effort _increases_ range
-      forwardSpeed = -distController.calculate(range, VisionConstants.kTargetDist);
+      forwardSpeed = distController.calculate(range, VisionConstants.kTargetDist);
 
       // Also calculate angular power
       // -1.0 required to ensure positive PID controller effort _increases_ yaw
-      rotationSpeed = turnController.calculate(yaw, 0);
+      rotationSpeed = -turnController.calculate(yaw, 0);
 
     } else {
       forwardSpeed = 0;

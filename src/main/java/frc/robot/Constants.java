@@ -136,7 +136,7 @@ public final class Constants {
 		public static final double kDriveMaxAcc = 1500;
 		public static final double kDriveAllowErr = 0.01;
 
-		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 8.0); // meters
+		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 7.639); // meters
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kTBGearBoxRatio = 10.71;
 		public static final double kHIGearBoxRatio = 25.0 / 6.0;
@@ -314,14 +314,14 @@ public final class Constants {
 		public static final String kCameraName = "OV5647";
 
 		// Constants such as camera and target height stored. Change per robot and goal!
-		public static final double kCameraHeight = Units.inchesToMeters(15.5);
+		public static final double kCameraHeight = Units.inchesToMeters(19.0);
 		public static final double kTargetHeight = Units.inchesToMeters(18.75);
 
 		// Angle between horizontal and the camera.
 		public static final double kCameraPitch = Units.degreesToRadians(0);
 
 		// How far from the target we want to be
-		public static final double kTargetDist = Units.feetToMeters(3);
+		public static final double kTargetDist = Units.feetToMeters(2);
 
 		public static final double kRange2Rumble = Units.feetToMeters(20.0);
 

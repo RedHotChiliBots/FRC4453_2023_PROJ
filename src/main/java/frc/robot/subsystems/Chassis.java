@@ -239,13 +239,13 @@ public class Chassis extends SubsystemBase {
 			.withWidget("Text View").withPosition(12, 5).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbMLPosFactor = chassisTab.addPersistent("ML Pos Factor", 0)
-				.withWidget("Text View").withPosition(0, 6).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 6).withSize(2, 1).getEntry();
 	private final GenericEntry sbMRPosFactor = chassisTab.addPersistent("MR Pos Factor", 0)
-				.withWidget("Text View").withPosition(2, 6).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(2, 6).withSize(2, 1).getEntry();
 	private final GenericEntry sbMLVelFactor = chassisTab.addPersistent("ML Vel Factor", 0)
-				.withWidget("Text View").withPosition(0, 7).withSize(2, 1).getEntry();
-	private final GenericEntry sbMRVelFactor =chassisTab.addPersistent("MR Vel Factor", 0)
-				.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(0, 7).withSize(2, 1).getEntry();
+	private final GenericEntry sbMRVelFactor = chassisTab.addPersistent("MR Vel Factor", 0)
+			.withWidget("Text View").withPosition(2, 7).withSize(2, 1).getEntry();
 
 	// ==============================================================
 	// Define Shuffleboard data - Competition Tab
@@ -361,11 +361,11 @@ public class Chassis extends SubsystemBase {
 		setGearShifter(GearShifterState.HI);
 		setDriveState(DriveState.TANK);
 		setDirState(DirState.FORWARD);
-		
+
 		lib.initLibrary();
 
 		// Update field position - for autonomous
-		resetPose(Autos.scoreTwoElements.getInitialPose());
+		// resetPose(Autos.scoreTwoElements.getInitialPose());
 
 		// ==============================================================
 		// Define field on Smartdashboard with inital Auton pose
@@ -597,8 +597,8 @@ public class Chassis extends SubsystemBase {
 
 	public double driveDistance() {
 		double currPosition = (leftEncoder.getPosition() + leftEncoder.getPosition()) / 2.0;
-		double pidOut = distPIDController.calculate(currPosition);
-		driveOnPID(-pidOut);
+		double pidOut = distPIDController.calculate(currPosition, setPoint);
+		driveOnPID(pidOut);
 		return pidOut;
 	}
 
@@ -612,8 +612,8 @@ public class Chassis extends SubsystemBase {
 	public void driveDistPosition(double setPoint) {
 
 		this.setPoint = setPoint;
-		leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion, ChassisConstants.kDriveSlot);
-		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion, ChassisConstants.kDriveSlot);
+		leftPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
+		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
 
 		// DriverStation.reportWarning("SetPoint: " + this.setPoint, false);
 		// DriverStation.reportWarning("Position: " + leftEncoder.getPosition() + " : "
@@ -790,30 +790,32 @@ public class Chassis extends SubsystemBase {
 	public void UpdateGearRatios(GearShifterState shifterState) {
 		gearBoxRatio = (shifterState == Chassis.GearShifterState.HI ? ChassisConstants.kHIGearBoxRatio
 				: ChassisConstants.kLOGearBoxRatio);
-		posFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters																							// Rev
+		posFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters // Rev
 		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution)
 				/ 60.0; // Meters / Sec
 
-		//countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
+		// countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
 
-		//posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters / Rev
-		//posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev / Meter
+		// posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters /
+		// Rev
+		// posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev /
+		// Meter
 
 		// ==============================================================
 		// Configure encoders
-		leftEncoder.setPositionConversionFactor((posFactor/2.0)*1.2);	//1.17842);
-		rightEncoder.setPositionConversionFactor((posFactor/2.0)*1.2);	//1.17842);
+		leftEncoder.setPositionConversionFactor(posFactor * 0.5714);	// / 1.923)); /// 2.0)*1.2); //1.17842);
+		rightEncoder.setPositionConversionFactor(posFactor * 0.5714);	// / 1.923)); /// 2.0)*1.2); //1.17842);
 
-		leftEncoder.setVelocityConversionFactor(velFactor);
-		rightEncoder.setVelocityConversionFactor(velFactor);
+		leftEncoder.setVelocityConversionFactor(velFactor * 0.5714);	// / 1.923);
+		rightEncoder.setVelocityConversionFactor(velFactor * 0.5714);	// / 1.923);
 	}
 
 	public void disableCompressor() {
-		compressor.disable();
+		// compressor.disable();
 	}
 
 	public void enableCompressor() {
-		compressor.enableDigital();
+		// compressor.enableDigital();
 	}
 
 	private double leftMax;

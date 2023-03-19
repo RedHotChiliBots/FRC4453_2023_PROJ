@@ -125,11 +125,11 @@ public class CraneTurret extends SubsystemBase {
   }
 
   public boolean atSetPoint() {
-    return Math.abs(setPoint - getPosition()) < CraneConstants.kTurretPositionTollerance;
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kTurretPositionTolerance;
   }
 
   public boolean atNextPoint() {
-    return Math.abs(crane.getGridX() - getPosition()) < CraneConstants.kTurretPositionTollerance;
+    return Math.abs(crane.getGridX() - getPosition()) < CraneConstants.kTurretPositionTolerance;
   }
 
   public double getPosition() {

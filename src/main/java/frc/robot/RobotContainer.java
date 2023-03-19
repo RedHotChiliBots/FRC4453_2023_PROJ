@@ -79,6 +79,7 @@ import frc.robot.commands.TeleopMove2Node;
 import frc.robot.commands.TeleopMove2Ready;
 import frc.robot.commands.TeleopMove2SubStn;
 import frc.robot.commands.TeleopScoreAtNode;
+import frc.robot.commands.AutonChassisDriveDist;
 import frc.robot.commands.AutonGripMove2Node;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.VisionTeleopTrackAprilTag;
@@ -154,6 +155,9 @@ public class RobotContainer {
 
 	private final AutonChassisDriveTime autonChassisDriveTime10 = new AutonChassisDriveTime(chassis, -0.55, 10.0);
 	private final AutonChassisDriveTime autonChassisDriveTime5 = new AutonChassisDriveTime(chassis, -0.55, 5.0);
+
+	public final AutonChassisDriveDist autonChassisDriveDist = new AutonChassisDriveDist(chassis, 
+			2.10773229598999, 5.0);
 
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
@@ -458,7 +462,7 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kY.value).onTrue(chassisToggleDrive);
 		new JoystickButton(driver, Button.kA.value).onTrue(teleopTrackAprilTag);
 		new JoystickButton(driver, Button.kB.value).onTrue(autonChargingStation);
-		new JoystickButton(driver, Button.kX.value).onTrue(visionToggleRumble);
+		new JoystickButton(driver, Button.kX.value).toggleOnTrue(visionToggleRumble);
 
 		new JoystickButton(driver, Button.kStart.value).onTrue(intakeOpen);
 		new JoystickButton(driver, Button.kBack.value).onTrue(intakeClose);

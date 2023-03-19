@@ -101,9 +101,9 @@ public final class Constants {
 	public static final class ChassisConstants {
 		public static final int kDriveSlot = 0; // from sysID
 		// Constants for Drive PIDs
-		public static final double kP = 0.00074498; // 0.0032218; // from sysID
+		public static final double kP = 0.0032145; // 0.0032218; // from sysID
 		public static final double kI = 0.0; // from sysID
-		public static final double kD = 0.0; // 0.00047213; // from sysID
+		public static final double kD = 0.00035147; // 0.00047213; // from sysID
 		public static final double kIz = 0.0;
 		public static final double kFF = 0.0;
 
@@ -114,7 +114,7 @@ public final class Constants {
 		// Example value only - as above, this must be tuned for your drive!
 		public static final double kPDriveVel = 0.5;
 
-		public static final double kTrackWidth = 1.9631;	//Units.inchesToMeters(23.0); // meters
+		public static final double kTrackWidth = 1.9631; // Units.inchesToMeters(23.0); // meters
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
 		public static final double kMaxSpeedMetersPerSecond = 4.0; // was 1.0
@@ -136,12 +136,13 @@ public final class Constants {
 		public static final double kDriveMaxAcc = 1500;
 		public static final double kDriveAllowErr = 0.01;
 
-		public static final double kWheelCirc = Units.inchesToMeters(Math.PI * 7.639); // meters
+		public static final double kWheelCirc = (Math.PI * 7.639) / 39.3700787402; // meters
+		// public static final double kWheelCirc = Units.inchesToMeters(Math.PI *
+		// 7.639); // meters
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kTBGearBoxRatio = 10.71;
 		public static final double kHIGearBoxRatio = 25.0 / 6.0;
 		public static final double kLOGearBoxRatio = 15625 / 1734;
-
 
 		public static final double kLevelP = 0.05;
 		public static final double kLevelI = 0.0;
@@ -160,9 +161,9 @@ public final class Constants {
 		public static final double kDistanceTolerance = 0.025; // meters
 		public static final int kDistSlot = 0;
 
-		public static final double kDistP = 0.1; // 5e-5;
-		public static final double kDistI = 1e-4; // 1e-6;
-		public static final double kDistD = 1.0; // 0.0;
+		public static final double kDistP = 0.45; // 5e-5;
+		public static final double kDistI = 0.01; // 1e-6;
+		public static final double kDistD = 0.0; // 0.0;
 		public static final double kDistIz = 0.0;
 		public static final double kDistFF = 0.0; // 0.000156;
 
@@ -194,12 +195,12 @@ public final class Constants {
 		public static final double kTurretInitPos = 0.0; // degrees
 		public static final double kTurretStowPos = 0.0; // degrees
 		public static final double kTurretHoldPos = 0.0; // degrees
-		public static final double kTurretReceivePos = 0.0;	// degrees
+		public static final double kTurretReceivePos = 0.0; // degrees
 		public static final double kTurretGripPos = 0.0; // degrees
 		public static final double kTurretReadyPos = 180.0; // degrees
 		public static final double kTurretNodePos = 180.0; // degrees
 		public static final double kTurretSafe2TiltArm = -40.0; // degrees
-		public static final double kTurretPositionTollerance = 1.0; // degrees
+		public static final double kTurretPositionTolerance = 1.0; // degrees
 
 		public static final double kTurretIz = 0.0;
 		public static final double kTurretFF = 0.000156;
@@ -220,7 +221,7 @@ public final class Constants {
 		public static final double kTiltHoldPos = -77.8; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 		public static final double kTiltSafe2Rotate = -60; // degrees
-		public static final double kTiltPositionTollerance = 1.0; // degrees
+		public static final double kTiltPositionTolerance = 1.0; // degrees
 
 		public static final double kTiltIz = 0.0;
 		public static final double kTiltFF = 0.000156;
@@ -241,7 +242,7 @@ public final class Constants {
 		public static final double kArmSafe2Rotate = 25.0; // inches
 		public static final double kArmGripCone = 35.5; // inches
 		public static final double kArmGripCube = 33.0; // inches
-		public static final double kArmPositionTollerance = 0.5; // inches
+		public static final double kArmPositionTolerance = 0.5; // inches
 
 		public static final double kArmIz = 0.0;
 		public static final double kArmFF = 0.000156;

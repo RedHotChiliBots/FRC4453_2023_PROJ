@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import frc.robot.commands.Balance;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.commands.AutonChassisDriveDist;
 import frc.robot.subsystems.Chassis;
 
 public class Autos {
@@ -90,59 +91,103 @@ public class Autos {
         this.chassis = chassis;
     }
 
-    public static PathPlannerTrajectory selectElement1 = PathPlanner.loadPath("SelectElement1", new PathConstraints(4, 3));
-    public static PathPlannerTrajectory scoreElement1 = PathPlanner.loadPath("ScoreElement1", new PathConstraints(4, 3));
-    
-    public static PathPlannerTrajectory selectElement2 = PathPlanner.loadPath("SelectElement2", new PathConstraints(4, 3));
-    public static PathPlannerTrajectory scoreElement2 = PathPlanner.loadPath("ScoreElement2", new PathConstraints(4, 3));
-
-    public static PathPlannerTrajectory scoreTwoElements = PathPlanner.loadPath("ScoreTwoElements",
+    public static PathPlannerTrajectory selectElement1 = PathPlanner.loadPath("SelectElement1",
+            new PathConstraints(4, 3));
+    public static PathPlannerTrajectory scoreElement1 = PathPlanner.loadPath("ScoreElement1",
             new PathConstraints(4, 3));
 
-    public static PathPlannerTrajectory scoreThreeElements = PathPlanner.loadPath("ScoreThreeElements",
+    public static PathPlannerTrajectory selectElement2 = PathPlanner.loadPath("SelectElement2",
+            new PathConstraints(4, 3));
+    public static PathPlannerTrajectory scoreElement2 = PathPlanner.loadPath("ScoreElement2",
             new PathConstraints(4, 3));
 
-    // public static List<PathPlannerTrajectory> scoreThreeElements = new ArrayList<>(Arrays.asList(selectElement1, scoreElement1, selectElement2, scoreElement2));
+    // List<PathPlannerTrajectory> pathGroup1 = PathPlanner.loadPathGroup("Example
+    // Path Group", new PathConstraints(4, 3));
+
+    // public static List<PathPlannerTrajectory> scoreThreeElements = new
+    // ArrayList<>(Arrays.asList(selectElement1, scoreElement1, selectElement2,
+    // scoreElement2));
 
     public Command scoreTwoElements() {
-        return autoBuilder.fullAuto(scoreTwoElements);
+        return autoBuilder.fullAuto(PathPlanner.loadPath("12_ScoreTwoElements",
+                new PathConstraints(4, 3)));
     }
 
     public Command scoreThreeElements() {
-        return autoBuilder.fullAuto(scoreThreeElements);
-    }
-
-    // List<PathPlannerTrajectory> pathGroup1 = PathPlanner.loadPathGroup("Example Path Group",
-    //         new PathConstraints(4, 3));
-
-    public Command scoreElement() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ScoreElement1",
+        return autoBuilder.fullAuto(PathPlanner.loadPath("18_ScoreThreeElements",
                 new PathConstraints(4, 3)));
     }
 
-    public Command selectElement() {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("SelectElement1",
+    public Command scoreMobilitySStn() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("9_Score-Mobility(SStn)",
                 new PathConstraints(4, 3)));
     }
+
+    public Command scoreMobilityWall() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("9_Score-Mobility(Wall)",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command scoreBalance() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("18_Score-Balance",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command scoreMobilityBalance() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("21_Score-Mobility-Balance",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command testZigZag() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test Zig-Zag",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command test2mForward() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test 2m Forward",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command test3mForward() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test 3m Forward",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command test35mForward() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test 3.5m Forward",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command test4mForward() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test 4m Forward",
+                new PathConstraints(4, 3)));
+    }
+
+    public Command testReverse() {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Test Reverse",
+                new PathConstraints(4, 3)));
+    }
+
+    private AutonChassisDriveDist autonChassisDriveDist;
 
     // public Command threePiece() {
-    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
-    //             new PathConstraints(4, 3)));
+    // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
+    // new PathConstraints(4, 3)));
     // }
 
     // public Command coneBalance() {
-    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ConePark",
-    //             new PathConstraints(4, 3)));
+    // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ConePark",
+    // new PathConstraints(4, 3)));
     // }
 
     // public Command twoPieceBalance() {
-    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("TwoPieceBalance",
-    //             new PathConstraints(4, 3)));
+    // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("TwoPieceBalance",
+    // new PathConstraints(4, 3)));
     // }
 
     // public Command threePiecePlace() {
-    //     return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePieceMidPlace",
-    //             new PathConstraints(4, 4)));
+    // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePieceMidPlace",
+    // new PathConstraints(4, 4)));
     // }
 
     /**
@@ -163,7 +208,7 @@ public class Autos {
                 ChassisConstants.kDriveKinematics, // SwerveDriveKinematics
                 new SimpleMotorFeedforward(ChassisConstants.kS,
                         ChassisConstants.kV),
-//                        ChassisConstants.kA),
+                // ChassisConstants.kA),
                 chassis::getWheelSpeeds,
                 new PIDConstants(ChassisConstants.kP,
                         ChassisConstants.kI,
@@ -179,14 +224,25 @@ public class Autos {
                         // commands
         );
 
+        autonChassisDriveDist = new AutonChassisDriveDist(chassis, 2.15, 5.0);
+        // 2.10773229598999
         compTab.add("Auton Command", chooser).withWidget("ComboBox Chooser").withPosition(0, 0).withSize(4, 1);
 
         // ==============================================================================
         // Add commands to the autonomous command chooser
         chooser.setDefaultOption("None", none());
-        chooser.addOption("SelectElement", selectElement());
-        chooser.addOption("ScoreElement", scoreElement());
+        chooser.addOption("Balance", autonChassisDriveDist);
+        chooser.addOption("Score Mobility (SStn)", scoreMobilitySStn());
+        chooser.addOption("Score Mobility (Wall)", scoreMobilityWall());
         chooser.addOption("Score Two Elements", scoreTwoElements());
+        chooser.addOption("Score Balance", scoreBalance());
         chooser.addOption("Score Three Elements", scoreThreeElements());
+        chooser.addOption("Score Mobility Balance", scoreMobilityBalance());
+        chooser.addOption("Test Zig-Zag", testZigZag());
+        chooser.addOption("Test 2m Forward", test2mForward());
+        chooser.addOption("Test 3m Forward", test3mForward());
+        chooser.addOption("Test 3.5m Forward", test35mForward());
+        chooser.addOption("Test 4m Forward", test4mForward());
+        // chooser.addOption("Test Reverse", testReverse());
     }
 }

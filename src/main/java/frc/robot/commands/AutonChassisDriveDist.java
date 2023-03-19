@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.old;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -30,16 +30,17 @@ public class AutonChassisDriveDist extends CommandBase {
   @Override
   public void initialize() {
     chassis.resetEncoders();
-//    chassis.setDistSetPoint(dist);
+    chassis.setDistSetPoint(dist);
     timer.start();
     timer.reset();
     DriverStation.reportWarning("AutonChassisDriveDist finish Initialize", false);
-    chassis.driveDistPosition(dist);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    chassis.driveDistance();
     System.out.println("From command");
   }
 

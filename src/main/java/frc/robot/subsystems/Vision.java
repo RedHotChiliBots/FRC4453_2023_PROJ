@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
   private final GenericEntry sbArea = visionTab.addPersistent("Area", 0)
       .withWidget("Text View").withPosition(0, 4).withSize(2, 1).getEntry();
 
-      private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0)
+  private final GenericEntry sbTargetID = visionTab.addPersistent("Target ID", 0.0)
       .withWidget("Text View").withPosition(3, 0).withSize(2, 1).getEntry();
   private final GenericEntry sbHasTargets = visionTab.addPersistent("Has Targets", false)
       .withWidget("Boolean Box").withPosition(3, 1).withSize(2, 1).getEntry();
@@ -98,6 +98,9 @@ public class Vision extends SubsystemBase {
 
   public Vision() {
     System.out.println("+++++ Vision Constructor starting +++++");
+
+    distController.setTolerance(0.1);
+    turnController.setTolerance(0.5);
 
     // NetworkTableEntry video =
     // NetworkTableInstance.getDefault().getTable("").getEntry(VisionConstants.kCameraName);
@@ -265,13 +268,12 @@ public class Vision extends SubsystemBase {
   public double getSkew() {
     return skew;
   }
+
   public void toggleRumble() {
     cancelRumble = !cancelRumble;
   }
 
   public boolean getCancelRumble() {
     return cancelRumble;
-
   }
-  
 }

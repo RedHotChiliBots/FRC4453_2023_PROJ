@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,7 +47,11 @@ public class CraneTilt extends SubsystemBase {
       Pneumatic1ChannelConstants.kRatchetLock,
       Pneumatic1ChannelConstants.kRatchetUnlock);
 
-  private final DigitalInput angleSensor = new DigitalInput(DIOChannelConstants.kTiltAngleSensor);
+  private final DigitalInput tiltSensor = new DigitalInput(DIOChannelConstants.kTiltAngleSensor);
+
+  private final EventLoop evtLoop = new EventLoop();
+
+  private int oneTime = 0;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -62,6 +68,10 @@ public class CraneTilt extends SubsystemBase {
   private final GenericEntry sbTiltFactor = craneTab.addPersistent("Tilt Factor (dpr)", 0)
       .withWidget("Text View")
       .withPosition(7, 2).withSize(2, 1).getEntry();
+
+  private final GenericEntry sbTiltSensor = craneTab.addPersistent("Tilt Sensor", false)
+      .withWidget("Boolean Box")
+      .withPosition(1, 5).withSize(2, 1).getEntry();
 
   Crane crane;
 
@@ -98,6 +108,10 @@ public class CraneTilt extends SubsystemBase {
     tiltPID.setSmartMotionMaxAccel(CraneConstants.kTiltMaxAccel, CraneConstants.kTiltSlot);
     tiltPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kTiltAllowErr, CraneConstants.kTiltSlot);
 
+    BooleanEvent tiltAtSensor = new BooleanEvent(evtLoop, () -> getTiltSensor());
+
+    tiltAtSensor.rising().ifHigh(() -> initPos(-75.0, 1));
+
     // ==============================================================
     // Configure encoders
     tiltEncoder.setPositionConversionFactor(CraneConstants.kTiltDegreesPerRotation);
@@ -126,6 +140,12 @@ public class CraneTilt extends SubsystemBase {
     sbTiltSP.setDouble(setPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
+
+    sbTiltSensor.setBoolean(getTiltSensor());
+  }
+
+  private boolean getTiltSensor() {
+    return !tiltSensor.get();
   }
 
   public double getTiltSBPos() {
@@ -133,13 +153,20 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public void reset() {
-    initPos();
+    initPos(CraneConstants.kTiltInitPos);
     setSetPoint(setPoint);
     setRatchet(RatchetState.UNLOCK);
   }
 
-  public void initPos() {
-    tiltEncoder.setPosition(CraneConstants.kTiltInitPos);
+  public void initPos(double pos) {
+    if (this.oneTime == 0)
+      tiltEncoder.setPosition(pos);
+  }
+
+  public void initPos(double pos, int oneTime) {
+    if (this.oneTime == 0)
+      tiltEncoder.setPosition(pos);
+    this.oneTime++;
   }
 
   public void setSetPoint(double setPoint) {
@@ -148,11 +175,11 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public boolean atSetPoint() {
-    return Math.abs(setPoint - getPosition()) < CraneConstants.kTiltPositionTollerance;
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kTiltPositionTolerance;
   }
 
   public boolean atNextPoint() {
-    return Math.abs(crane.getGridZ() - getPosition()) < CraneConstants.kTiltPositionTollerance;
+    return Math.abs(crane.getGridZ() - getPosition()) < CraneConstants.kTiltPositionTolerance;
   }
 
   public double getPosition() {

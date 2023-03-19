@@ -133,11 +133,11 @@ public class CraneArm extends SubsystemBase {
   }
 
   public boolean atSetPoint() {
-    return Math.abs(setPoint - getPosition()) < CraneConstants.kArmPositionTollerance;
+    return Math.abs(setPoint - getPosition()) < CraneConstants.kArmPositionTolerance;
   }
 
   public boolean atNextPoint() {
-    return Math.abs(crane.getGridY() - getPosition()) < CraneConstants.kArmPositionTollerance;
+    return Math.abs(crane.getGridY() - getPosition()) < CraneConstants.kArmPositionTolerance;
   }
 
   public double getSetPoint() {

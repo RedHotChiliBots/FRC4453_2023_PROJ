@@ -49,6 +49,6 @@ public class AutonChassisDriveTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atTarget() || timer.hasElapsed(ChassisConstants.kAutonAbort);
+    return chassis.atDistTarget() || timer.hasElapsed(ChassisConstants.kAutonAbort);
   }
 }

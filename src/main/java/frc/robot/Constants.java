@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -115,7 +114,6 @@ public final class Constants {
 		public static final double kPDriveVel = 0.5;
 
 		public static final double kTrackWidth = 1.9631; // Units.inchesToMeters(23.0); // meters
-		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
 		public static final double kMaxSpeedMetersPerSecond = 4.0; // was 1.0
 		public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; // was 0.7
@@ -158,7 +156,7 @@ public final class Constants {
 		public static final double kRateSetPoint = 3.0; // rate, deg/sec
 		public static final double kRateSetTolerance = 1.0;
 
-		public static final double kDistanceTolerance = 0.025; // meters
+		public static final double kDistanceTolerance = .00625; // meters
 		public static final int kDistSlot = 0;
 
 		public static final double kDistP = 0.45; // 5e-5;
@@ -180,6 +178,7 @@ public final class Constants {
 		// public static final double kDistAllowErr = 0.125;
 		// public static final double kDistSetTolerance = 0.5;
 
+		public static final double kAutonBalanceDist = 2.15; // meters
 		public static final double kAutonMobilityDist = Units.feetToMeters(-20.0); // meters
 		public static final double kAutonParkDist = Units.feetToMeters(10.0); // meters
 

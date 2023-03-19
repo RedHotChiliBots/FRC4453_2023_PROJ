@@ -205,7 +205,7 @@ public class Autos {
                 chassis::getPose, // Pose2d supplier
                 chassis::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
                 new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
-                ChassisConstants.kDriveKinematics, // SwerveDriveKinematics
+                chassis.kinematics, // SwerveDriveKinematics
                 new SimpleMotorFeedforward(ChassisConstants.kS,
                         ChassisConstants.kV),
                 // ChassisConstants.kA),
@@ -224,9 +224,15 @@ public class Autos {
                         // commands
         );
 
-        autonChassisDriveDist = new AutonChassisDriveDist(chassis, 2.15, 5.0);
         // 2.10773229598999
-        compTab.add("Auton Command", chooser).withWidget("ComboBox Chooser").withPosition(0, 0).withSize(4, 1);
+        autonChassisDriveDist = new AutonChassisDriveDist(
+                chassis,
+                ChassisConstants.kAutonBalanceDist,
+                5.0);
+
+        compTab.add("Auton Command", chooser)
+                .withWidget("ComboBox Chooser")
+                .withPosition(0, 0).withSize(4, 1);
 
         // ==============================================================================
         // Add commands to the autonomous command chooser

@@ -15,8 +15,6 @@ import java.text.SimpleDateFormat;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -46,7 +44,6 @@ import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.Constants.Pneumatic0ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
-import frc.robot.Autos;
 import frc.robot.Library;
 
 public class Chassis extends SubsystemBase {
@@ -95,13 +92,8 @@ public class Chassis extends SubsystemBase {
 
 	// ==============================================================
 	// Define autonomous support functions
-	// public final DifferentialDriveKinematics kinematics = new
-	// DifferentialDriveKinematics(
-	// ChassisConstants.kTrackWidth);
-
 	private DifferentialDriveOdometry odometry;
-	private RamseteController ramseteController;
-	private SimpleMotorFeedforward feedForward;
+	public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(ChassisConstants.kTrackWidth);
 
 	// ==============================================================
 	// Initialize NavX AHRS board
@@ -120,7 +112,6 @@ public class Chassis extends SubsystemBase {
 	private final AnalogInput hiPressureSensor = new AnalogInput(AnalogInConstants.kHiPressureChannel);
 	private final AnalogInput loPressureSensor = new AnalogInput(AnalogInConstants.kLoPressureChannel);
 
-	private Field2d field = new Field2d();
 	// ==============================================================
 	// Identify pneumatics for gear shifters
 	private final DoubleSolenoid gearShifter = new DoubleSolenoid(
@@ -128,6 +119,10 @@ public class Chassis extends SubsystemBase {
 			PneumaticsModuleType.CTREPCM,
 			Pneumatic0ChannelConstants.kChassisShifterHi,
 			Pneumatic0ChannelConstants.kChassisShifterLo);
+
+	// ==============================================================
+	// Define field for pose visualization on Shuffleboard
+	private Field2d field = new Field2d();
 
 	// ==============================================================
 	// Define local variables
@@ -158,9 +153,6 @@ public class Chassis extends SubsystemBase {
 	private double gearBoxRatio;
 	private double posFactor; // Meters / Rev
 	private double velFactor; // Meters / Sec
-	private double countsPerRevGearbox;
-	private double posFactorMPR; // Meters / Rev
-	private double posFactorRPM; // Rev / Meter
 
 	public final Library lib = new Library();
 
@@ -267,6 +259,8 @@ public class Chassis extends SubsystemBase {
 		pcm0.clearAllStickyFaults();
 		pcm1.clearAllStickyFaults();
 
+		// ==============================================================
+		// Configure motor current limits
 		leftMaster.setSmartCurrentLimit(45, 30);
 		leftFollower1.setSmartCurrentLimit(45, 30);
 		leftFollower2.setSmartCurrentLimit(45, 30);
@@ -275,37 +269,40 @@ public class Chassis extends SubsystemBase {
 		rightFollower2.setSmartCurrentLimit(45, 30);
 
 		// ==============================================================
-		// Configure the left side motors, master and follower
+		// Restore motor factory defaults
 		leftMaster.restoreFactoryDefaults();
 		leftFollower1.restoreFactoryDefaults();
 		leftFollower2.restoreFactoryDefaults();
-
-		leftMaster.clearFaults();
-		leftFollower1.clearFaults();
-		leftFollower2.clearFaults();
-
-		leftMaster.setIdleMode(IdleMode.kBrake);
-		leftFollower1.setIdleMode(IdleMode.kBrake);
-		leftFollower2.setIdleMode(IdleMode.kBrake);
-
-		// Configure the right side motors, master and follower
 		rightMaster.restoreFactoryDefaults();
 		rightFollower1.restoreFactoryDefaults();
 		rightFollower2.restoreFactoryDefaults();
 
+		// ==============================================================
+		// Clear motor faults
+		leftMaster.clearFaults();
+		leftFollower1.clearFaults();
+		leftFollower2.clearFaults();
 		rightMaster.clearFaults();
 		rightFollower1.clearFaults();
 		rightFollower2.clearFaults();
 
+		// ==============================================================
+		// Configure motor idle mode
+		leftMaster.setIdleMode(IdleMode.kBrake);
+		leftFollower1.setIdleMode(IdleMode.kBrake);
+		leftFollower2.setIdleMode(IdleMode.kBrake);
 		rightMaster.setIdleMode(IdleMode.kBrake);
 		rightFollower1.setIdleMode(IdleMode.kBrake);
 		rightFollower2.setIdleMode(IdleMode.kBrake);
 
+		// ==============================================================
+		// Configure motor inversion
 		leftMaster.setInverted(true);
 		leftFollower1.setInverted(true);
 		leftFollower2.setInverted(true);
 
-		// Group the left and right motors
+		// ==============================================================
+		// Group the left and right motor followers
 		leftFollower1.follow(leftMaster);
 		leftFollower2.follow(leftMaster);
 		rightFollower1.follow(rightMaster);
@@ -341,21 +338,27 @@ public class Chassis extends SubsystemBase {
 		rightPIDController.setSmartMotionAllowedClosedLoopError(
 				ChassisConstants.kDriveAllowErr, ChassisConstants.kDriveSlot);
 
+		// ==============================================================
+		// Configure level by pitch PID Controller
 		levelPIDController.setSetpoint(ChassisConstants.kLevelSetPoint);
 		levelPIDController.setTolerance(ChassisConstants.kLevelSetTolerance);
 
+		// ==============================================================
+		// Configure level by rate PID Controller
 		ratePIDController.setSetpoint(ChassisConstants.kRateSetPoint);
 		ratePIDController.setTolerance(ChassisConstants.kRateSetTolerance);
 
+		// ==============================================================
+		// Configure distance PID Controller
 		distPIDController.setTolerance(ChassisConstants.kDistanceTolerance);
 
 		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
 		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
-		ramseteController = new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta);
-		feedForward = new SimpleMotorFeedforward(ChassisConstants.kS, ChassisConstants.kV);
 
+		// ==============================================================
+		// Initialze Chassis
 		stopChassis();
 
 		setGearShifter(GearShifterState.HI);
@@ -363,9 +366,6 @@ public class Chassis extends SubsystemBase {
 		setDirState(DirState.FORWARD);
 
 		lib.initLibrary();
-
-		// Update field position - for autonomous
-		// resetPose(Autos.scoreTwoElements.getInitialPose());
 
 		// ==============================================================
 		// Define field on Smartdashboard with inital Auton pose
@@ -376,6 +376,9 @@ public class Chassis extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+
+		// ==============================================================
+		// Post data to Shuffleboard
 		sbLeftPos.setDouble(leftEncoder.getPosition());
 		sbLeftVel.setDouble(leftEncoder.getVelocity());
 		sbRightPos.setDouble(rightEncoder.getPosition());
@@ -408,7 +411,7 @@ public class Chassis extends SubsystemBase {
 		sbSetPt.setDouble(setPoint);
 		sbLeftErr.setDouble(leftError);
 		sbRightErr.setDouble(rightError);
-		sbAtTgt.setBoolean(atTarget());
+		sbAtTgt.setBoolean(atDistTarget());
 
 		sbDir.setString(dirState.toString());
 		sbDriveType.setString(driveState.toString());
@@ -419,13 +422,13 @@ public class Chassis extends SubsystemBase {
 		sbMLVelFactor.setDouble(leftEncoder.getVelocityConversionFactor());
 		sbMRVelFactor.setDouble(rightEncoder.getVelocityConversionFactor());
 
-		// // Update field position - for autonomous
-		// resetOdometry(BlueSideRung.getInitialPose());
-
+		// ==============================================================
+		// Update field odometry
 		updateOdometry();
-
 		field.setRobotPose(odometry.getPoseMeters());
 
+		// ==============================================================
+		// Compute current pose
 		Pose2d pose = odometry.getPoseMeters();
 		Translation2d trans = pose.getTranslation();
 		double x = trans.getX();
@@ -433,10 +436,14 @@ public class Chassis extends SubsystemBase {
 		Rotation2d rot = pose.getRotation();
 		double deg = rot.getDegrees();
 
+		// ==============================================================
+		// Post current/new pose to Shuffleboard
 		sbX.setDouble(x);
 		sbY.setDouble(y);
 		sbDeg.setDouble(deg);
 
+		// ==============================================================
+		// Update pitch and rate calculations
 		lib.updatePitch(getPitch());
 	}
 
@@ -449,7 +456,7 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public DifferentialDriveKinematics getKinematics() {
-		return ChassisConstants.kDriveKinematics;
+		return kinematics;
 	}
 
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -464,6 +471,22 @@ public class Chassis extends SubsystemBase {
 		ahrs.zeroYaw();
 		resetEncoders();
 		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
+	}
+
+	/**
+	 * Returns the "fused" (9-axis) heading.
+	 * 
+	 * @see com.kauailabs.navx.frc.AHRS.getFusedHeading()
+	 * @return Fused Heading in Degrees (range 0-360)
+	 * 
+	 */
+	public double getHeading() {
+		return ahrs.getFusedHeading();
+	}
+
+	public Rotation2d getAngle() {
+		// Negating the angle because WPILib gyros are CW positive.
+		return ahrs.getRotation2d();
 	}
 
 	/**
@@ -485,22 +508,6 @@ public class Chassis extends SubsystemBase {
 	}
 
 	/**
-	 * Returns the "fused" (9-axis) heading.
-	 * 
-	 * @see com.kauailabs.navx.frc.AHRS.getFusedHeading()
-	 * @return Fused Heading in Degrees (range 0-360)
-	 * 
-	 */
-	public double getHeading() {
-		return ahrs.getFusedHeading();
-	}
-
-	public Rotation2d getAngle() {
-		// Negating the angle because WPILib gyros are CW positive.
-		return ahrs.getRotation2d();
-	}
-
-	/**
 	 * Drives the robot with the given linear velocity and angular velocity.
 	 *
 	 * @param xSpeed Linear velocity in m/s.
@@ -508,7 +515,7 @@ public class Chassis extends SubsystemBase {
 	 */
 	// @SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double xRot) {
-		DifferentialDriveWheelSpeeds wheelSpeeds = ChassisConstants.kDriveKinematics
+		DifferentialDriveWheelSpeeds wheelSpeeds = kinematics
 				.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, -xRot));
 		leftMaster.set(wheelSpeeds.leftMetersPerSecond);
 		rightMaster.set(wheelSpeeds.rightMetersPerSecond);
@@ -517,7 +524,6 @@ public class Chassis extends SubsystemBase {
 	/**
 	 * Updates the field-relative position.
 	 */
-
 	public void updateOdometry() {
 		odometry.update(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 	}
@@ -538,74 +544,21 @@ public class Chassis extends SubsystemBase {
 	}
 
 	public void setDistSetPoint(double setPoint) {
-		// ==============================================================
-		// Configure PID controllers for Position
-		// leftPIDController.setP(ChassisConstants.kDistP);
-		// leftPIDController.setI(ChassisConstants.kDistI);
-		// leftPIDController.setD(ChassisConstants.kDistD);
-		// leftPIDController.setIZone(ChassisConstants.kDistIz);
-		// leftPIDController.setFF(ChassisConstants.kDistFF);
-		// leftPIDController.setOutputRange(ChassisConstants.kDistMinOutput,
-		// ChassisConstants.kDistMaxOutput);
-
-		// leftPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel,
-		// ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel,
-		// ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc,
-		// ChassisConstants.kDistSlot);
-		// leftPIDController.setSmartMotionAllowedClosedLoopError(ChassisConstants.kDistAllowErr,
-		// ChassisConstants.kDistSlot);
-
-		// rightPIDController.setP(ChassisConstants.kDistP);
-		// rightPIDController.setI(ChassisConstants.kDistI);
-		// rightPIDController.setD(ChassisConstants.kDistD);
-		// rightPIDController.setIZone(ChassisConstants.kDistIz);
-		// rightPIDController.setFF(ChassisConstants.kDistFF);
-		// rightPIDController.setOutputRange(ChassisConstants.kDistMinOutput,
-		// ChassisConstants.kDistMaxOutput);
-
-		// rightPIDController.setSmartMotionMaxVelocity(ChassisConstants.kDistMaxVel,
-		// ChassisConstants.kDistSlot);
-		// rightPIDController.setSmartMotionMinOutputVelocity(ChassisConstants.kDistMinVel,
-		// ChassisConstants.kDistSlot);
-		// rightPIDController.setSmartMotionMaxAccel(ChassisConstants.kDistMaxAcc,
-		// ChassisConstants.kDistSlot);
-		// rightPIDController.setSmartMotionAllowedClosedLoopError(ChassisConstants.kDistAllowErr,
-		// ChassisConstants.kDistSlot);
-
 		this.setPoint = setPoint;
 		distPIDController.setSetpoint(setPoint);
-	}
-
-	public double levelChargingStation2() {
-		double currPitch = lib.getAvgPitch();
-		double pidOut = levelPIDController.calculate(currPitch);
-		driveArcade(-pidOut, 0.0);
-		return pidOut;
-	}
-
-	public void driveOnPID(double spd) {
-		leftMaster.set(spd);
-		rightMaster.set(spd);
-	}
-
-	public void driveOnPID(double lSpd, double rSpd) {
-		leftMaster.set(lSpd);
-		rightMaster.set(rSpd);
 	}
 
 	public double driveDistance() {
 		double currPosition = (leftEncoder.getPosition() + leftEncoder.getPosition()) / 2.0;
 		double pidOut = distPIDController.calculate(currPosition, setPoint);
-		driveOnPID(pidOut);
+		driveArcade(pidOut, 0.0);
 		return pidOut;
 	}
 
 	public double driveTurn() {
 		double currPosition = (leftEncoder.getPosition() + leftEncoder.getPosition()) / 2.0;
 		double pidOut = distPIDController.calculate(currPosition);
-		driveOnPID(-pidOut, pidOut);
+		driveArcade(pidOut, 1.0);
 		return pidOut;
 	}
 
@@ -633,12 +586,8 @@ public class Chassis extends SubsystemBase {
 		rightPIDController.setReference(setPoint, CANSparkMax.ControlType.kPosition);
 	}
 
-	public boolean atTarget() {
-		leftError = Math.abs(setPoint - leftEncoder.getPosition());
-		rightError = Math.abs(setPoint - rightEncoder.getPosition());
-		// DriverStation.reportWarning("Error: " + leftError + " : " + rightError,
-		// false);
-		return leftError <= ChassisConstants.kDistanceTolerance && rightError <= ChassisConstants.kDistanceTolerance;
+	public boolean atDistTarget() {
+		return distPIDController.atSetpoint();
 	}
 
 	public double levelChargingStation() {
@@ -791,15 +740,7 @@ public class Chassis extends SubsystemBase {
 		gearBoxRatio = (shifterState == Chassis.GearShifterState.HI ? ChassisConstants.kHIGearBoxRatio
 				: ChassisConstants.kLOGearBoxRatio);
 		posFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters // Rev
-		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution)
-				/ 60.0; // Meters / Sec
-
-		// countsPerRevGearbox = ChassisConstants.kEncoderResolution * gearBoxRatio;
-
-		// posFactorMPR = ChassisConstants.kWheelCirc / countsPerRevGearbox; // Meters /
-		// Rev
-		// posFactorRPM = countsPerRevGearbox / ChassisConstants.kWheelCirc; // Rev /
-		// Meter
+		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution) / 60.0; // Meters / Sec
 
 		// ==============================================================
 		// Configure encoders

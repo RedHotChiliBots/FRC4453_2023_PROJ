@@ -53,6 +53,6 @@ public class AutonChassisDriveDist extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atTarget() || timer.hasElapsed(time);
+    return chassis.atDistTarget() || timer.hasElapsed(time);
   }
 }

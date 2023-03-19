@@ -4,29 +4,15 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -117,9 +103,9 @@ public class RobotContainer {
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
-	// Define a chooser for autonomous commands
-	private final SendableChooser<Command> chooser = new SendableChooser<>();
 	private final ShuffleboardTab cmdTab;
+	private final ShuffleboardTab compTab;
+	private final ShuffleboardTab subTab;
 
 	// =============================================================
 	// Define Commands here to avoid multiple instantiations
@@ -252,33 +238,6 @@ public class RobotContainer {
 	public RobotContainer() {
 		System.out.println("+++++ RobotContainer Constructor starting +++++");
 
-		// ==============================================================================
-		// Add Subsystems to Dashboard
-		Shuffleboard.getTab("SubSystems").add("Chassis", chassis)
-				.withWidget("Basic Subsystem")
-				.withPosition(1, 0).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Claw", claw)
-				.withWidget("Basic Subsystem")
-				.withPosition(1, 2).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Intake", intake)
-				.withWidget("Basic Subsystem")
-				.withPosition(1, 4).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Vision", vision)
-				.withWidget("Basic Subsystem")
-				.withPosition(1, 6).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Crane", crane)
-				.withWidget("Basic Subsystem")
-				.withPosition(6, 0).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Crane Turret", craneTurret)
-				.withWidget("Basic Subsystem")
-				.withPosition(6, 2).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Crane Tilt", craneTilt)
-				.withWidget("Basic Subsystem")
-				.withPosition(6, 4).withSize(4, 2);
-		Shuffleboard.getTab("SubSystems").add("Crane Arm", craneArm)
-				.withWidget("Basic Subsystem")
-				.withPosition(6, 6).withSize(4, 2);
-
 		// =============================================================
 		// Configure default commands for each subsystem
 		chassis.setDefaultCommand(chassisDriveSelected);
@@ -288,95 +247,35 @@ public class RobotContainer {
 		craneArm.setDefaultCommand(craneArm2Pos);
 		vision.setDefaultCommand(teleopTrackAprilTag);
 
+		// =============================================================
+		// Construct Autonomous commands
 		autos.init();
 
-		// // =============================================================
-		// // Create a voltage constraint to ensure we don't accelerate too fast
-		// autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-		// 		new SimpleMotorFeedforward(
-		// 				ChassisConstants.kS,
-		// 				ChassisConstants.kV,
-		// 				ChassisConstants.kA),
-		// 		chassis.getKinematics(),
-		// 		10);
-
-		// // Create config for trajectory
-		// fwdConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-		// 		ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-		// 		// Add kinematics to ensure max speed is actually obeyed
-		// 		.setKinematics(chassis.getKinematics())
-		// 		// Apply the voltage constraint
-		// 		.addConstraint(autoVoltageConstraint)
-		// 		.setReversed(false);
-
-		// revConfig = new TrajectoryConfig(ChassisConstants.kMaxSpeedMetersPerSecond,
-		// 		ChassisConstants.kMaxAccelerationMetersPerSecondSquared)
-		// 		// Add kinematics to ensure max speed is actually obeyed
-		// 		.setKinematics(chassis.getKinematics())
-		// 		// Apply the voltage constraint
-		// 		.addConstraint(autoVoltageConstraint)
-		// 		.setReversed(true);
-
-		// fwdStraight = TrajectoryGenerator.generateTrajectory(
-		// 		// Start at the origin facing the +X direction
-		// 		new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-		// 		List.of(),
-		// 		new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-		// 		// Pass config
-		// 		fwdConfig);
-
-		// revStraight = TrajectoryGenerator.generateTrajectory(
-		// 		// Start at the origin facing the +X direction
-		// 		new Pose2d(Units.inchesToMeters(36.0), Units.inchesToMeters(0.0), new Rotation2d(180)),
-		// 		List.of(),
-		// 		new Pose2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), new Rotation2d(0)),
-		// 		// Pass config
-		// 		revConfig);
-
-		// try {
-		// 	Path GetGameElementPATH = Filesystem.getDeployDirectory().toPath()
-		// 			.resolve("output/AT1-Element.wpilib.json");
-		// 	getGameElement = TrajectoryUtil.fromPathweaverJson(GetGameElementPATH);
-
-		// 	Path ReturnToGridPATH = Filesystem.getDeployDirectory().toPath().resolve("output/Return.wpilib.json");
-		// 	returnToGrid = TrajectoryUtil.fromPathweaverJson(ReturnToGridPATH);
-
-		// } catch (IOException e) {
-		// 	DriverStation.reportError("Unable to open trajectory", e.getStackTrace());
-		// }
-
-		// autonStraight = new AutonStraight(chassis, fwdStraight);
-		// autonReturn = new AutonReturn(chassis, revStraight);
-		// autonGetGameElement = new AutonGetGameElement(chassis, getGameElement);
-		// autonReturnToGrid = new AutonReturnToGrid(chassis, returnToGrid);
-
-		// // ==============================================================================
-		// // Add commands to the autonomous command chooser
-		// chooser.setDefaultOption("Tank Drive", chassisTankDrive);
-		// chooser.addOption("Auton 1: Score", autonScore);
-		// chooser.addOption("Auton 2: Score, Mobility", autonScoreMobility);
-		// chooser.addOption("Auton 3: Score, Mobility, Engage", autonScoreMobilityEngage);
-		// chooser.addOption("Auton 4: Score, Mobility, Park", autonScoreMobilityPark);
-		// chooser.addOption("Charging Station", autonChargingStation);
-		// chooser.addOption("Charging Station Drive", autonChgStnDrive);
-		// chooser.addOption("Charging Station Rate", autonChgStnRate);
-		// chooser.addOption("Charging Station Level", autonChgStnLevel);
-		// chooser.addOption("Get Game Element", autonGetGameElement);
-		// chooser.addOption("Return To Grid", autonReturnToGrid);
-		// chooser.addOption("Straight", autonStraight);
-		// chooser.addOption("Return", autonReturn);
-		// chooser.addOption("Track April Tag", autonTrackAprilTag);
-
-		// // =============================================================
-		// // Build chooser for autonomous commands
-
-		// // Put the chooser on the dashboard
-		ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
-//		compTab.add("Auton Command", chooser)
-//				.withWidget("ComboBox Chooser")
-//				.withPosition(0, 0).withSize(4, 1);
-
+		subTab = Shuffleboard.getTab("SubSystems");
+		compTab = Shuffleboard.getTab("Competition");
 		cmdTab = Shuffleboard.getTab("Commands");
+
+		// ==============================================================================
+		// Add Subsystems to Dashboard
+		subTab.add("Chassis", chassis).withWidget("Basic Subsystem")
+				.withPosition(1, 0).withSize(4, 2);
+		subTab.add("Claw", claw).withWidget("Basic Subsystem")
+				.withPosition(1, 2).withSize(4, 2);
+		subTab.add("Intake", intake).withWidget("Basic Subsystem")
+				.withPosition(1, 4).withSize(4, 2);
+		subTab.add("Vision", vision).withWidget("Basic Subsystem")
+				.withPosition(1, 6).withSize(4, 2);
+		subTab.add("Crane", crane).withWidget("Basic Subsystem")
+				.withPosition(6, 0).withSize(4, 2);
+		subTab.add("Crane Turret", craneTurret).withWidget("Basic Subsystem")
+				.withPosition(6, 2).withSize(4, 2);
+		subTab.add("Crane Tilt", craneTilt).withWidget("Basic Subsystem")
+				.withPosition(6, 4).withSize(4, 2);
+		subTab.add("Crane Arm", craneArm).withWidget("Basic Subsystem")
+				.withPosition(6, 6).withSize(4, 2);
+
+		// ==============================================================================
+		// Add Commands to Dashboard
 		cmdTab.add("Gear Shift HI", chassisShiftHI).withWidget("Command")
 				.withPosition(0, 0).withSize(2, 1);
 		cmdTab.add("Gear Shift LO", chassisShiftLO).withWidget("Command")
@@ -471,25 +370,6 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kRightStick.value).onTrue(chassisShiftHI);
 		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(intakeMotorOut).onFalse(intakeMotorStop);
 		new JoystickButton(driver, Button.kRightBumper.value).onTrue(intakeMotorIn).onFalse(intakeMotorStop);
-
-		// new JoystickButton(driver, Button.kY.value).onTrue(clawGrabCone);
-		// new JoystickButton(driver, Button.kX.value).onTrue(clawGrabCube);
-		// new JoystickButton(driver, Button.kB.value).onTrue(clawRelease);
-		// new JoystickButton(driver, Button.kA.value).onTrue(clawGrip);
-
-		// new JoystickButton(driver, Button.kStart.value).onTrue(ratchetLock);
-		// new JoystickButton(driver, Button.kBack.value).onTrue(ratchetUnlock);
-
-		// new JoystickButton(driver, Button.kBack.value).onTrue(crane_Move2NodePos);
-		// new JoystickButton(driver, Button.kStart.value).onTrue(crane_Move2ReadyPos);
-		// new JoystickButton(driver,
-		// Button.kLeftStick.value).onTrue(crane_Move2GripPos);
-		// new JoystickButton(operator,
-		// Button.kLeftBumper.value).onTrue(crane_Move2ReceivePos);
-		// new JoystickButton(operator,
-		// Button.kRightBumper.value).onTrue(crane_Move2StowPos);
-
-		// new JoystickButton(operator, Button.kY.value).onTrue(intakeStow);
 
 		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
 

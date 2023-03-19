@@ -27,7 +27,7 @@ public class ChassisRamseteCommandOurs extends RamseteCommand {
             ChassisConstants.kS,
             ChassisConstants.kV,
             ChassisConstants.kA),
-        ChassisConstants.kDriveKinematics,
+        chassis.kinematics,
         chassis::getWheelSpeeds,
         new PIDController(ChassisConstants.kP, ChassisConstants.kI, ChassisConstants.kD),
         new PIDController(ChassisConstants.kP, ChassisConstants.kI, ChassisConstants.kD),

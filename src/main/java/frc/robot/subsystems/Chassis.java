@@ -91,14 +91,14 @@ public class Chassis extends SubsystemBase {
 			ChassisConstants.kDistI, ChassisConstants.kDistD);
 
 	// ==============================================================
-	// Define autonomous support functions
-	private DifferentialDriveOdometry odometry;
-	public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(ChassisConstants.kTrackWidth);
-
-	// ==============================================================
 	// Initialize NavX AHRS board
 	// Alternatively: I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB
 	private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
+	// ==============================================================
+	// Define autonomous support functions
+	private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getAngle(), 0.0, 0.0);
+	public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(ChassisConstants.kTrackWidth);
 
 	// ==============================================================
 	// Identify PDP and PCM
@@ -355,7 +355,7 @@ public class Chassis extends SubsystemBase {
 		// ==============================================================
 		// Define autonomous Kinematics & Odometry functions
 		resetFieldPosition(0.0, 0.0); // Reset the field and encoder positions to zero
-		odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
+		//odometry = new DifferentialDriveOdometry(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
 
 		// ==============================================================
 		// Initialze Chassis
@@ -470,7 +470,7 @@ public class Chassis extends SubsystemBase {
 	public void resetFieldPosition(double x, double y) {
 		ahrs.zeroYaw();
 		resetEncoders();
-		// odometry.resetPosition(new Pose2d(x, y, getAngle()), getAngle());
+		odometry.resetPosition(getAngle(), leftEncoder.getPosition(), rightEncoder.getPosition(), new Pose2d(x, y, getAngle()));
 	}
 
 	/**
@@ -551,6 +551,7 @@ public class Chassis extends SubsystemBase {
 	public double driveDistance() {
 		double currPosition = (leftEncoder.getPosition() + leftEncoder.getPosition()) / 2.0;
 		double pidOut = distPIDController.calculate(currPosition, setPoint);
+		pidOut = Library.clamp(pidOut, ChassisConstants.kDistMaxOutput, ChassisConstants.kDistMinOutput);
 		driveArcade(pidOut, 0.0);
 		return pidOut;
 	}
@@ -739,16 +740,20 @@ public class Chassis extends SubsystemBase {
 	public void UpdateGearRatios(GearShifterState shifterState) {
 		gearBoxRatio = (shifterState == Chassis.GearShifterState.HI ? ChassisConstants.kHIGearBoxRatio
 				: ChassisConstants.kLOGearBoxRatio);
-		posFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters // Rev
-		velFactor = ChassisConstants.kWheelCirc / (gearBoxRatio * ChassisConstants.kEncoderResolution) / 60.0; // Meters / Sec
+		posFactor = ChassisConstants.kWheelCircMeters / (gearBoxRatio * ChassisConstants.kEncoderResolution); // Meters
+																												// //
+																												// Rev
+		velFactor = ChassisConstants.kWheelCircMeters / (gearBoxRatio * ChassisConstants.kEncoderResolution) / 60.0; // Meters
+																														// /
+																														// Sec
 
 		// ==============================================================
 		// Configure encoders
-		leftEncoder.setPositionConversionFactor(posFactor * 0.5714);	// / 1.923)); /// 2.0)*1.2); //1.17842);
-		rightEncoder.setPositionConversionFactor(posFactor * 0.5714);	// / 1.923)); /// 2.0)*1.2); //1.17842);
+		leftEncoder.setPositionConversionFactor(posFactor * 0.5714); // / 1.923)); /// 2.0)*1.2); //1.17842);
+		rightEncoder.setPositionConversionFactor(posFactor * 0.5714); // / 1.923)); /// 2.0)*1.2); //1.17842);
 
-		leftEncoder.setVelocityConversionFactor(velFactor * 0.5714);	// / 1.923);
-		rightEncoder.setVelocityConversionFactor(velFactor * 0.5714);	// / 1.923);
+		leftEncoder.setVelocityConversionFactor(velFactor * 0.5714); // / 1.923);
+		rightEncoder.setVelocityConversionFactor(velFactor * 0.5714); // / 1.923);
 	}
 
 	public void disableCompressor() {

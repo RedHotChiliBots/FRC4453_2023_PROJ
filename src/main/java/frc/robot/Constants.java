@@ -134,9 +134,11 @@ public final class Constants {
 		public static final double kDriveMaxAcc = 1500;
 		public static final double kDriveAllowErr = 0.01;
 
-		public static final double kWheelCirc = (Math.PI * 7.639) / 39.3700787402; // meters
-		// public static final double kWheelCirc = Units.inchesToMeters(Math.PI *
-		// 7.639); // meters
+		public static final double kInches2Meters = 39.3700787402;	// conversion constant
+		public static final double kWheelDia = 7.639;	// diameter in inches
+		public static final double kWheelCircInches = Math.PI * kWheelDia; // circ in inches
+		public static final double kWheelCircMeters = kWheelCircInches / kInches2Meters; // circ in meters
+
 		public static final double kEncoderResolution = 1.0; // not used, NEO's native units are rotations
 		public static final double kTBGearBoxRatio = 10.71;
 		public static final double kHIGearBoxRatio = 25.0 / 6.0;
@@ -159,8 +161,8 @@ public final class Constants {
 		public static final double kDistanceTolerance = .00625; // meters
 		public static final int kDistSlot = 0;
 
-		public static final double kDistP = 0.45; // 5e-5;
-		public static final double kDistI = 0.01; // 1e-6;
+		public static final double kDistP = 0.65;	//0.5; // 5e-5;
+		public static final double kDistI = 0.04; // 1e-6;
 		public static final double kDistD = 0.0; // 0.0;
 		public static final double kDistIz = 0.0;
 		public static final double kDistFF = 0.0; // 0.000156;
@@ -169,8 +171,8 @@ public final class Constants {
 		// public static final double kDistS = 0.087827; // from SysID
 		// public static final double kDistV = 1.0907; // from sysID
 
-		public static final double kDistMinOutput = -1.0; // -0.5;
-		public static final double kDistMaxOutput = 1.0; // 0.5;
+		public static final double kDistMinOutput = -0.7; // -0.5;
+		public static final double kDistMaxOutput = 0.7; // 0.5;
 		// public static final double kDistMaxRPM = 5700;
 		// public static final double kDistMaxVel = 2000;
 		// public static final double kDistMinVel = 1000;
@@ -178,7 +180,7 @@ public final class Constants {
 		// public static final double kDistAllowErr = 0.125;
 		// public static final double kDistSetTolerance = 0.5;
 
-		public static final double kAutonBalanceDist = 2.15; // meters
+		public static final double kAutonBalanceDist = 2.25; // meters
 		public static final double kAutonMobilityDist = Units.feetToMeters(-20.0); // meters
 		public static final double kAutonParkDist = Units.feetToMeters(10.0); // meters
 

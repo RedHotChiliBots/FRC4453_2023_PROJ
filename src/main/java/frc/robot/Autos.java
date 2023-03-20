@@ -21,6 +21,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import frc.robot.commands.Balance;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.commands.AutonChassisDriveDist;
+import frc.robot.commands.AutonInitialMove2Node;
+import frc.robot.commands.AutonPlaceBalance;
+import frc.robot.commands.AutonPlaceMobilitySStn;
+import frc.robot.commands.AutonPlaceMobilityWall;
 import frc.robot.subsystems.Chassis;
 
 public class Autos {
@@ -168,7 +172,7 @@ public class Autos {
                 new PathConstraints(4, 3)));
     }
 
-    private AutonChassisDriveDist autonChassisDriveDist;
+    public AutonChassisDriveDist autonChassisDriveDist;
 
     // public Command threePiece() {
     // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
@@ -230,6 +234,22 @@ public class Autos {
                 ChassisConstants.kAutonBalanceDist,
                 5.0);
 
+        Command autonPlace = new AutonInitialMove2Node(
+                        chassis, RobotContainer.crane, RobotContainer.craneTurret,
+                        RobotContainer.craneTilt, RobotContainer.craneArm, RobotContainer.claw, RobotContainer.intake);
+
+        Command autonPlaceMobilitySStn = new AutonPlaceMobilitySStn(
+                        chassis, RobotContainer.crane, RobotContainer.craneTurret,
+                        RobotContainer.craneTilt, RobotContainer.craneArm, RobotContainer.claw, RobotContainer.intake);
+
+        Command autonPlaceMobilityWall = new AutonPlaceMobilityWall(
+                        chassis, RobotContainer.crane, RobotContainer.craneTurret,
+                        RobotContainer.craneTilt, RobotContainer.craneArm, RobotContainer.claw, RobotContainer.intake);
+
+        Command autonPlaceBalance = new AutonPlaceBalance(
+                        chassis, RobotContainer.crane, RobotContainer.craneTurret,
+                        RobotContainer.craneTilt, RobotContainer.craneArm, RobotContainer.claw, RobotContainer.intake);
+
         compTab.add("Auton Command", chooser)
                 .withWidget("ComboBox Chooser")
                 .withPosition(0, 0).withSize(4, 1);
@@ -238,8 +258,10 @@ public class Autos {
         // Add commands to the autonomous command chooser
         chooser.setDefaultOption("None", none());
         chooser.addOption("Balance", autonChassisDriveDist);
-        chooser.addOption("Score Mobility (SStn)", scoreMobilitySStn());
-        chooser.addOption("Score Mobility (Wall)", scoreMobilityWall());
+        chooser.addOption("Score", autonPlace);
+        chooser.addOption("Score Mobility (SStn)", autonPlaceMobilitySStn);
+        chooser.addOption("Score Mobility (Wall)", autonPlaceMobilityWall);
+        chooser.addOption("Score Balance", autonPlaceBalance);
         chooser.addOption("Score Two Elements", scoreTwoElements());
         chooser.addOption("Score Balance", scoreBalance());
         chooser.addOption("Score Three Elements", scoreThreeElements());

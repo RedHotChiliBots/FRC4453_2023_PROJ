@@ -159,14 +159,22 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public void initPos(double pos) {
-    if (this.oneTime == 0)
+    System.out.print("Pos: " + pos);
+    if (this.oneTime == 0) {
+      System.out.print("  Updated");
       tiltEncoder.setPosition(pos);
+    }
+    System.out.println(" ");
   }
 
   public void initPos(double pos, int oneTime) {
-    if (this.oneTime == 0)
+    System.out.print("Pos: " + pos + "  oneTime: " + oneTime);
+    if (this.oneTime == 0) {
+      System.out.print("  Updated");
       tiltEncoder.setPosition(pos);
+    }
     this.oneTime++;
+    System.out.println("this.oneTime: " + this.oneTime);
   }
 
   public void setSetPoint(double setPoint) {

@@ -89,16 +89,16 @@ public class RobotContainer {
 	public static final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
 
 	// The robot's subsystems and commands are defined here...
-	private static final Chassis chassis = new Chassis();
-	private static final Crane crane = new Crane(operator);
-	private static final Intake intake = new Intake(crane);
-	private static final Claw claw = new Claw(crane, intake);
-	private static final CraneTurret craneTurret = new CraneTurret(crane);
-	private static final CraneTilt craneTilt = new CraneTilt(crane);
-	private static final CraneArm craneArm = new CraneArm(crane);
-	private static final Vision vision = new Vision();
+	public static final Chassis chassis = new Chassis();
+	public static final Crane crane = new Crane(operator);
+	public static final Intake intake = new Intake(crane);
+	public static final Claw claw = new Claw(crane, intake);
+	public static final CraneTurret craneTurret = new CraneTurret(crane);
+	public static final CraneTilt craneTilt = new CraneTilt(crane);
+	public static final CraneArm craneArm = new CraneArm(crane);
+	public static final Vision vision = new Vision();
 
-	private static final Autos autos = new Autos(chassis);
+	public static final Autos autos = new Autos(chassis);
 
 	private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
 	private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);

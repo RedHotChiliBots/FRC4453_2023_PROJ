@@ -151,6 +151,11 @@ public final class Constants {
 		public static final double kLevelSetPoint = 0.0;
 		public static final double kLevelSetTolerance = 1.0;
 
+		public static final double kAutonBalanceLevel = 0.0; // degrees
+
+		public static final double kLevelMinOutput = -0.25; // -0.5;
+		public static final double kLevelMaxOutput = 0.25; // 0.5;
+
 		public static final double kRateP = 0.00015;
 		public static final double kRateI = 0.0;
 		public static final double kRateD = 0.0;
@@ -161,8 +166,8 @@ public final class Constants {
 		public static final double kDistanceTolerance = .00625; // meters
 		public static final int kDistSlot = 0;
 
-		public static final double kDistP = 0.65;	//0.5; // 5e-5;
-		public static final double kDistI = 0.04; // 1e-6;
+		public static final double kDistP = 1.5;	//0.5; // 5e-5;
+		public static final double kDistI = 0.0; // 1e-6;
 		public static final double kDistD = 0.0; // 0.0;
 		public static final double kDistIz = 0.0;
 		public static final double kDistFF = 0.0; // 0.000156;
@@ -171,8 +176,8 @@ public final class Constants {
 		// public static final double kDistS = 0.087827; // from SysID
 		// public static final double kDistV = 1.0907; // from sysID
 
-		public static final double kDistMinOutput = -0.7; // -0.5;
-		public static final double kDistMaxOutput = 0.7; // 0.5;
+		public static final double kDistMinOutput = -0.5; // -0.5;
+		public static final double kDistMaxOutput = 0.5; // 0.5;
 		// public static final double kDistMaxRPM = 5700;
 		// public static final double kDistMaxVel = 2000;
 		// public static final double kDistMinVel = 1000;
@@ -180,7 +185,7 @@ public final class Constants {
 		// public static final double kDistAllowErr = 0.125;
 		// public static final double kDistSetTolerance = 0.5;
 
-		public static final double kAutonBalanceDist = 2.25; // meters
+		public static final double kAutonBalanceDist = 2.3; // meters
 		public static final double kAutonMobilityDist = Units.feetToMeters(-20.0); // meters
 		public static final double kAutonParkDist = Units.feetToMeters(10.0); // meters
 
@@ -214,12 +219,12 @@ public final class Constants {
 		public static final double kTiltP = 5e-5;
 		public static final double kTiltI = 0.0; // 1e-6;
 		public static final double kTiltD = 0.0;
-		public static final double kTiltInitPos = -83.2; // degrees
+		public static final double kTiltInitPos = -87; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
-		public static final double kTiltStowPos = -83.2; // degrees
-		public static final double kTiltGripPos = -77.5; // degrees
-		public static final double kTiltReceivePos = -77.5; // degrees
-		public static final double kTiltHoldPos = -77.8; // degrees
+		public static final double kTiltStowPos = -87; // degrees
+		public static final double kTiltGripPos = -82; // degrees
+		public static final double kTiltReceivePos = -82; // degrees
+		public static final double kTiltHoldPos = -82; // degrees
 		public static final double kTiltReadyPos = 0.0; // degrees
 		public static final double kTiltSafe2Rotate = -60; // degrees
 		public static final double kTiltPositionTolerance = 1.0; // degrees
@@ -264,10 +269,10 @@ public final class Constants {
 		public static final double kTiltSprocketTeeth = 120;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
-		public static final double kTiltGearBoxRatio = 100;
+		public static final double kTiltGearBoxRatio = 80;
 		public static final double kTiltRotationsPerDegree = (kTiltSprocketRatio * kTiltGearBoxRatio) / 360.0;
 		public static final double kTiltDegreesPerRotation = 360.0 / (kTiltSprocketRatio * kTiltGearBoxRatio);
-		public static final double kTiltMaxVel = 360.0 / kTiltDegreesPerRotation * 60.0; // RPM
+		public static final double kTiltMaxVel = 540.0 / kTiltDegreesPerRotation * 60.0; // RPM
 		public static final double kTiltMaxAccel = kTiltMaxVel * (2.0 / 3.0); // RPM^2
 
 		public static final double kArmShaftDia = 1.0;
@@ -290,7 +295,7 @@ public final class Constants {
 		public static final double kTurretMin = 0.0; // degrees
 		public static final double kTiltInc = 7.5 * 0.020; // degrees / step
 		public static final double kTiltMax = 30.0; // degrees
-		public static final double kTiltMin = -83.0; // degrees
+		public static final double kTiltMin = -87.0; // degrees
 		public static final double kArmInc = -1.5 * 0.020; // inches / step
 		public static final double kArmMax = 63.0; // inches
 		public static final double kArmMin = 25.0; // inches

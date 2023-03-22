@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
-public class AutonChassisDriveDist extends CommandBase {
+public class ChassisDriveDist extends CommandBase {
   /** Creates a new ChassisTankDrive. */
 
   private Chassis chassis;
@@ -17,7 +17,7 @@ public class AutonChassisDriveDist extends CommandBase {
   private double time;
   private Timer timer = new Timer();
 
-  public AutonChassisDriveDist(Chassis chassis, double dist, double time) {
+  public ChassisDriveDist(Chassis chassis, double dist, double time) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.chassis = chassis;
     this.dist = dist;

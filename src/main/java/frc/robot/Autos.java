@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import frc.robot.commands.Balance;
 import frc.robot.Constants.ChassisConstants;
-import frc.robot.commands.AutonChassisDriveDist;
+import frc.robot.commands.ChassisDriveDist;
+import frc.robot.commands.ChassisLevel;
+import frc.robot.commands.AutonBalance;
 import frc.robot.commands.AutonInitialMove2Node;
 import frc.robot.commands.AutonPlaceBalance;
 import frc.robot.commands.AutonPlaceMobilitySStn;
@@ -172,7 +174,26 @@ public class Autos {
                 new PathConstraints(4, 3)));
     }
 
-    public AutonChassisDriveDist autonChassisDriveDist;
+    public Command autonChassisDriveDist() {
+            return new ChassisDriveDist(
+                            chassis,
+                            ChassisConstants.kAutonBalanceDist,
+                            5.0);
+    };
+
+    public Command autonChassisLevel() {
+            return new ChassisLevel(
+                            chassis,
+                            ChassisConstants.kAutonBalanceLevel,
+                            10.0);
+    };
+
+    public Command autonBalance() {
+            return new AutonBalance(chassis);
+                        //     chassis,
+                        //     ChassisConstants.kAutonBalanceLevel,
+                        //     10.0);
+    };
 
     // public Command threePiece() {
     // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
@@ -210,13 +231,15 @@ public class Autos {
                 chassis::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
                 new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
                 chassis.kinematics, // SwerveDriveKinematics
-                new SimpleMotorFeedforward(ChassisConstants.kS,
-                        ChassisConstants.kV),
-                // ChassisConstants.kA),
+                //new SimpleMotorFeedforward(ChassisConstants.kS,
+                     //   ChassisConstants.kV),
+                        // ChassisConstants.kA),
+                /*
                 chassis::getWheelSpeeds,
-                new PIDConstants(ChassisConstants.kP,
-                        ChassisConstants.kI,
-                        ChassisConstants.kD), // PID constants to correct for rotation
+                        new PIDConstants(ChassisConstants.kP,
+                                        ChassisConstants.kI,
+                                        ChassisConstants.kD),*/
+                 // PID constants to correct for rotation
                 // error (used to create the rotation
                 // // controller)
                 chassis::driveTankVolts, // Module states consumer used to output to the drive subsystem
@@ -229,11 +252,11 @@ public class Autos {
         );
 
         // 2.10773229598999
-        autonChassisDriveDist = new AutonChassisDriveDist(
+/*        autonChassisDriveDist = new AutonChassisDriveDist(
                 chassis,
                 ChassisConstants.kAutonBalanceDist,
                 5.0);
-
+*/
         Command autonPlace = new AutonInitialMove2Node(
                         chassis, RobotContainer.crane, RobotContainer.craneTurret,
                         RobotContainer.craneTilt, RobotContainer.craneArm, RobotContainer.claw, RobotContainer.intake);
@@ -257,7 +280,9 @@ public class Autos {
         // ==============================================================================
         // Add commands to the autonomous command chooser
         chooser.setDefaultOption("None", none());
-        chooser.addOption("Balance", autonChassisDriveDist);
+        chooser.addOption("Drive Balance", autonBalance());
+        chooser.addOption("Balance", autonChassisDriveDist());
+        chooser.addOption("Level", autonChassisLevel());
         chooser.addOption("Score", autonPlace);
         chooser.addOption("Score Mobility (SStn)", autonPlaceMobilitySStn);
         chooser.addOption("Score Mobility (Wall)", autonPlaceMobilityWall);
@@ -273,4 +298,6 @@ public class Autos {
         chooser.addOption("Test 4m Forward", test4mForward());
         // chooser.addOption("Test Reverse", testReverse());
     }
+
+
 }

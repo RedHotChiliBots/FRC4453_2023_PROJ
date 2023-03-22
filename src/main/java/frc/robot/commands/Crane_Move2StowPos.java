@@ -62,9 +62,8 @@ public class Crane_Move2StowPos extends CommandBase {
             crane.getState() == CRANESTATE.HOLD ||
             crane.getState() == CRANESTATE.MOVING) {
           craneArm.setSetPoint(CraneConstants.kArmStowPos);
-          craneTilt.setSetPoint(CraneConstants.kTiltStowPos);
           DriverStation.reportWarning("In Receive or Grip position, moving to Stow", false);
-          state = 4;
+          state = 3;
           crane.setState(CRANESTATE.MOVING);
 
           // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
@@ -95,7 +94,7 @@ public class Crane_Move2StowPos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 3:
-        if (craneTurret.atSetPoint()) {
+        if (craneTurret.atSetPoint() && craneArm.atSetPoint()) {
           craneTurret.setSetPoint(CraneConstants.kTurretStowPos);
           craneArm.setSetPoint(CraneConstants.kArmStowPos);
           craneTilt.setSetPoint(CraneConstants.kTiltStowPos);

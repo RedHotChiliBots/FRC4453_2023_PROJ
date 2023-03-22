@@ -591,9 +591,17 @@ public class Chassis extends SubsystemBase {
 		return distPIDController.atSetpoint();
 	}
 
+	// public double driveDistance() {
+	// 	double currPosition = (leftEncoder.getPosition() + leftEncoder.getPosition()) / 2.0;
+	// 	double pidOut = distPIDController.calculate(currPosition, setPoint);
+	// 	pidOut = Library.clamp(pidOut, ChassisConstants.kDistMaxOutput, ChassisConstants.kDistMinOutput);
+	// 	driveArcade(pidOut, 0.0);
+	// 	return pidOut;
+	// }
 	public double levelChargingStation() {
 		double currPitch = lib.getAvgPitch();
 		double pidOut = levelPIDController.calculate(currPitch);
+		pidOut = Library.clamp(pidOut, ChassisConstants.kLevelMaxOutput, ChassisConstants.kLevelMinOutput);
 		driveArcade(-pidOut, 0.0);
 		return pidOut;
 	}

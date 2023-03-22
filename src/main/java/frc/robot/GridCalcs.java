@@ -157,7 +157,7 @@ public class GridCalcs {
 	public double getSubStationPos(C c) {
 		double result = 0.0;
 		double length = kSubStation.get(C.ARM) - kRobotFwdPos.get(C.ARM);
-		double height = kSubStation.get(C.TILT) + (getElem() == E.CONE ? 8.0 : 4.5) - kRobotFwdPos.get(C.TILT);
+		double height = kSubStation.get(C.TILT) + (getElem() == E.CONE ? 5.0 : 4.5) - kRobotFwdPos.get(C.TILT);
 
 		switch (c) {
 			case TURRET:
@@ -220,7 +220,7 @@ public class GridCalcs {
 	private final EnumMap<CRANESTATE, Map<CRANEAXIS, Double>> kCranePos = new EnumMap<>(Map.of(
 			CRANESTATE.STOW,
 			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -83.0,
+					CRANEAXIS.TILT, -87.0,
 					CRANEAXIS.ARM, 25.0),
 			CRANESTATE.RECEIVE,
 			Map.of(CRANEAXIS.TURRET, 0.0,

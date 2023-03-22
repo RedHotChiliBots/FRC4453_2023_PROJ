@@ -14,6 +14,7 @@ import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Claw.FingerState;
+import frc.robot.subsystems.Intake.ArmState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -48,6 +49,7 @@ public class AutonInitialMove2Node extends SequentialCommandGroup {
     addCommands(
         // Move Crane to Scoring position, release Cone, and return to Receive position
         // new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
+        new IntakeArm(intake, ArmState.OPEN),
         new Crane_Auton2NodePos(crane, craneTurret, craneTilt, craneArm),
 
         new Crane_PlaceElement(crane, craneTurret, craneTilt, craneArm),

@@ -90,7 +90,7 @@ public class Library {
          avgPitch += lastPitch[i];
       }
       lastPitch[rollingPitchSize - 1] = pitch;
-      avgPitch = (avgPitch + pitch) / 5;
+      avgPitch = (avgPitch + pitch) / rollingPitchSize;
 
       // calc pitch max min
       if (pitch > maxPitch)

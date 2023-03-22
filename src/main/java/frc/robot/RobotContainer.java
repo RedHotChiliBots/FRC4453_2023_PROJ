@@ -65,7 +65,7 @@ import frc.robot.commands.TeleopMove2Node;
 import frc.robot.commands.TeleopMove2Ready;
 import frc.robot.commands.TeleopMove2SubStn;
 import frc.robot.commands.TeleopScoreAtNode;
-import frc.robot.commands.AutonChassisDriveDist;
+import frc.robot.commands.ChassisDriveDist;
 import frc.robot.commands.AutonGripMove2Node;
 import frc.robot.commands.AutonTrackAprilTag;
 import frc.robot.commands.VisionTeleopTrackAprilTag;
@@ -142,7 +142,7 @@ public class RobotContainer {
 	private final AutonChassisDriveTime autonChassisDriveTime10 = new AutonChassisDriveTime(chassis, -0.55, 10.0);
 	private final AutonChassisDriveTime autonChassisDriveTime5 = new AutonChassisDriveTime(chassis, -0.55, 5.0);
 
-	public final AutonChassisDriveDist autonChassisDriveDist = new AutonChassisDriveDist(chassis, 
+	public final ChassisDriveDist autonChassisDriveDist = new ChassisDriveDist(chassis, 
 			2.10773229598999, 5.0);
 
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
@@ -378,6 +378,9 @@ public class RobotContainer {
 		new JoystickButton(operator, Button.kB.value).onTrue(auton_Move2NodePos);
 		new JoystickButton(operator, Button.kA.value).onTrue(auton_ScoreAtNodePos);
 
+		new JoystickButton(operator, Button.kLeftStick.value).onTrue(clawRelease);
+		new JoystickButton(operator, Button.kRightStick.value).onTrue(crane_Move2StowPos);
+
 		new JoystickButton(operator, Button.kBack.value).onTrue(auton_Move2SubStnPos);
 		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(clawGrip);
 		new JoystickButton(operator, Button.kRightBumper.value).onTrue(crane_Move2HoldPos);
@@ -451,5 +454,7 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		return autos.chooser.getSelected();
+		// autos.autonChassisDriveDist();
+		//return new AutonChassisDriveDist(chassis, 2.25, 5);
 	}
 }

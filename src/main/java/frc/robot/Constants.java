@@ -144,7 +144,7 @@ public final class Constants {
 		public static final double kHIGearBoxRatio = 25.0 / 6.0;
 		public static final double kLOGearBoxRatio = 15625 / 1734;
 
-		public static final double kLevelP = 0.05;
+		public static final double kLevelP = 0.0775;
 		public static final double kLevelI = 0.0;
 		public static final double kLevelD = 0.0;
 
@@ -153,8 +153,8 @@ public final class Constants {
 
 		public static final double kAutonBalanceLevel = 0.0; // degrees
 
-		public static final double kLevelMinOutput = -0.25; // -0.5;
-		public static final double kLevelMaxOutput = 0.25; // 0.5;
+		public static final double kLevelMinOutput = -0.3; // -0.5;
+		public static final double kLevelMaxOutput = 0.3; // 0.5;
 
 		public static final double kRateP = 0.00015;
 		public static final double kRateI = 0.0;
@@ -185,9 +185,10 @@ public final class Constants {
 		// public static final double kDistAllowErr = 0.125;
 		// public static final double kDistSetTolerance = 0.5;
 
-		public static final double kAutonBalanceDist = 2.3; // meters
-		public static final double kAutonMobilityDist = Units.feetToMeters(-20.0); // meters
-		public static final double kAutonParkDist = Units.feetToMeters(10.0); // meters
+		public static final double kAutonBalanceDist = 2.35; // meters
+		public static final double kAutonMobilityDist = 4.0; // meters
+		public static final double kAutonMobility2BalanceDist = -1.75; // meters
+		public static final double kAutonParkDist = Units.feetToMeters(4.0); // meters
 
 		public static final double kAutonTurnDist = Units.inchesToMeters((Math.PI * kTrackWidth) / 2.0); // meters
 		public static final double kAutonAbort = 10.0; // sec

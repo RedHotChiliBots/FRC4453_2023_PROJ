@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.old;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -42,7 +42,7 @@ public class AutonChgStnDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    motorSpd = -0.375;
+    motorSpd = 0.38;
     oneTime = false;
     printCount = 0;
     timer = new Timer();
@@ -61,11 +61,11 @@ public class AutonChgStnDrive extends CommandBase {
     currPos = chassis.leftEncoder.getPosition();
     if (timer.hasElapsed(3) && lib.isTipSwitch()) {
 
-      motorSpd = .30;
+      motorSpd = .34;
       if (avgPitch < 8.0) {
-        motorSpd = 0.05;
+        motorSpd = 0.03;
       } else if (avgPitch < 14.0) {
-        motorSpd = 0.075;
+        motorSpd = 0.06;
       }
 
       if (!oneTime) {

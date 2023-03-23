@@ -67,7 +67,8 @@ public class Crane_Auton2NodePos extends CommandBase {
             // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
             // Rotate
           } else if (Math.abs(craneTurret.getPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
-//            craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
+            //            craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
+            craneTurret.setSetPoint(craneTurret.getPosition());
             craneTilt.setSetPoint(crane.getGridZ());
             craneArm.setSetPoint(CraneConstants.kArmSafe2Rotate);
             state = 1;

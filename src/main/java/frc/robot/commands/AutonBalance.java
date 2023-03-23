@@ -14,22 +14,25 @@ import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake.ArmState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonBalance extends SequentialCommandGroup {
   /** Creates a new AutonPlaceMobilitySStn. */
-  public AutonBalance(Chassis chassis) {
-
-  // }, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm,
-  //     Claw claw, Intake intake) {
+  public AutonBalance(Chassis chassis, Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm,
+      Claw claw, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-//        new AutonInitialMove2Node(chassis, crane, craneTurret, craneTilt, craneArm, claw, intake),
-        new ChassisDriveDist(chassis, ChassisConstants.kAutonBalanceDist, ChassisConstants.kAutonAbort),
+        new AutonInitialMove2Node(chassis, crane, craneTurret, craneTilt, craneArm, claw, intake),
+        new ChassisDriveDist(chassis, ChassisConstants.kAutonMobilityDist, ChassisConstants.kAutonAbort),
+        new AutonChgStnDrive(chassis),
+//        new ChassisDriveDist(chassis, ChassisConstants.kAutonMobility2BalanceDist, ChassisConstants.kAutonAbort),
+        new IntakeArm(intake, ArmState.OPEN),
         new ChassisLevel(chassis, ChassisConstants.kAutonBalanceLevel, ChassisConstants.kAutonAbort)
+
 //          RobotContainer.autos.autonChassisDriveDist()
 //          RobotContainer.autos.scoreMobilityBalance()
     );

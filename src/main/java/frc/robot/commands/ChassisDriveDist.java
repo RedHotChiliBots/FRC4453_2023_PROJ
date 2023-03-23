@@ -15,7 +15,7 @@ public class ChassisDriveDist extends CommandBase {
   private Chassis chassis;
   private double dist;
   private double time;
-  private Timer timer = new Timer();
+//  private Timer timer = new Timer();
 
   public ChassisDriveDist(Chassis chassis, double dist, double time) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,8 +31,8 @@ public class ChassisDriveDist extends CommandBase {
   public void initialize() {
     chassis.resetEncoders();
     chassis.setDistSetPoint(dist);
-    timer.start();
-    timer.reset();
+//    timer.start();
+//    timer.reset();
     DriverStation.reportWarning("AutonChassisDriveDist finish Initialize", false);
 
   }
@@ -53,6 +53,6 @@ public class ChassisDriveDist extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atDistTarget() || timer.hasElapsed(time);
+    return chassis.atDistTarget();  // || timer.hasElapsed(time);
   }
 }

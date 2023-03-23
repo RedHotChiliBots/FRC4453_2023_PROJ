@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Library;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
@@ -46,21 +47,23 @@ public class Crane_ManualMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    craneTurret.setSetPoint(Library.clamp(
-        craneTurret.getSetPoint() +
-            (Math.abs(turretAxis.getAsDouble()) < 0.05 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
-        CraneConstants.kTurretMax,
-        CraneConstants.kTurretMin));
-    craneTilt.setSetPoint(Library.clamp(
-        craneTilt.getSetPoint() +
-            (Math.abs(tiltAxis.getAsDouble()) < 0.05 ? 0.0 : tiltAxis.getAsDouble() * CraneConstants.kTiltInc),
-        CraneConstants.kTiltMax,
-        CraneConstants.kTiltMin));
-    craneArm.setSetPoint(Library.clamp(
-        craneArm.getSetPoint() +
-            (Math.abs(armAxis.getAsDouble()) < 0.05 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
-        CraneConstants.kArmMax,
-        CraneConstants.kArmMin));
+//    if (crane.getState() == CRANESTATE.NODE) {
+      craneTurret.setSetPoint(Library.clamp(
+          craneTurret.getSetPoint() +
+              (Math.abs(turretAxis.getAsDouble()) < 0.05 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
+          CraneConstants.kTurretMax,
+          CraneConstants.kTurretMin));
+      craneTilt.setSetPoint(Library.clamp(
+          craneTilt.getSetPoint() +
+              (Math.abs(tiltAxis.getAsDouble()) < 0.05 ? 0.0 : tiltAxis.getAsDouble() * CraneConstants.kTiltInc),
+          CraneConstants.kTiltMax,
+          CraneConstants.kTiltMin));
+      craneArm.setSetPoint(Library.clamp(
+          craneArm.getSetPoint() +
+              (Math.abs(armAxis.getAsDouble()) < 0.05 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
+          CraneConstants.kArmMax,
+          CraneConstants.kArmMin));
+//    }
   }
 
   // Called once the command ends or is interrupted.

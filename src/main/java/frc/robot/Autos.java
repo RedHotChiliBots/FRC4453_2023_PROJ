@@ -23,6 +23,7 @@ import frc.robot.Constants.ChassisConstants;
 import frc.robot.commands.ChassisDriveDist;
 import frc.robot.commands.ChassisLevel;
 import frc.robot.commands.AutonBalance;
+import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.AutonInitialMove2Node;
 import frc.robot.commands.AutonPlaceBalance;
 import frc.robot.commands.AutonPlaceMobilitySStn;
@@ -189,11 +190,20 @@ public class Autos {
     };
 
     public Command autonBalance() {
-            return new AutonBalance(chassis);
+            return new AutonBalance(
+                            RobotContainer.chassis, RobotContainer.crane, 
+                            RobotContainer.craneTurret, 
+                            RobotContainer.craneTilt, 
+                            RobotContainer.craneArm,
+                            RobotContainer.claw, RobotContainer.intake);
                         //     chassis,
                         //     ChassisConstants.kAutonBalanceLevel,
                         //     10.0);
     };
+
+    public Command autonChgStnDrive() {
+            return new AutonChgStnDrive(chassis);
+    }
 
     // public Command threePiece() {
     // return autoBuilder.fullAuto(PathPlanner.loadPathGroup("ThreePiece",
@@ -231,14 +241,13 @@ public class Autos {
                 chassis::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
                 new RamseteController(ChassisConstants.kRamseteB, ChassisConstants.kRamseteZeta),
                 chassis.kinematics, // SwerveDriveKinematics
-                //new SimpleMotorFeedforward(ChassisConstants.kS,
-                     //   ChassisConstants.kV),
-                        // ChassisConstants.kA),
-                /*
+                new SimpleMotorFeedforward(ChassisConstants.kS,
+                       ChassisConstants.kV),
+                //        ChassisConstants.kA),
                 chassis::getWheelSpeeds,
-                        new PIDConstants(ChassisConstants.kP,
+                new PIDConstants(ChassisConstants.kP,
                                         ChassisConstants.kI,
-                                        ChassisConstants.kD),*/
+                                        ChassisConstants.kD),
                  // PID constants to correct for rotation
                 // error (used to create the rotation
                 // // controller)
@@ -281,7 +290,8 @@ public class Autos {
         // Add commands to the autonomous command chooser
         chooser.setDefaultOption("None", none());
         chooser.addOption("Drive Balance", autonBalance());
-        chooser.addOption("Balance", autonChassisDriveDist());
+        chooser.addOption("Balance Dist", autonChassisDriveDist());
+        chooser.addOption("Balance Pitch", autonChgStnDrive());
         chooser.addOption("Level", autonChassisLevel());
         chooser.addOption("Score", autonPlace);
         chooser.addOption("Score Mobility (SStn)", autonPlaceMobilitySStn);

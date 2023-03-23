@@ -188,21 +188,27 @@ public class Chassis extends SubsystemBase {
 			.withWidget("Text View").withPosition(5, 0).withSize(2, 1).getEntry();
 	private final GenericEntry sbAvgPitch = chassisTab.addPersistent("Avg Pitch", 0)
 			.withWidget("Text View").withPosition(5, 1).withSize(2, 1).getEntry();
-	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0)
+	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0)
 			.withWidget("Text View").withPosition(5, 2).withSize(2, 1).getEntry();
+	private final GenericEntry sbIsTipped = chassisTab.addPersistent("isTipped", false)
+			.withWidget("Boolean Box").withPosition(6, 3).withSize(2, 1).getEntry();
+	private final GenericEntry sbX = chassisTab.addPersistent("Pose X", 0)
+			.withWidget("Text View").withPosition(5, 4).withSize(2, 1).getEntry();
 	private final GenericEntry sbHiPressure = chassisTab.addPersistent("Hi Pressure", 0)
-			.withWidget("Text View").withPosition(5, 5).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(5, 7).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbHeading = chassisTab.addPersistent("Heading", 0)
 			.withWidget("Text View").withPosition(7, 0).withSize(2, 1).getEntry();
-	private final GenericEntry sbAvgRate = chassisTab.addPersistent("Avg Rate", 0)
+	private final GenericEntry sbMaxAbsPitch = chassisTab.addPersistent("Max Abs Pitch", 0)
 			.withWidget("Text View").withPosition(7, 1).withSize(2, 1).getEntry();
-	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0)
+	private final GenericEntry sbMaxPitch = chassisTab.addPersistent("Max Pitch", 0)
 			.withWidget("Text View").withPosition(7, 2).withSize(2, 1).getEntry();
+	private final GenericEntry sbY = chassisTab.addPersistent("Pose Y", 0)
+			.withWidget("Text View").withPosition(7, 4).withSize(2, 1).getEntry();
 	private final GenericEntry sbDeg = chassisTab.addPersistent("Pose Deg", 0)
-			.withWidget("Text View").withPosition(6, 3).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(6, 5).withSize(2, 1).getEntry();
 	private final GenericEntry sbLoPressure = chassisTab.addPersistent("Lo Pressure", 0)
-			.withWidget("Text View").withPosition(7, 5).withSize(2, 1).getEntry();
+			.withWidget("Text View").withPosition(7, 7).withSize(2, 1).getEntry();
 
 	private final GenericEntry sbLeftFrontTemp = chassisTab.addPersistent("LF temp", 0)
 			.withWidget("Text View").withPosition(10, 0).withSize(2, 1).getEntry();
@@ -445,6 +451,10 @@ public class Chassis extends SubsystemBase {
 		// ==============================================================
 		// Update pitch and rate calculations
 		lib.updatePitch(getPitch());
+
+		sbIsTipped.setBoolean(lib.isTipSwitch());
+		sbMaxAbsPitch.setDouble(lib.getMaxAbsPitch());
+		sbMaxPitch.setDouble(lib.getMaxPitch());
 	}
 
 	public DifferentialDriveOdometry getOdometry() {

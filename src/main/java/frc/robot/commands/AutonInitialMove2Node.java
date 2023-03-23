@@ -49,7 +49,7 @@ public class AutonInitialMove2Node extends SequentialCommandGroup {
     addCommands(
         // Move Crane to Scoring position, release Cone, and return to Receive position
         // new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
-        new IntakeArm(intake, ArmState.OPEN),
+//        new IntakeArm(intake, ArmState.OPEN),
         new Crane_Auton2NodePos(crane, craneTurret, craneTilt, craneArm),
 
         new Crane_PlaceElement(crane, craneTurret, craneTilt, craneArm),

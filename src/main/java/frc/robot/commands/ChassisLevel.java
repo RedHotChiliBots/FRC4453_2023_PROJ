@@ -53,6 +53,6 @@ public class ChassisLevel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.atDistTarget() || timer.hasElapsed(time);
+    return chassis.atDistTarget() || timer.hasElapsed(time*5.0);
   }
 }

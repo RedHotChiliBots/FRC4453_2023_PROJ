@@ -52,7 +52,7 @@ import frc.robot.commands.IntakeToggleElem;
 import frc.robot.commands.VisionToggleRumble;
 import frc.robot.commands.old.AutonChargingStation;
 import frc.robot.commands.old.AutonChassisDriveTime;
-import frc.robot.commands.old.AutonChgStnDrive;
+import frc.robot.commands.AutonChgStnDrive;
 import frc.robot.commands.old.AutonChgStnLevel;
 import frc.robot.commands.old.AutonChgStnRate;
 import frc.robot.commands.old.ChassisArcadeDrive;

@@ -264,25 +264,26 @@ public final class Constants {
 		public static final double kTurretGearBoxRatio = 20;
 		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
 		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
-		public static final double kTurretMaxVel = 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
-		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPM^2
+		public static final double kTurretMaxVel = 5000.0;	//360.0 / kTurretDegreesPerRotation * 60.0; // RPM
+		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPMps^2
 
 		public static final double kTiltSprocketTeeth = 120;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
 		public static final double kTiltGearBoxRatio = 80;
-		public static final double kTiltRotationsPerDegree = (kTiltSprocketRatio * kTiltGearBoxRatio) / 360.0;
+		public static final double kTiltRatio = kTiltSprocketRatio * kTiltGearBoxRatio;
+		public static final double kTiltRotationsPerDegree = (kTiltRatio) / 360.0;
 		public static final double kTiltDegreesPerRotation = 360.0 / (kTiltSprocketRatio * kTiltGearBoxRatio);
-		public static final double kTiltMaxVel = 540.0 / kTiltDegreesPerRotation * 60.0; // RPM
-		public static final double kTiltMaxAccel = kTiltMaxVel * (2.0 / 3.0); // RPM^2
+		public static final double kTiltMaxVel = 5000.0;	//540.0 / kTiltDegreesPerRotation * 60.0; // RPM
+		public static final double kTiltMaxAccel = 50000.0;	//kTiltMaxVel * (2.0 / 3.0); // RPMps^2
 
 		public static final double kArmShaftDia = 1.0;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;
 		public static final double kArmGearBoxRatio = 12;
 		public static final double kArmRotationsPerInch = kArmGearBoxRatio / kArmShaftCirc;
 		public static final double kArmInchesPerRotation = kArmShaftCirc / kArmGearBoxRatio;
-		public static final double kArmMaxVel = 36.0 / kArmInchesPerRotation * 60.0; // RPM
-		public static final double kArmMaxAccel = kArmMaxVel * (2.0 / 3.0); // RPM^2
+		public static final double kArmMaxVel = 5000.0; // RPM
+		public static final double kArmMaxAccel = 15000.0; // RPMps^2
 
 		public static final double kCraneArmClear = 0.0; // inches
 		public static final double kCraneArmEngage = 5.0; // inches

@@ -97,11 +97,12 @@ public class CraneTurret extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // if (turretSetPoint != sbTurretSP.getDouble(0.0)) {
-    // turretSetPoint = sbTurretSP.getDouble(0.0);
-    // setTurretSetPoint(turretSetPoint);
-    // }
-    sbTurretSP.setDouble(setPoint);
+    if (setPoint != sbTurretSP.getDouble(0.0)) {
+      setPoint = sbTurretSP.getDouble(0.0);
+      setSetPoint(setPoint);
+    }
+
+//    sbTurretSP.setDouble(setPoint);
     sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
   }

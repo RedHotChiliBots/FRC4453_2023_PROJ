@@ -42,7 +42,7 @@ public class AutonChgStnDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    motorSpd = 0.38;
+    motorSpd = 0.5;  //0.38;
     oneTime = false;
     printCount = 0;
     timer = new Timer();
@@ -59,14 +59,9 @@ public class AutonChgStnDrive extends CommandBase {
   public void execute() {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
     currPos = chassis.leftEncoder.getPosition();
-    if (timer.hasElapsed(3) && lib.isTipSwitch()) {
+    if (timer.hasElapsed(2) && lib.isTipSwitch()) {
 
-      motorSpd = .34;
-      if (avgPitch < 8.0) {
-        motorSpd = 0.03;
-      } else if (avgPitch < 14.0) {
-        motorSpd = 0.06;
-      }
+      motorSpd = 0.0;  //.34;
 
       if (!oneTime) {
         printStat("TIP ", true);
@@ -92,6 +87,6 @@ public class AutonChgStnDrive extends CommandBase {
   @Override
   public boolean isFinished() {
     avgPitch = Math.abs(chassis.lib.getAvgPitch());
-    return (timer.hasElapsed(3) && avgPitch < 1.0);
+    return (timer.hasElapsed(5.0) && avgPitch < 1.0);
   }
 }

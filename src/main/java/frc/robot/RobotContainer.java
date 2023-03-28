@@ -58,7 +58,7 @@ import frc.robot.commands.old.AutonChgStnRate;
 import frc.robot.commands.old.ChassisArcadeDrive;
 import frc.robot.commands.old.ChassisLarcadeDrive;
 import frc.robot.commands.old.ChassisTankDrive;
-import frc.robot.commands.old.CraneTurret2Pos;
+import frc.robot.commands.CraneTurret2Pos;
 import frc.robot.commands.old.TiltRatchet;
 import frc.robot.commands.TeleopMove2Elem;
 import frc.robot.commands.TeleopMove2Node;

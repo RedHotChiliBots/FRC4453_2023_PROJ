@@ -88,6 +88,8 @@ public class CraneTilt extends SubsystemBase {
 
     tiltMotor.restoreFactoryDefaults();
 
+    tiltMotor.setSmartCurrentLimit(45, 30);
+
     tiltMotor.clearFaults();
 
     tiltMotor.setIdleMode(IdleMode.kBrake);
@@ -108,9 +110,9 @@ public class CraneTilt extends SubsystemBase {
     tiltPID.setSmartMotionMaxAccel(CraneConstants.kTiltMaxAccel, CraneConstants.kTiltSlot);
     tiltPID.setSmartMotionAllowedClosedLoopError(CraneConstants.kTiltAllowErr, CraneConstants.kTiltSlot);
 
-//    BooleanEvent tiltAtSensor = new BooleanEvent(evtLoop, () -> getTiltSensor());
+    // BooleanEvent tiltAtSensor = new BooleanEvent(evtLoop, () -> getTiltSensor());
 
-//    tiltAtSensor.rising().ifHigh(() -> initPos(-78.0, 1));
+    // tiltAtSensor.rising().ifHigh(() -> initPos(-78.0, 1));
 
     // ==============================================================
     // Configure encoders
@@ -133,13 +135,14 @@ public class CraneTilt extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-//    evtLoop.poll();
+    // evtLoop.poll();
 
-    // if (tiltSetPoint != sbTiltSP.getDouble(0.0)) {
-    // tiltSetPoint = sbTiltSP.getDouble(0.0);
-    // setTiltSetPoint(tiltSetPoint);
-    // }
-    sbTiltSP.setDouble(setPoint);
+    if (setPoint != sbTiltSP.getDouble(0.0)) {
+      setPoint = sbTiltSP.getDouble(0.0);
+      setSetPoint(setPoint);
+    }
+
+//    sbTiltSP.setDouble(setPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
 
@@ -161,22 +164,22 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public void initPos(double pos) {
-//    System.out.print("Pos: " + pos);
+    // System.out.print("Pos: " + pos);
     if (this.oneTime == 0) {
-//      System.out.print("  Updated");
+      // System.out.print(" Updated");
       tiltEncoder.setPosition(pos);
     }
-//    System.out.println(" ");
+    // System.out.println(" ");
   }
 
   public void initPos(double pos, int oneTime) {
-//    System.out.print("Pos: " + pos + "  oneTime: " + oneTime);
+    // System.out.print("Pos: " + pos + " oneTime: " + oneTime);
     if (this.oneTime == 0) {
-//      System.out.print("  Updated");
+      // System.out.print(" Updated");
       tiltEncoder.setPosition(pos);
     }
     this.oneTime++;
-//    System.out.println("this.oneTime: " + this.oneTime);
+    // System.out.println("this.oneTime: " + this.oneTime);
   }
 
   public void setSetPoint(double setPoint) {

@@ -40,6 +40,10 @@ public class Crane extends SubsystemBase {
   // .withWidget("Network Table Tree")
   // .withPosition(5, 1).withSize(2, 3).getEntry();
 
+  private final ShuffleboardTab craneTab = Shuffleboard.getTab("Crane");
+  private final GenericEntry sbDebug = craneTab.addPersistent("Debug", false)
+      .withWidget("Text View").withPosition(10, 7).withSize(2, 1).getEntry();
+
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
   private final GenericEntry sbAlliancePos = compTab.addPersistent("Alliance-Pos", "")
       .withWidget("Text View").withPosition(6, 0).withSize(2, 1).getEntry();

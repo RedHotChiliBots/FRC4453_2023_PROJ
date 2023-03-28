@@ -151,7 +151,7 @@ public class GridCalcs {
 
 	public final EnumMap<C, Double> kSubStation = new EnumMap<>(Map.of(
 			C.TURRET, 0.0,
-			C.ARM, 6.5,
+			C.ARM, 12.5,
 			C.TILT, 37.375));
 
 	public double getSubStationPos(C c) {

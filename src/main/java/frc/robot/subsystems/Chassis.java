@@ -609,9 +609,14 @@ public class Chassis extends SubsystemBase {
 	// 	return pidOut;
 	// }
 	public double levelChargingStation() {
+		double pidOut;
 		double currPitch = lib.getAvgPitch();
-		double pidOut = levelPIDController.calculate(currPitch);
-		pidOut = Library.clamp(pidOut, ChassisConstants.kLevelMaxOutput, ChassisConstants.kLevelMinOutput);
+		if (currPitch < 5.0) {
+			pidOut = 0.0;
+		} else {
+			pidOut = levelPIDController.calculate(currPitch);
+		}
+		pidOut = Library.clamp(pidOut, 0.2, -0.2);	//ChassisConstants.kLevelMaxOutput, ChassisConstants.kLevelMinOutput);
 		driveArcade(-pidOut, 0.0);
 		return pidOut;
 	}

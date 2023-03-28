@@ -98,11 +98,12 @@ public class CraneArm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // if (armSetPoint != sbArmSP.getDouble(0.0)) {
-    // armSetPoint = sbArmSP.getDouble(0.0);
-    // setArmSetPoint(armSetPoint);
-    // }
-    sbArmSP.setDouble(setPoint);
+    if (setPoint != sbArmSP.getDouble(0.0)) {
+      setPoint = sbArmSP.getDouble(0.0);
+      setSetPoint(setPoint);
+    }
+    
+//    sbArmSP.setDouble(setPoint);
     sbArmPos.setDouble(getPosition());
     sbArmVel.setDouble(armEncoder.getVelocity());
   }

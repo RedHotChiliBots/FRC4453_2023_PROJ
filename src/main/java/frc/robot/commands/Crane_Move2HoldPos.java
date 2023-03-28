@@ -60,7 +60,7 @@ public class Crane_Move2HoldPos extends CommandBase {
           finish = true;
 
         } else {
-          craneTilt.setSetPoint(CraneConstants.kTiltHoldPos);
+          craneArm.setSetPoint(CraneConstants.kArmHoldPos);
           craneTurret.setSetPoint(CraneConstants.kTurretHoldPos);
           crane.setState(CRANESTATE.MOVING);
           state++;
@@ -69,9 +69,8 @@ public class Crane_Move2HoldPos extends CommandBase {
 
       // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        if (craneTilt.atSetPoint() && craneTurret.atSetPoint()) {
-          craneArm.setSetPoint(CraneConstants.kArmHoldPos);
-          crane.setState(CRANESTATE.MOVING);
+        if (craneArm.atSetPoint() && craneTurret.atSetPoint()) {
+          craneTilt.setSetPoint(CraneConstants.kTiltHoldPos);
           state++;
         }
         break;

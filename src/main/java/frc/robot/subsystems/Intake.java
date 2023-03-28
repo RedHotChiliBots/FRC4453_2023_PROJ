@@ -122,8 +122,8 @@ public class Intake extends SubsystemBase {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
 
-    leftMotor.setSmartCurrentLimit(60, 40);
-    rightMotor.setSmartCurrentLimit(60, 40);
+    leftMotor.setSmartCurrentLimit(45, 30);
+    rightMotor.setSmartCurrentLimit(45, 30);
 
     setMotor(MotorState.STOP);
     setArm(ArmState.CLOSE);

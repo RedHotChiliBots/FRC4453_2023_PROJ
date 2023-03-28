@@ -47,7 +47,7 @@ public class Crane_ManualMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (crane.getState() == CRANESTATE.NODE) {
+//    if (crane.getState() == CRANESTATE.NODE) {
       craneTurret.setSetPoint(Library.clamp(
           craneTurret.getSetPoint() +
               (Math.abs(turretAxis.getAsDouble()) < 0.05 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
@@ -63,7 +63,7 @@ public class Crane_ManualMove extends CommandBase {
               (Math.abs(armAxis.getAsDouble()) < 0.05 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
           CraneConstants.kArmMax,
           CraneConstants.kArmMin));
-    }
+//    }
   }
 
   // Called once the command ends or is interrupted.

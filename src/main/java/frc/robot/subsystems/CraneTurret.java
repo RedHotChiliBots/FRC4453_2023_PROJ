@@ -17,6 +17,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.GridCalcs.CRANEAXIS;
+import frc.robot.GridCalcs.CRANESTATE;
 
 public class CraneTurret extends SubsystemBase {
   // ==============================================================
@@ -29,7 +31,7 @@ public class CraneTurret extends SubsystemBase {
 
   private final SparkMaxPIDController turretPID = turretMotor.getPIDController();
 
-  private double setPoint = CraneConstants.kTurretInitPos;
+  private double setPoint = CraneConstants.kTurretFwdPos;
 
   // ==============================================================
   // Define Shuffleboard data
@@ -98,11 +100,11 @@ public class CraneTurret extends SubsystemBase {
     // This method will be called once per scheduler run
 
     if (setPoint != sbTurretSP.getDouble(0.0)) {
-      setPoint = sbTurretSP.getDouble(0.0);
-      setSetPoint(setPoint);
+    setPoint = sbTurretSP.getDouble(0.0);
+    setSetPoint(setPoint);
     }
 
-//    sbTurretSP.setDouble(setPoint);
+    // sbTurretSP.setDouble(setPoint);
     sbTurretPos.setDouble(turretEncoder.getPosition());
     sbTurretVel.setDouble(turretEncoder.getVelocity());
   }
@@ -117,7 +119,7 @@ public class CraneTurret extends SubsystemBase {
   }
 
   public void initPos() {
-    turretEncoder.setPosition(CraneConstants.kTurretInitPos);
+    turretEncoder.setPosition(CraneConstants.kTurretFwdPos);
   }
 
   public void setSetPoint(double setPoint) {
@@ -129,8 +131,9 @@ public class CraneTurret extends SubsystemBase {
     return Math.abs(setPoint - getPosition()) < CraneConstants.kTurretPositionTolerance;
   }
 
-  public boolean atNextPoint() {
-    return Math.abs(crane.getGridX() - getPosition()) < CraneConstants.kTurretPositionTolerance;
+  public boolean atNextPoint(CRANESTATE tgtState) {
+    return Math.abs(
+        crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET) - getPosition()) < CraneConstants.kTurretPositionTolerance;
   }
 
   public double getPosition() {

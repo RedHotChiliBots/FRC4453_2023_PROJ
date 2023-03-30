@@ -1,5 +1,11 @@
-Robot Arm
-  TURRET    0.0000     ARM   -8.7500    TILT   39.3125
+Robot Arm - Back
+  TURRET    0.0000    TILT   39.3125     ARM   -8.7500
+Robot Arm - Front
+  TURRET  180.0000    TILT   39.3125     ARM  -20.7500
+Robot Arm - Left Side
+  TURRET  -90.0000    TILT   39.3125     ARM  -12.7500
+Robot Arm - Right Side
+  TURRET   90.0000    TILT   39.3125     ARM  -12.7500
 Element Height above Score
       NA    0.0000    CONE   12.0000    CUBE   12.0000   OTHER    0.0000
 Offset from Center (x)
@@ -11,4 +17,4 @@ CONE    Height from Floor (z)
 CUBE    Height from Floor (z)
        TOP   35.5000    MIDDLE   23.5000    BOTTOM    5.0000
 SubStation
-    TURRET    0.0000       ARM    6.5000      TILT   37.3750
+    TURRET    0.0000      TILT   37.3750       ARM   12.5000

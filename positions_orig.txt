@@ -1,0 +1,43 @@
+Grid
+
+======= CONE =======
+
+     TOP
+    LEFT	Turret: -22.2370   Tilt:  19.4390   Arm:  51.3228
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret:  22.2370   Tilt:  19.4390   Arm:  51.3228
+
+  MIDDLE
+    LEFT	Turret: -33.4206   Tilt:   9.9817   Arm:  35.2635
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret:  33.4206   Tilt:   9.9817   Arm:  35.2635
+
+  BOTTOM
+    LEFT	Turret: -37.2947   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret:   0.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret:  37.2947   Tilt: -39.5098   Arm:  32.0549
+
+======= CUBE =======
+
+     TOP
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret:   0.0000   Tilt:   9.5820   Arm:  44.9562
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+
+  MIDDLE
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret:   0.0000   Tilt:  -6.9010   Arm:  29.0011
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+
+  BOTTOM
+    LEFT	Turret: -37.2947   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret:   0.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret:  37.2947   Tilt: -39.5098   Arm:  32.0549
+
+Substation
+
+======= CONE =======
+  TURRET   0.0000	    TILT   5.2624	     ARM  33.3907	
+
+======= CUBE =======
+  TURRET   0.0000	    TILT   4.4069	     ARM  33.3486	

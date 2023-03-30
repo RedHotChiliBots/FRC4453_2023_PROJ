@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.commands.firstAttempt;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
 import frc.robot.Constants.E;
 
 /** Add your docs here. */
-public class GridCalcs {
+public class GridCalcs_New {
 
 	public enum ALLIENCE {
 		RED,
@@ -59,7 +59,7 @@ public class GridCalcs {
 		}
 
 		public V get() {
-			return (this.v);
+			return (v);
 		}
 
 		public V next() {
@@ -101,7 +101,7 @@ public class GridCalcs {
 		}
 
 		public H get() {
-			return (this.h);
+			return (h);
 		}
 
 		public H next() {
@@ -119,19 +119,6 @@ public class GridCalcs {
 				h = H.values()[ord - 1];
 			return h;
 		}
-	}
-
-	public Horz horz = new Horz();	//H.LEFT);
-	public Vert vert = new Vert();	//V.TOP);
-
-	private E elem = E.CONE;
-
-	public void setElem(E e) {
-		this.elem = e;
-	}
-
-	public E getElem() {
-		return this.elem;
 	}
 
 	public enum DIR {
@@ -155,30 +142,12 @@ public class GridCalcs {
 	}
 
 	public final EnumMap<C, Double> kRobotFwdPos = new EnumMap<>(Map.of(
-			C.TURRET, 180.0,
+			C.TURRET, 0.0,
 			C.ARM, -20.75,
 			C.TILT, 39.3125));
 
 	public double getRobotFwdPos(C c) {
 		return kRobotFwdPos.get(c);
-	}
-
-	public final EnumMap<C, Double> kRobotLSidePos = new EnumMap<>(Map.of(
-			C.TURRET, -90.0,
-			C.ARM, -12.75,
-			C.TILT, 39.3125));
-
-	public double getRobotLSidePos(C c) {
-		return kRobotLSidePos.get(c);
-	}
-
-	public final EnumMap<C, Double> kRobotRSidePos = new EnumMap<>(Map.of(
-			C.TURRET, 90.0,
-			C.ARM, -12.75,
-			C.TILT, 39.3125));
-
-	public double getRobotRSidePos(C c) {
-		return kRobotRSidePos.get(c);
 	}
 
 	public final EnumMap<C, Double> kSubStation = new EnumMap<>(Map.of(
@@ -247,6 +216,48 @@ public class GridCalcs {
 
 	public double getZNode(V v, E e) {
 		return kZNode.get(v).get(e);
+	}
+
+	private static final EnumMap<CRANESTATE, Map<CRANEAXIS, Double>> kCranePos = new EnumMap<>(Map.of(
+			CRANESTATE.STOW,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -87.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.RECEIVE,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -78.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.HOLD,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -78.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.GRIP,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -78.0,
+					CRANEAXIS.ARM, 32.0),
+			CRANESTATE.READY,
+			Map.of(CRANEAXIS.TURRET, 180.0,
+					CRANEAXIS.TILT, 0.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.LEFT,
+			Map.of(CRANEAXIS.TURRET, -90.0,
+					CRANEAXIS.TILT, 0.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.RIGHT,
+			Map.of(CRANEAXIS.TURRET, 90.0,
+					CRANEAXIS.TILT, 0.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.SUBSTATION,
+			Map.of(CRANEAXIS.TURRET, 180.0,
+					CRANEAXIS.TILT, 0.0,
+					CRANEAXIS.ARM, 25.0),
+			CRANESTATE.CLEAR2MOVE,
+			Map.of(CRANEAXIS.TURRET, 0.0,
+					CRANEAXIS.TILT, -45.0,
+					CRANEAXIS.ARM, 25.0)));
+
+	public static double getCranePos(CRANESTATE cs, CRANEAXIS ca) {
+		return kCranePos.get(cs).get(ca);
 	}
 
 	private final EnumMap<V, Map<H, Map<E, Boolean>>> kNodeValid = new EnumMap<>(Map.of(
@@ -319,113 +330,16 @@ public class GridCalcs {
 		}
 	}
 
-	public double getLSideArm() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return fudge * Math.sqrt(
-					Math.pow(kXNode.get(horz.get()) - kRobotLSidePos.get(C.TURRET), 2) +
-							Math.pow(kYNode.get(vert.get()) - kRobotLSidePos.get(C.ARM), 2) +
-							Math.pow(kZNode.get(vert.get()).get(elem) - kRobotLSidePos.get(C.TILT) + kZG.get(elem), 2));
-		} else {
-			return Float.NaN;
-		}
+	public Horz horz = new Horz();
+	public Vert vert = new Vert();
+
+	private E elem = E.CONE;
+
+	public void setElem(E e) {
+		this.elem = e;
 	}
 
-	public double getLSideTurret() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.toDegrees(Math.asin(
-					(kXNode.get(horz.get()) - kRobotLSidePos.get(C.TURRET)) /
-							(getLSideArm() / fudge)));
-		} else {
-			return Float.NaN;
-		}
-	}
-
-	public double getLSideTilt() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.toDegrees(
-					Math.asin(
-							(kZNode.get(vert.get()).get(elem) - kRobotLSidePos.get(C.TILT) + kZG.get(elem)) /
-									(getLSideArm() / fudge)));
-		} else {
-			return Float.NaN;
-		}
-	}
-
-	public double getRSideArm() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return fudge * Math.sqrt(
-					Math.pow(kXNode.get(horz.get()) - kRobotRSidePos.get(C.TURRET), 2) +
-							Math.pow(kYNode.get(vert.get()) - kRobotRSidePos.get(C.ARM), 2) +
-							Math.pow(kZNode.get(vert.get()).get(elem) - kRobotRSidePos.get(C.TILT) + kZG.get(elem), 2));
-		} else {
-			return Float.NaN;
-		}
-	}
-
-	public double getRSideTurret() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.toDegrees(Math.asin(
-					(kXNode.get(horz.get()) - kRobotRSidePos.get(C.TURRET)) /
-							(getRSideArm() / fudge)));
-		} else {
-			return Float.NaN;
-		}
-	}
-
-	public double getRSideTilt() {
-		if (isNodeValid(vert.get(), horz.get(), getElem())) {
-			return Math.toDegrees(
-					Math.asin(
-							(kZNode.get(vert.get()).get(elem) - kRobotRSidePos.get(C.TILT) + kZG.get(elem)) /
-									(getRSideArm() / fudge)));
-		} else {
-			return Float.NaN;
-		}
-	}
-
-	private volatile EnumMap<CRANESTATE, Map<CRANEAXIS, Double>> kCranePos = new EnumMap<>(Map.of(
-			CRANESTATE.STOW,
-			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -87.0,
-					CRANEAXIS.ARM, 25.0),
-			CRANESTATE.RECEIVE,
-			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -78.0,
-					CRANEAXIS.ARM, 25.0),
-			CRANESTATE.HOLD,
-			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -78.0,
-					CRANEAXIS.ARM, 25.0),
-			CRANESTATE.GRIP,
-			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -78.0,
-					CRANEAXIS.ARM, 32.0),
-			CRANESTATE.READY,
-			Map.of(CRANEAXIS.TURRET, 180.0,
-					CRANEAXIS.TILT, 0.0,
-					CRANEAXIS.ARM, 25.0),
-			CRANESTATE.NODE,
-			Map.of(CRANEAXIS.TURRET, 180.0 + getRevTurret(),
-					CRANEAXIS.TILT, getRevTilt(),
-					CRANEAXIS.ARM, getRevArm()),
-			CRANESTATE.LEFT,
-			Map.of(CRANEAXIS.TURRET, getLSideTurret(),
-					CRANEAXIS.TILT, getLSideTilt(),
-					CRANEAXIS.ARM, getLSideArm()),
-			CRANESTATE.RIGHT,
-			Map.of(CRANEAXIS.TURRET, getRSideTurret(),
-					CRANEAXIS.TILT, getRSideTilt(),
-					CRANEAXIS.ARM, getRSideArm()),
-			CRANESTATE.SUBSTATION,
-			Map.of(CRANEAXIS.TURRET, getSubStationPos(C.TURRET),
-					CRANEAXIS.TILT, getSubStationPos(C.TILT),
-					CRANEAXIS.ARM, getSubStationPos(C.ARM)),
-			CRANESTATE.CLEAR2MOVE,
-			Map.of(CRANEAXIS.TURRET, 0.0,
-					CRANEAXIS.TILT, -45.0,
-					CRANEAXIS.ARM, 25.0)));
-
-	public double getCranePos(CRANESTATE cs, CRANEAXIS ca) {
-		return kCranePos.get(cs).get(ca);
+	public E getElem() {
+		return elem;
 	}
 }

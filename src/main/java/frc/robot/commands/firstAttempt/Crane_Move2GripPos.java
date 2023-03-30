@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.firstAttempt;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -71,7 +71,7 @@ public class Crane_Move2GripPos extends CommandBase {
       // If Turret and Tilt are in Node pos, move Arm to Ready pos
       case 1:
         if (craneTurret.atSetPoint() && craneTilt.atSetPoint()) {
-          craneTurret.setSetPoint(CraneConstants.kTurretGripPos);
+          craneTurret.setSetPoint(CraneConstants.kTurretFwdPos);
           craneTilt.setSetPoint(CraneConstants.kTiltGripPos);
           if (crane.getElem() == E.CONE) {
             craneArm.setSetPoint(CraneConstants.kArmGripCone);
@@ -98,15 +98,15 @@ public class Crane_Move2GripPos extends CommandBase {
     }
 
     DataLogManager.log(
-    
-    String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
-        origState, tgtState, crane.getState(), state,
-        craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
-        String.format("%7.3f", craneTurret.getSetPoint()),
-        craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
-        String.format("%6.3f", craneTilt.getSetPoint()),
-        craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
-        String.format("%6.3f", craneArm.getSetPoint())));
+
+        String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+            origState, tgtState, crane.getState(), state,
+            craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
+            String.format("%7.3f", craneTurret.getSetPoint()),
+            craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
+            String.format("%6.3f", craneTilt.getSetPoint()),
+            craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
+            String.format("%6.3f", craneArm.getSetPoint())));
   }
 
   // Called once the command ends or is interrupted.

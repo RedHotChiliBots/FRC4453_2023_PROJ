@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.firstAttempt;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -58,9 +58,9 @@ public class Crane_Auton2NodePos extends CommandBase {
         case 0:
           // If already at Node, do nothing
           if (crane.getState() == CRANESTATE.NODE &&
-              craneTurret.atNextPoint() &&
-              craneTilt.atNextPoint() &&
-              craneArm.atNextPoint()) {
+              craneTurret.atNextPoint(tgtState) &&
+              craneTilt.atNextPoint(tgtState) &&
+              craneArm.atNextPoint(tgtState)) {
             DriverStation.reportWarning("Already at Node", false);
             finish = true;
 

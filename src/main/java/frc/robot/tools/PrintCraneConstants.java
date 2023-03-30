@@ -34,9 +34,27 @@ public class PrintCraneConstants {
 
       GridCalcs grid = new GridCalcs();
 
-      printStr("Robot Arm\n");
+      printStr("Robot Arm - Back\n");
       for (C c : C.values()) {
          printStr(String.format("%8s%10.4f", c, grid.getRobotRevPos(c)));
+      }
+      printStr("\n");
+
+      printStr("Robot Arm - Front\n");
+      for (C c : C.values()) {
+         printStr(String.format("%8s%10.4f", c, grid.getRobotFwdPos(c)));
+      }
+      printStr("\n");
+
+      printStr("Robot Arm - Left Side\n");
+      for (C c : C.values()) {
+         printStr(String.format("%8s%10.4f", c, grid.getRobotLSidePos(c)));
+      }
+      printStr("\n");
+
+      printStr("Robot Arm - Right Side\n");
+      for (C c : C.values()) {
+         printStr(String.format("%8s%10.4f", c, grid.getRobotRSidePos(c)));
       }
       printStr("\n");
 

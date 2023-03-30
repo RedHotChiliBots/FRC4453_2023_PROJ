@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.firstAttempt;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.GridCalcs.C;
+import frc.robot.Constants.CraneConstants;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
 
-public class Crane_Move2SubStnPos extends CommandBase {
+public class Crane_Move2HoldPos extends CommandBase {
   Crane crane;
   CraneTurret craneTurret;
   CraneTilt craneTilt;
@@ -25,7 +25,7 @@ public class Crane_Move2SubStnPos extends CommandBase {
   CRANESTATE tgtState;
 
   /** Creates a new CraneMove2Pos. */
-  public Crane_Move2SubStnPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
+  public Crane_Move2HoldPos(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm) {
     this.crane = crane;
     this.craneTurret = craneTurret;
     this.craneTilt = craneTilt;
@@ -41,7 +41,7 @@ public class Crane_Move2SubStnPos extends CommandBase {
     state = 0;
     finish = false;
     origState = crane.getState();
-    tgtState = CRANESTATE.SUBSTATION;
+    tgtState = CRANESTATE.HOLD;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,36 +50,37 @@ public class Crane_Move2SubStnPos extends CommandBase {
     switch (state) {
       // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
       case 0:
-        // If already at Node, do nothing
-        if (crane.getState() == CRANESTATE.SUBSTATION &&
-              craneTurret.atNextPoint() &&
-              craneTilt.atNextPoint() &&
-              craneArm.atNextPoint()) {
-          DriverStation.reportWarning("Already at SubStation", false);
+        // If already at Ready, do nothing
+        if (crane.getState() == CRANESTATE.HOLD) {
+          DriverStation.reportWarning("Already in Hold position", false);
           finish = true;
 
-          // If Rotating within Grid or at Ready pos, Turret = Node pos, Tilt = Node pos
-        } else if (crane.getState() == CRANESTATE.STOW || crane.getState() == CRANESTATE.HOLD
-            || crane.getState() == CRANESTATE.RECEIVE || crane.getState() == CRANESTATE.SUBSTATION) {
-          craneTurret.setSetPoint(crane.grid.getSubStationPos(C.TURRET));
-          craneTilt.setSetPoint(crane.grid.getSubStationPos(C.TILT));
-          craneArm.setSetPoint(crane.grid.getSubStationPos(C.ARM));
+        } else if (crane.getState() != CRANESTATE.GRIP && crane.getState() != CRANESTATE.SUBSTATION) {
+          DriverStation.reportWarning("Crane must be in Grip or SubStation position", false);
+          finish = true;
+
+        } else {
+          craneArm.setSetPoint(CraneConstants.kArmHoldPos);
+          craneTurret.setSetPoint(CraneConstants.kTurretFwdPos);
           crane.setState(CRANESTATE.MOVING);
           state++;
-          DriverStation.reportWarning("Moving to SubStation to get " + crane.grid.getElem().toString(), false);
         }
-
-        DriverStation.reportWarning("Current Pos: " + craneTurret.getPosition() + "   Target Pos: " + crane
-            .getGridX(), false);
-        DriverStation.reportWarning("Next State " + state, false);
         break;
 
-      // If Crane is in Node position, then finished
+      // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
+        if (craneArm.atSetPoint() && craneTurret.atSetPoint()) {
+          craneTilt.setSetPoint(CraneConstants.kTiltHoldPos);
+          state++;
+        }
+        break;
+
+      // If Turret and Tilt are in Node pos, move Arm to Ready pos
+      case 2:
         if (craneTurret.atSetPoint() &&
             craneTilt.atSetPoint() &&
             craneArm.atSetPoint()) {
-          crane.setState(CRANESTATE.SUBSTATION);
+          crane.setState(CRANESTATE.HOLD);
           finish = true;
         }
         break;

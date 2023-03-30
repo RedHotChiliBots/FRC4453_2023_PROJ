@@ -34,14 +34,7 @@ import frc.robot.commands.CraneArm2Pos;
 import frc.robot.commands.CraneReset;
 import frc.robot.commands.CraneTilt2Pos;
 import frc.robot.commands.Crane_ManualMove;
-import frc.robot.commands.Crane_Move2GripPos;
-import frc.robot.commands.Crane_Move2HoldPos;
-import frc.robot.commands.Crane_Move2NodePos;
-import frc.robot.commands.Crane_Move2ReadyPos;
-import frc.robot.commands.Crane_Move2ReceivePos;
-import frc.robot.commands.Crane_Move2StowPos;
-import frc.robot.commands.Crane_Move2SubStnPos;
-import frc.robot.commands.Crane_MoveTilt2Zero;
+import frc.robot.commands.Crane_Move2Position;
 import frc.robot.commands.ChassisDriveSelected;
 import frc.robot.commands.ChassisSetGearShifter;
 import frc.robot.commands.DoRumble;
@@ -50,6 +43,14 @@ import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
 import frc.robot.commands.IntakeToggleElem;
 import frc.robot.commands.VisionToggleRumble;
+import frc.robot.commands.firstAttempt.Crane_Move2GripPos;
+import frc.robot.commands.firstAttempt.Crane_Move2HoldPos;
+import frc.robot.commands.firstAttempt.Crane_Move2NodePos;
+import frc.robot.commands.firstAttempt.Crane_Move2ReadyPos;
+import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
+import frc.robot.commands.firstAttempt.Crane_Move2StowPos;
+import frc.robot.commands.firstAttempt.Crane_Move2SubStnPos;
+import frc.robot.commands.firstAttempt.Crane_MoveTilt2Zero;
 import frc.robot.commands.old.AutonChargingStation;
 import frc.robot.commands.old.AutonChassisDriveTime;
 import frc.robot.commands.AutonChgStnDrive;
@@ -72,6 +73,7 @@ import frc.robot.commands.VisionTeleopTrackAprilTag;
 import frc.robot.commands.ChassisToggleDir;
 import frc.robot.commands.ChassisToggleDrive;
 import frc.robot.Constants.OIConstants;
+import frc.robot.GridCalcs.CRANESTATE;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -149,6 +151,9 @@ public class RobotContainer {
 	private final AutonChgStnLevel autonChgStnLevel = new AutonChgStnLevel(chassis);
 	private final AutonTrackAprilTag autonTrackAprilTag = new AutonTrackAprilTag(chassis, vision, 2);
 
+	private final AutonGripMove2Node autonGripScore = new AutonGripMove2Node(chassis,
+			crane, craneTurret, craneTilt, craneArm, claw, intake);
+
 	private final VisionTeleopTrackAprilTag teleopTrackAprilTag = new VisionTeleopTrackAprilTag(chassis, vision, 2);
 
 	private final VisionToggleRumble visionToggleRumble = new VisionToggleRumble(vision);
@@ -163,25 +168,28 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	private final AutonGripMove2Node autonGripScore = new AutonGripMove2Node(chassis,
-			crane, craneTurret, craneTilt, craneArm, claw, intake);
-	private final Crane_Move2NodePos crane_Move2NodePos = new Crane_Move2NodePos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2ReadyPos crane_Move2ReadyPos = new Crane_Move2ReadyPos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2GripPos crane_Move2GripPos = new Crane_Move2GripPos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2ReceivePos crane_Move2ReceivePos = new Crane_Move2ReceivePos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2HoldPos crane_Move2HoldPos = new Crane_Move2HoldPos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2StowPos crane_Move2StowPos = new Crane_Move2StowPos(crane, craneTurret, craneTilt,
-			craneArm);
-	private final Crane_Move2SubStnPos crane_Move2SubStnPos = new Crane_Move2SubStnPos(crane, craneTurret, craneTilt,
-			craneArm);
+	
+	private final Crane_Move2Position crane_Move2NodePos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.NODE);
+	private final Crane_Move2Position crane_Move2ReadyPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.READY);
+	private final Crane_Move2Position crane_Move2GripPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.GRIP);
+	private final Crane_Move2Position crane_Move2ReceivePos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.RECEIVE);
+	private final Crane_Move2Position crane_Move2HoldPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.HOLD);
+	private final Crane_Move2Position crane_Move2StowPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.STOW);
+	private final Crane_Move2Position crane_Move2SubStnPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.SUBSTATION);
+	private final Crane_Move2Position crane_Move2LeftPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.LEFT);
+	private final Crane_Move2Position crane_Move2RightPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
+			craneArm, CRANESTATE.RIGHT);
 
-	private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
-			craneArm);
+	// private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
+	// 		craneArm);
 
 	private final TeleopMove2Elem auton_Move2ElemPos = new TeleopMove2Elem(crane, craneTurret, craneTilt,
 			craneArm, claw, intake);
@@ -210,27 +218,6 @@ public class RobotContainer {
 
 	private final TiltRatchet ratchetLock = new TiltRatchet(craneTilt, RatchetState.LOCK);
 	private final TiltRatchet ratchetUnlock = new TiltRatchet(craneTilt, RatchetState.UNLOCK);
-
-	// // =============================================================
-	// // Create a voltage constraint to ensure we don't accelerate too fast
-	// private DifferentialDriveVoltageConstraint autoVoltageConstraint;
-
-	// // Create configs for trajectory
-	// private TrajectoryConfig fwdConfig = null;
-	// private TrajectoryConfig revConfig = null;
-
-	// // =============================================================
-	// // Define Trajectory Commands here and add Trajectors below
-	// private Trajectory fwdStraight = null;
-	// private AutonStraight autonStraight = null;
-	// private Trajectory revStraight = null;
-	// private AutonReturn autonReturn = null;
-
-	// private Trajectory getGameElement = null;
-	// private AutonGetGameElement autonGetGameElement = null;
-
-	// private Trajectory returnToGrid = null;
-	// private AutonReturnToGrid autonReturnToGrid = null;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -323,9 +310,13 @@ public class RobotContainer {
 				.withPosition(9, 6).withSize(2, 1);
 		cmdTab.add("Move SubStn Pos", crane_Move2SubStnPos).withWidget("Command")
 				.withPosition(9, 7).withSize(2, 1);
+		cmdTab.add("Move Left Pos", crane_Move2LeftPos).withWidget("Command")
+				.withPosition(9, 8).withSize(2, 1);
+		cmdTab.add("Move Right Pos", crane_Move2RightPos).withWidget("Command")
+				.withPosition(9, 9).withSize(2, 1);
 
-		cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero).withWidget("Command")
-				.withPosition(12, 0).withSize(2, 1);
+		// cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero).withWidget("Command")
+		// 		.withPosition(12, 0).withSize(2, 1);
 		cmdTab.add("Get Elem", auton_Move2ElemPos).withWidget("Command")
 				.withPosition(12, 1).withSize(2, 1);
 		cmdTab.add("Move 2 Ready", auton_Move2ReadyPos).withWidget("Command")

@@ -26,6 +26,8 @@ import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.DIOChannelConstants;
 import frc.robot.Constants.Pneumatic1ChannelConstants;
 import frc.robot.Constants.PneumaticModuleConstants;
+import frc.robot.GridCalcs.CRANEAXIS;
+import frc.robot.GridCalcs.CRANESTATE;
 
 public class CraneTilt extends SubsystemBase {
   // ==============================================================
@@ -39,7 +41,7 @@ public class CraneTilt extends SubsystemBase {
 
   private final SparkMaxPIDController tiltPID = tiltMotor.getPIDController();
 
-  private double setPoint = CraneConstants.kTiltInitPos;
+  private double setPoint = CraneConstants.kTiltStowPos;
 
   private final DoubleSolenoid ratchet = new DoubleSolenoid(
       PneumaticModuleConstants.kPCM1,
@@ -138,11 +140,11 @@ public class CraneTilt extends SubsystemBase {
     // evtLoop.poll();
 
     if (setPoint != sbTiltSP.getDouble(0.0)) {
-      setPoint = sbTiltSP.getDouble(0.0);
-      setSetPoint(setPoint);
+    setPoint = sbTiltSP.getDouble(0.0);
+    setSetPoint(setPoint);
     }
 
-//    sbTiltSP.setDouble(setPoint);
+    // sbTiltSP.setDouble(setPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
 
@@ -158,8 +160,8 @@ public class CraneTilt extends SubsystemBase {
   }
 
   public void reset() {
-    initPos(CraneConstants.kTiltInitPos);
-    setSetPoint(CraneConstants.kTiltInitPos);
+    initPos(CraneConstants.kTiltStowPos);
+    setSetPoint(CraneConstants.kTiltStowPos);
     setRatchet(RatchetState.UNLOCK);
   }
 
@@ -191,8 +193,9 @@ public class CraneTilt extends SubsystemBase {
     return Math.abs(setPoint - getPosition()) < CraneConstants.kTiltPositionTolerance;
   }
 
-  public boolean atNextPoint() {
-    return Math.abs(crane.getGridZ() - getPosition()) < CraneConstants.kTiltPositionTolerance;
+  public boolean atNextPoint(CRANESTATE tgtState) {
+    return Math.abs(
+        crane.grid.getCranePos(tgtState, CRANEAXIS.TILT) - getPosition()) < CraneConstants.kTiltPositionTolerance;
   }
 
   public double getPosition() {

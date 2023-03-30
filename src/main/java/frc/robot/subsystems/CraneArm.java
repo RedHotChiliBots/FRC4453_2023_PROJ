@@ -17,6 +17,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.CANidConstants;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.GridCalcs.CRANEAXIS;
+import frc.robot.GridCalcs.CRANESTATE;
 
 public class CraneArm extends SubsystemBase {
   // ==============================================================
@@ -99,11 +101,11 @@ public class CraneArm extends SubsystemBase {
     // This method will be called once per scheduler run
 
     if (setPoint != sbArmSP.getDouble(0.0)) {
-      setPoint = sbArmSP.getDouble(0.0);
-      setSetPoint(setPoint);
+    setPoint = sbArmSP.getDouble(0.0);
+    setSetPoint(setPoint);
     }
-    
-//    sbArmSP.setDouble(setPoint);
+
+    // sbArmSP.setDouble(setPoint);
     sbArmPos.setDouble(getPosition());
     sbArmVel.setDouble(armEncoder.getVelocity());
   }
@@ -137,8 +139,9 @@ public class CraneArm extends SubsystemBase {
     return Math.abs(setPoint - getPosition()) < CraneConstants.kArmPositionTolerance;
   }
 
-  public boolean atNextPoint() {
-    return Math.abs(crane.getGridY() - getPosition()) < CraneConstants.kArmPositionTolerance;
+  public boolean atNextPoint(CRANESTATE tgtState) {
+    return Math.abs(
+        crane.grid.getCranePos(tgtState, CRANEAXIS.ARM) - getPosition()) < CraneConstants.kArmPositionTolerance;
   }
 
   public double getSetPoint() {

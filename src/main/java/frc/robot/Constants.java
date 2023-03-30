@@ -134,8 +134,8 @@ public final class Constants {
 		public static final double kDriveMaxAcc = 1500;
 		public static final double kDriveAllowErr = 0.01;
 
-		public static final double kInches2Meters = 39.3700787402;	// conversion constant
-		public static final double kWheelDia = 7.639;	// diameter in inches
+		public static final double kInches2Meters = 39.3700787402; // conversion constant
+		public static final double kWheelDia = 7.639; // diameter in inches
 		public static final double kWheelCircInches = Math.PI * kWheelDia; // circ in inches
 		public static final double kWheelCircMeters = kWheelCircInches / kInches2Meters; // circ in meters
 
@@ -166,7 +166,7 @@ public final class Constants {
 		public static final double kDistanceTolerance = .00625; // meters
 		public static final int kDistSlot = 0;
 
-		public static final double kDistP = 1.5;	//0.5; // 5e-5;
+		public static final double kDistP = 1.5; // 0.5; // 5e-5;
 		public static final double kDistI = 0.0; // 1e-6;
 		public static final double kDistD = 0.0; // 0.0;
 		public static final double kDistIz = 0.0;
@@ -199,13 +199,11 @@ public final class Constants {
 		public static final double kTurretP = 5e-5;
 		public static final double kTurretI = 0.0; // 1e-6;
 		public static final double kTurretD = 0.0;
-		public static final double kTurretInitPos = 0.0; // degrees
-		public static final double kTurretStowPos = 0.0; // degrees
-		public static final double kTurretHoldPos = 0.0; // degrees
-		public static final double kTurretReceivePos = 0.0; // degrees
-		public static final double kTurretGripPos = 0.0; // degrees
-		public static final double kTurretReadyPos = 180.0; // degrees
-		public static final double kTurretNodePos = 180.0; // degrees
+
+		public static final double kTurretFwdPos = 0.0; // degrees
+		public static final double kTurretLeftPos = -90.0; // degrees
+		public static final double kTurretRightPos = 90.0; // degrees
+		public static final double kTurretBackPos = 180.0; // degrees
 		public static final double kTurretSafe2TiltArm = -40.0; // degrees
 		public static final double kTurretPositionTolerance = 1.0; // degrees
 
@@ -220,7 +218,6 @@ public final class Constants {
 		public static final double kTiltP = 5e-5;
 		public static final double kTiltI = 0.0; // 1e-6;
 		public static final double kTiltD = 0.0;
-		public static final double kTiltInitPos = -87; // degrees
 		public static final double kTiltClearChassisPos = -45.0; // degrees
 		public static final double kTiltStowPos = -87; // degrees
 		public static final double kTiltGripPos = -82; // degrees
@@ -264,18 +261,18 @@ public final class Constants {
 		public static final double kTurretGearBoxRatio = 20;
 		public static final double kTurretRotationsPerDegree = (kTurretSprocketRatio * kTurretGearBoxRatio) / 360.0;
 		public static final double kTurretDegreesPerRotation = 360.0 / (kTurretSprocketRatio * kTurretGearBoxRatio);
-		public static final double kTurretMaxVel = 5000.0;	//360.0 / kTurretDegreesPerRotation * 60.0; // RPM
-		public static final double kTurretMaxAccel = kTurretMaxVel * (2.0 / 3.0); // RPMps^2
+		public static final double kTurretMaxVel = 5000.0; // 360.0 / kTurretDegreesPerRotation * 60.0; // RPM
+		public static final double kTurretMaxAccel = 10000;	//kTurretMaxVel * (2.0 / 3.0); // RPMps^2
 
 		public static final double kTiltSprocketTeeth = 120;
 		public static final double kTiltMotorSprocketTeeth = 18;
 		public static final double kTiltSprocketRatio = kTiltSprocketTeeth / kTiltMotorSprocketTeeth;
-		public static final double kTiltGearBoxRatio = 80;
+		public static final double kTiltGearBoxRatio = 48;
 		public static final double kTiltRatio = kTiltSprocketRatio * kTiltGearBoxRatio;
 		public static final double kTiltRotationsPerDegree = (kTiltRatio) / 360.0;
 		public static final double kTiltDegreesPerRotation = 360.0 / (kTiltSprocketRatio * kTiltGearBoxRatio);
-		public static final double kTiltMaxVel = 5000.0;	//540.0 / kTiltDegreesPerRotation * 60.0; // RPM
-		public static final double kTiltMaxAccel = 50000.0;	//kTiltMaxVel * (2.0 / 3.0); // RPMps^2
+		public static final double kTiltMaxVel = 5000.0; // 540.0 / kTiltDegreesPerRotation * 60.0; // RPM
+		public static final double kTiltMaxAccel = 50000.0; // kTiltMaxVel * (2.0 / 3.0); // RPMps^2
 
 		public static final double kArmShaftDia = 1.0;
 		public static final double kArmShaftCirc = kArmShaftDia * Math.PI;

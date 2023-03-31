@@ -44,7 +44,7 @@ public class PrintCranePositions {
 
          grid.setElem(e);
          printStr(String.format("\n======= %s =======\n", grid.getElem()));
- 
+
          for (CRANESTATE p : CRANESTATE.values()) {
             printStr(String.format("\n======= %s =======\n", p));
             switch (p) {
@@ -56,7 +56,6 @@ public class PrintCranePositions {
                case HOLD:
                case GRIP:
                case READY:
-               case SUBSTATION:
                case CLEAR2MOVE:
                   printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
                         grid.getCranePos(p, CRANEAXIS.TURRET), // grid.getRevTurret(),
@@ -64,9 +63,14 @@ public class PrintCranePositions {
                         grid.getCranePos(p, CRANEAXIS.ARM))); // grid.getRevArm()));
                   break;
 
+               case SUBSTATION:
+                  printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
+                        grid.getSubStationPos(C.TURRET), // grid.getRevTurret(),
+                        grid.getSubStationPos(C.TILT), // grid.getRevTilt(),
+                        grid.getSubStationPos(C.ARM))); // grid.getRevArm()));
+                  break;
+
                case NODE:
-               case LEFT:
-               case RIGHT:
                   for (V v : V.values()) {
                      grid.vert.set(v);
                      printStr(String.format("\n%8s\n", grid.vert.get()));
@@ -76,10 +80,44 @@ public class PrintCranePositions {
                         printStr(String.format("%8s\t", grid.horz.get()));
 
                         printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
-                              grid.getCranePos(p, CRANEAXIS.TURRET), // grid.getRevTurret(),
-                              grid.getCranePos(p, CRANEAXIS.TILT), // grid.getRevTilt(),
-                              grid.getCranePos(p, CRANEAXIS.ARM))); // grid.getRevArm()));
+                              180 + grid.getRevTurret(),
+                              grid.getRevTilt(),
+                              grid.getRevArm()));
                      } // grid.getCranePos(tgtState, CRANEAXIS.TILT)
+                  }
+                  break;
+
+               case LEFT:
+                  for (V v : V.values()) {
+                     grid.vert.set(v);
+                     printStr(String.format("\n%8s\n", grid.vert.get()));
+
+                     //for (H h : H.values()) {
+                        grid.horz.set(H.CENTER);
+                        printStr(String.format("%8s\t", grid.horz.get()));
+
+                        printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
+                              grid.getLSideTurret(),
+                              grid.getLSideTilt(),
+                              grid.getLSideArm()));
+                     //} // grid.getCranePos(tgtState, CRANEAXIS.TILT)
+                  }
+                  break;
+
+               case RIGHT:
+                  for (V v : V.values()) {
+                     grid.vert.set(v);
+                     printStr(String.format("\n%8s\n", grid.vert.get()));
+
+                     //for (H h : H.values()) {
+                        grid.horz.set(H.CENTER);
+                        printStr(String.format("%8s\t", grid.horz.get()));
+
+                        printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
+                              grid.getRSideTurret(),
+                              grid.getRSideTilt(),
+                              grid.getRSideArm()));
+                     //} // grid.getCranePos(tgtState, CRANEAXIS.TILT)
                   }
                   break;
             }

@@ -21,18 +21,18 @@ Turret: 180.0000   Tilt:   0.0000   Arm:  25.0000
 
      TOP
     LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret: 202.2370   Tilt:  19.4390   Arm:  51.3228
 
   MIDDLE
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret: 146.5794   Tilt:   9.9817   Arm:  35.2635
+  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+   RIGHT	Turret: 213.4206   Tilt:   9.9817   Arm:  35.2635
 
   BOTTOM
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret: 142.7053   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret: 180.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret: 217.2947   Tilt: -39.5098   Arm:  32.0549
 
 ======= SUBSTATION =======
 Turret:   0.0000   Tilt:   5.2624   Arm:  33.3907
@@ -40,36 +40,24 @@ Turret:   0.0000   Tilt:   5.2624   Arm:  33.3907
 ======= LEFT =======
 
      TOP
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt:  19.5933   Arm:  50.9343
 
   MIDDLE
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt:  10.6684   Arm:  33.0177
 
   BOTTOM
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt: -47.0780   Arm:  27.8494
 
 ======= RIGHT =======
 
      TOP
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt:  19.5933   Arm:  50.9343
 
   MIDDLE
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt:  10.6684   Arm:  33.0177
 
   BOTTOM
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt: -47.0780   Arm:  27.8494
 
 ======= CLEAR2MOVE =======
 Turret:   0.0000   Tilt: -45.0000   Arm:  25.0000
@@ -96,56 +84,44 @@ Turret: 180.0000   Tilt:   0.0000   Arm:  25.0000
 ======= NODE =======
 
      TOP
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret: 180.0000   Tilt:   9.5820   Arm:  44.9562
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
 
   MIDDLE
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+  CENTER	Turret: 180.0000   Tilt:  -6.9010   Arm:  29.0011
+   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
 
   BOTTOM
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-   RIGHT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret: 142.7053   Tilt: -39.5098   Arm:  32.0549
+  CENTER	Turret: 180.0000   Tilt: -53.1044   Arm:  25.5006
+   RIGHT	Turret: 217.2947   Tilt: -39.5098   Arm:  32.0549
 
 ======= SUBSTATION =======
-Turret:   0.0000   Tilt:   5.2624   Arm:  33.3907
+Turret:   0.0000   Tilt:   4.4069   Arm:  33.3486
 
 ======= LEFT =======
 
      TOP
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt:   8.8640   Arm:  48.5650
 
   MIDDLE
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt:  -6.1298   Arm:  32.6336
 
   BOTTOM
-    LEFT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-  CENTER	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
-   RIGHT	Turret:  50.9728   Tilt:  12.1904   Arm:  80.8879
+  CENTER	Turret: -90.0000   Tilt: -47.0780   Arm:  27.8494
 
 ======= RIGHT =======
 
      TOP
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt:   8.8640   Arm:  48.5650
 
   MIDDLE
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt:  -6.1298   Arm:  32.6336
 
   BOTTOM
-    LEFT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-  CENTER	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
-   RIGHT	Turret: -63.3930   Tilt:   8.6379   Arm: 113.7261
+  CENTER	Turret:  90.0000   Tilt: -47.0780   Arm:  27.8494
 
 ======= CLEAR2MOVE =======
 Turret:   0.0000   Tilt: -45.0000   Arm:  25.0000

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.GridCalcs.CRANESTATE;
+import frc.robot.GridCalcs.C;
 import frc.robot.GridCalcs.CRANEAXIS;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
@@ -22,6 +23,9 @@ public class Crane_Move2Position extends CommandBase {
   boolean finish = false;
   CRANESTATE origState;
   CRANESTATE tgtState;
+  double tgtTurret;
+  double tgtTilt;
+  double tgtArm;
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2Position(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm,
@@ -33,7 +37,7 @@ public class Crane_Move2Position extends CommandBase {
     this.tgtState = tgtState;
 
     // Use addRequirements() here to declare subsystem dependencies.
-//    addRequirements(crane);
+    // addRequirements(crane);
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +46,46 @@ public class Crane_Move2Position extends CommandBase {
     state = 0;
     finish = false;
     origState = crane.getState();
+
+    switch (tgtState) {
+      case MOVING:
+        break;
+
+      case STOW:
+      case RECEIVE:
+      case HOLD:
+      case GRIP:
+      case READY:
+      case CLEAR2MOVE:
+        tgtTurret = crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET);
+        tgtTilt = crane.grid.getCranePos(tgtState, CRANEAXIS.TILT);
+        tgtArm = crane.grid.getCranePos(tgtState, CRANEAXIS.ARM);
+        break;
+
+      case SUBSTATION:
+        tgtTurret = crane.grid.getSubStationPos(C.TURRET);
+        tgtTilt = crane.grid.getSubStationPos(C.TILT);
+        tgtArm = crane.grid.getSubStationPos(C.ARM);
+        break;
+
+      case NODE:
+        tgtTurret = 180 + crane.grid.getRevTurret();
+        tgtTilt = crane.grid.getRevTilt();
+        tgtArm = crane.grid.getRevArm();
+        break;
+
+      case LEFT:
+        tgtTurret = crane.grid.getLSideTurret();
+        tgtTilt = crane.grid.getLSideTilt();
+        tgtArm = crane.grid.getLSideArm();
+        break;
+
+      case RIGHT:
+        tgtTurret = crane.grid.getRSideTurret();
+        tgtTilt = crane.grid.getRSideTilt();
+        tgtArm = crane.grid.getRSideArm();
+        break;
+    }
     DataLogManager.log(String.format("Crane_Move2Position From: %s, To: %s\n", origState, tgtState));
   }
 
@@ -87,29 +131,27 @@ public class Crane_Move2Position extends CommandBase {
               finish = true;
 
               // If Turret is not moving, move Tilt and Arm together
-            } else if (craneTurret.getPosition() == crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET)) {
-              craneTilt.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.TILT));
-              craneArm.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.ARM));
+            } else if (craneTurret.getPosition() == tgtTurret) {
+              craneTilt.setSetPoint(tgtTilt);
+              craneArm.setSetPoint(tgtArm);
               DataLogManager.log("Turret not moving, move Tilt and Arm tegether");
               state = 3;
               crane.setState(CRANESTATE.MOVING);
 
               // If Turret move is less than 45 degrees (node to node), move Turret, Tilt, Arm
               // together
-            } else if (Math
-                .abs(craneTurret.getPosition() - crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET)) < 45.0) {
-              craneTurret.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET));
-              craneTilt.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.TILT));
-              craneArm.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.ARM));
+            } else if (Math.abs(craneTurret.getPosition() - tgtTurret) < 45.0) {
+              craneTurret.setSetPoint(tgtTurret);
+              craneTilt.setSetPoint(tgtTilt);
+              craneArm.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.ARM));
               DataLogManager.log("Turret moves < 45deg, move Turret, Tilt, ARm together");
-              state = 3;
+              state = 2;
               crane.setState(CRANESTATE.MOVING);
 
               // If Turret move is greater than 60 degrees (front to back or side), move Tilt
               // and Arm to safe positions
               // Rotate
-            } else if (Math
-                .abs(craneTurret.getPosition() - crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET)) > 60.0) {
+            } else if (Math.abs(craneTurret.getPosition() - tgtTurret) > 60.0) {
               craneTilt.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.TILT));
               craneArm.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.ARM));
               DataLogManager.log("Turret moves > 60deg, move Tilt and Arm to Safe positions");
@@ -121,8 +163,8 @@ public class Crane_Move2Position extends CommandBase {
           // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
           case 1:
             if (craneTilt.atSetPoint() && craneArm.atSetPoint()) {
-              craneTurret.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET));
-              craneTilt.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.TILT));
+              craneTurret.setSetPoint(tgtTurret);
+              craneTilt.setSetPoint(tgtTilt);
               state++;
             }
             break;
@@ -130,7 +172,7 @@ public class Crane_Move2Position extends CommandBase {
           // If Turret and Tilt are in Node pos, move Arm to Node pos
           case 2:
             if (craneTurret.atSetPoint() && craneTilt.atSetPoint()) {
-              craneArm.setSetPoint(crane.grid.getCranePos(tgtState, CRANEAXIS.ARM));
+              craneArm.setSetPoint(tgtArm);
               state++;
             }
             break;

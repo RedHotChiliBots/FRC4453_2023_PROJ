@@ -121,8 +121,8 @@ public class GridCalcs {
 		}
 	}
 
-	public Horz horz = new Horz();	//H.LEFT);
-	public Vert vert = new Vert();	//V.TOP);
+	public Horz horz = new Horz(H.LEFT);
+	public Vert vert = new Vert(V.TOP);
 
 	private E elem = E.CONE;
 

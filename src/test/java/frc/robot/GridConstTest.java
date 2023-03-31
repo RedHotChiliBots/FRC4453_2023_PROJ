@@ -57,16 +57,16 @@ public class GridConstTest {
    @Test
    public void TestSubstation() {
       assertEquals(37.375, grid.kSubStation.get(C.TILT), DELTA);
-      assertEquals(6.5, grid.kSubStation.get(C.ARM), DELTA);
+      assertEquals(12.5, grid.kSubStation.get(C.ARM), DELTA);
       assertEquals(0.0, grid.kSubStation.get(C.TURRET), DELTA);
       
       grid.setElem(E.CONE);
-      assertEquals(12.5427, grid.getSubStationPos(C.TILT), DELTA);
-      assertEquals(27.9162, grid.getSubStationPos(C.ARM), DELTA);
+      assertEquals(5.2623, grid.getSubStationPos(C.TILT), DELTA);
+      assertEquals(33.3907, grid.getSubStationPos(C.ARM), DELTA);
       assertEquals(0.0, grid.getSubStationPos(C.TURRET), DELTA);
       grid.setElem(E.CUBE);
-      assertEquals(5.3721, grid.getSubStationPos(C.TILT), DELTA);
-      assertEquals(27.3702, grid.getSubStationPos(C.ARM), DELTA);
+      assertEquals(4.4069, grid.getSubStationPos(C.TILT), DELTA);
+      assertEquals(33.3485, grid.getSubStationPos(C.ARM), DELTA);
       assertEquals(0.0, grid.getSubStationPos(C.TURRET), DELTA);
    }
 }

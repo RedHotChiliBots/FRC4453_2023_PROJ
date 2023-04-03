@@ -87,7 +87,7 @@ public class Intake extends SubsystemBase {
 
   private final ShuffleboardTab compTab = Shuffleboard.getTab("Competition");
   private final GenericEntry sbCompElemInside = compTab.add("Element Inside", false)
-      .withWidget("Boolean Box").withPosition(2, 2).withSize(2, 1).getEntry();
+      .withWidget("Boolean Box").withPosition(6, 2).withSize(2, 1).getEntry();
 
   private final ShuffleboardTab intakeTab = Shuffleboard.getTab("Intake");
   private final GenericEntry sbElemConf = intakeTab.add("Confidence", 0)

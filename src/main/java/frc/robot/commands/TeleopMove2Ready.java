@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.firstAttempt.Crane_Move2ReadyPos;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
@@ -21,7 +21,7 @@ public class TeleopMove2Ready extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
-      new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm)
+      new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.READY)
     );
   }
 }

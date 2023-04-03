@@ -20,6 +20,7 @@ import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.E;
 import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.GridCalcs.H;
+import frc.robot.GridCalcs.NODEPOS;
 import frc.robot.GridCalcs.V;
 
 public class Crane extends SubsystemBase {
@@ -51,44 +52,54 @@ public class Crane extends SubsystemBase {
       .withWidget("Text View").withPosition(6, 1).withSize(2, 1).getEntry();
 
   private final GenericEntry sbElem = compTab.addPersistent("Element", "")
-      .withWidget("Text View").withPosition(0, 8).withSize(2, 1).getEntry();
+      .withWidget("Text View").withPosition(0, 9).withSize(2, 1).getEntry();
   private final GenericEntry sbVert = compTab.addPersistent("Vert Pos", "")
-      .withWidget("Text View").withPosition(2, 8).withSize(2, 1).getEntry();
+      .withWidget("Text View").withPosition(2, 9).withSize(2, 1).getEntry();
   private final GenericEntry sbHorz = compTab.addPersistent("Horz Pos", "")
-      .withWidget("Text View").withPosition(4, 8).withSize(2, 1).getEntry();
+      .withWidget("Text View").withPosition(4, 9).withSize(2, 1).getEntry();
 
-  private final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
-      V.TOP,
+  private final EnumMap<NODEPOS, GenericEntry> sbSidePos = new EnumMap<>(Map.of(
+      NODEPOS.FRONT, compTab.addPersistent("Front", false)
+          .withWidget("Boolean Box").withPosition(2, 2).withSize(2, 1).getEntry(),
+      NODEPOS.LEFT, compTab.addPersistent("Left", false)
+          .withWidget("Boolean Box").withPosition(1, 3).withSize(2, 1).getEntry(),
+      NODEPOS.RIGHT, compTab.addPersistent("Right", false)
+          .withWidget("Boolean Box").withPosition(3, 3).withSize(2, 1).getEntry(),
+      NODEPOS.BACK, compTab.addPersistent("Back", false)
+          .withWidget("Boolean Box").withPosition(2, 4).withSize(2, 1).getEntry()));
+
+  public final EnumMap<V, Map<H, GenericEntry>> sbGridPos = new EnumMap<>(Map.of(
+      V.TOP, 
       Map.of(H.LEFT, compTab.addPersistent("Top Left", false)
-          .withWidget("Boolean Box").withPosition(0, 4).withSize(2, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 6).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Top Center", false)
-              .withWidget("Boolean Box").withPosition(2, 4).withSize(2, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 6).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Top Right", false)
-              .withWidget("Boolean Box").withPosition(4, 4).withSize(2, 1).getEntry()),
+              .withWidget("Boolean Box").withPosition(4, 6).withSize(2, 1).getEntry()),
       V.MIDDLE,
       Map.of(H.LEFT, compTab.addPersistent("Mid Left", false)
-          .withWidget("Boolean Box").withPosition(0, 5).withSize(2, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 7).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Mid Center", false)
-              .withWidget("Boolean Box").withPosition(2, 5).withSize(2, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 7).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Mid Right", false)
-              .withWidget("Boolean Box").withPosition(4, 5).withSize(2, 1).getEntry()),
+              .withWidget("Boolean Box").withPosition(4, 7).withSize(2, 1).getEntry()),
       V.BOTTOM,
       Map.of(H.LEFT, compTab.addPersistent("Bot Left", false)
-          .withWidget("Boolean Box").withPosition(0, 6).withSize(2, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(0, 8).withSize(2, 1).getEntry(),
           H.CENTER, compTab.addPersistent("Bot Center", false)
-              .withWidget("Boolean Box").withPosition(2, 6).withSize(2, 1).getEntry(),
+              .withWidget("Boolean Box").withPosition(2, 8).withSize(2, 1).getEntry(),
           H.RIGHT, compTab.addPersistent("Bot Right", false)
-              .withWidget("Boolean Box").withPosition(4, 6).withSize(2, 1).getEntry())));
+              .withWidget("Boolean Box").withPosition(4, 8).withSize(2, 1).getEntry())));
 
   private final EnumMap<E, GenericEntry> sbElemType = new EnumMap<>(Map.of(
       E.CONE, compTab.addPersistent("Cone", false)
-          .withWidget("Boolean Box").withPosition(1, 3).withSize(2, 1).getEntry(),
+          .withWidget("Boolean Box").withPosition(1, 5).withSize(2, 1).getEntry(),
       E.CUBE, compTab.addPersistent("Cube", false)
-          .withWidget("Boolean Box").withPosition(3, 3).withSize(2, 1).getEntry()));
+          .withWidget("Boolean Box").withPosition(3, 5).withSize(2, 1).getEntry()));
 
   /** Creates a new Crane. */
   public Crane(XboxController operator) {
-    System.out.println("+++++ Crane Constructor starting +++++");
+    System.out.println("+++++ Crane Constructor startig +++++");
 
     this.operator = operator;
     grid.vert.set(V.TOP);
@@ -96,6 +107,7 @@ public class Crane extends SubsystemBase {
     grid.setElem(E.CONE);
     craneState = CRANESTATE.STOW;
     sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(true);
+    sbSidePos.get(grid.getNodePos()).setBoolean(true);
     sbElemType.get(E.CONE).setBoolean(true);
 
     dsAlliance = DriverStation.getAlliance();
@@ -126,6 +138,14 @@ public class Crane extends SubsystemBase {
     }
 
     readDPad();
+  }
+
+  public void setSide(NODEPOS n) {
+    grid.setNodePos(n);
+  }
+
+  public NODEPOS getSide() {
+    return grid.getNodePos();
   }
 
   public void setState(CRANESTATE state) {
@@ -168,39 +188,63 @@ public class Crane extends SubsystemBase {
     dpadValue = operator.getPOV();
 
     if (dpadValue != -1 && lib.deBounce(10)) {
-      sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(false);
+      sbSidePos.get(grid.getNodePos()).setBoolean(false);
       switch (dpadValue) {
         case 0:
-          grid.vert.prev();
-          break;
-        case 45:
-          grid.vert.prev();
-          grid.horz.next();
+          grid.setNodePos(NODEPOS.FRONT);
           break;
         case 90:
-          grid.horz.next();
-          break;
-        case 135:
-          grid.horz.next();
-          grid.vert.next();
+          grid.setNodePos(NODEPOS.RIGHT);
           break;
         case 180:
-          grid.vert.next();
-          break;
-        case 225:
-          grid.horz.prev();
-          grid.vert.next();
+          grid.setNodePos(NODEPOS.BACK);
           break;
         case 270:
-          grid.horz.prev();
-          break;
-        case 315:
-          grid.horz.prev();
-          grid.vert.prev();
+          grid.setNodePos(NODEPOS.LEFT);
           break;
         default:
       }
-      sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(true);
+      sbSidePos.get(grid.getNodePos()).setBoolean(true);
     }
   }
+
+  // public void readDPad() {
+  //   dpadValue = operator.getPOV();
+
+  //   if (dpadValue != -1 && lib.deBounce(10)) {
+  //     sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(false);
+  //     switch (dpadValue) {
+  //       case 0:
+  //         grid.vert.prev();
+  //         break;
+  //       case 45:
+  //         grid.vert.prev();
+  //         grid.horz.next();
+  //         break;
+  //       case 90:
+  //         grid.horz.next();
+  //         break;
+  //       case 135:
+  //         grid.horz.next();
+  //         grid.vert.next();
+  //         break;
+  //       case 180:
+  //         grid.vert.next();
+  //         break;
+  //       case 225:
+  //         grid.horz.prev();
+  //         grid.vert.next();
+  //         break;
+  //       case 270:
+  //         grid.horz.prev();
+  //         break;
+  //       case 315:
+  //         grid.horz.prev();
+  //         grid.vert.prev();
+  //         break;
+  //       default:
+  //     }
+  //     sbGridPos.get(grid.vert.get()).get(grid.horz.get()).setBoolean(true);
+  //   }
+  // }
 }

@@ -67,7 +67,7 @@ public class Crane_Auton2NodePos extends CommandBase {
             // If Rotating from Elem side to Grid side, Arm = Safe Rptate, Tilt = Safe
             // Rotate
           } else if (Math.abs(craneTurret.getPosition() - CraneConstants.kCraneTurretGridSide) > 90.0) {
-            //            craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
+            // craneTilt.setSetPoint(CraneConstants.kTiltSafe2Rotate);
             craneTurret.setSetPoint(craneTurret.getPosition());
             craneTilt.setSetPoint(crane.getGridZ());
             craneArm.setSetPoint(CraneConstants.kArmSafe2Rotate);
@@ -94,7 +94,7 @@ public class Crane_Auton2NodePos extends CommandBase {
         case 1:
           if ((craneTilt.getPosition() > CraneConstants.kTiltSafe2Rotate) && craneArm.atSetPoint()) {
             craneTurret.setSetPoint(crane.getGridX());
-//            craneTilt.setSetPoint(crane.getGridZ());
+            // craneTilt.setSetPoint(crane.getGridZ());
             craneArm.setSetPoint(crane.getGridY());
             state++;
           }
@@ -112,15 +112,15 @@ public class Crane_Auton2NodePos extends CommandBase {
       }
     }
 
-DataLogManager.log(
-    String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
-        origState, tgtState, crane.getState(), state,
-        craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
-        String.format("%7.3f", craneTurret.getSetPoint()),
-        craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
-        String.format("%6.3f", craneTilt.getSetPoint()),
-        craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
-        String.format("%6.3f", craneArm.getSetPoint())));
+    // log.append(
+    //     String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+    //         origState, tgtState, crane.getState(), state,
+    //         craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
+    //         String.format("%7.3f", craneTurret.getSetPoint()),
+    //         craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
+    //         String.format("%6.3f", craneTilt.getSetPoint()),
+    //         craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
+    //         String.format("%6.3f", craneArm.getSetPoint())));
   }
 
   // Called once the command ends or is interrupted.

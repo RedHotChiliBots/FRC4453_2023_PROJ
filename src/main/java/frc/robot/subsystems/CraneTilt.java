@@ -139,12 +139,12 @@ public class CraneTilt extends SubsystemBase {
 
     // evtLoop.poll();
 
-    if (setPoint != sbTiltSP.getDouble(0.0)) {
-    setPoint = sbTiltSP.getDouble(0.0);
-    setSetPoint(setPoint);
-    }
+    // if (setPoint != sbTiltSP.getDouble(0.0)) {
+    // setPoint = sbTiltSP.getDouble(0.0);
+    // setSetPoint(setPoint);
+    // }
 
-    // sbTiltSP.setDouble(setPoint);
+    sbTiltSP.setDouble(setPoint);
     sbTiltPos.setDouble(tiltEncoder.getPosition());
     sbTiltVel.setDouble(tiltEncoder.getVelocity());
 

@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.firstAttempt.Crane_Move2NodePos;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
@@ -24,6 +24,6 @@ public class TeleopMove2Node extends ParallelCommandGroup {
         // In Parallel, Set Turret and Tilt position
         // Also in same Parallel, Run Sequetial Wait then Set Arm position
 //        new Crane_Move2ReadyPos(crane, craneTurret, craneTilt, craneArm),
-        new Crane_Move2NodePos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.NODE));
   }
 }

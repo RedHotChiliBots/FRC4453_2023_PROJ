@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
@@ -30,6 +30,6 @@ public class TeleopScoreAtNode extends SequentialCommandGroup {
         new Crane_PlaceElement(crane, craneTurret, craneTilt, craneArm),
         new ClawFinger(claw, FingerState.RELEASE),
         new WaitCommand(0.2),
-        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.RECEIVE));
   }
 }

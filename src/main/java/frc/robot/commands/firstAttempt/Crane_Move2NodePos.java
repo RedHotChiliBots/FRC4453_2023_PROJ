@@ -118,15 +118,15 @@ public class Crane_Move2NodePos extends CommandBase {
       }
     }
 
-DataLogManager.log(
-    String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
-        origState, tgtState, crane.getState(), state,
-        craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
-        String.format("%7.3f", craneTurret.getSetPoint()),
-        craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
-        String.format("%6.3f", craneTilt.getSetPoint()),
-        craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
-        String.format("%6.3f", craneArm.getSetPoint())));
+    // strLog.append(
+    //     String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+    //         origState, tgtState, crane.getState(), state,
+    //         craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
+    //         String.format("%7.3f", craneTurret.getSetPoint()),
+    //         craneTilt.atSetPoint() ? "SP" : String.format("%6.3f", craneTilt.getPosition()),
+    //         String.format("%6.3f", craneTilt.getSetPoint()),
+    //         craneArm.atSetPoint() ? "SP" : String.format("%6.3f", craneArm.getPosition()),
+    //         String.format("%6.3f", craneArm.getSetPoint())));
   }
 
   // Called once the command ends or is interrupted.

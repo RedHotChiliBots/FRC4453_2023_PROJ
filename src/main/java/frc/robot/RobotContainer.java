@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
@@ -42,15 +43,8 @@ import frc.robot.commands.IntakeArm;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IntakeStow;
 import frc.robot.commands.IntakeToggleElem;
+import frc.robot.commands.TeleopGripMove2Receive;
 import frc.robot.commands.VisionToggleRumble;
-import frc.robot.commands.firstAttempt.Crane_Move2GripPos;
-import frc.robot.commands.firstAttempt.Crane_Move2HoldPos;
-import frc.robot.commands.firstAttempt.Crane_Move2NodePos;
-import frc.robot.commands.firstAttempt.Crane_Move2ReadyPos;
-import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
-import frc.robot.commands.firstAttempt.Crane_Move2StowPos;
-import frc.robot.commands.firstAttempt.Crane_Move2SubStnPos;
-import frc.robot.commands.firstAttempt.Crane_MoveTilt2Zero;
 import frc.robot.commands.old.AutonChargingStation;
 import frc.robot.commands.old.AutonChassisDriveTime;
 import frc.robot.commands.AutonChgStnDrive;
@@ -74,6 +68,8 @@ import frc.robot.commands.ChassisToggleDir;
 import frc.robot.commands.ChassisToggleDrive;
 import frc.robot.Constants.OIConstants;
 import frc.robot.GridCalcs.CRANESTATE;
+import frc.robot.GridCalcs.H;
+import frc.robot.GridCalcs.V;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -89,8 +85,10 @@ public class RobotContainer {
 	// Define Joysticks
 	public static final XboxController driver = new XboxController(OIConstants.kDriverControllerPort);
 	public static final XboxController operator = new XboxController(OIConstants.kOperatorControllerPort);
+	public static final XboxController button = new XboxController(OIConstants.kOperatorButtonPort);
 
-	// The robot's subsystems and commands are defined here...
+	// =============================================================
+	// Define Subsystems
 	public static final Chassis chassis = new Chassis();
 	public static final Crane crane = new Crane(operator);
 	public static final Intake intake = new Intake(crane);
@@ -144,7 +142,7 @@ public class RobotContainer {
 	private final AutonChassisDriveTime autonChassisDriveTime10 = new AutonChassisDriveTime(chassis, -0.55, 10.0);
 	private final AutonChassisDriveTime autonChassisDriveTime5 = new AutonChassisDriveTime(chassis, -0.55, 5.0);
 
-	public final ChassisDriveDist autonChassisDriveDist = new ChassisDriveDist(chassis, 
+	public final ChassisDriveDist autonChassisDriveDist = new ChassisDriveDist(chassis,
 			2.10773229598999, 5.0);
 
 	private final AutonChgStnRate autonChgStnRate = new AutonChgStnRate(chassis);
@@ -168,7 +166,7 @@ public class RobotContainer {
 	private final CraneArm2Pos craneArm2Pos = new CraneArm2Pos(craneArm);
 	private final CraneTilt2Pos craneTilt2Pos = new CraneTilt2Pos(craneTilt);
 	private final CraneTurret2Pos craneTurret2Pos = new CraneTurret2Pos(craneTurret);
-	
+
 	private final Crane_Move2Position crane_Move2NodePos = new Crane_Move2Position(crane, craneTurret, craneTilt,
 			craneArm, CRANESTATE.NODE);
 	private final Crane_Move2Position crane_Move2ReadyPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
@@ -183,24 +181,30 @@ public class RobotContainer {
 			craneArm, CRANESTATE.STOW);
 	private final Crane_Move2Position crane_Move2SubStnPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
 			craneArm, CRANESTATE.SUBSTATION);
-	private final Crane_Move2Position crane_Move2LeftPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
-			craneArm, CRANESTATE.LEFT);
-	private final Crane_Move2Position crane_Move2RightPos = new Crane_Move2Position(crane, craneTurret, craneTilt,
-			craneArm, CRANESTATE.RIGHT);
+	// private final Crane_Move2Position crane_Move2LeftPos = new
+	// Crane_Move2Position(crane, craneTurret, craneTilt,
+	// craneArm, CRANESTATE.LEFT);
+	// private final Crane_Move2Position crane_Move2RightPos = new
+	// Crane_Move2Position(crane, craneTurret, craneTilt,
+	// craneArm, CRANESTATE.RIGHT);
 
-	// private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
-	// 		craneArm);
+	// private final Crane_MoveTilt2Zero crane_MoveTilt2Zero = new
+	// Crane_MoveTilt2Zero(crane, craneTurret, craneTilt,
+	// craneArm);
 
-	private final TeleopMove2Elem auton_Move2ElemPos = new TeleopMove2Elem(crane, craneTurret, craneTilt,
+	private final TeleopMove2Elem teleopMove2Elem = new TeleopMove2Elem(crane, craneTurret, craneTilt,
 			craneArm, claw, intake);
-	private final TeleopMove2Ready auton_Move2ReadyPos = new TeleopMove2Ready(crane, craneTurret, craneTilt,
+	private final TeleopMove2Ready teleopMove2Ready = new TeleopMove2Ready(crane, craneTurret, craneTilt,
 			craneArm);
-	private final TeleopMove2Node auton_Move2NodePos = new TeleopMove2Node(crane, craneTurret, craneTilt,
+	private final TeleopMove2Node teleopMove2Node = new TeleopMove2Node(crane, craneTurret, craneTilt,
 			craneArm);
-	private final TeleopScoreAtNode auton_ScoreAtNodePos = new TeleopScoreAtNode(crane, craneTurret, craneTilt,
+	private final TeleopScoreAtNode teleopScoreAtNode = new TeleopScoreAtNode(crane, craneTurret, craneTilt,
 			craneArm, claw);
-	private final TeleopMove2SubStn auton_Move2SubStnPos = new TeleopMove2SubStn(crane, craneTurret, craneTilt,
+
+	private final TeleopMove2SubStn teleopMove2SubStn = new TeleopMove2SubStn(crane, craneTurret, craneTilt,
 			craneArm, claw, intake);
+	private final TeleopGripMove2Receive teleopGripMove2Receive = new TeleopGripMove2Receive(crane, craneTurret, craneTilt,
+			craneArm, claw);
 
 	private final ClawFinger clawGrabCone = new ClawFinger(claw, FingerState.CONE);
 	private final ClawFinger clawGrabCube = new ClawFinger(claw, FingerState.CUBE);
@@ -310,20 +314,20 @@ public class RobotContainer {
 				.withPosition(9, 6).withSize(2, 1);
 		cmdTab.add("Move SubStn Pos", crane_Move2SubStnPos).withWidget("Command")
 				.withPosition(9, 7).withSize(2, 1);
-		cmdTab.add("Move Left Pos", crane_Move2LeftPos).withWidget("Command")
-				.withPosition(9, 8).withSize(2, 1);
-		cmdTab.add("Move Right Pos", crane_Move2RightPos).withWidget("Command")
-				.withPosition(9, 9).withSize(2, 1);
+		// cmdTab.add("Move Left Pos", crane_Move2LeftPos).withWidget("Command")
+		// .withPosition(9, 8).withSize(2, 1);
+		// cmdTab.add("Move Right Pos", crane_Move2RightPos).withWidget("Command")
+		// .withPosition(9, 9).withSize(2, 1);
 
 		// cmdTab.add("Move Tilt 2 Zero", crane_MoveTilt2Zero).withWidget("Command")
-		// 		.withPosition(12, 0).withSize(2, 1);
-		cmdTab.add("Get Elem", auton_Move2ElemPos).withWidget("Command")
+		// .withPosition(12, 0).withSize(2, 1);
+		cmdTab.add("Get Elem", teleopMove2Elem).withWidget("Command")
 				.withPosition(12, 1).withSize(2, 1);
-		cmdTab.add("Move 2 Ready", auton_Move2ReadyPos).withWidget("Command")
+		cmdTab.add("Move 2 Ready", teleopMove2Ready).withWidget("Command")
 				.withPosition(12, 2).withSize(2, 1);
-		cmdTab.add("Move 2 Node", auton_Move2NodePos).withWidget("Command")
+		cmdTab.add("Move 2 Node", teleopMove2Node).withWidget("Command")
 				.withPosition(12, 3).withSize(2, 1);
-		cmdTab.add("Score At Node", auton_ScoreAtNodePos).withWidget("Command")
+		cmdTab.add("Score At Node", teleopScoreAtNode).withWidget("Command")
 				.withPosition(12, 4).withSize(2, 1);
 
 		cmdTab.add("Auton Grip Score", autonGripScore).withWidget("Command")
@@ -362,19 +366,83 @@ public class RobotContainer {
 		new JoystickButton(driver, Button.kLeftBumper.value).onTrue(intakeMotorOut).onFalse(intakeMotorStop);
 		new JoystickButton(driver, Button.kRightBumper.value).onTrue(intakeMotorIn).onFalse(intakeMotorStop);
 
-		new JoystickButton(operator, Button.kStart.value).onTrue(intakeToggleElem);
-
-		new JoystickButton(operator, Button.kX.value).onTrue(auton_Move2ElemPos);
-		new JoystickButton(operator, Button.kY.value).onTrue(auton_Move2ReadyPos);
-		new JoystickButton(operator, Button.kB.value).onTrue(auton_Move2NodePos);
-		new JoystickButton(operator, Button.kA.value).onTrue(auton_ScoreAtNodePos);
+		new JoystickButton(operator, Button.kX.value).onTrue(teleopMove2Elem);
+		new JoystickButton(operator, Button.kY.value).onTrue(teleopMove2Ready);
+		new JoystickButton(operator, Button.kB.value).onTrue(teleopMove2Node);
+		new JoystickButton(operator, Button.kA.value).onTrue(teleopScoreAtNode);
 
 		new JoystickButton(operator, Button.kLeftStick.value).onTrue(clawRelease);
 		new JoystickButton(operator, Button.kRightStick.value).onTrue(crane_Move2StowPos);
 
-		new JoystickButton(operator, Button.kBack.value).onTrue(auton_Move2SubStnPos);
+		new JoystickButton(operator, Button.kBack.value).onTrue(teleopMove2SubStn);
 		new JoystickButton(operator, Button.kLeftBumper.value).onTrue(clawGrip);
 		new JoystickButton(operator, Button.kRightBumper.value).onTrue(crane_Move2HoldPos);
+
+		new JoystickButton(operator, Button.kStart.value)
+				.onTrue(new InstantCommand(() -> intake.toggleElem(), intake));
+
+		new JoystickButton(button, Button.kLeftBumper.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.TOP), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.LEFT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kY.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.TOP), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.CENTER), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kA.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.TOP), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.RIGHT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kBack.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.MIDDLE), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.LEFT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kB.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.MIDDLE), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.CENTER), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kX.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.MIDDLE), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.RIGHT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kLeftStick.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.BOTTOM), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.LEFT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kRightBumper.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.BOTTOM), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.CENTER), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		new JoystickButton(button, Button.kStart.value)
+				.onTrue(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(false), crane)
+				.andThen(new InstantCommand(() -> crane.grid.vert.set(V.BOTTOM), crane))
+				.andThen(new InstantCommand(() -> crane.grid.horz.set(H.RIGHT), crane))
+				.andThen(new InstantCommand(() -> crane.sbGridPos.get(crane.grid.vert.get()).get(crane.grid.horz.get()).setBoolean(true), crane)));
+
+		// Command setFront = Commands.run(() -> crane.grid.setNodePos(NODEPOS.FRONT),
+		// crane);
+		// Command setLeft = Commands.run(() -> crane.grid.setNodePos(NODEPOS.LEFT),
+		// crane);
+		// Command setRight = Commands.run(() -> crane.grid.setNodePos(NODEPOS.RIGHT),
+		// crane);
+		// Command setBack = Commands.run(() -> crane.grid.setNodePos(NODEPOS.BACK),
+		// crane);
 	}
 
 	public double getDPad() {
@@ -446,6 +514,6 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return autos.chooser.getSelected();
 		// autos.autonChassisDriveDist();
-		//return new AutonChassisDriveDist(chassis, 2.25, 5);
+		// return new AutonChassisDriveDist(chassis, 2.25, 5);
 	}
 }

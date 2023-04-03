@@ -15,6 +15,7 @@ public class GridCalcs {
 	public Horz horz = new Horz(H.CENTER);
 	public Vert vert = new Vert(V.TOP);
 	private E elem = E.CUBE;
+	private NODEPOS nodePos = NODEPOS.BACK;
 
 	public enum CRANESTATE {
 		STOW,
@@ -24,10 +25,25 @@ public class GridCalcs {
 		READY,
 		NODE,
 		SUBSTATION,
-		LEFT,
-		RIGHT,
+		// LEFT,
+		// RIGHT,
 		CLEAR2MOVE,
 		MOVING
+	}
+
+	public enum NODEPOS {
+		FRONT,
+		LEFT,
+		RIGHT,
+		BACK
+	}
+
+	public void setNodePos(NODEPOS n) {
+		this.nodePos = n;
+	}
+
+	public NODEPOS getNodePos() {
+		return this.nodePos;
 	}
 
 	public enum CRANEAXIS {
@@ -140,7 +156,7 @@ public class GridCalcs {
 	}
 
 	public final EnumMap<C, Double> kRobotRevPos = new EnumMap<>(Map.of(
-			C.TURRET, 0.0,
+			C.TURRET, 180.0,
 			C.ARM, -8.75,
 			C.TILT, 39.3125));
 
@@ -149,7 +165,7 @@ public class GridCalcs {
 	}
 
 	public final EnumMap<C, Double> kRobotFwdPos = new EnumMap<>(Map.of(
-			C.TURRET, 180.0,
+			C.TURRET, 0.0,
 			C.ARM, -20.75,
 			C.TILT, 39.3125));
 
@@ -332,7 +348,7 @@ public class GridCalcs {
 
 	public double getRSideArm() {
 		return fudge * Math.sqrt(
-			Math.pow(kYNode.get(vert.get()) - kRobotRSidePos.get(C.ARM), 2) +
+				Math.pow(kYNode.get(vert.get()) - kRobotRSidePos.get(C.ARM), 2) +
 						Math.pow(kZNode.get(vert.get()).get(elem) - kRobotRSidePos.get(C.TILT) + kZG.get(elem), 2));
 	}
 
@@ -368,18 +384,18 @@ public class GridCalcs {
 			Map.of(CRANEAXIS.TURRET, 180.0,
 					CRANEAXIS.TILT, 0.0,
 					CRANEAXIS.ARM, 25.0),
-			CRANESTATE.NODE,
-			Map.of(CRANEAXIS.TURRET, 180.0 + getRevTurret(),
-					CRANEAXIS.TILT, getRevTilt(),
-					CRANEAXIS.ARM, getRevArm()),
-			CRANESTATE.LEFT,
-			Map.of(CRANEAXIS.TURRET, getLSideTurret(),
-					CRANEAXIS.TILT, getLSideTilt(),
-					CRANEAXIS.ARM, getLSideArm()),
-			CRANESTATE.RIGHT,
-			Map.of(CRANEAXIS.TURRET, getRSideTurret(),
-					CRANEAXIS.TILT, getRSideTilt(),
-					CRANEAXIS.ARM, getRSideArm()),
+			// CRANESTATE.NODE,
+			// Map.of(CRANEAXIS.TURRET, 180.0 + getRevTurret(),
+			// 		CRANEAXIS.TILT, getRevTilt(),
+			// 		CRANEAXIS.ARM, getRevArm()),
+			// CRANESTATE.LEFT,
+			// Map.of(CRANEAXIS.TURRET, getLSideTurret(),
+			// 		CRANEAXIS.TILT, getLSideTilt(),
+			// 		CRANEAXIS.ARM, getLSideArm()),
+			// CRANESTATE.RIGHT,
+			// Map.of(CRANEAXIS.TURRET, getRSideTurret(),
+			// 		CRANEAXIS.TILT, getRSideTilt(),
+			// 		CRANEAXIS.ARM, getRSideArm()),
 			CRANESTATE.SUBSTATION,
 			Map.of(CRANEAXIS.TURRET, getSubStationPos(C.TURRET),
 					CRANEAXIS.TILT, getSubStationPos(C.TILT),

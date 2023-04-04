@@ -1,7 +1,7 @@
 Robot Arm - Back
-  TURRET    0.0000    TILT   39.3125     ARM   -8.7500
+  TURRET  180.0000    TILT   39.3125     ARM   -8.7500
 Robot Arm - Front
-  TURRET  180.0000    TILT   39.3125     ARM  -20.7500
+  TURRET    0.0000    TILT   39.3125     ARM  -20.7500
 Robot Arm - Left Side
   TURRET  -90.0000    TILT   39.3125     ARM  -12.7500
 Robot Arm - Right Side

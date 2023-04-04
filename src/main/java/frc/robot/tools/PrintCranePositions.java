@@ -56,7 +56,6 @@ public class PrintCranePositions {
                case RECEIVE:
                case HOLD:
                case GRIP:
-               case READY:
                case CLEAR2MOVE:
                   printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
                         grid.getCranePos(p, CRANEAXIS.TURRET), // grid.getRevTurret(),
@@ -71,83 +70,57 @@ public class PrintCranePositions {
                         grid.getSubStationPos(C.ARM))); // grid.getRevArm()));
                   break;
 
+               case READY:
+                  break;
+
                case NODE:
                   for (NODEPOS n : NODEPOS.values()) {
                      printStr(String.format("\n======= %s =======\n", n));
 
-                     switch (n) {
-                        case BACK:
-                           for (V v : V.values()) {
-                              grid.vert.set(v);
-                              printStr(String.format("\n%8s\n", grid.vert.get()));
+                     grid.setNodePos(n);
 
-                              for (H h : H.values()) {
-                                 grid.horz.set(h);
-                                 printStr(String.format("%8s\t", grid.horz.get()));
+                     for (V v : V.values()) {
+                        grid.vert.set(v);
+                        printStr(String.format("\n%8s\n", grid.vert.get()));
 
-                                 printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
-                                       180 + grid.getRevTurret(),
-                                       grid.getRevTilt(),
-                                       grid.getRevArm()));
-                              }
-                           }
-                           break;
+                        for (H h : H.values()) {
+                           grid.horz.set(h);
+                           printStr(String.format("%8s\t", grid.horz.get()));
 
-                        case LEFT:
-                           for (V v : V.values()) {
-                              grid.vert.set(v);
-                              printStr(String.format("\n%8s\n", grid.vert.get()));
-
-                              grid.horz.set(H.CENTER);
-                              printStr(String.format("%8s\t", grid.horz.get()));
-
-                              printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
-                                    grid.getLSideTurret(),
-                                    grid.getLSideTilt(),
-                                    grid.getLSideArm()));
-                           }
-                           break;
-
-                        case RIGHT:
-                           for (V v : V.values()) {
-                              grid.vert.set(v);
-                              printStr(String.format("\n%8s\n", grid.vert.get()));
-
-                              grid.horz.set(H.CENTER);
-                              printStr(String.format("%8s\t", grid.horz.get()));
-
-                              printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
-                                    grid.getRSideTurret(),
-                                    grid.getRSideTilt(),
-                                    grid.getRSideArm()));
-                           }
-                           break;
+                           printStr(String.format("Turret: %8.4f   Tilt: %8.4f   Arm: %8.4f\n",
+                                 grid.getNodeTurret(),
+                                 grid.getNodeTilt(),
+                                 grid.getNodeArm()));
+                        }
                      }
                   }
+                  break;
             }
          }
       }
 
-      printStr(String.format("\nSubstation\n"));
+      // printStr(String.format("\nSubstation\n"));
 
-      for (E e : E.values()) {
-         if (e == E.NA || e == E.OTHER)
-            continue;
+      // for (E e : E.values()) {
+      // if (e == E.NA || e == E.OTHER)
+      // continue;
 
-         grid.setElem(e);
-         printStr(String.format("\n======= %s =======\n", e));
+      // grid.setElem(e);
+      // printStr(String.format("\n======= %s =======\n", e));
 
-         for (C c : C.values()) {
-            printStr(String.format("%8s %8.4f\t", c, grid.getSubStationPos(c)));
-         }
-         printStr(String.format("\n"));
-      }
+      // for (C c : C.values()) {
+      // printStr(String.format("%8s %8.4f\t", c, grid.getSubStationPos(c)));
+      // }
+      // printStr(String.format("\n"));
+      // }
 
-      try {
-         fout.close();
-      } catch (IOException e2) {
-         printStr("An error occurred.");
-         e2.printStackTrace();
-      }
+      // try {
+      // fout.close();
+      // } catch (IOException e2) {
+      // printStr("An error occurred.");
+      // e2.printStackTrace();
+      // }
+      // }
+
    }
 }

@@ -6,59 +6,85 @@ Grid
 Turret:   0.0000   Tilt: -87.0000   Arm:  25.0000
 
 ======= RECEIVE =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  25.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  30.0000
 
 ======= HOLD =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  25.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  25.0000
 
 ======= GRIP =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  32.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  34.5000
 
 ======= READY =======
-Turret: 180.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= NODE =======
 
 ======= FRONT =======
 
+     TOP
+    LEFT	Turret: -21.2500   Tilt:  15.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:  21.2500   Tilt:  15.0000   Arm:  25.0000
+
+  MIDDLE
+    LEFT	Turret: -22.2500   Tilt:  -5.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:  22.2500   Tilt:  -5.0000   Arm:  25.0000
+
+  BOTTOM
+    LEFT	Turret: -23.2500   Tilt: -30.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:  23.2500   Tilt: -30.0000   Arm:  25.0000
+
 ======= LEFT =======
 
      TOP
-  CENTER	Turret: -90.0000   Tilt:  19.5933   Arm:  50.9343
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   MIDDLE
-  CENTER	Turret: -90.0000   Tilt:  10.6684   Arm:  33.0177
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   BOTTOM
-  CENTER	Turret: -90.0000   Tilt: -47.0780   Arm:  27.8494
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= RIGHT =======
 
      TOP
-  CENTER	Turret:  90.0000   Tilt:  19.5933   Arm:  50.9343
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   MIDDLE
-  CENTER	Turret:  90.0000   Tilt:  10.6684   Arm:  33.0177
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   BOTTOM
-  CENTER	Turret:  90.0000   Tilt: -47.0780   Arm:  27.8494
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= BACK =======
 
      TOP
-    LEFT	Turret: 157.7630   Tilt:  19.4390   Arm:  51.3228
-  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
-   RIGHT	Turret: 202.2370   Tilt:  19.4390   Arm:  51.3228
+    LEFT	Turret: 158.7500   Tilt:  15.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret: 201.2500   Tilt:  15.0000   Arm:  25.0000
 
   MIDDLE
-    LEFT	Turret: 146.5794   Tilt:   9.9817   Arm:  35.2635
-  CENTER	Turret:      NaN   Tilt:      NaN   Arm:      NaN
-   RIGHT	Turret: 213.4206   Tilt:   9.9817   Arm:  35.2635
+    LEFT	Turret: 157.7500   Tilt:  -5.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret: 202.2500   Tilt:  -5.0000   Arm:  25.0000
 
   BOTTOM
-    LEFT	Turret: 142.7053   Tilt: -39.5098   Arm:  32.0549
-  CENTER	Turret: 180.0000   Tilt: -53.1044   Arm:  25.5006
-   RIGHT	Turret: 217.2947   Tilt: -39.5098   Arm:  32.0549
+    LEFT	Turret: 156.7500   Tilt: -30.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret: 203.2500   Tilt: -30.0000   Arm:  25.0000
 
 ======= SUBSTATION =======
 Turret:   0.0000   Tilt:   5.2624   Arm:  33.3907
@@ -74,59 +100,85 @@ Turret:   0.0000   Tilt: -45.0000   Arm:  25.0000
 Turret:   0.0000   Tilt: -87.0000   Arm:  25.0000
 
 ======= RECEIVE =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  25.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  30.0000
 
 ======= HOLD =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  25.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  25.0000
 
 ======= GRIP =======
-Turret:   0.0000   Tilt: -78.0000   Arm:  32.0000
+Turret:   0.0000   Tilt: -82.0000   Arm:  34.5000
 
 ======= READY =======
-Turret: 180.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= NODE =======
 
 ======= FRONT =======
 
+     TOP
+    LEFT	Turret: -21.2500   Tilt:  15.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:  21.2500   Tilt:  15.0000   Arm:  25.0000
+
+  MIDDLE
+    LEFT	Turret: -22.2500   Tilt:  -5.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:  22.2500   Tilt:  -5.0000   Arm:  25.0000
+
+  BOTTOM
+    LEFT	Turret: -23.2500   Tilt: -30.0000   Arm:  25.0000
+  CENTER	Turret:   0.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:  23.2500   Tilt: -30.0000   Arm:  25.0000
+
 ======= LEFT =======
 
      TOP
-  CENTER	Turret: -90.0000   Tilt:   8.8640   Arm:  48.5650
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   MIDDLE
-  CENTER	Turret: -90.0000   Tilt:  -6.1298   Arm:  32.6336
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   BOTTOM
-  CENTER	Turret: -90.0000   Tilt: -47.0780   Arm:  27.8494
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret: -90.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= RIGHT =======
 
      TOP
-  CENTER	Turret:  90.0000   Tilt:   8.8640   Arm:  48.5650
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   MIDDLE
-  CENTER	Turret:  90.0000   Tilt:  -6.1298   Arm:  32.6336
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
   BOTTOM
-  CENTER	Turret:  90.0000   Tilt: -47.0780   Arm:  27.8494
+    LEFT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
+  CENTER	Turret:  90.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret:   0.0000   Tilt:   0.0000   Arm:  25.0000
 
 ======= BACK =======
 
      TOP
-    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
-  CENTER	Turret: 180.0000   Tilt:   9.5820   Arm:  44.9562
-   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+    LEFT	Turret: 158.7500   Tilt:  15.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt:  15.0000   Arm:  25.0000
+   RIGHT	Turret: 201.2500   Tilt:  15.0000   Arm:  25.0000
 
   MIDDLE
-    LEFT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
-  CENTER	Turret: 180.0000   Tilt:  -6.9010   Arm:  29.0011
-   RIGHT	Turret:      NaN   Tilt:      NaN   Arm:      NaN
+    LEFT	Turret: 157.7500   Tilt:  -5.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt:  -5.0000   Arm:  25.0000
+   RIGHT	Turret: 202.2500   Tilt:  -5.0000   Arm:  25.0000
 
   BOTTOM
-    LEFT	Turret: 142.7053   Tilt: -39.5098   Arm:  32.0549
-  CENTER	Turret: 180.0000   Tilt: -53.1044   Arm:  25.5006
-   RIGHT	Turret: 217.2947   Tilt: -39.5098   Arm:  32.0549
+    LEFT	Turret: 156.7500   Tilt: -30.0000   Arm:  25.0000
+  CENTER	Turret: 180.0000   Tilt: -30.0000   Arm:  25.0000
+   RIGHT	Turret: 203.2500   Tilt: -30.0000   Arm:  25.0000
 
 ======= SUBSTATION =======
 Turret:   0.0000   Tilt:   4.4069   Arm:  33.3486
@@ -135,11 +187,3 @@ Turret:   0.0000   Tilt:   4.4069   Arm:  33.3486
 Turret:   0.0000   Tilt: -45.0000   Arm:  25.0000
 
 ======= MOVING =======
-
-Substation
-
-======= CONE =======
-  TURRET   0.0000	    TILT   5.2624	     ARM  33.3907	
-
-======= CUBE =======
-  TURRET   0.0000	    TILT   4.4069	     ARM  33.3486	

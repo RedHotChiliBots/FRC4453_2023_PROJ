@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.GridCalcs.CRANESTATE;
@@ -22,6 +20,7 @@ public class Crane_Move2Position extends CommandBase {
   CraneTurret craneTurret;
   CraneTilt craneTilt;
   CraneArm craneArm;
+  int index = 0;
   int state = 0;
   boolean finish = false;
   NODEPOS nodePos;
@@ -31,8 +30,8 @@ public class Crane_Move2Position extends CommandBase {
   double tgtTilt;
   double tgtArm;
   
-  DataLog log = DataLogManager.getLog();
-  StringLogEntry strLog = new StringLogEntry(log,"/my/strLog");
+//  DataLog log = DataLogManager.getLog();
+//  StringLogEntry strLog = new StringLogEntry(log, "StringMessages.log");
 
   /** Creates a new CraneMove2Pos. */
   public Crane_Move2Position(Crane crane, CraneTurret craneTurret, CraneTilt craneTilt, CraneArm craneArm,
@@ -50,10 +49,13 @@ public class Crane_Move2Position extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    index = 0;
     state = 0;
     finish = false;
     nodePos = crane.grid.getNodePos();
     origState = crane.getState();
+
+    DataLogManager.log("==================================================================");
 
     switch (tgtState) {
       case MOVING:
@@ -63,7 +65,6 @@ public class Crane_Move2Position extends CommandBase {
       case RECEIVE:
       case HOLD:
       case GRIP:
-      case READY:
       case CLEAR2MOVE:
         tgtTurret = crane.grid.getCranePos(tgtState, CRANEAXIS.TURRET);
         tgtTilt = crane.grid.getCranePos(tgtState, CRANEAXIS.TILT);
@@ -76,55 +77,39 @@ public class Crane_Move2Position extends CommandBase {
         tgtArm = crane.grid.getSubStationPos(C.ARM);
         break;
 
+      case READY:
+        tgtArm = crane.grid.getCranePos(CRANESTATE.HOLD, CRANEAXIS.ARM);
+        tgtTurret = crane.grid.getNodeTurret();
+        tgtTilt = crane.grid.getNodeTilt();
+        break;
+
       case NODE:
-        switch (nodePos) {
-          case BACK:
-            tgtTurret = crane.grid.getRevTurret();
-            tgtTilt = crane.grid.getRevTilt();
-            tgtArm = crane.grid.getRevArm();
-            break;
-
-          case LEFT:
-            tgtTurret = crane.grid.getLSideTurret();
-            tgtTilt = crane.grid.getLSideTilt();
-            tgtArm = crane.grid.getLSideArm();
-            break;
-
-          case RIGHT:
-            tgtTurret = crane.grid.getRSideTurret();
-            tgtTilt = crane.grid.getRSideTilt();
-            tgtArm = crane.grid.getRSideArm();
-            break;
-
-          case FRONT:
-            // tgtTurret = crane.grid.getFwdTurret();
-            // tgtTilt = crane.grid.getFwdTilt();
-            // tgtArm = crane.grid.getFwdArm();
-            break;
-        }
+        tgtTurret = crane.grid.getNodeTurret();
+        tgtTilt = crane.grid.getNodeTilt();
+        tgtArm = crane.grid.getNodeArm();
+        break;
     }
-    strLog.append("==================================================================");
-    strLog.append(String.format("Crane_Move2Position From: %s, To: %s\n", origState, tgtState));
-    strLog.append(String.format("\tTurret: %7.3f Tilt: %7.3f Arm: %7.3f\n", tgtTurret, tgtTilt, tgtArm));
+    
+    DataLogManager.log(String.format("Crane_Move2Position From: %s, To: %s, Node: %s\n", origState, tgtState, nodePos));
+    DataLogManager.log(String.format("\tTurret: %7.3f Tilt: %7.3f Arm: %7.3f\n", tgtTurret, tgtTilt, tgtArm));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (origState == CRANESTATE.MOVING) {
-      strLog.append("MOVING:  Already running command.  Aborting.");
+      DataLogManager.log("MOVING:  Already running command.  Aborting.");
       finish = true;
 
-    } else {
-      // If node selected does not accept element, print error and finish
-      if (Double.isNaN(crane.getGridX())) {
-        strLog.append("Illegal Node for Element choosen");
-        finish = true;
+    // } else {
+    //   // If node selected does not accept element, print error and finish
+    //   if (Double.isNaN(crane.getGridX())) {
+    //     DataLogManager.log("Illegal Node for Element choosen");
+    //     finish = true;
 
-      } else {
-
-        strLog.append(
-            String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+  } else {
+        if (index++ % 5 == 0) DataLogManager.log(
+            String.format("Execute From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
                 origState, tgtState, crane.getState(), state,
                 craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
                 String.format("%7.3f", craneTurret.getSetPoint()),
@@ -137,23 +122,25 @@ public class Crane_Move2Position extends CommandBase {
           // If already at Node, then finish, else Rotate only when Tilt and Arm are clear
           case 0:
             // If already at Position, do nothing
-            if (origState == tgtState &&
-                craneTurret.atNextPoint(tgtState) &&
-                craneTilt.atNextPoint(tgtState) &&
-                craneArm.atNextPoint(tgtState)) {
-              strLog.append("Already at Position");
-              finish = true;
+            // if (origState == tgtState &&
+            //     craneTurret.atNextPoint(tgtState) &&
+            //     craneTilt.atNextPoint(tgtState) &&
+            //     craneArm.atNextPoint(tgtState)) {
+            //   DataLogManager.log("Already at Position");
+            //   finish = true;
 
-            } else if (tgtState == CRANESTATE.GRIP &&
+            // } else 
+            if (tgtState == CRANESTATE.GRIP &&
                 origState != CRANESTATE.RECEIVE) {
-              strLog.append("Must be in Receive before moving to Grip");
+              DataLogManager.log("Must be in Receive before moving to Grip");
               finish = true;
 
               // If Turret is not moving, move Tilt and Arm together
+              //TODO add tolerance
             } else if (craneTurret.getPosition() == tgtTurret) {
               craneTilt.setSetPoint(tgtTilt);
               craneArm.setSetPoint(tgtArm);
-              strLog.append("Turret not moving, move Tilt and Arm tegether");
+              DataLogManager.log("Turret not moving, move Tilt and Arm tegether");
               state = 3;
               crane.setState(CRANESTATE.MOVING);
 
@@ -163,7 +150,7 @@ public class Crane_Move2Position extends CommandBase {
               craneTurret.setSetPoint(tgtTurret);
               craneTilt.setSetPoint(tgtTilt);
               craneArm.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.ARM));
-              strLog.append("Turret moves < 45deg, move Turret, Tilt, ARm together");
+              DataLogManager.log("Turret moves < 45deg, move Turret, Tilt, ARm together");
               state = 2;
               crane.setState(CRANESTATE.MOVING);
 
@@ -173,7 +160,7 @@ public class Crane_Move2Position extends CommandBase {
             } else if (Math.abs(craneTurret.getPosition() - tgtTurret) > 60.0) {
               craneTilt.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.TILT));
               craneArm.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.ARM));
-              strLog.append("Turret moves > 60deg, move Tilt and Arm to Safe positions");
+              DataLogManager.log("Turret moves > 60deg, move Tilt and Arm to Safe positions");
               state = 1;
               crane.setState(CRANESTATE.MOVING);
             }
@@ -208,14 +195,13 @@ public class Crane_Move2Position extends CommandBase {
         }
       }
     }
-  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    strLog.append(
-        String.format("From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
+    DataLogManager.log(
+        String.format("End From: %s, To: %s, Curr: %s.  State %d. Turret %s:%s, Tilt %s:%s, Arm %s:%s\n",
             origState, tgtState, crane.getState(), state,
             craneTurret.atSetPoint() ? "SP" : String.format("%7.3f", craneTurret.getPosition()),
             String.format("%7.3f", craneTurret.getSetPoint()),

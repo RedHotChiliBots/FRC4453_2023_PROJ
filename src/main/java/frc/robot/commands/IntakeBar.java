@@ -12,6 +12,9 @@ public class IntakeBar extends CommandBase {
   Intake intake;
   BarState state;
 
+//  DataLog log = DataLogManager.getLog();
+//  StringLogEntry strLog = new StringLogEntry(log, "StringMessages.log");
+
   /** Creates a new GrabCube. */
   public IntakeBar(Intake intake, BarState state) {
     this.intake = intake;
@@ -27,6 +30,7 @@ public class IntakeBar extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+//    strLog.append(String.format("Execute IntakeBar at %s\n", state));
     intake.setBar(state);
   }
 

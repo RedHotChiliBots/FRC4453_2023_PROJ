@@ -135,6 +135,18 @@ public class Crane_Move2Position extends CommandBase {
               DataLogManager.log("Must be in Receive before moving to Grip");
               finish = true;
 
+            } else if ((tgtState == CRANESTATE.STOW ||
+                      tgtState == CRANESTATE.GRIP ||
+                      tgtState == CRANESTATE.RECEIVE ||
+                      tgtState == CRANESTATE.HOLD) && 
+                      (origState != CRANESTATE.STOW &&
+                      origState != CRANESTATE.GRIP &&
+                      origState != CRANESTATE.RECEIVE &&
+                      origState != CRANESTATE.HOLD)) {
+                        
+              craneArm.setSetPoint(crane.grid.getCranePos(CRANESTATE.CLEAR2MOVE, CRANEAXIS.ARM));
+              state = 1;
+
               // If Turret is not moving, move Tilt and Arm together
               //TODO add tolerance
             } else if (craneTurret.getPosition() == tgtTurret) {

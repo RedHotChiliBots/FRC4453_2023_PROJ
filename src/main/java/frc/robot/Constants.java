@@ -239,14 +239,14 @@ public final class Constants {
 		public static final double kArmP = 5e-4;	//e-5;
 		public static final double kArmI = 1e-6;
 		public static final double kArmD = 0.0;
-		public static final double kArmInitPos = 25.065; // inches
-		public static final double kArmStowPos = 25.065; // inches
-		public static final double kArmHoldPos = 25.065; // inches
-		public static final double kArmReadyPos = 25.065; // inches
+		public static final double kArmInitPos = 26.0; // inches
+		public static final double kArmStowPos = 26.0; // inches
+		public static final double kArmHoldPos = 26.0; // inches
+		public static final double kArmReadyPos = 26.0; // inches
 		public static final double kArmReceivePos = 33.0; // inches
-		public static final double kArmSafe2Rotate = 25.0; // inches
-		public static final double kArmGripCone = 35.5; // inches
-		public static final double kArmGripCube = 33.0; // inches
+		public static final double kArmSafe2Rotate = 26.0; // inches
+		public static final double kArmGripCone = 34.0; // inches
+		public static final double kArmGripCube = 32.0; // inches
 		public static final double kArmPositionTolerance = 0.50; // inches
 
 		public static final double kArmIz = 0.0;
@@ -290,15 +290,15 @@ public final class Constants {
 		public static final double kCraneTurretElemSide = 0.0; // degrees
 		public static final double kCraneWait = 2.0; // seconds
 
-		public static final double kTurretInc = 15.0 * 0.020; // degrees / step
+		public static final double kTurretInc = 2.0; // degrees / step
 		public static final double kTurretMax = 225.0; // degrees
-		public static final double kTurretMin = 0.0; // degrees
-		public static final double kTiltInc = 7.5 * 0.020; // degrees / step
+		public static final double kTurretMin = -225.0; // degrees
+		public static final double kTiltInc = 1.5; // degrees / step
 		public static final double kTiltMax = 30.0; // degrees
 		public static final double kTiltMin = -87.0; // degrees
-		public static final double kArmInc = -1.5 * 0.020; // inches / step
-		public static final double kArmMax = 63.0; // inches
-		public static final double kArmMin = 25.0; // inches
+		public static final double kArmInc = -1.0; // inches / step
+		public static final double kArmMax = 57.0; // inches
+		public static final double kArmMin = 26.0; // inches
 
 		public static final double kAutonTurretPos = -21.0;
 		public static final double kAutonTiltPos = 18.0;

@@ -63,7 +63,7 @@ public class Crane_PlaceElement extends CommandBase {
 
         // If Tilt and Arm are in Safe positions, Rotate Turret to just outside Nodes
       case 1:
-        craneTilt.setSetPoint(craneTilt.getSetPoint() - 5.0);
+        craneTilt.setSetPoint(craneTilt.getSetPoint() - 7.0);
         crane.setState(CRANESTATE.MOVING);
         state++;
         break;

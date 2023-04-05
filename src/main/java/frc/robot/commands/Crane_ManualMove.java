@@ -50,17 +50,17 @@ public class Crane_ManualMove extends CommandBase {
 //    if (crane.getState() == CRANESTATE.NODE) {
       craneTurret.setSetPoint(Library.clamp(
           craneTurret.getSetPoint() +
-              (Math.abs(turretAxis.getAsDouble()) < 0.05 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
+              (Math.abs(turretAxis.getAsDouble()) < 0.08 ? 0.0 : turretAxis.getAsDouble() * CraneConstants.kTurretInc),
           CraneConstants.kTurretMax,
           CraneConstants.kTurretMin));
       craneTilt.setSetPoint(Library.clamp(
           craneTilt.getSetPoint() +
-              (Math.abs(tiltAxis.getAsDouble()) < 0.05 ? 0.0 : tiltAxis.getAsDouble() * CraneConstants.kTiltInc),
+              (Math.abs(tiltAxis.getAsDouble()) < 0.08 ? 0.0 : tiltAxis.getAsDouble() * CraneConstants.kTiltInc),
           CraneConstants.kTiltMax,
           CraneConstants.kTiltMin));
       craneArm.setSetPoint(Library.clamp(
           craneArm.getSetPoint() +
-              (Math.abs(armAxis.getAsDouble()) < 0.05 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
+              (Math.abs(armAxis.getAsDouble()) < 0.08 ? 0.0 : armAxis.getAsDouble() * CraneConstants.kArmInc),
           CraneConstants.kArmMax,
           CraneConstants.kArmMin));
 //    }

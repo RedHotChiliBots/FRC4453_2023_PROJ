@@ -5,13 +5,15 @@
 package frc.robot.commands.old;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.firstAttempt.Crane_Move2HoldPos;
+import frc.robot.GridCalcs.CRANESTATE;
+import frc.robot.commands.Crane_Move2Position;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
 import frc.robot.subsystems.CraneTilt;
 import frc.robot.subsystems.CraneTurret;
 import frc.robot.subsystems.Intake;
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
@@ -24,6 +26,6 @@ public class AutonCraneMove2Hold extends SequentialCommandGroup {
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
         // Lift Claw out of "U"
-        new Crane_Move2HoldPos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.HOLD));
   }
 }

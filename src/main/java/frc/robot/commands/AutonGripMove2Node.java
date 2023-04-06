@@ -6,9 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.firstAttempt.Crane_Auton2NodePos;
-import frc.robot.commands.firstAttempt.Crane_Move2GripPos;
-import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
@@ -52,11 +50,11 @@ public class AutonGripMove2Node extends SequentialCommandGroup {
     addCommands(
         // Move Crane to Scoring position, release Cone, and return to Receive position
         new AutonGripElem(crane, craneTurret, craneTilt, craneArm, claw, intake),
-        new Crane_Move2GripPos(crane, craneTurret, craneTilt, craneArm),
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.GRIP),
         new ClawFinger(claw, FingerState.GRIP),
         new WaitCommand(0.1),
-        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
-		    new Crane_Auton2NodePos(crane, craneTurret, craneTilt, craneArm)
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.RECEIVE),
+		    new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.NODE)
         );   
   }
 }

@@ -6,8 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.firstAttempt.Crane_Move2GripPos;
-import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.CraneArm;
@@ -28,9 +27,9 @@ public class AutonGripElem extends SequentialCommandGroup {
     // Assume start with Element in Claw and in Chassis "U"
     addCommands(
         // Lift Claw out of "U"
-        new Crane_Move2GripPos(crane, craneTurret, craneTilt, craneArm),
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.GRIP),
         new ClawFinger(claw, FingerState.GRIP),
         new WaitCommand(0.1),
-        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.RECEIVE));
   }
 }

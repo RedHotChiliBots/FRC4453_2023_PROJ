@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.GridCalcs.CRANESTATE;
 import frc.robot.commands.firstAttempt.Crane_Auton2NodePos;
 import frc.robot.commands.firstAttempt.Crane_Move2ReceivePos;
 import frc.robot.subsystems.Chassis;
@@ -52,11 +53,13 @@ public class AutonInitialMove2Node extends SequentialCommandGroup {
         // Move Crane to Scoring position, release Cone, and return to Receive position
         // new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm),
 //        new IntakeArm(intake, ArmState.OPEN),
-        new Crane_Auton2NodePos(crane, craneTurret, craneTilt, craneArm),
+//        new Crane_Auton2NodePos(crane, craneTurret, craneTilt, craneArm),
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.NODE),
 
         new Crane_PlaceElement(crane, craneTurret, craneTilt, craneArm),
         new ClawFinger(claw, FingerState.RELEASE),
         new WaitCommand(0.1),
-        new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));
+  //      new Crane_Move2ReceivePos(crane, craneTurret, craneTilt, craneArm));
+        new Crane_Move2Position(crane, craneTurret, craneTilt, craneArm, CRANESTATE.RECEIVE));
   }
 }
